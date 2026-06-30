@@ -29,6 +29,6 @@
     "jpgDir": "../../source-pdfs/source jpgs",
     "note": "300 DPI page anchors + pass03 v2 field split"
   },
-  "notes": "Comments Ten Wings empty until Drittes Buch extract. Baynes EN diagnostic only.",
+  "notes": "Book-one Zeno Erstes Buch. Comments Ten Wings promoted from AU JPG gold (2026-06-30). Baynes EN diagnostic only.",
   "ocrIngestLock": "ocr-ingest.lock.json"
 }

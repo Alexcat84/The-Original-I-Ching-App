@@ -765,7 +765,8 @@
         "AU-FID-W-015 apply-wilhelm-de-comments-au-gold",
         "AU-FID-W-016 validate-wilhelm-de-comments-au-gold",
         "AU-FID-W-028 jpg-audit-wilhelm-de-comments-au-pilot",
-        "AU-FID-W-029 scan-wilhelm-de-pilot-real-artifacts"
+        "AU-FID-W-029 scan-wilhelm-de-pilot-real-artifacts",
+        "VF-FID-W-036 promote-wilhelm-de-comments-au-to-merged"
       ]
     },
     {

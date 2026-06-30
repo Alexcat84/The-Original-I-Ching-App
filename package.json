@@ -100,6 +100,7 @@
     "verify:wilhelm-de-comments-au-pilot": "node scripts/verify-wilhelm-de-comments-au-pilot.mjs",
     "apply:wilhelm-de-comments-au-gold": "node scripts/apply-wilhelm-de-comments-au-gold.mjs",
     "validate:wilhelm-de-comments-au-gold": "node scripts/validate-wilhelm-de-comments-au-gold.mjs",
+    "promote:wilhelm-de-comments-au-to-merged": "node scripts/promote-wilhelm-de-comments-au-to-merged.mjs",
     "jpg-audit:wilhelm-de-comments-au-pilot": "node scripts/jpg-audit-wilhelm-de-comments-au-pilot.mjs",
     "spot-check:wilhelm-de-comments-au-pilot": "node scripts/spot-check-wilhelm-de-comments-au-pilot.mjs",
     "scan:wilhelm-de-pilot-artifacts": "node scripts/scan-wilhelm-de-pilot-real-artifacts.mjs",

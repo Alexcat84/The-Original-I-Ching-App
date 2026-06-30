@@ -1904,6 +1904,19 @@
       "area": "scripts/export-wilhelm-de-comments-anna-comparison-viewer.mjs"
     },
     {
+      "code": "VF-FID-W-036 promote-wilhelm-de-comments-au-to-merged",
+      "title": "Promote Wilhelm DE Ten Wings AU gold to comments merged maestro",
+      "shortName": "promote-wilhelm-de-comments-au-to-merged",
+      "type": "VF",
+      "family": "FID-W",
+      "version": "1.0.0",
+      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "AU JPG gold → comments-merged + G0" }],
+      "path": "scripts/promote-wilhelm-de-comments-au-to-merged.mjs",
+      "npmScript": "npm run promote:wilhelm-de-comments-au-to-merged",
+      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "area": "scripts/promote-wilhelm-de-comments-au-to-merged.mjs"
+    },
+    {
       "code": "I18N-001 i18n-audit",
       "title": "i18n key coverage audit",
       "shortName": "i18n-audit",

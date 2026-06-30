@@ -1,6 +1,6 @@
 # Wilhelm DE — extract Ten Wings desde Anna TXT (sandbox aislado)
 
-**Código:** `20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract` · **Familia:** DAT-W · **Estado:** open (fase D AU cerrada; pendiente fase E promote)
+**Código:** `20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract` · **Familia:** DAT-W · **Estado:** open (fase E promote cerrada; fase F runtime build OK en feature)
 
 - **Fecha:** 2026-06-28
 - **Rama:** `feature/wilhelm-de-dataset`
@@ -266,5 +266,6 @@ Los ~286 `coincide_ninguno` del jpg-audit son **esperados**: texto limpio ≠ pa
 - [x] Dual-pass reconcile (fase C — **1530/1920**, 535 disputas, G0 PASS)
 - [x] Export TSV AU disputas + pilot hex 1/2/8 (fase D — `export:wilhelm-de-comments-anna-au-tsv`)
 - [x] **AU book-primary JPG 64×37** — gold PASS, 2368/2368 (2026-06-30)
-- [ ] Promote a merged maestro (fase E)
-- [ ] Runtime (`hexagrams.wilhelm.commentary.json`) — solo tras merge staging explícito
+- [x] Promote a merged maestro (fase E — `promote:wilhelm-de-comments-au-to-merged`, 1839/2176 content fill)
+- [x] Runtime bundle (`build-hexagram-commentary` → `hexagrams.wilhelm.commentary.json`) — feature branch
+- [ ] Merge `feature/wilhelm-de-dataset` → `staging` + smoke app (fase F deploy)

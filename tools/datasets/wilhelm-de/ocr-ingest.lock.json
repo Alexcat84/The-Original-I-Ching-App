@@ -10,15 +10,17 @@
   ],
   "unlock": "Set WILHELM_DE_ALLOW_OCR_INGEST=1 or pass --allow-ocr-ingest",
   "safeScripts": [
-    "extract:wilhelm-de-from-zeno:all",
-    "promote:wilhelm-de-zeno-to-merged",
     "clean:wilhelm-de-zeno-dataset",
+    "export:wilhelm-de-comments-anna-au-tsv",
+    "export:wilhelm-de-comments-anna-comparison-viewer",
     "extract:wilhelm-de-comments-from-anna",
     "extract:wilhelm-de-comments-from-anna:pass02",
     "extract:wilhelm-de-comments-from-anna:pass04",
-    "validate:wilhelm-de-comments-anna-gate",
+    "extract:wilhelm-de-from-zeno:all",
+    "promote:wilhelm-de-comments-au-to-merged",
+    "promote:wilhelm-de-zeno-to-merged",
     "reconcile:wilhelm-de-comments-from-anna",
-    "export:wilhelm-de-comments-anna-comparison-viewer",
-    "export:wilhelm-de-comments-anna-au-tsv"
-  ]
+    "validate:wilhelm-de-comments-anna-gate"
+  ],
+  "commentsAuPromotedAt": "2026-06-30T17:14:51.746Z"
 }
