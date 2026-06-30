@@ -34,7 +34,7 @@ export function isCanonicalTrigramLine(text) {
   if (!/^oben\s|^unten\s/i.test(t)) return false;
   if (/^oben\s+ist\b|^unten\s+ist\b/i.test(t)) return false;
   if (t.length > 90) return false;
-  return /^((oben|unten)\s+(das\s+)?[^,]{1,48},\s+das\s+)/i.test(t);
+  return /^((oben|unten)\s+(das\s+)?[^,]+,\s+(das|der|die)\s+)/i.test(t);
 }
 
 /**
