@@ -11,8 +11,6 @@ export type MutationExplorerUiMessages = {
   consultationRef: string;
   readingRefLabel: string;
   manualTitle: string;
-  inputModeCode: string;
-  inputModeHexPair: string;
   castIndexLabel: string;
   castIndexPlaceholder: string;
   primaryHexLabel: string;
@@ -71,8 +69,6 @@ const EN: MutationExplorerUiMessages = {
   consultationRef: "Ref",
   readingRefLabel: "Reference:",
   manualTitle: "Explore a cast manually",
-  inputModeCode: "Verification code",
-  inputModeHexPair: "Hexagram pair",
   castIndexLabel: "Verification code",
   castIndexPlaceholder: "e.g. 573",
   primaryHexLabel: "Primary hexagram",
@@ -138,8 +134,6 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     consultationRef: "Ref",
     readingRefLabel: "Referencia:",
     manualTitle: "Explorar una tirada manualmente",
-    inputModeCode: "Código de verificación",
-    inputModeHexPair: "Par de hexagramas",
     castIndexLabel: "Código de verificación",
     castIndexPlaceholder: "ej. 573",
     primaryHexLabel: "Hexagrama primario",

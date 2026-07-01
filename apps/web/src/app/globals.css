@@ -9267,11 +9267,108 @@ html.iching-rn-webview .oracle-toggle-track {
   margin-bottom: 1rem;
 }
 
+.mutation-explorer-manual-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: min(100%, 26rem);
+}
+
+.mutation-explorer-code-field {
+  margin-bottom: 0.85rem;
+}
+
+.mutation-explorer-code-field > span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--fg) 68%, var(--accent));
+}
+
+.mutation-explorer-code-input {
+  width: 6.25rem;
+  max-width: 100%;
+  margin-top: 0.15rem;
+  padding: 0.42rem 1rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--bar-border));
+  background: color-mix(in srgb, var(--input-bg) 88%, var(--accent));
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--fg);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--fg) 10%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.mutation-explorer-code-input::-webkit-outer-spin-button,
+.mutation-explorer-code-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mutation-explorer-code-input:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 72%, var(--bar-border));
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent),
+    0 1px 2px color-mix(in srgb, var(--fg) 10%, transparent);
+}
+
+.mutation-explorer-hex-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  margin-bottom: 0.35rem;
+}
+
+.mutation-explorer-hex-stack .mutation-explorer-field {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.mutation-explorer-hex-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--bar-border) 70%, transparent);
+  background: var(--input-bg);
+  color: var(--fg);
+  font-size: 0.85rem;
+}
+
+.mutation-explorer-panel .mutation-explorer-cast-stage {
+  width: 100%;
+  max-width: min(100%, 26rem);
+  margin: 0.35rem 0 1.85rem;
+  padding: 0.85rem 0.75rem 1rem;
+}
+
+.mutation-explorer-after-cast {
+  margin-top: 0;
+  margin-bottom: 1.1rem;
+  width: 100%;
+}
+
 .mutation-explorer-field {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   margin-bottom: 0.75rem;
+}
+
+.mutation-explorer-manual-form .mutation-explorer-field > span,
+.mutation-explorer-fieldset legend {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--fg) 68%, var(--accent));
 }
 
 .mutation-explorer-fieldset {
@@ -9281,9 +9378,6 @@ html.iching-rn-webview .oracle-toggle-track {
 }
 
 .mutation-explorer-fieldset legend {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: color-mix(in srgb, var(--fg) 68%, var(--accent));
   margin-bottom: 0.35rem;
 }
 
@@ -9299,6 +9393,8 @@ html.iching-rn-webview .oracle-toggle-track {
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
 }
+
+/* legacy hex-row kept for any residual usage */
 
 .mutation-explorer-diagram {
   display: flex;
@@ -9332,7 +9428,53 @@ html.iching-rn-webview .oracle-toggle-track {
   opacity: 0.75;
 }
 
-.mutation-explorer-verify-btn,
+.mutation-explorer-verify-btn {
+  margin-top: 0.15rem;
+  min-width: 9.5rem;
+  padding: 0.62rem 1.85rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--accent) 78%, white) 0%,
+    var(--accent) 52%,
+    color-mix(in srgb, var(--accent) 82%, black) 100%
+  );
+  color: color-mix(in srgb, var(--session-active-fg, #fff) 96%, white);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 3px 10px color-mix(in srgb, var(--accent) 38%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 28%, transparent);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.mutation-explorer-verify-btn:hover:not(:disabled) {
+  filter: brightness(1.07);
+  box-shadow:
+    0 5px 16px color-mix(in srgb, var(--accent) 45%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 32%, transparent);
+  transform: translateY(-1px);
+}
+
+.mutation-explorer-verify-btn:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.mutation-explorer-verify-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 3px 10px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
 .mutation-explorer-compare-btn {
   margin-top: 0.5rem;
 }

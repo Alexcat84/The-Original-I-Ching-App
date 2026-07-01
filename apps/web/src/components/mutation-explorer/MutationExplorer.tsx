@@ -40,7 +40,6 @@ import {
 } from "@/components/mutation-explorer/CastRitualDiagram";
 import { OracleTextBlocksList } from "@/components/mutation-explorer/OracleTextBlocksList";
 
-type InputMode = "code" | "hex";
 type TranslatorTab = "wilhelm" | "legge" | "zhouyi";
 
 interface Props {
@@ -130,7 +129,6 @@ export function MutationExplorer({ locale }: Props) {
 
   const [consultation, setConsultation] = useState<ConsultationExploreContext | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [inputMode, setInputMode] = useState<InputMode>("hex");
   const [primaryNumber, setPrimaryNumber] = useState(9);
   const [transformedNumber, setTransformedNumber] = useState(54);
   const [mask, setMask] = useState(60);
@@ -454,31 +452,13 @@ export function MutationExplorer({ locale }: Props) {
       {!isConsultationMode ? (
         <section className="mutation-explorer-panel">
           <h2>{ui.manualTitle}</h2>
-          <div className="library-tablist mutation-explorer-mode-tabs" role="tablist">
-            {(
-              [
-                ["code", ui.inputModeCode],
-                ["hex", ui.inputModeHexPair],
-              ] as const
-            ).map(([mode, label]) => (
-              <button
-                key={mode}
-                type="button"
-                role="tab"
-                aria-selected={inputMode === mode}
-                className={`library-tab${inputMode === mode ? " library-tab--active" : ""}`}
-                onClick={() => setInputMode(mode)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
 
-          {inputMode === "code" ? (
-            <label className="mutation-explorer-field">
+          <div className="mutation-explorer-manual-form">
+            <label className="mutation-explorer-field mutation-explorer-code-field">
               <span>{ui.castIndexLabel}</span>
               <input
                 type="number"
+                className="mutation-explorer-code-input"
                 min={1}
                 max={4096}
                 value={castIndexInput}
@@ -492,91 +472,94 @@ export function MutationExplorer({ locale }: Props) {
                   }
                 }}
                 placeholder={ui.castIndexPlaceholder}
+                aria-label={ui.castIndexLabel}
               />
             </label>
-          ) : null}
 
-          <div className="mutation-explorer-hex-row">
-            <label className="mutation-explorer-field">
-              <span>{ui.primaryHexLabel}</span>
-              <select
-                value={primaryNumber}
-                onChange={(e) => {
-                  const primary = Number(e.target.value);
-                  try {
-                    syncFromHexPair(primary, transformedNumber);
-                  } catch {
-                    setExploreError(ui.invalidHexPair);
-                  }
-                }}
-              >
-                {hexOptions.map((h) => (
-                  <option key={h.number} value={h.number}>
-                    {h.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="mutation-explorer-field">
-              <span>{ui.transformedHexLabel}</span>
-              <select
-                value={transformedNumber}
-                onChange={(e) => {
-                  const transformed = Number(e.target.value);
-                  try {
-                    syncFromHexPair(primaryNumber, transformed);
-                  } catch {
-                    setExploreError(ui.invalidHexPair);
-                  }
-                }}
-              >
-                {reachableTransformedOptions.map((option) => (
-                  <option key={option.transformed} value={option.transformed}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <ManualCastDiagram
-            primaryNumber={primaryNumber}
-            transformedNumber={transformedNumber}
-            mask={mask}
-            ariaLabel={recordLabels.summary}
-          />
-
-          <fieldset className="mutation-explorer-field mutation-explorer-fieldset">
-            <legend>{ui.lineReadingSystemLabel}</legend>
-            <div className="mutation-explorer-radio-row">
-              <label>
-                <input
-                  type="radio"
-                  name="lineReadingSystem"
-                  checked={lineReadingSystem === "huang"}
-                  onChange={() => setLineReadingSystem("huang")}
-                />
-                {ui.lineReadingHuang}
+            <div className="mutation-explorer-hex-stack">
+              <label className="mutation-explorer-field">
+                <span>{ui.primaryHexLabel}</span>
+                <select
+                  className="mutation-explorer-hex-select"
+                  value={primaryNumber}
+                  onChange={(e) => {
+                    const primary = Number(e.target.value);
+                    try {
+                      syncFromHexPair(primary, transformedNumber);
+                    } catch {
+                      setExploreError(ui.invalidHexPair);
+                    }
+                  }}
+                >
+                  {hexOptions.map((h) => (
+                    <option key={h.number} value={h.number}>
+                      {h.label}
+                    </option>
+                  ))}
+                </select>
               </label>
-              <label>
-                <input
-                  type="radio"
-                  name="lineReadingSystem"
-                  checked={lineReadingSystem === "zhuxi"}
-                  onChange={() => setLineReadingSystem("zhuxi")}
-                />
-                {ui.lineReadingZhuxi}
+              <label className="mutation-explorer-field">
+                <span>{ui.transformedHexLabel}</span>
+                <select
+                  className="mutation-explorer-hex-select"
+                  value={transformedNumber}
+                  onChange={(e) => {
+                    const transformed = Number(e.target.value);
+                    try {
+                      syncFromHexPair(primaryNumber, transformed);
+                    } catch {
+                      setExploreError(ui.invalidHexPair);
+                    }
+                  }}
+                >
+                  {reachableTransformedOptions.map((option) => (
+                    <option key={option.transformed} value={option.transformed}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
-          </fieldset>
 
-          <button
-            type="button"
-            className="composer-reading-pill mutation-explorer-verify-btn"
-            onClick={() => runExplore(lineReadingSystem)}
-          >
-            {ui.verifyButton}
-          </button>
+            <ManualCastDiagram
+              primaryNumber={primaryNumber}
+              transformedNumber={transformedNumber}
+              mask={mask}
+              ariaLabel={recordLabels.summary}
+            />
+
+            <fieldset className="mutation-explorer-field mutation-explorer-fieldset mutation-explorer-after-cast">
+              <legend>{ui.lineReadingSystemLabel}</legend>
+              <div className="mutation-explorer-radio-row">
+                <label>
+                  <input
+                    type="radio"
+                    name="lineReadingSystem"
+                    checked={lineReadingSystem === "huang"}
+                    onChange={() => setLineReadingSystem("huang")}
+                  />
+                  {ui.lineReadingHuang}
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="lineReadingSystem"
+                    checked={lineReadingSystem === "zhuxi"}
+                    onChange={() => setLineReadingSystem("zhuxi")}
+                  />
+                  {ui.lineReadingZhuxi}
+                </label>
+              </div>
+            </fieldset>
+
+            <button
+              type="button"
+              className="mutation-explorer-verify-btn"
+              onClick={() => runExplore(lineReadingSystem)}
+            >
+              {ui.verifyButton}
+            </button>
+          </div>
         </section>
       ) : null}
 
