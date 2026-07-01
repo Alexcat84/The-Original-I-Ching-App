@@ -263,9 +263,6 @@ export function MutationExplorer({ locale }: Props) {
 
   const oracleBlocks = result ? buildOracleTextBlocks(result, activeTranslator, ui) : [];
 
-  const otherSystem: LineReadingSystem =
-    lineReadingSystem === "huang" ? "zhuxi" : "huang";
-
   const consultationPrimaryHex = consultation
     ? getHexagramRecordByNumber(consultation.primaryHexagram, { translator: "wilhelm" })
     : null;
@@ -283,12 +280,6 @@ export function MutationExplorer({ locale }: Props) {
   const resultStableLines = [1, 2, 3, 4, 5, 6].filter(
     (p) => !resultChangingLines.includes(p),
   );
-
-  const displayPrimary = result?.primaryNumber ?? primaryNumber;
-  const displayTransformed = result?.transformedNumber ?? transformedNumber;
-  const displayMask = result
-    ? maskFromChangingLines(result.changingLines)
-    : mask;
 
   if (isConsultationMode) {
     if (loadError) {
@@ -420,7 +411,7 @@ export function MutationExplorer({ locale }: Props) {
         <section className="mutation-explorer-oracle-section">
           <h2 className="mutation-explorer-section-title">{ui.oracleTexts}</h2>
           {consultationTranslators.length === 1 ? (
-            <OracleTextBlocksList blocks={oracleBlocks} ui={ui} />
+            <OracleTextBlocksList blocks={oracleBlocks} ui={ui} listId={consultationTranslators[0] ?? "wilhelm"} />
           ) : (
             consultationTranslators.map((translatorId) => (
               <div key={translatorId} className="mutation-explorer-translator-section">
@@ -430,6 +421,7 @@ export function MutationExplorer({ locale }: Props) {
                 <OracleTextBlocksList
                   blocks={buildOracleTextBlocks(result, translatorId, ui)}
                   ui={ui}
+                  listId={translatorId}
                 />
               </div>
             ))
@@ -567,13 +559,6 @@ export function MutationExplorer({ locale }: Props) {
 
       {result && !isConsultationMode ? (
         <section className="mutation-explorer-results">
-          <ManualCastDiagram
-            primaryNumber={displayPrimary}
-            transformedNumber={displayTransformed}
-            mask={displayMask}
-            ariaLabel={recordLabels.summary}
-          />
-
           <div className="consultation-record-grid mutation-explorer-meta-grid">
             <p className="consultation-record-row">
               <span className="consultation-record-key">{ui.verificationCodeLabel}:</span>
@@ -601,18 +586,6 @@ export function MutationExplorer({ locale }: Props) {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="composer-reading-pill mutation-explorer-compare-btn"
-            onClick={() => {
-              setLineReadingSystem(otherSystem);
-              runExplore(otherSystem);
-            }}
-          >
-            {ui.compareOtherSystem} (
-            {otherSystem === "huang" ? ui.lineReadingHuang : ui.lineReadingZhuxi})
-          </button>
-
           <hr className="mutation-explorer-section-divider" aria-hidden="true" />
 
           <h3 className="mutation-explorer-section-title">{ui.oracleTexts}</h3>
@@ -636,7 +609,7 @@ export function MutationExplorer({ locale }: Props) {
               </button>
             ))}
           </div>
-          <OracleTextBlocksList blocks={oracleBlocks} ui={ui} />
+          <OracleTextBlocksList blocks={oracleBlocks} ui={ui} listId={tab} />
         </section>
       ) : (
         !loadError &&

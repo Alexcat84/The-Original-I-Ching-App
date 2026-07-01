@@ -9253,8 +9253,8 @@ html.iching-rn-webview .oracle-toggle-track {
   font-style: italic;
 }
 
-.mutation-explorer-meta-grid {
-  margin: 0;
+.mutation-explorer-results .mutation-explorer-meta-grid {
+  margin-top: 0.25rem;
 }
 
 .mutation-explorer-panel,

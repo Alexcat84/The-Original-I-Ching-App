@@ -6,13 +6,15 @@ import type { OracleTextBlock } from "@/lib/mutation-explorer/explore-mutation";
 type Props = {
   blocks: OracleTextBlock[];
   ui: MutationExplorerUiMessages;
+  /** Disambiguates React keys so open/closed state is per translator tab. */
+  listId: string;
 };
 
-export function OracleTextBlocksList({ blocks, ui }: Props) {
+export function OracleTextBlocksList({ blocks, ui, listId }: Props) {
   return (
     <div className="mutation-explorer-oracle-blocks">
       {blocks.map((block) => (
-        <article key={block.id} className="mutation-explorer-oracle-block">
+        <article key={`${listId}-${block.id}`} className="mutation-explorer-oracle-block">
           <details className="mutation-explorer-oracle-details">
             <summary className="mutation-explorer-oracle-summary">
               <span className="mutation-explorer-oracle-toggle" aria-hidden="true" />
