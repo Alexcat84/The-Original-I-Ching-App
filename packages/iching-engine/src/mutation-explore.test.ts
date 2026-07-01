@@ -110,6 +110,8 @@ describe("exploreMutation — canonical 9→54", () => {
     const lineSelections = result.selections.filter((s) => s.kind === "line");
     expect(lineSelections).toHaveLength(1);
     expect(lineSelections[0]).toMatchObject({ hex: 54, position: 2 });
+    expect(result.selections.some((s) => s.kind === "judgment")).toBe(false);
+    expect(result.selections.some((s) => s.kind === "image")).toBe(false);
   });
 
   it("uses stored lines when provided (mode A parity)", () => {
@@ -140,6 +142,10 @@ describe("exploreMutation — rule matrix", () => {
     const zhuxi = exploreMutation({ primaryNumber: 9, mask, lineReadingSystem: "zhuxi" });
     expect(huang.mutationRule).toBe("ONE_CHANGING");
     expect(zhuxi.mutationRule).toBe("ZX_ONE");
+    const huangLineSelections = huang.selections.filter((s) => s.kind === "line");
+    expect(huangLineSelections).toHaveLength(1);
+    expect(huang.selections.some((s) => s.kind === "judgment")).toBe(false);
+    expect(huang.selections.some((s) => s.kind === "image")).toBe(false);
   });
 
   it("three changing Zhu Xi: ZX_THREE_JUDGMENTS without line texts", () => {

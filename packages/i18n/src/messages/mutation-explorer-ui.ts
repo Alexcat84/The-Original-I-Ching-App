@@ -13,8 +13,11 @@ export type MutationExplorerUiMessages = {
   manualTitle: string;
   castIndexLabel: string;
   castIndexPlaceholder: string;
+  castIndexHint: string;
   primaryHexLabel: string;
   transformedHexLabel: string;
+  primaryHexPlaceholder: string;
+  transformedHexPlaceholder: string;
   lineReadingSystemLabel: string;
   lineReadingHuang: string;
   lineReadingZhuxi: string;
@@ -33,6 +36,7 @@ export type MutationExplorerUiMessages = {
   stableLines: string;
   changingLineVerbatimHeading: (position: number) => string;
   oracleTexts: string;
+  oracleTextsReadHint: string;
   translatorAppliedLabel: string;
   compareOtherSystem: string;
   tabWilhelm: string;
@@ -49,6 +53,7 @@ export type MutationExplorerUiMessages = {
   lineTextHeading: (hex: number, position: number) => string;
   invalidHexPair: string;
   castIndexOutOfRange: string;
+  selectCastBeforeVerify: string;
   upgradeRequiredManual: string;
   masterCombinedNote: string;
   loading: string;
@@ -71,8 +76,11 @@ const EN: MutationExplorerUiMessages = {
   manualTitle: "Explore a cast manually",
   castIndexLabel: "Verification code",
   castIndexPlaceholder: "e.g. 573",
+  castIndexHint: "Enter the code shown on your reading summary (1–4096).",
   primaryHexLabel: "Primary hexagram",
   transformedHexLabel: "Transformed hexagram",
+  primaryHexPlaceholder: "Select primary hexagram",
+  transformedHexPlaceholder: "Select transformed hexagram",
   lineReadingSystemLabel: "Line reading system",
   lineReadingHuang: "Alfred Huang",
   lineReadingZhuxi: "Zhu Xi (classical)",
@@ -91,6 +99,7 @@ const EN: MutationExplorerUiMessages = {
   stableLines: "Stable lines",
   changingLineVerbatimHeading: (position) => `Changing line ${position} (literal text)`,
   oracleTexts: "Oracle texts",
+  oracleTextsReadHint: "Only the sections below are read under the selected line-reading rule. Badges mark the governing text when several apply.",
   translatorAppliedLabel: "Translator",
   compareOtherSystem: "View rule under the other system",
   tabWilhelm: "Wilhelm / Baynes",
@@ -107,6 +116,7 @@ const EN: MutationExplorerUiMessages = {
   lineTextHeading: (hex, position) => `Line ${position} · Hexagram ${hex}`,
   invalidHexPair: "This hexagram pair does not correspond to a single cast with changing lines.",
   castIndexOutOfRange: "Enter a verification code between 1 and 4096.",
+  selectCastBeforeVerify: "Select primary and transformed hexagrams, or enter a valid verification code.",
   upgradeRequiredManual:
     "Manual exploration requires a Seeker pack or higher. You can still verify readings from your consultation summary.",
   masterCombinedNote:
@@ -136,8 +146,11 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     manualTitle: "Explorar una tirada manualmente",
     castIndexLabel: "Código de verificación",
     castIndexPlaceholder: "ej. 573",
+    castIndexHint: "Escribe el código que aparece en el resumen de tu tirada (1–4096).",
     primaryHexLabel: "Hexagrama primario",
     transformedHexLabel: "Hexagrama transformado",
+    primaryHexPlaceholder: "Selecciona el hexagrama primario",
+    transformedHexPlaceholder: "Selecciona el hexagrama transformado",
     lineReadingSystemLabel: "Lectura de líneas",
     lineReadingHuang: "Alfred Huang",
     lineReadingZhuxi: "Zhu Xi (clásico)",
@@ -156,6 +169,8 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     stableLines: "Líneas estables",
     changingLineVerbatimHeading: (position) => `Línea ${position} (mutante, texto literal)`,
     oracleTexts: "Textos oráculo",
+    oracleTextsReadHint:
+      "Solo se leen las secciones siguientes según la regla elegida. Las etiquetas marcan el texto rector cuando hay varios.",
     translatorAppliedLabel: "Traductor:",
     compareOtherSystem: "Ver regla bajo el otro sistema",
     tabWilhelm: "Wilhelm / Baynes",
@@ -173,6 +188,8 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     invalidHexPair:
       "Este par de hexagramas no corresponde a una sola tirada con líneas mutantes.",
     castIndexOutOfRange: "Introduce un código de verificación entre 1 y 4096.",
+    selectCastBeforeVerify:
+      "Selecciona hexagrama primario y transformado, o introduce un código de verificación válido.",
     upgradeRequiredManual:
       "La exploración manual requiere pack Seeker o superior. Aún puedes verificar tiradas desde el resumen de tu consulta.",
     masterCombinedNote:

@@ -71,6 +71,21 @@ function translatorTabLabel(ui: MutationExplorerUiMessages, tab: TranslatorTab):
   return ui.tabZhouyi;
 }
 
+const CAST_INDEX_MIN = 1;
+const CAST_INDEX_MAX = 4096;
+
+function parseCastIndexInput(raw: string): number | null {
+  const digits = raw.replace(/\D/g, "");
+  if (!digits) return null;
+  const n = Number(digits);
+  if (!Number.isInteger(n)) return null;
+  return n;
+}
+
+function isValidCastIndex(n: number): boolean {
+  return n >= CAST_INDEX_MIN && n <= CAST_INDEX_MAX;
+}
+
 function hexHeader(number: number): CastHexHeader {
   const record = getHexagramRecordByNumber(number, { translator: "wilhelm" });
   return {
@@ -129,10 +144,10 @@ export function MutationExplorer({ locale }: Props) {
 
   const [consultation, setConsultation] = useState<ConsultationExploreContext | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [primaryNumber, setPrimaryNumber] = useState(9);
-  const [transformedNumber, setTransformedNumber] = useState(54);
-  const [mask, setMask] = useState(60);
-  const [castIndexInput, setCastIndexInput] = useState("573");
+  const [primaryNumber, setPrimaryNumber] = useState<number | null>(null);
+  const [transformedNumber, setTransformedNumber] = useState<number | null>(null);
+  const [mask, setMask] = useState(0);
+  const [castIndexInput, setCastIndexInput] = useState("");
   const [lineReadingSystem, setLineReadingSystem] = useState<LineReadingSystem>("zhuxi");
   const [result, setResult] = useState<MutationExploreResult | null>(null);
   const [exploreError, setExploreError] = useState<string | null>(null);
@@ -158,6 +173,7 @@ export function MutationExplorer({ locale }: Props) {
   );
 
   const reachableTransformedOptions = useMemo(() => {
+    if (primaryNumber === null) return [];
     return reachableCastsFromPrimary(primaryNumber)
       .map((entry: ReachableCastFromPrimary) => {
         const h = getHexagramRecordByNumber(entry.transformedNumber, { translator: "wilhelm" });
@@ -177,10 +193,21 @@ export function MutationExplorer({ locale }: Props) {
           setResult(runExploreFromConsultation(consultation, system));
           return;
         }
-        const castIndex = Number(castIndexInput);
+        if (primaryNumber === null || transformedNumber === null) {
+          setExploreError(ui.selectCastBeforeVerify);
+          setResult(null);
+          return;
+        }
+        const parsedCast = parseCastIndexInput(castIndexInput);
+        if (parsedCast !== null && !isValidCastIndex(parsedCast)) {
+          setExploreError(ui.castIndexOutOfRange);
+          setResult(null);
+          return;
+        }
         const explored = exploreMutation({
           primaryNumber,
-          castIndex: Number.isFinite(castIndex) ? castIndex : undefined,
+          castIndex:
+            parsedCast !== null && isValidCastIndex(parsedCast) ? parsedCast : undefined,
           mask,
           lineReadingSystem: system,
         });
@@ -204,10 +231,18 @@ export function MutationExplorer({ locale }: Props) {
       isConsultationMode,
       mask,
       primaryNumber,
+      transformedNumber,
       ui.castIndexOutOfRange,
       ui.invalidHexPair,
+      ui.selectCastBeforeVerify,
     ],
   );
+
+  const castPreviewReady = primaryNumber !== null && transformedNumber !== null;
+  const parsedCastIndex = parseCastIndexInput(castIndexInput);
+  const castIndexInRange =
+    parsedCastIndex === null || isValidCastIndex(parsedCastIndex);
+  const canVerify = castPreviewReady && castIndexInRange;
 
   useEffect(() => {
     if (!cid) return;
@@ -280,6 +315,15 @@ export function MutationExplorer({ locale }: Props) {
   const resultStableLines = [1, 2, 3, 4, 5, 6].filter(
     (p) => !resultChangingLines.includes(p),
   );
+
+  const manualRuleSummary =
+    result && !isConsultationMode
+      ? formatMutationRuleSummaryForUi({
+          mutationRule: result.mutationRule,
+          lineReadingSystem,
+          locale: ruleLocale,
+        })
+      : null;
 
   if (isConsultationMode) {
     if (loadError) {
@@ -410,6 +454,9 @@ export function MutationExplorer({ locale }: Props) {
 
         <section className="mutation-explorer-oracle-section">
           <h2 className="mutation-explorer-section-title">{ui.oracleTexts}</h2>
+          <p className="mutation-explorer-field-hint mutation-explorer-oracle-read-hint">
+            {ui.oracleTextsReadHint}
+          </p>
           {consultationTranslators.length === 1 ? (
             <OracleTextBlocksList blocks={oracleBlocks} ui={ui} listId={consultationTranslators[0] ?? "wilhelm"} />
           ) : (
@@ -448,23 +495,32 @@ export function MutationExplorer({ locale }: Props) {
           <div className="mutation-explorer-manual-form">
             <label className="mutation-explorer-field mutation-explorer-code-field">
               <span>{ui.castIndexLabel}</span>
+              <p className="mutation-explorer-field-hint">{ui.castIndexHint}</p>
               <input
-                type="number"
+                type="text"
+                inputMode="numeric"
                 className="mutation-explorer-code-input"
-                min={1}
-                max={4096}
+                maxLength={4}
                 value={castIndexInput}
                 onChange={(e) => {
-                  const value = e.target.value;
-                  setCastIndexInput(value);
-                  const n = Number(value);
-                  if (Number.isFinite(n) && n >= 1 && n <= 4096) {
+                  const digits = e.target.value.replace(/\D/g, "").slice(0, 4);
+                  setCastIndexInput(digits);
+                  setResult(null);
+                  if (!digits) {
+                    setExploreError(null);
+                    return;
+                  }
+                  const n = Number(digits);
+                  if (isValidCastIndex(n)) {
                     const decoded = decodeCastIndex(n);
                     syncFromMask(decoded.primary, decoded.mask);
+                  } else {
+                    setExploreError(ui.castIndexOutOfRange);
                   }
                 }}
                 placeholder={ui.castIndexPlaceholder}
                 aria-label={ui.castIndexLabel}
+                aria-invalid={parsedCastIndex !== null && !castIndexInRange}
               />
             </label>
 
@@ -473,16 +529,35 @@ export function MutationExplorer({ locale }: Props) {
                 <span>{ui.primaryHexLabel}</span>
                 <select
                   className="mutation-explorer-hex-select"
-                  value={primaryNumber}
+                  value={primaryNumber ?? ""}
                   onChange={(e) => {
-                    const primary = Number(e.target.value);
-                    try {
-                      syncFromHexPair(primary, transformedNumber);
-                    } catch {
-                      setExploreError(ui.invalidHexPair);
+                    const value = e.target.value;
+                    setResult(null);
+                    if (value === "") {
+                      setPrimaryNumber(null);
+                      setTransformedNumber(null);
+                      setMask(0);
+                      setCastIndexInput("");
+                      setExploreError(null);
+                      return;
                     }
+                    const primary = Number(value);
+                    if (transformedNumber !== null) {
+                      try {
+                        syncFromHexPair(primary, transformedNumber);
+                      } catch {
+                        setExploreError(ui.invalidHexPair);
+                      }
+                      return;
+                    }
+                    setPrimaryNumber(primary);
+                    setTransformedNumber(null);
+                    setMask(0);
+                    setCastIndexInput("");
+                    setExploreError(null);
                   }}
                 >
+                  <option value="">{ui.primaryHexPlaceholder}</option>
                   {hexOptions.map((h) => (
                     <option key={h.number} value={h.number}>
                       {h.label}
@@ -494,9 +569,18 @@ export function MutationExplorer({ locale }: Props) {
                 <span>{ui.transformedHexLabel}</span>
                 <select
                   className="mutation-explorer-hex-select"
-                  value={transformedNumber}
+                  value={transformedNumber ?? ""}
+                  disabled={primaryNumber === null}
                   onChange={(e) => {
-                    const transformed = Number(e.target.value);
+                    const value = e.target.value;
+                    setResult(null);
+                    if (value === "" || primaryNumber === null) {
+                      setTransformedNumber(null);
+                      setMask(0);
+                      setCastIndexInput("");
+                      return;
+                    }
+                    const transformed = Number(value);
                     try {
                       syncFromHexPair(primaryNumber, transformed);
                     } catch {
@@ -504,6 +588,7 @@ export function MutationExplorer({ locale }: Props) {
                     }
                   }}
                 >
+                  <option value="">{ui.transformedHexPlaceholder}</option>
                   {reachableTransformedOptions.map((option) => (
                     <option key={option.transformed} value={option.transformed}>
                       {option.label}
@@ -513,12 +598,14 @@ export function MutationExplorer({ locale }: Props) {
               </label>
             </div>
 
-            <ManualCastDiagram
-              primaryNumber={primaryNumber}
-              transformedNumber={transformedNumber}
-              mask={mask}
-              ariaLabel={recordLabels.summary}
-            />
+            {castPreviewReady && primaryNumber !== null && transformedNumber !== null ? (
+              <ManualCastDiagram
+                primaryNumber={primaryNumber}
+                transformedNumber={transformedNumber}
+                mask={mask}
+                ariaLabel={recordLabels.summary}
+              />
+            ) : null}
 
             <fieldset className="mutation-explorer-field mutation-explorer-fieldset mutation-explorer-after-cast">
               <legend>{ui.lineReadingSystemLabel}</legend>
@@ -547,6 +634,7 @@ export function MutationExplorer({ locale }: Props) {
             <button
               type="button"
               className="mutation-explorer-verify-btn"
+              disabled={!canVerify}
               onClick={() => runExplore(lineReadingSystem)}
             >
               {ui.verifyButton}
@@ -584,11 +672,20 @@ export function MutationExplorer({ locale }: Props) {
                 {lineReadingSystem === "zhuxi" ? ui.lineReadingZhuxi : ui.lineReadingHuang}
               </span>
             </p>
+            {manualRuleSummary ? (
+              <p className="consultation-record-row">
+                <span className="consultation-record-key">{recordLabels.rule}</span>
+                <span className="consultation-record-value">{manualRuleSummary}</span>
+              </p>
+            ) : null}
           </div>
 
           <hr className="mutation-explorer-section-divider" aria-hidden="true" />
 
           <h3 className="mutation-explorer-section-title">{ui.oracleTexts}</h3>
+          <p className="mutation-explorer-field-hint mutation-explorer-oracle-read-hint">
+            {ui.oracleTextsReadHint}
+          </p>
           <div className="library-tablist mutation-explorer-translator-tabs" role="tablist">
             {(
               [

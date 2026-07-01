@@ -227,7 +227,7 @@ export function textsToSelections(
     texts.readBothJudgments === true ||
     (system === "zhuxi" && changingLines.length === 3);
 
-  if (includePrimaryJudgment || texts.primaryJudgment) {
+  if (includePrimaryJudgment) {
     selections.push({
       kind: "judgment",
       hex: primary.number,
@@ -236,7 +236,14 @@ export function textsToSelections(
     });
   }
 
-  if (texts.transformedJudgment) {
+  const includeTransformedJudgment =
+    texts.readBothJudgments === true ||
+    texts.judgmentEmphasis === "transformed" ||
+    rule === "ZX_THREE_JUDGMENTS" ||
+    rule === "SIX_ALL_CHANGING" ||
+    rule === "ZX_SIX_TRANSFORMED";
+
+  if (includeTransformedJudgment && texts.transformedJudgment) {
     selections.push({
       kind: "judgment",
       hex: transformed?.number ?? primary.number,
