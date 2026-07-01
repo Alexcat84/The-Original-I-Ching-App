@@ -99,10 +99,10 @@ const EN: MutationExplorerUiMessages = {
   changingLines: "Changing lines",
   stableLines: "Stable lines",
   changingLineVerbatimHeading: (position) =>
-    `Changing line ${position} (not read — reference)`,
+    `Changing line ${position} (not read; reference only)`,
   oracleTexts: "Oracle texts",
   oracleTextsReadHint:
-    "Three tiers apply: (1) primary judgment + image, (2) selected line(s) per the rule — other changing lines are omitted, (3) transformed judgment + image when the cast mutates.",
+    "Three tiers apply: (1) primary judgment + image, (2) selected line(s) per the rule (other changing lines are omitted), (3) transformed judgment + image when the cast mutates.",
   oracleTextsReadLegend: (lineReadingLabel) =>
     `Line filter: ${lineReadingLabel}. Primary/secondary badges mark Zhu Xi emphasis when two lines or two judgments apply.`,
   translatorAppliedLabel: "Translator",
@@ -173,10 +173,10 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     changingLines: "Líneas mutantes",
     stableLines: "Líneas estables",
     changingLineVerbatimHeading: (position) =>
-      `Línea ${position} mutante (no se lee — referencia)`,
+      `Línea ${position} mutante (no se lee; referencia)`,
     oracleTexts: "Textos oráculo",
     oracleTextsReadHint:
-      "Tres capas: (1) juicio e imagen del primario, (2) línea(s) seleccionada(s) según la regla — las demás mutantes no aparecen, (3) juicio e imagen del transformado cuando hay mutación.",
+      "Tres capas: (1) juicio e imagen del primario, (2) línea(s) seleccionada(s) según la regla (las demás mutantes no aparecen), (3) juicio e imagen del transformado cuando hay mutación.",
     oracleTextsReadLegend: (lineReadingLabel) =>
       `Filtro de líneas: ${lineReadingLabel}. Las etiquetas primaria/secundaria marcan énfasis Zhu Xi cuando hay dos líneas o dos juicios.`,
     translatorAppliedLabel: "Traductor:",
@@ -215,7 +215,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     metaDescription:
       "Revise a tiragem completa: regra de leitura, hexagramas e textos oráculo literais de Wilhelm, Legge ou Zhou Yi.",
     subtitle:
-      "Veja a leitura integral aplicada pelo motor — regra, hexagramas e textos clássicos.",
+      "Veja a leitura integral aplicada pelo motor: regra, hexagramas e textos clássicos.",
     backToOracle: "Voltar ao oráculo",
     backToThread: "Voltar ao fio",
     manualTitle: "Explorar uma tiragem manualmente",
@@ -230,7 +230,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     metaDescription:
       "Consultez le tirage complet : règle de lecture, hexagrammes et textes oraculaires littéraux Wilhelm, Legge ou Zhou Yi.",
     subtitle:
-      "La lecture intégrale appliquée par le moteur — règle, hexagrammes et textes classiques.",
+      "La lecture intégrale appliquée par le moteur: règle, hexagrammes et textes classiques.",
     backToOracle: "Retour à l'oracle",
     backToThread: "Retour au fil",
     verifyButton: "Vérifier",
@@ -243,7 +243,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     metaDescription:
       "Vollständigen Wurf prüfen: Leseregel, Hexagrammverlauf und wörtliche Orakeltexte (Wilhelm, Legge, Zhou Yi).",
     subtitle:
-      "Die vom Motor gewählte Gesamtlesung — Regel, Hexagramme und klassische Texte.",
+      "Die vom Motor gewählte Gesamtlesung: Regel, Hexagramme und klassische Texte.",
     backToOracle: "Zurück zum Orakel",
     backToThread: "Zurück zum Thread",
     verifyButton: "Prüfen",
@@ -256,7 +256,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     metaDescription:
       "Rivedi la tirata completa: regola di lettura, hexagrammi e testi oracolari letterali Wilhelm, Legge o Zhou Yi.",
     subtitle:
-      "La lettura integrale selezionata dal motore — regola, hexagrammi e testi classici.",
+      "La lettura integrale selezionata dal motore: regola, hexagrammi e testi classici.",
     backToOracle: "Torna all'oracolo",
     backToThread: "Torna al thread",
     verifyButton: "Verifica",
@@ -280,7 +280,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     readingRefLabel: "参考编号：",
     metaDescription:
       "查看完整占断：读爻规则、卦象变化及 Wilhelm、Legge、周易原文。",
-    subtitle: "展示引擎选定的完整读解——规则、卦辞与经典原文。",
+    subtitle: "展示引擎选定的完整读解：规则、卦辞与经典原文。",
     backToOracle: "返回占卜",
     backToThread: "返回线程",
     verifyButton: "验证",
@@ -304,7 +304,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     readingRefLabel: "المرجع:",
     metaDescription:
       "راجع القراءة كاملة: قاعدة القراءة والنصوص الأوراكلية الحرفية.",
-    subtitle: "القراءة الكاملة التي اختارها المحرك — القاعدة والنصوص الكلاسيكية.",
+    subtitle: "القراءة الكاملة التي اختارها المحرك: القاعدة والنصوص الكلاسيكية.",
     backToOracle: "العودة إلى الأوراكل",
     backToThread: "العودة إلى الخيط",
     verifyButton: "تحقق",
@@ -316,7 +316,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     readingRefLabel: "संदर्भ:",
     metaDescription:
       "पूर्ण कास्ट देखें: पढ़ने का नियम और Wilhelm, Legge, Zhou Yi के शाब्दिक पाठ।",
-    subtitle: "इंजन द्वारा चुनी गई पूर्ण रीडिंग — नियम, हेक्साग्राम और शास्त्रीय पाठ।",
+    subtitle: "इंजन द्वारा चुनी गई पूर्ण रीडिंग: नियम, हेक्साग्राम और शास्त्रीय पाठ।",
     backToOracle: "ओरेकल पर वापस",
     backToThread: "थ्रेड पर वापस",
     verifyButton: "सत्यापित करें",
