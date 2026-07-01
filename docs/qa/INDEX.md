@@ -62,6 +62,7 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-WEB-012 revenuecat-webhook-idempotency` | `apps/web/src/lib/revenuecat-webhook-idempotency` | 1.0.0 | `revenuecat-webhook-idempotency.test.ts` | Idempotencia 039 |
 | `TS-WEB-013 session-thread-hydration` | `apps/web/src/lib/session-thread-hydration` | 1.0.0 | `session-thread-hydration.test.ts` | Hydration gate |
 | `TS-WEB-014 manual-coin-value` | `apps/web/src/lib/manual-coin-value` | 1.0.0 | `manual-coin-value.test.ts` | H-DIV-02-01 (`AUD-DIV-02`) |
+| `TS-WEB-015 mutation-explorer-oracle-blocks` | `apps/web/src/lib/mutation-explorer/explore-mutation` | 1.0.0 | `explore-mutation.test.ts` | Contexto completo + `isRead` gold |
 
 ### Overlay — `TS-WEB-OVR-*`
 

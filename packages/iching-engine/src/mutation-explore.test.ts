@@ -144,7 +144,12 @@ describe("exploreMutation — rule matrix", () => {
     expect(zhuxi.mutationRule).toBe("ZX_ONE");
     const huangLineSelections = huang.selections.filter((s) => s.kind === "line");
     expect(huangLineSelections).toHaveLength(1);
-    expect(huang.selections.some((s) => s.kind === "judgment")).toBe(false);
+    expect(huang.selections.some((s) => s.kind === "judgment" && s.judgmentScope === "primary")).toBe(
+      false,
+    );
+    expect(
+      huang.selections.some((s) => s.kind === "judgment" && s.judgmentScope === "transformed"),
+    ).toBe(true);
     expect(huang.selections.some((s) => s.kind === "image")).toBe(false);
   });
 

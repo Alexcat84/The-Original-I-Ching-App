@@ -16,6 +16,8 @@ export type OracleTextBlock = {
   heading: string;
   text: string;
   emphasis?: "primary" | "secondary";
+  /** True when this block is read under the active line-reading rule. */
+  isRead?: boolean;
 };
 
 export type ConsultationExploreContext = {
@@ -67,37 +69,51 @@ function pushBlock(
   if (block && block.text.trim()) blocks.push(block);
 }
 
-function selectionSortKey(sel: MutationTextSelection): number {
-  if (sel.kind === "judgment" && sel.judgmentScope === "primary") return 10;
-  if (sel.kind === "image" && sel.judgmentScope === "primary") return 20;
-  if (sel.kind === "line") return 30 + (sel.position ?? 0);
-  if (sel.kind === "judgment" && sel.judgmentScope === "transformed") return 40;
-  if (sel.kind === "image" && sel.judgmentScope === "transformed") return 50;
-  if (sel.kind === "yong") return 60;
-  return 100;
+function lineSelection(
+  result: MutationExploreResult,
+  hex: number,
+  position: number,
+): MutationTextSelection | undefined {
+  return result.selections.find(
+    (sel) => sel.kind === "line" && sel.hex === hex && sel.position === position,
+  );
 }
 
-function lineTextForSelection(
+function isReadJudgment(
   result: MutationExploreResult,
-  texts: TextsForClaude,
-  sel: MutationTextSelection,
-  translator: "wilhelm" | "legge" | "zhouyi",
-): string {
-  if (!sel.position) return "";
-  const fromSelected = texts.selectedLineTexts.find(
-    (line) =>
-      line.position === sel.position &&
-      (sel.hex === result.primaryNumber
-        ? line.fromHexagram === "primary"
-        : line.fromHexagram === "transformed"),
+  scope: "primary" | "transformed",
+): boolean {
+  return result.selections.some(
+    (sel) => sel.kind === "judgment" && sel.judgmentScope === scope,
   );
-  if (fromSelected?.text.trim()) return fromSelected.text;
-  const record = getHexagramRecordByNumber(sel.hex, { translator });
-  return record.lines.find((line) => line.position === sel.position)?.text ?? "";
+}
+
+function isReadImage(
+  result: MutationExploreResult,
+  scope: "primary" | "transformed",
+): boolean {
+  return result.selections.some(
+    (sel) => sel.kind === "image" && sel.judgmentScope === scope,
+  );
+}
+
+function isReadYong(result: MutationExploreResult): boolean {
+  return result.selections.some((sel) => sel.kind === "yong");
+}
+
+function judgmentEmphasis(
+  result: MutationExploreResult,
+  scope: "primary" | "transformed",
+): "primary" | "secondary" | undefined {
+  const sel = result.selections.find(
+    (s) => s.kind === "judgment" && s.judgmentScope === scope,
+  );
+  return sel?.emphasis;
 }
 
 /**
- * Verbatim oracle texts the engine selected for this cast — mirrors `result.selections`.
+ * Full oracle context for verification — all relevant texts visible;
+ * `isRead` marks blocks the active line-reading rule selects.
  */
 export function buildOracleTextBlocks(
   result: MutationExploreResult,
@@ -106,58 +122,84 @@ export function buildOracleTextBlocks(
 ): OracleTextBlock[] {
   const texts = textsForTranslator(result, translator);
   const blocks: OracleTextBlock[] = [];
-  const lineSelections = result.selections.filter((sel) => sel.kind === "line");
-  const singleLineRead = lineSelections.length === 1;
 
-  const ordered = [...result.selections].sort(
-    (a, b) => selectionSortKey(a) - selectionSortKey(b),
+  pushBlock(blocks, {
+    id: "judgment-primary",
+    kind: "judgment",
+    heading: ui.judgmentPrimary,
+    text: texts.primaryJudgment,
+    emphasis: judgmentEmphasis(result, "primary"),
+    isRead: isReadJudgment(result, "primary"),
+  });
+
+  pushBlock(blocks, {
+    id: "image-primary",
+    kind: "image",
+    heading: ui.imagePrimary,
+    text: texts.primaryImage,
+    isRead: isReadImage(result, "primary"),
+  });
+
+  for (const line of texts.selectedLineTexts) {
+    const hex =
+      line.fromHexagram === "primary" ? result.primaryNumber : result.transformedNumber;
+    const sel = lineSelection(result, hex, line.position);
+    pushBlock(blocks, {
+      id: `line-selected-${line.fromHexagram}-${line.position}`,
+      kind: "line",
+      heading: ui.lineTextHeading(hex, line.position),
+      text: line.text,
+      emphasis: sel?.emphasis ?? line.emphasis,
+      isRead: Boolean(sel),
+    });
+  }
+
+  const selectedPositions = new Set(
+    texts.selectedLineTexts
+      .filter((line) => line.fromHexagram === "primary")
+      .map((line) => line.position),
   );
-
-  for (const sel of ordered) {
-    if (sel.kind === "line" && sel.position) {
-      const emphasis =
-        sel.emphasis ?? (singleLineRead ? ("primary" as const) : undefined);
+  if (result.changingLines.length > 0) {
+    const primaryRecord = getHexagramRecordByNumber(result.primaryNumber, { translator });
+    for (const position of result.changingLines) {
+      if (selectedPositions.has(position)) continue;
+      const sel = lineSelection(result, result.primaryNumber, position);
+      const text = primaryRecord.lines.find((line) => line.position === position)?.text ?? "";
       pushBlock(blocks, {
-        id: `line-${sel.hex}-${sel.position}`,
+        id: `line-changing-${position}`,
         kind: "line",
-        heading: ui.lineTextHeading(sel.hex, sel.position),
-        text: lineTextForSelection(result, texts, sel, translator),
-        emphasis,
+        heading: ui.changingLineVerbatimHeading(position),
+        text,
+        isRead: Boolean(sel),
       });
-      continue;
     }
+  }
 
-    if (sel.kind === "judgment") {
-      const isTransformed = sel.judgmentScope === "transformed";
-      pushBlock(blocks, {
-        id: `judgment-${sel.judgmentScope ?? "primary"}`,
-        kind: "judgment",
-        heading: isTransformed ? ui.judgmentTransformed : ui.judgmentPrimary,
-        text: isTransformed ? (texts.transformedJudgment ?? "") : texts.primaryJudgment,
-        emphasis: sel.emphasis,
-      });
-      continue;
-    }
+  pushBlock(blocks, {
+    id: "judgment-transformed",
+    kind: "judgment",
+    heading: ui.judgmentTransformed,
+    text: texts.transformedJudgment ?? "",
+    emphasis: judgmentEmphasis(result, "transformed"),
+    isRead: isReadJudgment(result, "transformed"),
+  });
 
-    if (sel.kind === "image") {
-      const isTransformed = sel.judgmentScope === "transformed";
-      pushBlock(blocks, {
-        id: `image-${sel.judgmentScope ?? "primary"}`,
-        kind: "image",
-        heading: isTransformed ? ui.imageTransformed : ui.imagePrimary,
-        text: isTransformed ? (texts.transformedImage ?? "") : texts.primaryImage,
-      });
-      continue;
-    }
+  pushBlock(blocks, {
+    id: "image-transformed",
+    kind: "image",
+    heading: ui.imageTransformed,
+    text: texts.transformedImage ?? "",
+    isRead: isReadImage(result, "transformed"),
+  });
 
-    if (sel.kind === "yong") {
-      pushBlock(blocks, {
-        id: "yong",
-        kind: "yong",
-        heading: result.primaryNumber === 1 ? ui.yongJiu : ui.yongLiu,
-        text: texts.specialYaoText ?? "",
-      });
-    }
+  if (texts.specialYaoText?.trim()) {
+    pushBlock(blocks, {
+      id: "yong",
+      kind: "yong",
+      heading: result.primaryNumber === 1 ? ui.yongJiu : ui.yongLiu,
+      text: texts.specialYaoText,
+      isRead: isReadYong(result),
+    });
   }
 
   return blocks;

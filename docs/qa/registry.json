@@ -328,6 +328,27 @@
       "area": "apps/web/src/lib/manual-coin-value"
     },
     {
+      "code": "TS-WEB-015 mutation-explorer-oracle-blocks",
+      "title": "Mutation explorer oracle blocks — full context and isRead gold alignment",
+      "shortName": "mutation-explorer-oracle-blocks",
+      "type": "TS",
+      "family": "WEB-MUT",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "buildOracleTextBlocks shows all changing lines; isRead matches gold textTypes (534/573 smoke)"
+        }
+      ],
+      "path": "apps/web/src/lib/mutation-explorer/explore-mutation.test.ts",
+      "npmScript": "npm run test --prefix apps/web",
+      "relatedAuditCodes": [
+        "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab"
+      ],
+      "area": "apps/web/src/lib/mutation-explorer/explore-mutation"
+    },
+    {
       "code": "TS-WEB-003 response-clean",
       "title": "Oracle response cleaning",
       "shortName": "response-clean",

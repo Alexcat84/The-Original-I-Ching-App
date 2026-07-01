@@ -125,6 +125,24 @@ function ManualCastDiagram({
   );
 }
 
+function OracleReadLegend({
+  hint,
+  legend,
+}: {
+  hint: string;
+  legend: string;
+}) {
+  return (
+    <>
+      <p className="mutation-explorer-field-hint mutation-explorer-oracle-read-hint">{hint}</p>
+      <p className="mutation-explorer-read-legend">
+        <span className="mutation-explorer-read-swatch" aria-hidden="true" />
+        <span>{legend}</span>
+      </p>
+    </>
+  );
+}
+
 export function MutationExplorer({ locale }: Props) {
   const ruleLocale = parseAppLocale(locale.slice(0, 2).toLowerCase());
   const ui = getMutationExplorerUiMessages(ruleLocale);
@@ -454,9 +472,10 @@ export function MutationExplorer({ locale }: Props) {
 
         <section className="mutation-explorer-oracle-section">
           <h2 className="mutation-explorer-section-title">{ui.oracleTexts}</h2>
-          <p className="mutation-explorer-field-hint mutation-explorer-oracle-read-hint">
-            {ui.oracleTextsReadHint}
-          </p>
+          <OracleReadLegend
+            hint={ui.oracleTextsReadHint}
+            legend={ui.oracleTextsReadLegend(consultationLineReadingLabel)}
+          />
           {consultationTranslators.length === 1 ? (
             <OracleTextBlocksList blocks={oracleBlocks} ui={ui} listId={consultationTranslators[0] ?? "wilhelm"} />
           ) : (
@@ -683,9 +702,12 @@ export function MutationExplorer({ locale }: Props) {
           <hr className="mutation-explorer-section-divider" aria-hidden="true" />
 
           <h3 className="mutation-explorer-section-title">{ui.oracleTexts}</h3>
-          <p className="mutation-explorer-field-hint mutation-explorer-oracle-read-hint">
-            {ui.oracleTextsReadHint}
-          </p>
+          <OracleReadLegend
+            hint={ui.oracleTextsReadHint}
+            legend={ui.oracleTextsReadLegend(
+              lineReadingSystem === "zhuxi" ? ui.lineReadingZhuxi : ui.lineReadingHuang,
+            )}
+          />
           <div className="library-tablist mutation-explorer-translator-tabs" role="tablist">
             {(
               [

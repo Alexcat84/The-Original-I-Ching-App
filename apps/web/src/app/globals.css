@@ -24,6 +24,14 @@ html:not([data-theme]) {
   --commentary-accent: var(--accent);
   --commentary-accent-bg: color-mix(in srgb, var(--accent) 14%, transparent);
   --commentary-accent-border: color-mix(in srgb, var(--accent) 32%, transparent);
+  --mutation-read-fg: color-mix(in srgb, var(--accent) 72%, var(--fg));
+  --mutation-read-bg: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  --mutation-read-border: color-mix(in srgb, var(--accent) 38%, var(--record-divider));
+  --mutation-read-quote-border: color-mix(in srgb, var(--accent) 55%, var(--record-divider));
+  --mutation-read-toggle-border: color-mix(in srgb, var(--accent) 50%, var(--record-divider));
+  --mutation-read-toggle-fg: color-mix(in srgb, var(--accent) 80%, var(--fg));
+  --mutation-read-badge-fg: color-mix(in srgb, var(--accent) 85%, var(--fg));
+  --mutation-read-badge-bg: color-mix(in srgb, var(--accent) 18%, var(--bg));
   --bubble-user: #c8ebd4;
   --bubble-user-border: #a8d9b8;
   --bubble-user-fg: #1a3d2e;
@@ -129,6 +137,14 @@ html[data-theme="dark"] {
   --commentary-accent: var(--accent);
   --commentary-accent-bg: color-mix(in srgb, var(--accent) 16%, transparent);
   --commentary-accent-border: color-mix(in srgb, var(--accent) 38%, transparent);
+  --mutation-read-fg: color-mix(in srgb, var(--accent) 55%, var(--fg));
+  --mutation-read-bg: color-mix(in srgb, var(--accent) 14%, var(--bg-mid));
+  --mutation-read-border: color-mix(in srgb, var(--accent) 42%, var(--record-divider));
+  --mutation-read-quote-border: color-mix(in srgb, var(--accent) 62%, var(--record-divider));
+  --mutation-read-toggle-border: color-mix(in srgb, var(--accent) 55%, var(--record-divider));
+  --mutation-read-toggle-fg: color-mix(in srgb, var(--accent) 70%, var(--fg));
+  --mutation-read-badge-fg: color-mix(in srgb, var(--accent) 75%, var(--fg));
+  --mutation-read-badge-bg: color-mix(in srgb, var(--accent) 22%, var(--bg-mid));
   --bubble-user: #1e4036;
   --bubble-user-border: #4d9a7d;
   --bubble-user-fg: #d4f0e4;
@@ -9437,6 +9453,65 @@ html.iching-rn-webview .oracle-toggle-track {
 
 .mutation-explorer-oracle-read-hint {
   margin: -0.35rem 0 0.85rem;
+}
+
+.mutation-explorer-read-legend {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: -0.35rem 0 0.85rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text, var(--fg)) 62%, transparent);
+}
+
+.mutation-explorer-read-swatch {
+  flex-shrink: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.12rem;
+  border-radius: 4px;
+  border: 1.5px solid var(--mutation-read-border);
+  background: var(--mutation-read-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mutation-read-fg) 12%, transparent);
+}
+
+.mutation-explorer-oracle-block--read .mutation-explorer-oracle-details {
+  padding: 0.35rem 0.5rem 0.15rem;
+  border-radius: 10px;
+  border: 1px solid var(--mutation-read-border);
+  background: var(--mutation-read-bg);
+}
+
+.mutation-explorer-oracle-block--read .mutation-explorer-oracle-summary {
+  color: var(--mutation-read-fg);
+}
+
+.mutation-explorer-oracle-block--read .mutation-explorer-oracle-toggle {
+  border-color: var(--mutation-read-toggle-border);
+  color: var(--mutation-read-toggle-fg);
+  background: color-mix(in srgb, var(--mutation-read-bg) 70%, var(--bg));
+}
+
+.mutation-explorer-oracle-block--read .mutation-explorer-oracle-heading {
+  color: var(--mutation-read-fg);
+}
+
+.mutation-explorer-oracle-block--read .mutation-explorer-oracle-body,
+.mutation-explorer-oracle-block--read blockquote {
+  color: var(--mutation-read-fg);
+  border-left-color: var(--mutation-read-quote-border);
+}
+
+.mutation-explorer-oracle-block--read .mutation-explorer-badge {
+  color: var(--mutation-read-badge-fg);
+  background: var(--mutation-read-badge-bg);
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+}
+
+.mutation-explorer-oracle-block:not(.mutation-explorer-oracle-block--read) .mutation-explorer-oracle-heading {
+  color: color-mix(in srgb, var(--fg) 68%, var(--accent));
 }
 
 .mutation-explorer-verify-btn {
