@@ -1,4 +1,7 @@
 /**
+ * QA code: TS-WEB-OVR-007 overlay-title-long-name-samples · v1.0.0
+ * Area: apps/web/src/lib/overlay-title-pango
+ * Family: WEB-OVR
  * Long Wilhelm mutation titles that wrap to two subtitle lines (buildOverlayEnglishTitleLayout).
  * Uses renderProductionOverlaySample → buildImageAsset + finalizeReadingImages (prod path).
  *

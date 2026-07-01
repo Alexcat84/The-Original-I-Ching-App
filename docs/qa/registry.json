@@ -329,22 +329,28 @@
     },
     {
       "code": "TS-WEB-015 mutation-explorer-oracle-blocks",
-      "title": "Mutation explorer oracle blocks — full context and isRead gold alignment",
+      "title": "Mutation explorer oracle blocks — three-tier reading hierarchy",
       "shortName": "mutation-explorer-oracle-blocks",
       "type": "TS",
       "family": "WEB-MUT",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "versionHistory": [
         {
           "version": "1.0.0",
           "date": "2026-06-30",
           "change": "buildOracleTextBlocks shows all changing lines; isRead matches gold textTypes (534/573 smoke)"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-30",
+          "change": "Three-tier hierarchy only; omit non-selected changing lines; AUD-MUT-09 parity"
         }
       ],
       "path": "apps/web/src/lib/mutation-explorer/explore-mutation.test.ts",
       "npmScript": "npm run test --prefix apps/web",
       "relatedAuditCodes": [
-        "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab"
+        "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab",
+        "20260630-AUD-MUT-09 mutation-reading-hierarchy-parity"
       ],
       "area": "apps/web/src/lib/mutation-explorer/explore-mutation"
     },

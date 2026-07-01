@@ -1,4 +1,7 @@
 /**
+ * QA code: TS-WEB-OVR-008 overlay-title-random-samples · v1.0.0
+ * Area: apps/web/src/lib/overlay-title-pango
+ * Family: WEB-OVR
  * Random mutation overlay samples (not part of default npm test).
  * Production path: buildImageAsset → finalizeReadingImages (same as /api/consult + staging).
  *
