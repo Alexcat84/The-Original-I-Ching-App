@@ -129,7 +129,7 @@ const EN: MutationExplorerUiMessages = {
   loading: "Loading…",
   accessDenied: "Access denied",
   consultationNotFound: "Consultation not found",
-  noResultsYet: "Choose input and press Verify to see the oracle texts.",
+  noResultsYet: "Choose hexagrams or enter a verification code to see the oracle texts.",
 };
 
 function L(partial: Partial<MutationExplorerUiMessages>): MutationExplorerUiMessages {
@@ -206,7 +206,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     accessDenied: "Acceso denegado",
     consultationNotFound: "Consulta no encontrada",
     noResultsYet:
-      "Elige la entrada y pulsa Verificar para ver los textos oráculo.",
+      "Elige hexagramas o introduce un código de verificación para ver los textos oráculo.",
   }),
   en: EN,
   pt: L({

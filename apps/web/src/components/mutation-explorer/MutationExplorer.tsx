@@ -257,7 +257,12 @@ export function MutationExplorer({ locale }: Props) {
   const parsedCastIndex = parseCastIndexInput(castIndexInput);
   const castIndexInRange =
     parsedCastIndex === null || isValidCastIndex(parsedCastIndex);
-  const canVerify = castPreviewReady && castIndexInRange;
+
+  useEffect(() => {
+    if (isConsultationMode) return;
+    if (primaryNumber === null || transformedNumber === null || !castIndexInRange) return;
+    runExplore(lineReadingSystem);
+  }, [isConsultationMode, primaryNumber, transformedNumber, castIndexInRange, lineReadingSystem, runExplore]);
 
   useEffect(() => {
     if (!cid) return;
@@ -631,10 +636,7 @@ export function MutationExplorer({ locale }: Props) {
                     type="radio"
                     name="lineReadingSystem"
                     checked={lineReadingSystem === "huang"}
-                    onChange={() => {
-                      setLineReadingSystem("huang");
-                      if (canVerify) runExplore("huang");
-                    }}
+                    onChange={() => setLineReadingSystem("huang")}
                   />
                   {ui.lineReadingHuang}
                 </label>
@@ -643,26 +645,13 @@ export function MutationExplorer({ locale }: Props) {
                     type="radio"
                     name="lineReadingSystem"
                     checked={lineReadingSystem === "zhuxi"}
-                    onChange={() => {
-                      setLineReadingSystem("zhuxi");
-                      if (canVerify) runExplore("zhuxi");
-                    }}
+                    onChange={() => setLineReadingSystem("zhuxi")}
                   />
                   {ui.lineReadingZhuxi}
                 </label>
               </div>
             </fieldset>
 
-            {!result ? (
-              <button
-                type="button"
-                className="mutation-explorer-verify-btn"
-                disabled={!canVerify}
-                onClick={() => runExplore(lineReadingSystem)}
-              >
-                {ui.verifyButton}
-              </button>
-            ) : null}
           </div>
         </section>
       ) : null}
