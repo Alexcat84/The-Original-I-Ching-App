@@ -162,6 +162,11 @@ const CITATIONS = {
     title: "The I Ching or Book of Changes",
     rest: " (Bollingen Series XIX). Princeton University Press.",
   },
+  wilhelmDiederichs1924: {
+    citation: "Wilhelm, R. (1924). ",
+    title: "I Ging: Das Buch der Wandlungen",
+    rest: ". Eugen Diederichs Verlag.",
+  },
   leggeSacredTexts: {
     citation: "Legge, J. (1882). ",
     title: "The Yî King",

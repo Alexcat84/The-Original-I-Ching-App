@@ -1,0 +1,218 @@
+{
+  "updatedAt": "2026-06-30T22:25:37.920Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "from": 49,
+  "to": 53,
+  "hexCount": 5,
+  "totalCorrections": 41,
+  "ledgerSummary": {
+    "hexComplete": 64,
+    "hexTotal": 64,
+    "fieldsTotal": 2304,
+    "fieldsVerified": 1707,
+    "fieldsCorrected": 285,
+    "fieldsVacio": 312,
+    "fieldsPending": 0
+  },
+  "hexagrams": {
+    "49": {
+      "verified": true,
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_decision",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "image_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_image",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L1_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L2_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L3_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L5_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "jpgPagesRead": "516-519",
+      "fieldsCorrected": 8
+    },
+    "50": {
+      "verified": true,
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_decision",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "image_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_image",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L1_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L2_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L4_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L5_a_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L5_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L6_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "jpgPagesRead": "520-523",
+      "fieldsCorrected": 10
+    },
+    "51": {
+      "verified": true,
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "sequence",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_decision",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "image_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_image",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L1_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L5_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L6_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "jpgPagesRead": "524-527",
+      "fieldsCorrected": 8
+    },
+    "52": {
+      "verified": true,
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "sequence",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_decision",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "image_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_image",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L2_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L3_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L5_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L6_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "jpgPagesRead": "528-531",
+      "fieldsCorrected": 9
+    },
+    "53": {
+      "verified": true,
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_image",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L2_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L3_a_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L5_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L6_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "jpgPagesRead": "532-535",
+      "fieldsCorrected": 6
+    }
+  }
+}

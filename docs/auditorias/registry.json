@@ -811,6 +811,133 @@
       ]
     },
     {
+      "code": "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+      "title": "Wilhelm DE 1924 runtime source of truth (Zeno maestro; Baynes archived)",
+      "shortName": "wilhelm-de-source-of-truth",
+      "type": "AUD",
+      "family": "DAT-W",
+      "date": "2026-06-28",
+      "status": "open",
+      "path": "docs/auditorias/20260628-AUD-DAT-W-02-wilhelm-de-source-of-truth.md",
+      "relatedCodes": [
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "relatedTests": [
+        "VF-FID-W-014 wilhelm-de-all-gates",
+        "VF-FID-W-013 sync-wilhelm-de-translation-module",
+        "VF-FID-W-026 promote-wilhelm-de-zeno-to-merged"
+      ]
+    },
+    {
+      "code": "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au",
+      "title": "Wilhelm DE blank maestro + AU by book captures (W/L model)",
+      "shortName": "wilhelm-de-blank-maestro-au",
+      "type": "PLAN",
+      "family": "DAT-W",
+      "date": "2026-06-29",
+      "status": "open",
+      "path": "docs/auditorias/20260629-PLAN-DAT-W-03-wilhelm-de-blank-maestro-au.md",
+      "relatedCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
+        "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
+      ],
+      "relatedTests": [
+        "VF-FID-W-018 wilhelm-de-blank-maestro",
+        "VF-FID-W-021 wilhelm-de-field-split-g2"
+      ]
+    },
+    {
+      "code": "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract",
+      "title": "Wilhelm DE Ten Wings extract from Anna TXT (isolated sandbox)",
+      "shortName": "wilhelm-de-comments-anna-extract",
+      "type": "PLAN",
+      "family": "DAT-W",
+      "date": "2026-06-28",
+      "status": "open",
+      "path": "docs/auditorias/20260628-PLAN-DAT-W-05-wilhelm-de-comments-anna-extract.md",
+      "relatedCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au",
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"
+      ],
+      "relatedTests": [
+        "VF-FID-W-031 extract-wilhelm-de-comments-from-anna",
+        "VF-FID-W-032 validate-wilhelm-de-comments-anna-gate",
+        "VF-FID-W-034 reconcile-wilhelm-de-comments-from-anna",
+        "VF-FID-W-035 export-wilhelm-de-comments-anna-comparison-viewer",
+        "AU-FID-W-014 export-wilhelm-de-comments-anna-au-tsv",
+        "AU-FID-W-023 fill-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-015 apply-wilhelm-de-comments-au-gold",
+        "AU-FID-W-016 validate-wilhelm-de-comments-au-gold",
+        "AU-FID-W-028 jpg-audit-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-029 scan-wilhelm-de-pilot-real-artifacts",
+        "VF-FID-W-036 promote-wilhelm-de-comments-au-to-merged",
+        "VF-FID-W-037 sync-wilhelm-de-comments-meta-from-erstes",
+        "VF-FID-W-038 verify-wilhelm-de-en-structure-parity"
+      ]
+    },
+    {
+      "code": "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation",
+      "title": "Wilhelm DE JPG literal attestation — Drittes Buch / Ten Wings (P0 fidelity)",
+      "shortName": "wilhelm-de-jpg-literal-attestation",
+      "type": "AUD",
+      "family": "DAT-W",
+      "date": "2026-06-30",
+      "status": "structural-closed",
+      "path": "docs/auditorias/20260630-AUD-DAT-W-07-wilhelm-de-jpg-literal-attestation.md",
+      "relatedCodes": [
+        "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
+      "relatedTests": [
+        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-030 run-wilhelm-de-jpg-literal-batch",
+        "AU-FID-W-039 generate-wilhelm-de-jpg-literal-corrections-hex49-53",
+        "AU-FID-W-040 generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8"
+      ]
+    },
+    {
+      "code": "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases",
+      "title": "Wilhelm DE Ten Wings JPG AU phases (Drittes Buch literal, 13 batches)",
+      "shortName": "wilhelm-de-ten-wings-jpg-phases",
+      "type": "PLAN",
+      "family": "DAT-W",
+      "date": "2026-06-30",
+      "status": "closed",
+      "path": "docs/auditorias/20260630-PLAN-DAT-W-06-wilhelm-de-ten-wings-jpg-phases.md",
+      "relatedCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract",
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"
+      ],
+      "relatedTests": [
+        "AU-FID-W-020 verify-wilhelm-de-comments-au-pilot",
+        "AU-FID-W-015 apply-wilhelm-de-comments-au-gold",
+        "VF-FID-W-036 promote-wilhelm-de-comments-au-to-merged"
+      ]
+    },
+    {
+      "code": "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
+      "title": "Wilhelm DE 1924 fidelity policy — APA 7, literal German (Zhou Yi model)",
+      "shortName": "wilhelm-de-fidelity-policy",
+      "type": "AUD",
+      "family": "DAT-W",
+      "date": "2026-06-30",
+      "status": "open",
+      "path": "docs/auditorias/20260630-AUD-DAT-W-04-wilhelm-de-fidelity-policy.md",
+      "relatedCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
+      "relatedTests": [
+        "AU-FID-W-013 audit-wilhelm-de-contamination",
+        "VF-FID-W-025 extract-wilhelm-de-from-zeno"
+      ]
+    },
+    {
       "code": "20260623-POL-DAT-MAESTRO-00 txt-maestro-notes-policy",
       "title": "TXT maestro notes and fidelity policy (W+L only)",
       "shortName": "txt-maestro-notes-policy",

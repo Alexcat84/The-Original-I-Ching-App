@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "translator": "wilhelm",
+  "language": "de",
+  "edition": "Richard Wilhelm, I Ging — Das Buch der Wandlungen (Diederichs, 1924)",
+  "runtimeIngest": true,
+  "sourceMethod": "zeno.org-html",
+  "symbolStandard": "iching_zhouyi_translation.mjs (ctext.org 周易 hanzi + hex_font)",
+  "parsedJson": "wilhelm-de-64hex-merged.json",
+  "zenoExtractJson": "wilhelm-de-64hex-zeno-extract-latest.json",
+  "blankJson": {
+    "path": "wilhelm-de-64hex-blank.json",
+    "runtimeIngest": false,
+    "status": "zeno-only",
+    "note": "Zhou Yi symbols + Zeno Erstes Buch only; cleaned by clean-wilhelm-de-zeno-dataset"
+  },
+  "ocrMergedArchive": {
+    "runtimeIngest": false,
+    "note": "Former pass01+03 dual-pass OCR merged — archived under tools/output/archive/ on zeno promotion"
+  },
+  "parsedV2Json": {
+    "path": "wilhelm-de-64hex-parsed-v2.json",
+    "runtimeIngest": false,
+    "note": "Marker-calibrated parser output; superseded by zeno promotion"
+  },
+  "jpgExtractJson": {
+    "path": "wilhelm-de-64hex-jpg-extract-latest.json",
+    "runtimeIngest": false,
+    "jpgDir": "../../source-pdfs/source jpgs",
+    "note": "300 DPI page anchors + pass03 v2 field split"
+  },
+  "notes": "Book-one Zeno Erstes Buch. Comments Ten Wings promoted from AU JPG gold (2026-06-30). Baynes EN diagnostic only.",
+  "ocrIngestLock": "ocr-ingest.lock.json"
+}

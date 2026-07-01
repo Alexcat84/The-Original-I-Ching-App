@@ -1,0 +1,105 @@
+{
+  "updatedAt": "2026-06-30T21:29:37.525Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "from": 9,
+  "to": 13,
+  "hexCount": 5,
+  "totalCorrections": 11,
+  "verifyFailed": [],
+  "ledgerSummary": {
+    "hexComplete": 64,
+    "hexTotal": 64,
+    "fieldsTotal": 2304,
+    "fieldsVerified": 1910,
+    "fieldsCorrected": 82,
+    "fieldsVacio": 312,
+    "fieldsPending": 0
+  },
+  "hexResults": {
+    "9": {
+      "jpgPagesRead": "362-364",
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L4_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "fieldsCorrected": 2,
+      "verifyPass": true,
+      "markedComplete": true
+    },
+    "10": {
+      "jpgPagesRead": "365-368",
+      "corrections": [
+        {
+          "field": "L4_a_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L4_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "fieldsCorrected": 2,
+      "verifyPass": true,
+      "markedComplete": true
+    },
+    "11": {
+      "jpgPagesRead": "369-373",
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "image_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_image",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "fieldsCorrected": 3,
+      "verifyPass": true,
+      "markedComplete": true
+    },
+    "12": {
+      "jpgPagesRead": "374-376",
+      "corrections": [
+        {
+          "field": "ruler_note",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "fieldsCorrected": 1,
+      "verifyPass": true,
+      "markedComplete": true
+    },
+    "13": {
+      "jpgPagesRead": "377-381",
+      "corrections": [
+        {
+          "field": "image_oraculo",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "commentary_decision",
+          "reason": "JPG literal fix vs pilot OCR"
+        },
+        {
+          "field": "L4_b_comentario",
+          "reason": "JPG literal fix vs pilot OCR"
+        }
+      ],
+      "fieldsCorrected": 3,
+      "verifyPass": true,
+      "markedComplete": true
+    }
+  },
+  "reportPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\reports\\wilhelm-de-jpg-literal-audit-9-13-2026-06-30T21-29-37.json"
+}

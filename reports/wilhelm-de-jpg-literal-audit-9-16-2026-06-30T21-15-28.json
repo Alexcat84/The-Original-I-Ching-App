@@ -1,0 +1,86 @@
+{
+  "updatedAt": "2026-06-30T21:15:28.906Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "range": {
+    "from": 9,
+    "to": 16
+  },
+  "hexProcessed": 8,
+  "hexMarkedComplete": 8,
+  "hexVerifyFailed": [],
+  "ledgerSummary": {
+    "hexComplete": 64,
+    "hexTotal": 64,
+    "fieldsTotal": 2304,
+    "fieldsVerified": 1948,
+    "fieldsCorrected": 44,
+    "fieldsVacio": 312,
+    "fieldsPending": 0
+  },
+  "hexResults": {
+    "9": {
+      "verified": true,
+      "jpgPagesRead": "362-364",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    },
+    "10": {
+      "verified": true,
+      "jpgPagesRead": "365-368",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    },
+    "11": {
+      "verified": true,
+      "jpgPagesRead": "369-373",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    },
+    "12": {
+      "verified": true,
+      "jpgPagesRead": "374-376",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    },
+    "13": {
+      "verified": true,
+      "jpgPagesRead": "377-381",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    },
+    "14": {
+      "verified": true,
+      "jpgPagesRead": "382-384",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    },
+    "15": {
+      "verified": true,
+      "jpgPagesRead": "385-388",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    },
+    "16": {
+      "verified": true,
+      "jpgPagesRead": "389-392",
+      "verifyPass": true,
+      "markedComplete": true,
+      "corrections": [],
+      "fieldsClosed": 37
+    }
+  }
+}
