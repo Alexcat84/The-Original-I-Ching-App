@@ -91,7 +91,7 @@ function hexHeader(number: number): CastHexHeader {
   return {
     number: record.number,
     chineseName: record.chineseName,
-    name: record.name,
+    name: record.pinyin,
   };
 }
 
@@ -138,7 +138,7 @@ export function MutationExplorer({ locale }: Props) {
     () =>
       getAllHexagramRecords({ translator: "legge" }).map((h) => ({
         number: h.number,
-        label: `#${h.number} ${h.chineseName} · ${h.name}`,
+        label: `#${h.number} ${h.chineseName} · ${h.pinyin}`,
       })),
     [],
   );
@@ -180,7 +180,7 @@ export function MutationExplorer({ locale }: Props) {
         const h = getHexagramRecordByNumber(entry.transformedNumber, { translator: "legge" });
         return {
           transformed: entry.transformedNumber,
-          label: `#${h.number} ${h.chineseName} · ${h.name}`,
+          label: `#${h.number} ${h.chineseName} · ${h.pinyin}`,
         };
       })
       .sort((a, b) => a.transformed - b.transformed);

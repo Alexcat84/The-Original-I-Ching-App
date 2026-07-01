@@ -136,7 +136,6 @@ export function LibraryContentLoader({
                   <span className="library-mutation__name" lang="zh-Hant">
                     {m.toNumber}. {m.toChineseName} · {m.toPinyin}
                   </span>
-                  <span className="library-mutation__english">{m.toEnglishName}</span>
                 </span>
               </Link>
             </li>

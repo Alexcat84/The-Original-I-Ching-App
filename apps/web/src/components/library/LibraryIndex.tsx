@@ -187,7 +187,7 @@ export function LibraryIndex({ summaries, messages }: Props) {
               <Link
                 href={`/library/${item.number}`}
                 className="library-grid__link"
-                aria-label={`${item.number}. ${item.chineseName} ${item.pinyin} — ${item.englishName}`}
+                aria-label={`${item.number}. ${item.chineseName} ${item.pinyin}`}
               >
                 <span className="library-grid__number">{item.number}</span>
                 <span className="library-grid__body">
@@ -199,7 +199,6 @@ export function LibraryIndex({ summaries, messages }: Props) {
                       {item.chineseName}
                     </span>
                     <span className="library-grid__pinyin">{item.pinyin}</span>
-                    <span className="library-grid__english">{item.englishName}</span>
                   </span>
                 </span>
               </Link>

@@ -69,6 +69,10 @@ export type GuiaPageUiMessages = {
   libraryMutationsBullet: string;
   /** Clarifies the commentary is library-only, never sent to the AI during a consultation. */
   libraryCommentaryScopeBullet: string;
+  /** Reading Verification section heading */
+  verifyHeading: string;
+  /** Reading Verification section body */
+  verifyBody: string;
 };
 
 const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
@@ -149,6 +153,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Cada página de hexagrama lista sus seis mutaciones posibles: qué hexagrama resulta al cambiar una línea concreta, para que puedas explorar la red de hexagramas relacionados.",
     libraryCommentaryScopeBullet:
       "Este comentario clásico es solo para estudio dentro de la Biblioteca. Nunca se envía a la IA durante una consulta en vivo.",
+    verifyHeading: "Verificación de lectura",
+    verifyBody:
+      "La página de Verificación de lectura te permite contrastar cualquier texto del oráculo citado en tu consulta directamente con la biblioteca de hexagramas. En cada resumen de consulta, el enlace 'Verificar lectura' al final abre esta página ya cargada con la tirada. También puedes acceder desde el panel de opciones, introducir cualquier código de tirada (del 1 al 4096) o seleccionar los hexagramas manualmente para explorar cualquier mutación de forma independiente.",
 
   },
   en: {
@@ -228,6 +235,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Each hexagram page lists its six possible mutations: which hexagram results when one specific line changes, so you can browse the network of related hexagrams.",
     libraryCommentaryScopeBullet:
       "This classical commentary is for study inside the Library only. It is never sent to the AI during a live consultation.",
+    verifyHeading: "Reading Verification",
+    verifyBody:
+      "The Reading Verification page lets you check any oracle text cited in a consultation directly against the hexagram library. Each consultation summary shows a 'Verify Reading' link at the bottom that opens this page pre-loaded with that cast. You can also open it from the options panel, enter any cast code (1 to 4096), or select hexagrams manually to explore any mutation independently.",
 
   },
   pt: {
@@ -307,6 +317,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Cada página de hexagrama lista as suas seis mutações possíveis: qual hexagrama resulta ao mudar uma linha específica, para que possas explorar a rede de hexagramas relacionados.",
     libraryCommentaryScopeBullet:
       "Este comentário clássico é apenas para estudo dentro da Biblioteca. Nunca é enviado à IA durante uma consulta em direto.",
+    verifyHeading: "Verificação de leitura",
+    verifyBody:
+      "A página de Verificação de leitura permite-lhe contrastar qualquer texto do oráculo citado numa consulta diretamente com a biblioteca de hexagramas. Cada resumo de consulta mostra um link 'Verificar leitura' no final que abre esta página já carregada com a tirada. Também pode aceder a partir do painel de opções, introduzir qualquer código de tirada (de 1 a 4096) ou selecionar os hexagramas manualmente para explorar qualquer mutação de forma independente.",
 
   },
   fr: {
@@ -386,6 +399,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Chaque page d'hexagramme liste ses six mutations possibles : quel hexagramme résulte du changement d'un trait précis, pour explorer le réseau des hexagrammes liés.",
     libraryCommentaryScopeBullet:
       "Ce commentaire classique est réservé à l'étude dans la Bibliothèque. Il n'est jamais envoyé à l'IA pendant une consultation en direct.",
+    verifyHeading: "Vérification de lecture",
+    verifyBody:
+      "La page de Vérification de lecture vous permet de confronter tout texte de l'oracle cité dans une consultation directement avec la bibliothèque d'hexagrammes. Chaque résumé de consultation affiche un lien 'Vérifier la lecture' en bas qui ouvre cette page préchargée avec le tirage. Vous pouvez également y accéder depuis le panneau des options, saisir un code de tirage (de 1 à 4096) ou sélectionner les hexagrammes manuellement pour explorer toute mutation de manière indépendante.",
 
   },
   de: {
@@ -465,6 +481,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Jede Hexagramm-Seite listet ihre sechs möglichen Mutationen: welches Hexagramm entsteht, wenn sich eine bestimmte Linie ändert, sodass du das Netz verwandter Hexagramme erkunden kannst.",
     libraryCommentaryScopeBullet:
       "Dieser klassische Kommentar ist nur zum Studium innerhalb der Bibliothek gedacht. Er wird während einer laufenden Beratung niemals an die KI gesendet.",
+    verifyHeading: "Lesungsverifikation",
+    verifyBody:
+      "Die Seite Lesungsverifikation ermöglicht es dir, jeden in einer Konsultation zitierten Orakeltext direkt mit der Hexagramm-Bibliothek abzugleichen. Jede Konsultationszusammenfassung zeigt unten einen Link 'Lesung überprüfen', der diese Seite mit dem jeweiligen Wurf vorgeladen öffnet. Du kannst sie auch über das Optionsfeld öffnen, einen beliebigen Wurfcode (1 bis 4096) eingeben oder Hexagramme manuell auswählen, um jede Mutation unabhängig zu erkunden.",
 
   },
   it: {
@@ -544,6 +563,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "Ogni pagina di esagramma elenca le sue sei mutazioni possibili: quale esagramma risulta cambiando una linea specifica, per esplorare la rete di esagrammi collegati.",
     libraryCommentaryScopeBullet:
       "Questo commento classico serve solo per lo studio all'interno della Biblioteca. Non viene mai inviato all'IA durante una consultazione dal vivo.",
+    verifyHeading: "Verifica della lettura",
+    verifyBody:
+      "La pagina di Verifica della lettura ti permette di confrontare qualsiasi testo dell'oracolo citato in una consultazione direttamente con la biblioteca degli esagrammi. Ogni riepilogo di consultazione mostra un link 'Verifica lettura' in fondo che apre questa pagina già caricata con quella tirata. Puoi anche accedervi dal pannello delle opzioni, inserire qualsiasi codice di tirata (da 1 a 4096) o selezionare gli esagrammi manualmente per esplorare qualsiasi mutazione in modo indipendente.",
 
   },
   ja: {
@@ -623,6 +645,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "各卦のページには、特定の爻が変化したときにどの卦になるかという6通りの変卦が一覧表示され、関連する卦のつながりをたどれます。",
     libraryCommentaryScopeBullet:
       "この古典注釈はライブラリ内での学習のためだけのものです。実際の鑑定中にAIへ送られることはありません。",
+    verifyHeading: "読みの確認",
+    verifyBody:
+      "「読みの確認」ページでは、相談で引用されたオラクルテキストを六十四卦ライブラリーと直接照合できます。各相談の要約の下部に「読みを確認する」リンクがあり、クリックするとその卦のデータがあらかじめ読み込まれた状態でページが開きます。オプションパネルからも開くことができ、卦コード（1〜4096）を入力するか、六十四卦を手動で選択して、任意の変卦を独立して探索できます。",
 
   },
   zh: {
@@ -699,6 +724,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "每个卦的页面都列出其六种可能的变卦：某一条爻变化后会得到哪个卦，方便你浏览相关卦象之间的联系。",
     libraryCommentaryScopeBullet:
       "这层古典注释仅用于图书馆内的研习。咨询进行时绝不会发送给AI。",
+    verifyHeading: "解读验证",
+    verifyBody:
+      "「解读验证」页面可让您将咨询中引用的任何神谕文本直接与六十四卦图书馆进行对照。每条咨询摘要底部都有「验证解读」链接，点击即可打开该页面并预加载该次卦象。您也可以从选项面板进入，输入任意卦象代码（1至4096），或手动选择卦象，独立探索任何变卦关系。",
 
   },
   ko: {
@@ -778,6 +806,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "각 괘 페이지에는 특정 효가 변할 때 어떤 괘가 되는지를 보여주는 여섯 가지 변괘가 나열되어 있어, 관련된 괘들의 연결망을 둘러볼 수 있습니다.",
     libraryCommentaryScopeBullet:
       "이 고전 주석은 도서관 안에서의 학습용일 뿐입니다. 실제 상담 중에는 AI로 전송되지 않습니다.",
+    verifyHeading: "읽기 확인",
+    verifyBody:
+      "읽기 확인 페이지에서는 상담에서 인용된 신탁 텍스트를 육십사괘 도서관과 직접 대조할 수 있습니다. 각 상담 요약의 하단에 있는 '읽기 확인' 링크를 클릭하면 해당 점괘가 미리 로드된 상태로 페이지가 열립니다. 옵션 패널에서도 접근할 수 있으며, 점괘 코드(1~4096)를 입력하거나 괘를 직접 선택하여 독립적으로 변괘를 탐색할 수 있습니다.",
 
   },
   ar: {
@@ -857,6 +888,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "تسرد كل صفحة هكساغرام تحولاتها الستة المحتملة: أي هكساغرام ينتج عند تغيّر خط معيّن، لتستكشف شبكة الهكساغرامات المرتبطة.",
     libraryCommentaryScopeBullet:
       "هذا التعليق الكلاسيكي مخصص للدراسة داخل المكتبة فقط. لا يُرسل أبدًا إلى الذكاء الاصطناعي أثناء استشارة فعلية.",
+    verifyHeading: "التحقق من القراءة",
+    verifyBody:
+      "تتيح لك صفحة التحقق من القراءة مقارنة أي نص للأوراكل مستشهد به في استشارة مباشرةً مع مكتبة الهكساجرامات. يعرض كل ملخص استشارة رابط 'التحقق من القراءة' في الأسفل يفتح هذه الصفحة محملةً مسبقاً بتلك التوزيعة. يمكنك أيضاً الوصول إليها من لوحة الخيارات وإدخال أي كود توزيعة (من 1 إلى 4096) أو اختيار الهكساجرامات يدوياً لاستكشاف أي طفرة بشكل مستقل.",
 
   },
   hi: {
@@ -936,6 +970,9 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
       "हर हेक्साग्राम पेज अपने छह संभावित परिवर्तन सूचीबद्ध करता है: कोई विशेष रेखा बदलने पर कौन-सा हेक्साग्राम बनता है, ताकि आप संबंधित हेक्साग्रामों के जाल को देख सकें।",
     libraryCommentaryScopeBullet:
       "यह शास्त्रीय टिप्पणी केवल लाइब्रेरी के भीतर अध्ययन के लिए है। यह किसी वास्तविक सलाह के दौरान AI को कभी नहीं भेजी जाती।",
+    verifyHeading: "पठन सत्यापन",
+    verifyBody:
+      "पठन सत्यापन पृष्ठ आपको किसी भी परामर्श में उद्धृत ओरेकल पाठ को सीधे हेक्साग्राम पुस्तकालय से जांचने की सुविधा देता है। प्रत्येक परामर्श सारांश के नीचे एक 'पठन सत्यापित करें' लिंक होता है जो उस जाल के डेटा के साथ पूर्व-लोडेड इस पृष्ठ को खोलता है। आप विकल्प पैनल से भी इसे खोल सकते हैं, कोई भी जाल कोड (1 से 4096 तक) दर्ज कर सकते हैं, या हेक्साग्राम मैन्युअल रूप से चुनकर किसी भी परिवर्तन को स्वतंत्र रूप से अन्वेषण कर सकते हैं।",
 
   },
 };

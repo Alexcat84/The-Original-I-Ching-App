@@ -6020,6 +6020,7 @@ export default function HomePage() {
                     </div>
                     <hr className="composer-panel-divider" aria-hidden />
                     <div
+                      id="tour-library-btn"
                       className="session-progress"
                       role="group"
                       aria-label={chrome.libraryGroupAria}
@@ -6030,7 +6031,6 @@ export default function HomePage() {
                       </p>
                       <div className="composer-panel-actions composer-panel-actions--pair">
                         <button
-                          id="tour-library-btn"
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => router.push("/library")}

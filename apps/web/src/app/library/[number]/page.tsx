@@ -130,8 +130,6 @@ export default async function LibraryDetailPage({ params }: DetailPageProps) {
             </div>
             <p className="library-detail-names">
               <span className="library-detail-pinyin">{summary.pinyin}</span>
-              <span className="library-detail-dot">·</span>
-              <span className="library-detail-english">{summary.englishName}</span>
             </p>
             <div className="library-detail-info-grid">
               <div className="library-info-item">
