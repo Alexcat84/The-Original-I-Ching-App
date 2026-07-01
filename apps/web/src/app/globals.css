@@ -9428,6 +9428,17 @@ html.iching-rn-webview .oracle-toggle-track {
   opacity: 0.75;
 }
 
+.mutation-explorer-field-hint {
+  margin: 0.2rem 0 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 62%, transparent);
+}
+
+.mutation-explorer-oracle-read-hint {
+  margin: -0.35rem 0 0.85rem;
+}
+
 .mutation-explorer-verify-btn {
   margin-top: 0.15rem;
   min-width: 9.5rem;
@@ -9473,6 +9484,14 @@ html.iching-rn-webview .oracle-toggle-track {
   box-shadow:
     0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent),
     0 3px 10px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.mutation-explorer-verify-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+  filter: grayscale(0.15);
+  box-shadow: none;
+  transform: none;
 }
 
 .mutation-explorer-compare-btn {
