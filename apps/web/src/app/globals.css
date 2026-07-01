@@ -9477,10 +9477,7 @@ html.iching-rn-webview .oracle-toggle-track {
 }
 
 .mutation-explorer-oracle-block--read .mutation-explorer-oracle-details {
-  padding: 0.35rem 0.5rem 0.15rem;
-  border-radius: 10px;
-  border: 1px solid var(--mutation-read-border);
-  background: var(--mutation-read-bg);
+  padding: 0;
 }
 
 .mutation-explorer-oracle-block--read .mutation-explorer-oracle-summary {
