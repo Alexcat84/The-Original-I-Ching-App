@@ -135,10 +135,7 @@ function OracleReadLegend({
   return (
     <>
       <p className="mutation-explorer-field-hint mutation-explorer-oracle-read-hint">{hint}</p>
-      <p className="mutation-explorer-read-legend">
-        <span className="mutation-explorer-read-swatch" aria-hidden="true" />
-        <span>{legend}</span>
-      </p>
+      <p className="mutation-explorer-read-legend">{legend}</p>
     </>
   );
 }

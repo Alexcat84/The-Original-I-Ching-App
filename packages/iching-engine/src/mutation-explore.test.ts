@@ -110,8 +110,29 @@ describe("exploreMutation — canonical 9→54", () => {
     const lineSelections = result.selections.filter((s) => s.kind === "line");
     expect(lineSelections).toHaveLength(1);
     expect(lineSelections[0]).toMatchObject({ hex: 54, position: 2 });
-    expect(result.selections.some((s) => s.kind === "judgment")).toBe(false);
-    expect(result.selections.some((s) => s.kind === "image")).toBe(false);
+    expect(result.selections.some((s) => s.kind === "judgment" && s.judgmentScope === "primary")).toBe(
+      true,
+    );
+    expect(
+      result.selections.some((s) => s.kind === "judgment" && s.judgmentScope === "transformed"),
+    ).toBe(true);
+    expect(result.selections.some((s) => s.kind === "image" && s.judgmentScope === "primary")).toBe(
+      true,
+    );
+    expect(
+      result.selections.some((s) => s.kind === "image" && s.judgmentScope === "transformed"),
+    ).toBe(true);
+  });
+
+  it("Zhu Xi Qian all changing: three-tier selections include images", () => {
+    const result = exploreMutation({
+      primaryNumber: 1,
+      mask: 63,
+      lineReadingSystem: "zhuxi",
+    });
+    expect(result.mutationRule).toBe("QIAN_ALL_NINE");
+    expect(result.selections.filter((s) => s.kind === "image")).toHaveLength(2);
+    expect(result.selections.some((s) => s.kind === "yong")).toBe(true);
   });
 
   it("uses stored lines when provided (mode A parity)", () => {
@@ -136,7 +157,7 @@ describe("exploreMutation — rule matrix", () => {
     expect(huang.changingLines).toEqual([]);
   });
 
-  it("one changing: ONE_CHANGING / ZX_ONE", () => {
+  it("one changing: ONE_CHANGING / ZX_ONE — three-tier selections", () => {
     const mask = maskFromChangingLines([4]);
     const huang = exploreMutation({ primaryNumber: 9, mask, lineReadingSystem: "huang" });
     const zhuxi = exploreMutation({ primaryNumber: 9, mask, lineReadingSystem: "zhuxi" });
@@ -145,12 +166,17 @@ describe("exploreMutation — rule matrix", () => {
     const huangLineSelections = huang.selections.filter((s) => s.kind === "line");
     expect(huangLineSelections).toHaveLength(1);
     expect(huang.selections.some((s) => s.kind === "judgment" && s.judgmentScope === "primary")).toBe(
-      false,
+      true,
     );
     expect(
       huang.selections.some((s) => s.kind === "judgment" && s.judgmentScope === "transformed"),
     ).toBe(true);
-    expect(huang.selections.some((s) => s.kind === "image")).toBe(false);
+    expect(huang.selections.some((s) => s.kind === "image" && s.judgmentScope === "primary")).toBe(
+      true,
+    );
+    expect(
+      huang.selections.some((s) => s.kind === "image" && s.judgmentScope === "transformed"),
+    ).toBe(true);
   });
 
   it("three changing Zhu Xi: ZX_THREE_JUDGMENTS without line texts", () => {

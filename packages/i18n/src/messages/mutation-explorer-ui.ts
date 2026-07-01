@@ -68,7 +68,7 @@ const EN: MutationExplorerUiMessages = {
   metaDescription:
     "Review your full cast: line-reading rule, hexagram trace, and verbatim Wilhelm, Legge, or Zhou Yi oracle texts.",
   subtitle:
-    "See the complete reading the engine selected — rule, hexagrams, and classical texts — not only the changing lines.",
+    "Verify which oracle texts the canonical mutation rule reads (Huang or Zhu Xi). Changing lines not selected by the rule are omitted.",
   backToOracle: "Back to oracle",
   backToThread: "Back to thread",
   fromConsultationBanner: "Your reading",
@@ -98,12 +98,13 @@ const EN: MutationExplorerUiMessages = {
   verificationCodeLabel: "Verification code",
   changingLines: "Changing lines",
   stableLines: "Stable lines",
-  changingLineVerbatimHeading: (position) => `Changing line ${position} (literal text)`,
+  changingLineVerbatimHeading: (position) =>
+    `Changing line ${position} (not read — reference)`,
   oracleTexts: "Oracle texts",
   oracleTextsReadHint:
-    "Full context below — expand any section. Highlighted blocks are the texts read under your selected line-reading rule.",
+    "Three tiers apply: (1) primary judgment + image, (2) selected line(s) per the rule — other changing lines are omitted, (3) transformed judgment + image when the cast mutates.",
   oracleTextsReadLegend: (lineReadingLabel) =>
-    `Highlighted = read under ${lineReadingLabel}.`,
+    `Line filter: ${lineReadingLabel}. Primary/secondary badges mark Zhu Xi emphasis when two lines or two judgments apply.`,
   translatorAppliedLabel: "Translator",
   compareOtherSystem: "View rule under the other system",
   tabWilhelm: "Wilhelm / Baynes",
@@ -141,7 +142,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     metaDescription:
       "Revisa la tirada completa: regla de lectura, traza de hexagramas y textos oráculo literales de Wilhelm, Legge o Zhou Yi.",
     subtitle:
-      "Consulta la lectura íntegra que aplicó el motor — regla, hexagramas y textos clásicos —, no solo las líneas mutantes.",
+      "Verifica qué textos oráculo lee la regla canónica de mutación (Huang o Zhu Xi). Las líneas mutantes no seleccionadas por la regla no se muestran.",
     backToOracle: "Volver al oráculo",
     backToThread: "Volver al hilo",
     fromConsultationBanner: "Tu tirada",
@@ -171,12 +172,13 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     verificationCodeLabel: "Código de verificación",
     changingLines: "Líneas mutantes",
     stableLines: "Líneas estables",
-    changingLineVerbatimHeading: (position) => `Línea ${position} (mutante, texto literal)`,
+    changingLineVerbatimHeading: (position) =>
+      `Línea ${position} mutante (no se lee — referencia)`,
     oracleTexts: "Textos oráculo",
     oracleTextsReadHint:
-      "Contexto completo abajo — expande cualquier sección. Los bloques resaltados son los textos leídos según la regla elegida.",
+      "Tres capas: (1) juicio e imagen del primario, (2) línea(s) seleccionada(s) según la regla — las demás mutantes no aparecen, (3) juicio e imagen del transformado cuando hay mutación.",
     oracleTextsReadLegend: (lineReadingLabel) =>
-      `Resaltado = leído bajo ${lineReadingLabel}.`,
+      `Filtro de líneas: ${lineReadingLabel}. Las etiquetas primaria/secundaria marcan énfasis Zhu Xi cuando hay dos líneas o dos juicios.`,
     translatorAppliedLabel: "Traductor:",
     compareOtherSystem: "Ver regla bajo el otro sistema",
     tabWilhelm: "Wilhelm / Baynes",

@@ -1,4 +1,3 @@
-import { getHexagramRecordByNumber } from "@iching-oracle/iching-data";
 import { getMutationRuleBookText } from "@iching-oracle/iching-data";
 import {
   buildLine,
@@ -16,7 +15,7 @@ export type OracleTextBlock = {
   heading: string;
   text: string;
   emphasis?: "primary" | "secondary";
-  /** True when this block is read under the active line-reading rule. */
+  /** True when this block is part of the active three-tier reading. */
   isRead?: boolean;
 };
 
@@ -112,8 +111,8 @@ function judgmentEmphasis(
 }
 
 /**
- * Full oracle context for verification — all relevant texts visible;
- * `isRead` marks blocks the active line-reading rule selects.
+ * Oracle texts that apply to this cast — three-tier reading hierarchy only.
+ * Omitted changing-line texts are excluded (not shown).
  */
 export function buildOracleTextBlocks(
   result: MutationExploreResult,
@@ -154,25 +153,14 @@ export function buildOracleTextBlocks(
     });
   }
 
-  const selectedPositions = new Set(
-    texts.selectedLineTexts
-      .filter((line) => line.fromHexagram === "primary")
-      .map((line) => line.position),
-  );
-  if (result.changingLines.length > 0) {
-    const primaryRecord = getHexagramRecordByNumber(result.primaryNumber, { translator });
-    for (const position of result.changingLines) {
-      if (selectedPositions.has(position)) continue;
-      const sel = lineSelection(result, result.primaryNumber, position);
-      const text = primaryRecord.lines.find((line) => line.position === position)?.text ?? "";
-      pushBlock(blocks, {
-        id: `line-changing-${position}`,
-        kind: "line",
-        heading: ui.changingLineVerbatimHeading(position),
-        text,
-        isRead: Boolean(sel),
-      });
-    }
+  if (texts.specialYaoText?.trim()) {
+    pushBlock(blocks, {
+      id: "yong",
+      kind: "yong",
+      heading: result.primaryNumber === 1 ? ui.yongJiu : ui.yongLiu,
+      text: texts.specialYaoText,
+      isRead: isReadYong(result),
+    });
   }
 
   pushBlock(blocks, {
@@ -191,16 +179,6 @@ export function buildOracleTextBlocks(
     text: texts.transformedImage ?? "",
     isRead: isReadImage(result, "transformed"),
   });
-
-  if (texts.specialYaoText?.trim()) {
-    pushBlock(blocks, {
-      id: "yong",
-      kind: "yong",
-      heading: result.primaryNumber === 1 ? ui.yongJiu : ui.yongLiu,
-      text: texts.specialYaoText,
-      isRead: isReadYong(result),
-    });
-  }
 
   return blocks;
 }

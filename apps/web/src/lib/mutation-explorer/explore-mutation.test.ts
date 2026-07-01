@@ -1,11 +1,10 @@
 /**
- * QA code: TS-WEB-015 mutation-explorer-oracle-blocks · v1.0.0
+ * QA code: TS-WEB-015 mutation-explorer-oracle-blocks · v1.1.0
  * Area: apps/web/src/lib/mutation-explorer/explore-mutation
  * Family: WEB-MUT
  */
 
 import { describe, expect, it } from "vitest";
-import { getMutationRuleRecord } from "@iching-oracle/iching-data";
 import {
   exploreMutation,
   maskFromChangingLines,
@@ -22,7 +21,7 @@ const ui = {
   yongJiu: "Yong Jiu",
   yongLiu: "Yong Liu",
   lineTextHeading: (hex: number, position: number) => `Line ${position} · Hexagram ${hex}`,
-  changingLineVerbatimHeading: (position: number) => `Changing line ${position} (literal text)`,
+  changingLineVerbatimHeading: (position: number) => `Changing line ${position}`,
 } satisfies Pick<
   MutationExplorerUiMessages,
   | "judgmentPrimary"
@@ -45,62 +44,59 @@ function readBlocks(
   return { result, blocks };
 }
 
-function changingLineBlocks(blocks: ReturnType<typeof buildOracleTextBlocks>) {
+function omittedChangingLineBlocks(blocks: ReturnType<typeof buildOracleTextBlocks>) {
   return blocks.filter((b) => b.kind === "line" && b.id.startsWith("line-changing-"));
 }
 
-function readBlockCount(blocks: ReturnType<typeof buildOracleTextBlocks>) {
-  return blocks.filter((b) => b.isRead).length;
-}
+describe("buildOracleTextBlocks — three-tier reading hierarchy", () => {
+  it("NO_CHANGING: primary judgment + image only", () => {
+    const { result, blocks } = readBlocks(9, 0, "huang");
+    expect(result.mutationRule).toBe("NO_CHANGING");
+    expect(blocks.map((b) => b.id)).toEqual(["judgment-primary", "image-primary"]);
+    expect(blocks.every((b) => b.isRead)).toBe(true);
+    expect(omittedChangingLineBlocks(blocks)).toHaveLength(0);
+  });
 
-describe("buildOracleTextBlocks — full context + isRead", () => {
-  it("9→4 code 534 Huang: all primary changing lines visible; only L3 read", () => {
+  it("THREE_MIDDLE Huang: tier 1 + one line + tier 3; no omitted changing lines", () => {
     const mask = maskFromChangingLines([1, 3, 5]);
     const { result, blocks } = readBlocks(9, mask, "huang");
     expect(result.castIndex).toBe(534);
     expect(result.mutationRule).toBe("THREE_MIDDLE");
-    expect(changingLineBlocks(blocks).map((b) => b.id)).toEqual([
-      "line-changing-1",
-      "line-changing-5",
-    ]);
-    const readLines = blocks.filter((b) => b.isRead && b.kind === "line");
+    expect(omittedChangingLineBlocks(blocks)).toHaveLength(0);
+    expect(blocks.find((b) => b.id === "judgment-primary")?.isRead).toBe(true);
+    expect(blocks.find((b) => b.id === "image-primary")?.isRead).toBe(true);
+    expect(blocks.find((b) => b.id === "judgment-transformed")?.isRead).toBe(true);
+    expect(blocks.find((b) => b.id === "image-transformed")?.isRead).toBe(true);
+    const readLines = blocks.filter((b) => b.kind === "line");
     expect(readLines).toHaveLength(1);
     expect(readLines[0]?.id).toBe("line-selected-primary-3");
-    expect(blocks.find((b) => b.id === "judgment-primary")?.isRead).toBe(false);
   });
 
-  it("9→4 Huang: primary judgment shown as context but not read", () => {
-    const mask = maskFromChangingLines([1, 3, 5]);
-    const { blocks } = readBlocks(9, mask, "huang");
-    const judgment = blocks.find((b) => b.id === "judgment-primary");
-    expect(judgment?.text.trim().length).toBeGreaterThan(0);
-    expect(judgment?.isRead).toBe(false);
-  });
-
-  it("9→4 Zhu Xi: three changing line blocks; both judgments read", () => {
+  it("ZX_THREE_JUDGMENTS: both judgments with emphasis; no line blocks", () => {
     const mask = maskFromChangingLines([1, 3, 5]);
     const { result, blocks } = readBlocks(9, mask, "zhuxi");
     expect(result.mutationRule).toBe("ZX_THREE_JUDGMENTS");
-    expect(changingLineBlocks(blocks)).toHaveLength(3);
-    expect(blocks.filter((b) => b.isRead && b.kind === "line")).toHaveLength(0);
+    expect(blocks.filter((b) => b.kind === "line")).toHaveLength(0);
     expect(blocks.find((b) => b.id === "judgment-primary")?.isRead).toBe(true);
     expect(blocks.find((b) => b.id === "judgment-transformed")?.isRead).toBe(true);
+    expect(blocks.find((b) => b.id === "image-primary")?.isRead).toBe(true);
+    expect(blocks.find((b) => b.id === "image-transformed")?.isRead).toBe(true);
   });
 
-  it("9→54 code 573 Huang: L2 transformed read; four changing lines on primary visible", () => {
+  it("FOUR_LOWEST_STABLE Huang: tier 1 + L2 transformed + tier 3", () => {
     const mask = maskFromChangingLines([3, 4, 5, 6]);
     const { result, blocks } = readBlocks(9, mask, "huang");
     expect(result.castIndex).toBe(573);
     expect(result.mutationRule).toBe("FOUR_LOWEST_STABLE");
-    expect(changingLineBlocks(blocks)).toHaveLength(4);
-    const readLine = blocks.find((b) => b.isRead && b.kind === "line");
-    expect(readLine?.id).toBe("line-selected-transformed-2");
+    expect(omittedChangingLineBlocks(blocks)).toHaveLength(0);
+    expect(blocks.find((b) => b.id === "line-selected-transformed-2")?.isRead).toBe(true);
+    expect(blocks.filter((b) => b.isRead).length).toBe(blocks.length);
   });
 
-  it("9→54 Zhu Xi: L1+L2 transformed read with primary/secondary emphasis", () => {
+  it("ZX_FOUR_LOWER: two transformed lines with primary/secondary emphasis", () => {
     const mask = maskFromChangingLines([3, 4, 5, 6]);
     const { blocks } = readBlocks(9, mask, "zhuxi");
-    const readLines = blocks.filter((b) => b.isRead && b.kind === "line");
+    const readLines = blocks.filter((b) => b.kind === "line");
     expect(readLines.map((b) => b.id).sort()).toEqual([
       "line-selected-transformed-1",
       "line-selected-transformed-2",
@@ -113,17 +109,12 @@ describe("buildOracleTextBlocks — full context + isRead", () => {
     );
   });
 
-  it("read block count matches gold textTypes for THREE_MIDDLE Huang", () => {
-    const mask = maskFromChangingLines([1, 3, 5]);
-    const { result, blocks } = readBlocks(9, mask, "huang");
-    const gold = getMutationRuleRecord("huang", result.mutationRule);
-    expect(readBlockCount(blocks)).toBe(gold.textTypes.length);
-  });
-
-  it("read block count matches gold textTypes for ZX_THREE_JUDGMENTS", () => {
-    const mask = maskFromChangingLines([1, 3, 5]);
-    const { result, blocks } = readBlocks(9, mask, "zhuxi");
-    const gold = getMutationRuleRecord("zhuxi", result.mutationRule);
-    expect(readBlockCount(blocks)).toBe(gold.textTypes.length);
+  it("QIAN_ALL_NINE Zhu Xi: tier 1 + yong + tier 3", () => {
+    const { result, blocks } = readBlocks(1, 63, "zhuxi");
+    expect(result.mutationRule).toBe("QIAN_ALL_NINE");
+    expect(blocks.some((b) => b.id === "yong" && b.isRead)).toBe(true);
+    expect(blocks.find((b) => b.id === "image-primary")?.isRead).toBe(true);
+    expect(blocks.find((b) => b.id === "image-transformed")?.isRead).toBe(true);
+    expect(blocks.every((b) => b.isRead)).toBe(true);
   });
 });

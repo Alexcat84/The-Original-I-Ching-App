@@ -1,8 +1,6 @@
 import {
   getHexagramRecordByBinaryTopFirst,
   getHexagramRecordByNumber,
-  getMutationRuleRecord,
-  type MutationSystem,
 } from "@iching-oracle/iching-data";
 import {
   applyMutations,
@@ -203,26 +201,44 @@ function resolvePrimaryAndMask(input: MutationExploreInput): { primary: number; 
   );
 }
 
-function goldWantsYong(textTypes: readonly string[]): boolean {
-  return textTypes.some(
-    (t) => t === "specialYaoText" || t.includes("yongJiu") || t.includes("yongLiu"),
-  );
-}
-
-/** Derive read selections from gold mutation-rules textTypes + engine TextsForClaude. */
+/**
+ * Reading selections for explorer + prompt parity — three-tier hierarchy:
+ * 1) primary judgment + image (situation base)
+ * 2) selected line(s) only (mutation rule filter)
+ * 3) transformed judgment + image when the cast mutates (tendency)
+ * Plus 用九/用六 when present. Omitted changing-line texts are never listed.
+ */
 export function textsToSelections(
   texts: TextsForClaude,
   primary: Hexagram,
   transformed: Hexagram | null,
   changingLines: number[],
-  rule: AnyMutationRule,
-  system: LineReadingSystem,
+  _rule: AnyMutationRule,
+  _system: LineReadingSystem,
 ): MutationTextSelection[] {
   const selections: MutationTextSelection[] = [];
-  const systemKey: MutationSystem = system === "zhuxi" ? "zhuxi" : "huang";
-  const gold = getMutationRuleRecord(systemKey, rule);
-  const { textTypes, readsFrom } = gold;
-  const judgmentSlots = textTypes.filter((t) => t === "judgment").length;
+  const hasMutation = changingLines.length > 0;
+
+  if (texts.primaryJudgment.trim()) {
+    selections.push({
+      kind: "judgment",
+      hex: primary.number,
+      judgmentScope: "primary",
+      ...(texts.judgmentEmphasis === "primary"
+        ? { emphasis: "primary" as const }
+        : texts.judgmentEmphasis === "transformed"
+          ? { emphasis: "secondary" as const }
+          : {}),
+    });
+  }
+
+  if (texts.primaryImage.trim()) {
+    selections.push({
+      kind: "image",
+      hex: primary.number,
+      judgmentScope: "primary",
+    });
+  }
 
   for (const line of texts.selectedLineTexts) {
     selections.push({
@@ -233,59 +249,29 @@ export function textsToSelections(
     });
   }
 
-  let includePrimaryJudgment =
-    judgmentSlots > 0 &&
-    (readsFrom.includes("primary") || changingLines.length === 0);
-  let includeTransformedJudgment = judgmentSlots > 0 && readsFrom.includes("transformed");
-
-  if (rule === "ONE_CHANGING" && system === "huang") {
-    includePrimaryJudgment = false;
-    includeTransformedJudgment = true;
-  }
-
-  if (rule === "ZX_THREE_JUDGMENTS") {
-    includePrimaryJudgment = true;
-    includeTransformedJudgment = true;
-  }
-
-  if (rule === "SIX_ALL_CHANGING" || rule === "ZX_SIX_TRANSFORMED") {
-    includePrimaryJudgment = false;
-    includeTransformedJudgment = true;
-  }
-
-  if (texts.readBothJudgments) {
-    includePrimaryJudgment = true;
-    includeTransformedJudgment = true;
-  }
-
-  if (includePrimaryJudgment) {
-    selections.push({
-      kind: "judgment",
-      hex: primary.number,
-      judgmentScope: "primary",
-      ...(texts.judgmentEmphasis === "primary" ? { emphasis: "primary" } : {}),
-    });
-  }
-
-  if (includeTransformedJudgment && texts.transformedJudgment) {
-    selections.push({
-      kind: "judgment",
-      hex: transformed?.number ?? primary.number,
-      judgmentScope: "transformed",
-      ...(texts.judgmentEmphasis === "transformed" ? { emphasis: "primary" } : {}),
-    });
-  }
-
-  if (texts.readBothJudgments) {
-    selections.push({ kind: "image", hex: primary.number, judgmentScope: "primary" });
-    if (texts.transformedImage && transformed) {
-      selections.push({ kind: "image", hex: transformed.number, judgmentScope: "transformed" });
+  if (hasMutation && transformed) {
+    if (texts.transformedJudgment?.trim()) {
+      selections.push({
+        kind: "judgment",
+        hex: transformed.number,
+        judgmentScope: "transformed",
+        ...(texts.judgmentEmphasis === "transformed"
+          ? { emphasis: "primary" as const }
+          : texts.judgmentEmphasis === "primary"
+            ? { emphasis: "secondary" as const }
+            : {}),
+      });
     }
-  } else if (textTypes.includes("image") && changingLines.length === 0) {
-    selections.push({ kind: "image", hex: primary.number, judgmentScope: "primary" });
+    if (texts.transformedImage?.trim()) {
+      selections.push({
+        kind: "image",
+        hex: transformed.number,
+        judgmentScope: "transformed",
+      });
+    }
   }
 
-  if (goldWantsYong(textTypes) && texts.specialYaoText) {
+  if (texts.specialYaoText?.trim()) {
     selections.push({ kind: "yong", hex: primary.number });
   }
 

@@ -716,6 +716,22 @@
       "relatedTests": ["TS-ENG-004 mutation-explore"]
     },
     {
+      "code": "20260630-AUD-MUT-09 mutation-reading-hierarchy-parity",
+      "title": "Jerarquía tres capas — paridad explorer, motor y prompt",
+      "shortName": "mutation-reading-hierarchy-parity",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-30",
+      "status": "closed",
+      "path": "docs/auditorias/20260630-AUD-MUT-09-mutation-reading-hierarchy-parity.md",
+      "relatedCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+        "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab"
+      ],
+      "relatedTests": ["TS-WEB-015 mutation-explorer-oracle-blocks", "TS-ENG-004 mutation-explore"]
+    },
+    {
       "code": "20260622-AUD-DOC-01 user-docs-vs-implementation",
       "title": "User-facing docs vs implementation audit",
       "shortName": "user-docs-vs-implementation",

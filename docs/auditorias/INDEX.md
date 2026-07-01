@@ -72,8 +72,9 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260628-PLAN-MUT-08 mutation-rules-ssot-migration` | 2026-06-28 | Migración SSoT reglas de mutación (gold → iching-data) | closed | [20260628-PLAN-MUT-08-mutation-rules-ssot-migration.md](./20260628-PLAN-MUT-08-mutation-rules-ssot-migration.md) |
 | `20260628-AUD-MUT-08 mutation-rules-ssot-antigravity-audit` | 2026-06-28 | Auditoría Antigravity MUT-08 + remediación UI/i18n | closed | [20260628-AUD-MUT-08-mutation-rules-ssot-antigravity-audit.md](./20260628-AUD-MUT-08-mutation-rules-ssot-antigravity-audit.md) |
 | `20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab` | 2026-06-30 | Explorer: 2 tabs + CastRitualDiagram + reachableCastsFromPrimary | closed | [20260630-PLAN-MUT-09-mutation-explorer-unified-cast-tab.md](./20260630-PLAN-MUT-09-mutation-explorer-unified-cast-tab.md) |
+| `20260630-AUD-MUT-09 mutation-reading-hierarchy-parity` | 2026-06-30 | Jerarquía tres capas — paridad explorer, motor y prompt | closed | [20260630-AUD-MUT-09-mutation-reading-hierarchy-parity.md](./20260630-AUD-MUT-09-mutation-reading-hierarchy-parity.md) |
 
-**Tests:** `QA-MUT-001`, `TS-ENG-002`, `TS-ENG-004`, `TS-CLAUDE-001`…`004`, `AU-MUT-001`…`002` (gate `VF-MUT-001` pendiente Fase 2 MUT-08)
+**Tests:** `QA-MUT-001`, `TS-ENG-002`, `TS-ENG-004`, `TS-WEB-015`, `TS-CLAUDE-001`…`004`, `AU-MUT-001`…`002` (gate `VF-MUT-001` pendiente Fase 2 MUT-08)
 
 ---
 

@@ -366,7 +366,8 @@ ${
   tr && t.transformedJudgment
     ? `
 TRANSFORMED HEXAGRAM: #${tr.number} — ${tr.chineseName} (${tr.name})
-JUDGMENT: ${t.transformedJudgment}`
+JUDGMENT: ${t.transformedJudgment}
+${t.transformedImage ? `THE IMAGE: ${t.transformedImage}` : ""}`
     : ""
 }
 `.trim();
