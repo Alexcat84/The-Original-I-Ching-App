@@ -278,7 +278,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "iching-how-answers",
     question: "How does the I Ching actually work and produce its answers?",
     answer:
-      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the classical works of Wilhelm/Baynes, James Legge, or the original Zhou Yi text. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the classical line-selection rules (Alfred Huang's reduction system) to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
+      "The I Ching works through 64 hexagrams that form an ancient catalog of patterns of change in nature and human life. Each hexagram is a structured figure with classical meaning preserved in the classical works of Wilhelm (1924), James Legge, or the original Zhou Yi text. Each consultation begins from your specific question. The mathematical algorithm casts the lines under the classical line-selection rules (Alfred Huang's reduction system) to determine the present hexagram, any moving lines, and the resulting future hexagram. The AI then articulates that already-formed result in your language, applying the classical meaning of those hexagrams to your particular context. That is why every reading is unique and personal: the same hexagrams can appear for different people, but the answer is never the same, because it depends on the specific question, the moment in life, and the personal context of the seeker. There is no universal interpretation that applies to more than one person at the same time.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -363,7 +363,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
-      "They are authentic. The textual material (Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams) is drawn from three scholarly translations available in the app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (public domain), and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
+      "They are authentic. The textual material (Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams) is drawn from three scholarly sources available in the app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (public domain), and the original Zhou Yi. Cary Baynes's 1950 English rendering of Wilhelm (Princeton University Press) is also available as a comparative reference. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
     related: ["methodNotes"],
   },
   {
@@ -371,7 +371,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "Why doesn't the Library's hexagram text change language when I switch the app's language?",
     answer:
-      "It is shown exactly as published. Wilhelm/Baynes and Legge appear in their original English, and the Zhou Yi in classical Chinese, the same words across all 11 interface languages. Re-translating a translation would replace the translator's own wording with a paraphrase and could distort decades of established scholarship. The goal is to give you direct access to the most reliable published source, not a derivative version of it. This is different from your AI consultation, which always answers in the language of your question: there the AI interprets an already-formed result for you, it does not present a primary text.",
+      "It is shown exactly as published. Wilhelm (1924) and Legge appear in scholarly English, and the Zhou Yi in classical Chinese, the same words across all 11 interface languages. Re-translating a translation would replace the translator's own wording with a paraphrase and could distort decades of established scholarship. The goal is to give you direct access to the most reliable published source, not a derivative version of it. This is different from your AI consultation, which always answers in the language of your question: there the AI interprets an already-formed result for you, it does not present a primary text.",
     moreInfoLink: { href: "/library", label: "Open the Library →" },
     related: ["methodNotes"],
   },
@@ -414,7 +414,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "tier-features",
     question: "What does each pack include, beyond tokens?",
     answer:
-      "Free includes I Ching (Three Coins or Yarrow Stalks, automatic or manual) and Oracle Bones, with the Wilhelm/Baynes translator. Seeker adds the full Library and the Legge translator. Practitioner adds the original Zhou Yi text. Master adds the Master (3) synthesis, which triangulates all three translators at once. For current token amounts, thread limits, and how to purchase, open the Token Center from the app header.",
+      "Free includes I Ching (Three Coins or Yarrow Stalks, automatic or manual) and Oracle Bones, with the Wilhelm (1924) translator. Seeker adds the full Library and the Legge translator. Practitioner adds the original Zhou Yi text. Master adds the Master (3) synthesis, which triangulates all three translators at once. For current token amounts, thread limits, and how to purchase, open the Token Center from the app header.",
     related: ["tokenPacks"],
   },
   {
@@ -441,7 +441,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   {
     id: "tier-features",
     question: "¿Qué incluye cada pack, además de los tokens?",
-    answer: "Free incluye el I Ching (Tres Monedas o Varillas de Milenrama, automático o manual) y los Huesos de Oráculo, con el traductor Wilhelm/Baynes. Seeker añade la Biblioteca completa y el traductor Legge. Practitioner añade el texto original del Zhou Yi. Master añade la síntesis Master (3), que triangula los tres traductores a la vez. Para ver cantidades de tokens vigentes, límites por hilo y cómo comprar, abre el Centro de tokens desde el encabezado de la app.",
+    answer: "Free incluye el I Ching (Tres Monedas o Varillas de Milenrama, automático o manual) y los Huesos de Oráculo, con el traductor Wilhelm (1924). Seeker añade la Biblioteca completa y el traductor Legge. Practitioner añade el texto original del Zhou Yi. Master añade la síntesis Master (3), que triangula los tres traductores a la vez. Para ver cantidades de tokens vigentes, límites por hilo y cómo comprar, abre el Centro de tokens desde el encabezado de la app.",
     related: ["tokenPacks"],
   },
   {
@@ -498,7 +498,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "iching-how-answers",
     question: "¿Cómo opera el I Ching y de dónde salen sus respuestas?",
     answer:
-      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en las obras clásicas de Wilhelm/Baynes, James Legge o el texto original Zhou Yi. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas clásicas de selección de línea (el sistema de reducción de Alfred Huang) para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
+      "El I Ching opera a través de 64 hexagramas que forman un catálogo milenario de patrones de cambio en la naturaleza y en la vida humana. Cada hexagrama es una figura estructurada con un significado clásico preservado en las obras clásicas de Wilhelm (1924), James Legge o el texto original Zhou Yi. Cada consulta parte de tu pregunta concreta. El algoritmo matemático lanza las líneas bajo las reglas clásicas de selección de línea (el sistema de reducción de Alfred Huang) para determinar el hexagrama presente, las líneas en movimiento si las hay y el hexagrama futuro resultante. Después la IA articula ese resultado ya formado en tu idioma, aplicando el significado clásico de esos hexagramas a tu contexto particular. Por eso cada lectura es única y personal: los mismos hexagramas pueden aparecer para distintas personas, pero la respuesta no es la misma, porque depende de la pregunta concreta, del momento vital y del contexto personal del consultante. No existe una interpretación universal aplicable a más de una persona a la vez.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -585,7 +585,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
-      "Son auténticos. El material textual (Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes) proviene de tres traducciones académicas disponibles en la app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (dominio público) y el Zhou Yi original. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
+      "Son auténticos. El material textual (Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes) proviene de tres fuentes académicas disponibles en la app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (dominio público) y el Zhou Yi original. La versión inglesa de Cary Baynes (Princeton University Press, 1950) también está disponible como referencia comparativa. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
     related: ["methodNotes"],
   },
   {
@@ -593,7 +593,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Por qué el texto de los hexagramas en la Biblioteca no cambia de idioma al cambiar el idioma de la app?",
     answer:
-      "Se muestra tal como fue publicado. Wilhelm/Baynes y Legge aparecen en su inglés original, y el Zhou Yi en chino clásico, las mismas palabras en los 11 idiomas de la interfaz. Volver a traducir una traducción reemplazaría las palabras propias del traductor por una paráfrasis y podría distorsionar décadas de trabajo académico ya establecido. El objetivo es darte acceso directo a la fuente publicada más fiable, no a una versión derivada de ella. Esto es distinto de tu consulta con la IA, que siempre responde en el idioma de tu pregunta: ahí la IA interpreta para ti un resultado ya formado, no presenta un texto primario.",
+      "Se muestra tal como fue publicado. Wilhelm (1924) y Legge aparecen en su inglés académico, y el Zhou Yi en chino clásico, las mismas palabras en los 11 idiomas de la interfaz. Volver a traducir una traducción reemplazaría las palabras propias del traductor por una paráfrasis y podría distorsionar décadas de trabajo académico ya establecido. El objetivo es darte acceso directo a la fuente publicada más fiable, no a una versión derivada de ella. Esto es distinto de tu consulta con la IA, que siempre responde en el idioma de tu pregunta: ahí la IA interpreta para ti un resultado ya formado, no presenta un texto primario.",
     moreInfoLink: { href: "/library", label: "Abre la Biblioteca →" },
     related: ["methodNotes"],
   },
@@ -669,7 +669,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "iching-how-answers",
     question: "كيف يعمل الآي تشينغ ومن أين تأتي إجاباته؟",
     answer:
-      "يعمل الآي تشينغ عبر 64 سداسيا تشكّل فهرسا قديما لأنماط التغيّر في الطبيعة وفي حياة الإنسان. كل سداسي شكل منظم له معنى كلاسيكي محفوظ في نصوص Wilhelm/Baynes. تنطلق كل استشارة من سؤالك الملموس. تطبّق الخوارزمية الرياضية قواعد اختيار الخط الكلاسيكية (نظام الاختزال الذي وضعه Alfred Huang) على رميات الخطوط لتحديد السداسي الحالي، والخطوط المتحركة إن وُجدت، والسداسي المقبل الناتج. ثم يقوم الذكاء الاصطناعي بصياغة هذه النتيجة الموجودة بالفعل في لغتك، تاركًا للمعنى الكلاسيكي لتلك السداسيات أن يُسقط على سياقك الشخصي. لهذا تكون كل قراءة فريدة وشخصية: قد تظهر السداسيات نفسها لأشخاص مختلفين، ومع ذلك لن تكون الإجابة نفسها، لأنها تتعلق بالسؤال المحدد، وبلحظة الحياة، وبالسياق الشخصي للمستشير. لا توجد قراءة واحدة قابلة للتطبيق على أكثر من شخص في الوقت نفسه.",
+      "يعمل الآي تشينغ عبر 64 سداسيا تشكّل فهرسا قديما لأنماط التغيّر في الطبيعة وفي حياة الإنسان. كل سداسي شكل منظم له معنى كلاسيكي محفوظ في نصوص Wilhelm (1924). تنطلق كل استشارة من سؤالك الملموس. تطبّق الخوارزمية الرياضية قواعد اختيار الخط الكلاسيكية (نظام الاختزال الذي وضعه Alfred Huang) على رميات الخطوط لتحديد السداسي الحالي، والخطوط المتحركة إن وُجدت، والسداسي المقبل الناتج. ثم يقوم الذكاء الاصطناعي بصياغة هذه النتيجة الموجودة بالفعل في لغتك، تاركًا للمعنى الكلاسيكي لتلك السداسيات أن يُسقط على سياقك الشخصي. لهذا تكون كل قراءة فريدة وشخصية: قد تظهر السداسيات نفسها لأشخاص مختلفين، ومع ذلك لن تكون الإجابة نفسها، لأنها تتعلق بالسؤال المحدد، وبلحظة الحياة، وبالسياق الشخصي للمستشير. لا توجد قراءة واحدة قابلة للتطبيق على أكثر من شخص في الوقت نفسه.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -754,7 +754,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     question:
       "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
-      "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاث ترجمات أكاديمية متاحة في التطبيق: Wilhelm/Baynes (Princeton University Press، 1950)، وJames Legge (في الملك العام)، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
+      "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاثة مصادر أكاديمية متاحة في التطبيق: Wilhelm (1924) (Eugen Diederichs Verlag)، وJames Legge (في الملك العام)، والتشو يي الأصلي. النسخة الإنجليزية لكاري باينز (Princeton University Press، 1950) متاحة أيضًا كمرجع مقارن. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
     related: ["methodNotes"],
   },
   {
@@ -762,7 +762,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     question:
       "لماذا لا يتغيّر نص الهكساجرامات في المكتبة عند تغيير لغة التطبيق؟",
     answer:
-      "يُعرض كما نُشر بالضبط. تظهر ترجمتا Wilhelm/Baynes وJames Legge بلغتهما الإنجليزية الأصلية، ويظهر التشو يي بالصينية الكلاسيكية، بنفس الكلمات في جميع لغات الواجهة الإحدى عشرة. إعادة ترجمة ترجمة سابقة تستبدل كلمات المترجم نفسه بصياغة مُعاد التعبير عنها، وقد تشوّه عقودًا من العمل الأكاديمي المُستقر. الهدف هو إعطاؤك وصولاً مباشرًا إلى المصدر المنشور الأكثر موثوقية، لا إلى نسخة مُستمدة منه. هذا يختلف عن استشارتك مع الذكاء الاصطناعي، التي تجيب دائمًا بلغة سؤالك: فهناك يفسّر الذكاء الاصطناعي من أجلك نتيجة متشكّلة مسبقًا، ولا يقدّم نصًا أصليًا.",
+      "يُعرض كما نُشر بالضبط. تظهر ترجمتا Wilhelm (1924) وJames Legge بلغتهما الإنجليزية الأكاديمية، ويظهر التشو يي بالصينية الكلاسيكية، بنفس الكلمات في جميع لغات الواجهة الإحدى عشرة. إعادة ترجمة ترجمة سابقة تستبدل كلمات المترجم نفسه بصياغة مُعاد التعبير عنها، وقد تشوّه عقودًا من العمل الأكاديمي المُستقر. الهدف هو إعطاؤك وصولاً مباشرًا إلى المصدر المنشور الأكثر موثوقية، لا إلى نسخة مُستمدة منه. هذا يختلف عن استشارتك مع الذكاء الاصطناعي، التي تجيب دائمًا بلغة سؤالك: فهناك يفسّر الذكاء الاصطناعي من أجلك نتيجة متشكّلة مسبقًا، ولا يقدّم نصًا أصليًا.",
     moreInfoLink: { href: "/library", label: "افتح المكتبة →" },
     related: ["methodNotes"],
   },
@@ -805,7 +805,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "tier-features",
     question: "ما الذي يتضمنه كل pack، إلى جانب التوكنات؟",
     answer:
-      "تشمل الخطة المجانية I Ching (ثلاث عملات أو عيدان اليارو، تلقائي أو يدوي) وعظام العرافة، مع مترجم Wilhelm/Baynes. يضيف Seeker المكتبة الكاملة ومترجم Legge. يضيف Practitioner نص التشو يي الأصلي. يضيف Master توليفة Master (3)، التي تُثلّث المترجمين الثلاثة في آنٍ واحد. لرؤية كميات التوكنات الحالية وحدود الخيط وكيفية الشراء، افتح مركز التوكنات من ترويسة التطبيق.",
+      "تشمل الخطة المجانية I Ching (ثلاث عملات أو عيدان اليارو، تلقائي أو يدوي) وعظام العرافة، مع مترجم Wilhelm (1924). يضيف Seeker المكتبة الكاملة ومترجم Legge. يضيف Practitioner نص التشو يي الأصلي. يضيف Master توليفة Master (3)، التي تُثلّث المترجمين الثلاثة في آنٍ واحد. لرؤية كميات التوكنات الحالية وحدود الخيط وكيفية الشراء، افتح مركز التوكنات من ترويسة التطبيق.",
     related: ["tokenPacks"],
   },
   {
@@ -865,7 +865,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "iching-how-answers",
     question: "I Ching वास्तव में कैसे काम करता है और उत्तर कैसे देता है?",
     answer:
-      "I Ching 64 हेक्साग्रामों के माध्यम से कार्य करता है, जो प्रकृति और मानव जीवन में परिवर्तन के पैटर्नों का प्राचीन सूचीपत्र हैं। हर हेक्साग्राम एक संरचित आकृति है, जिसका शास्त्रीय अर्थ Wilhelm/Baynes ग्रंथों में सुरक्षित है। हर परामर्श आपके विशिष्ट प्रश्न से शुरू होता है। गणितीय एल्गोरिदम शास्त्रीय रेखा-चयन नियमों (Alfred Huang की संक्षेपण प्रणाली) के तहत रेखाएँ डालकर वर्तमान हेक्साग्राम, यदि कोई हो तो गतिशील रेखाएँ और परिणामी भविष्य हेक्साग्राम तय करता है। इसके बाद AI उस पहले से बने परिणाम को आपकी भाषा में अभिव्यक्त करता है, उन हेक्साग्रामों के शास्त्रीय अर्थ को आपके विशिष्ट संदर्भ पर लागू करते हुए। इसीलिए हर पठन अद्वितीय और व्यक्तिगत होता है: वही हेक्साग्राम अलग-अलग लोगों के लिए आ सकते हैं, फिर भी उत्तर एक जैसा कभी नहीं होता, क्योंकि यह विशिष्ट प्रश्न, जीवन के क्षण और परामर्शक के व्यक्तिगत संदर्भ पर निर्भर करता है। एक से अधिक व्यक्ति पर एक साथ लागू होने वाली कोई सार्वभौमिक व्याख्या नहीं होती।",
+      "I Ching 64 हेक्साग्रामों के माध्यम से कार्य करता है, जो प्रकृति और मानव जीवन में परिवर्तन के पैटर्नों का प्राचीन सूचीपत्र हैं। हर हेक्साग्राम एक संरचित आकृति है, जिसका शास्त्रीय अर्थ Wilhelm (1924) ग्रंथों में सुरक्षित है। हर परामर्श आपके विशिष्ट प्रश्न से शुरू होता है। गणितीय एल्गोरिदम शास्त्रीय रेखा-चयन नियमों (Alfred Huang की संक्षेपण प्रणाली) के तहत रेखाएँ डालकर वर्तमान हेक्साग्राम, यदि कोई हो तो गतिशील रेखाएँ और परिणामी भविष्य हेक्साग्राम तय करता है। इसके बाद AI उस पहले से बने परिणाम को आपकी भाषा में अभिव्यक्त करता है, उन हेक्साग्रामों के शास्त्रीय अर्थ को आपके विशिष्ट संदर्भ पर लागू करते हुए। इसीलिए हर पठन अद्वितीय और व्यक्तिगत होता है: वही हेक्साग्राम अलग-अलग लोगों के लिए आ सकते हैं, फिर भी उत्तर एक जैसा कभी नहीं होता, क्योंकि यह विशिष्ट प्रश्न, जीवन के क्षण और परामर्शक के व्यक्तिगत संदर्भ पर निर्भर करता है। एक से अधिक व्यक्ति पर एक साथ लागू होने वाली कोई सार्वभौमिक व्याख्या नहीं होती।",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -950,7 +950,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     question:
       "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
-      "वे प्रामाणिक हैं। पाठ्य सामग्री (निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम) ऐप में उपलब्ध तीन विद्वानों के अनुवादों से ली गई है: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (सार्वजनिक डोमेन), और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
+      "वे प्रामाणिक हैं। पाठ्य सामग्री (निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम) ऐप में उपलब्ध तीन विद्वत्तापूर्ण स्रोतों से ली गई है: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (सार्वजनिक डोमेन), और मूल Zhou Yi। Cary Baynes का 1950 का अंग्रेज़ी अनुवाद (Princeton University Press) तुलनात्मक संदर्भ के रूप में भी उपलब्ध है। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
     related: ["methodNotes"],
   },
   {
@@ -958,7 +958,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     question:
       "ऐप की भाषा बदलने पर Library के हेक्साग्राम पाठ की भाषा क्यों नहीं बदलती?",
     answer:
-      "इसे ठीक उसी तरह दिखाया जाता है जैसे यह प्रकाशित हुआ था। Wilhelm/Baynes और James Legge अपनी मूल अंग्रेज़ी में दिखाई देते हैं, और मूल Zhou Yi शास्त्रीय चीनी भाषा में, सभी 11 इंटरफ़ेस भाषाओं में एक जैसे शब्दों के साथ। किसी अनुवाद का फिर से अनुवाद करने से अनुवादक के अपने शब्दों की जगह एक व्याख्या आ जाती और दशकों के स्थापित विद्वत्तापूर्ण कार्य को विकृत कर सकती। उद्देश्य है आपको सबसे भरोसेमंद प्रकाशित स्रोत तक सीधी पहुँच देना, उसका कोई व्युत्पन्न संस्करण नहीं। यह आपकी AI सलाह से अलग है, जो हमेशा आपके प्रश्न की भाषा में उत्तर देती है: वहाँ AI आपके लिए एक पहले से बने परिणाम की व्याख्या करता है, यह कोई मूल पाठ प्रस्तुत नहीं करता।",
+      "इसे ठीक उसी तरह दिखाया जाता है जैसे यह प्रकाशित हुआ था। Wilhelm (1924) और James Legge शैक्षणिक अंग्रेज़ी में दिखाई देते हैं, और मूल Zhou Yi शास्त्रीय चीनी भाषा में, सभी 11 इंटरफ़ेस भाषाओं में एक जैसे शब्दों के साथ। किसी अनुवाद का फिर से अनुवाद करने से अनुवादक के अपने शब्दों की जगह एक व्याख्या आ जाती और दशकों के स्थापित विद्वत्तापूर्ण कार्य को विकृत कर सकती। उद्देश्य है आपको सबसे भरोसेमंद प्रकाशित स्रोत तक सीधी पहुँच देना, उसका कोई व्युत्पन्न संस्करण नहीं। यह आपकी AI सलाह से अलग है, जो हमेशा आपके प्रश्न की भाषा में उत्तर देती है: वहाँ AI आपके लिए एक पहले से बने परिणाम की व्याख्या करता है, यह कोई मूल पाठ प्रस्तुत नहीं करता।",
     moreInfoLink: { href: "/library", label: "Library खोलें →" },
     related: ["methodNotes"],
   },
@@ -994,7 +994,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "tier-features",
     question: "टोकनों के अलावा, हर pack में क्या शामिल है?",
     answer:
-      "Free में I Ching (तीन सिक्के या यारो डंठल, स्वचालित या मैन्युअल) और Oracle Bones शामिल हैं, Wilhelm/Baynes अनुवादक के साथ। Seeker पूरी Library और Legge अनुवादक जोड़ता है। Practitioner मूल Zhou Yi पाठ जोड़ता है। Master, Master (3) संश्लेषण जोड़ता है, जो तीनों अनुवादकों को एक साथ त्रिकोणित करता है। वर्तमान टोकन मात्रा, थ्रेड सीमाएँ और खरीदने का तरीका देखने के लिए, ऐप हेडर से टोकन सेंटर खोलें।",
+      "Free में I Ching (तीन सिक्के या यारो डंठल, स्वचालित या मैन्युअल) और Oracle Bones शामिल हैं, Wilhelm (1924) अनुवादक के साथ। Seeker पूरी Library और Legge अनुवादक जोड़ता है। Practitioner मूल Zhou Yi पाठ जोड़ता है। Master, Master (3) संश्लेषण जोड़ता है, जो तीनों अनुवादकों को एक साथ त्रिकोणित करता है। वर्तमान टोकन मात्रा, थ्रेड सीमाएँ और खरीदने का तरीका देखने के लिए, ऐप हेडर से टोकन सेंटर खोलें।",
     related: ["tokenPacks"],
   },
   {
@@ -1059,7 +1059,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "iching-how-answers",
     question: "易経はどのように働き、答えはどこから出てくるのですか？",
     answer:
-      "易経は、自然と人間の生活における変化の型を集めた64卦からなる古代の総覧として働きます。各卦は構造化された図形であり、その古典的意味はWilhelm/Baynesの本文に保存されています。各相談はあなたの具体的な問いから始まります。数学的アルゴリズムが古典的な爻選択規則（Alfred Huangの還元法）に従って爻を立て、現在の卦、変爻があればその位置、そして結果として生じる未来の卦を確定します。続いてAIが、すでに形成されたその結果をあなたの言語で表現し、卦の古典的意味をあなた個人の文脈に適用します。だからこそ、ひとつひとつの読みは固有で個人的なものになります。同じ卦が別々の人に現れることはあっても、答えが同じになることは決してありません。問いの内容、人生のその時、相談者の個人的文脈に依存するからです。同時に複数の人に当てはまる普遍的な解釈は存在しません。",
+      "易経は、自然と人間の生活における変化の型を集めた64卦からなる古代の総覧として働きます。各卦は構造化された図形であり、その古典的意味はヴィルヘルム（1924年）の本文に保存されています。各相談はあなたの具体的な問いから始まります。数学的アルゴリズムが古典的な爻選択規則（Alfred Huangの還元法）に従って爻を立て、現在の卦、変爻があればその位置、そして結果として生じる未来の卦を確定します。続いてAIが、すでに形成されたその結果をあなたの言語で表現し、卦の古典的意味をあなた個人の文脈に適用します。だからこそ、ひとつひとつの読みは固有で個人的なものになります。同じ卦が別々の人に現れることはあっても、答えが同じになることは決してありません。問いの内容、人生のその時、相談者の個人的文脈に依存するからです。同時に複数の人に当てはまる普遍的な解釈は存在しません。",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -1145,7 +1145,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     question:
       "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
     answer:
-      "本物です。テキスト素材（卦辞、動爻（爻辞）、変卦）はアプリで利用できる3つの学術的翻訳から引用されています：ヴィルヘルム/バインズ訳（Princeton University Press、1950年）、ジェームズ・レッグ訳（パブリックドメイン）、そして原典の周易。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
+      "本物です。テキスト素材（卦辞、動爻（爻辞）、変卦）はアプリで利用できる3つの学術的典拠から引用されています：ヴィルヘルム（1924年）（Eugen Diederichs Verlag）、ジェームズ・レッグ（パブリックドメイン）、そして原典の周易。ケーリー・ベインズによる1950年英訳（Princeton University Press）は比較参照として保管されています。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
     related: ["methodNotes"],
   },
   {
@@ -1153,7 +1153,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     question:
       "アプリの言語を切り替えても、ライブラリの卦辞のテキストが言語を変えないのはなぜですか？",
     answer:
-      "出版された通りの形で表示されているからです。ヴィルヘルム/バインズ訳とレッグ訳は原典の英語のまま、周易は原典の古典中国語のまま、11のインターフェース言語すべてで同じ言葉が表示されます。翻訳をさらに翻訳し直すと、翻訳者自身の言葉が意訳に置き換わり、数十年にわたる学術的な蓄積をゆがめる可能性があります。目的は、最も信頼できる出版源に直接アクセスしてもらうことであり、その派生版を提供することではありません。これはAIによる解釈とは異なります。AIは常にあなたの質問の言語で答えますが、それはすでに形成された結果をあなたのために解釈しているのであり、原典そのものを示しているわけではありません。",
+      "出版された通りの形で表示されているからです。ヴィルヘルム（1924年）訳とレッグ訳は学術的英語のまま、周易は原典の古典中国語のまま、11のインターフェース言語すべてで同じ言葉が表示されます。翻訳をさらに翻訳し直すと、翻訳者自身の言葉が意訳に置き換わり、数十年にわたる学術的な蓄積をゆがめる可能性があります。目的は、最も信頼できる出版源に直接アクセスしてもらうことであり、その派生版を提供することではありません。これはAIによる解釈とは異なります。AIは常にあなたの質問の言語で答えますが、それはすでに形成された結果をあなたのために解釈しているのであり、原典そのものを示しているわけではありません。",
     moreInfoLink: { href: "/library", label: "図書館を開く →" },
     related: ["methodNotes"],
   },
@@ -1196,7 +1196,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "tier-features",
     question: "トークン以外に、各パックには何が含まれますか？",
     answer:
-      "無料プランには易経（三硬貨または蓍草、自動または手動）と卜骨が含まれ、Wilhelm/Baynes訳が使えます。Seekerは図書館全体とLegge訳を追加します。Practitionerは原典の周易テキストを追加します。MasterはMaster (3)統合を追加し、3つの翻訳者を同時に三角測量します。現在のトークン量、スレッド制限、購入方法については、アプリのヘッダーからトークンセンターを開いてください。",
+      "無料プランには易経（三硬貨または蓍草、自動または手動）と卜骨が含まれ、Wilhelm (1924)訳が使えます。Seekerは図書館全体とLegge訳を追加します。Practitionerは原典の周易テキストを追加します。MasterはMaster (3)統合を追加し、3つの翻訳者を同時に三角測量します。現在のトークン量、スレッド制限、購入方法については、アプリのヘッダーからトークンセンターを開いてください。",
     related: ["tokenPacks"],
   },
   {
@@ -1338,14 +1338,14 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "authentic-texts",
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
-      "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：威廉/贝恩斯译本（普林斯顿大学出版社，1950年）、詹姆斯·理雅各译本（公有领域）和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
+      "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：卫礼贤（1924年）（Eugen Diederichs Verlag）、詹姆斯·理雅各（公有领域）和原典周易。贝恩斯1950年英译本（普林斯顿大学出版社）亦作为比较参考保存。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
     related: ["methodNotes"],
   },
   {
     id: "library-source-language",
     question: "为什么切换应用语言时，图书馆里的卦辞文本不会跟着改变语言？",
     answer:
-      "因为它完全按照原始出版的样子呈现。威廉/贝恩斯译本和理雅各译本保留原始英文，周易保留古典中文，在全部11种界面语言中显示的都是同一段文字。对一份译本再次翻译，会用意译替换译者本人的措辞，可能扭曲数十年已确立的学术成果。我们的目标是让你直接接触最可靠的出版来源，而不是它的衍生版本。这与AI解读不同：AI始终用你提问的语言回答，但那是在为你诠释一个已经形成的结果，并不是在呈现原始文本。",
+      "因为它完全按照原始出版的样子呈现。卫礼贤（1924年）译本和理雅各译本保留学术英文，周易保留古典中文，在全部11种界面语言中显示的都是同一段文字。对一份译本再次翻译，会用意译替换译者本人的措辞，可能扭曲数十年已确立的学术成果。我们的目标是让你直接接触最可靠的出版来源，而不是它的衍生版本。这与AI解读不同：AI始终用你提问的语言回答，但那是在为你诠释一个已经形成的结果，并不是在呈现原始文本。",
     moreInfoLink: { href: "/library", label: "打开图书馆 →" },
     related: ["methodNotes"],
   },
@@ -1387,7 +1387,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "tier-features",
     question: "除了代币之外，每个套餐还包含什么？",
     answer:
-      "Free 包含易经（三枚铜钱或蓍草，自动或手动）和甲骨，使用威廉/贝恩斯译本。Seeker 增加完整图书馆和理雅各译本。Practitioner 增加原始周易文本。Master 增加 Master (3) 综合，同时三角化三种译本。当前代币数量、线程上限及购买方式，请从应用顶栏打开代币中心查看。",
+      "Free 包含易经（三枚铜钱或蓍草，自动或手动）和甲骨，使用卫礼贤（1924）译本。Seeker 增加完整图书馆和理雅各译本。Practitioner 增加原始周易文本。Master 增加 Master (3) 综合，同时三角化三种译本。当前代币数量、线程上限及购买方式，请从应用顶栏打开代币中心查看。",
     related: ["tokenPacks"],
   },
   {
@@ -1446,7 +1446,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "iching-how-answers",
     question: "주역은 실제로 어떻게 작동하며, 그 답은 어디에서 오나요?",
     answer:
-      "주역은 자연과 인간 삶의 변화 양상을 모은 고대 도록인 64괘를 통해 작동합니다. 각 괘는 구조화된 도형으로, 그 고전적 의미는 빌헬름/베인스 텍스트에 보존되어 있습니다. 각 상담은 당신의 구체적인 질문에서 시작됩니다. 수학 알고리즘은 고전적 효사 선택 규칙(Alfred Huang의 축약 체계)에 따라 효를 던져 현재 괘, 변효(있다면)와 그로 인한 미래 괘를 확정합니다. 이어서 AI는 이미 형성된 그 결과를 당신의 언어로 표현하며, 해당 괘들의 고전적 의미를 당신만의 맥락에 적용합니다. 그래서 각 해석은 고유하고 개인적입니다. 같은 괘들이 서로 다른 사람에게 나올 수 있지만, 답이 같을 수는 없습니다. 답은 구체적인 질문, 삶의 시점, 그리고 상담자의 개인적 맥락에 달려 있기 때문입니다. 동시에 둘 이상에게 적용되는 보편 해석은 존재하지 않습니다.",
+      "주역은 자연과 인간 삶의 변화 양상을 모은 고대 도록인 64괘를 통해 작동합니다. 각 괘는 구조화된 도형으로, 그 고전적 의미는 빌헬름 (1924) 텍스트에 보존되어 있습니다. 각 상담은 당신의 구체적인 질문에서 시작됩니다. 수학 알고리즘은 고전적 효사 선택 규칙(Alfred Huang의 축약 체계)에 따라 효를 던져 현재 괘, 변효(있다면)와 그로 인한 미래 괘를 확정합니다. 이어서 AI는 이미 형성된 그 결과를 당신의 언어로 표현하며, 해당 괘들의 고전적 의미를 당신만의 맥락에 적용합니다. 그래서 각 해석은 고유하고 개인적입니다. 같은 괘들이 서로 다른 사람에게 나올 수 있지만, 답이 같을 수는 없습니다. 답은 구체적인 질문, 삶의 시점, 그리고 상담자의 개인적 맥락에 달려 있기 때문입니다. 동시에 둘 이상에게 적용되는 보편 해석은 존재하지 않습니다.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -1530,14 +1530,14 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "authentic-texts",
     question: "해석에 나타나는 주역 텍스트는 진본인가요, AI가 생성한 것인가요?",
     answer:
-      "진본입니다. 텍스트 자료(괘사(卦辞), 동효의 효사(爻辞), 변괘)는 앱에서 제공하는 세 가지 학술 번역본에서 인용되었습니다: 빌헬름/베인스 번역본(Princeton University Press, 1950), 제임스 레그 번역본(공공 도메인), 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
+      "진본입니다. 텍스트 자료(괘사(卦辞), 동효의 효사(爻辞), 변괘)는 앱에서 제공하는 세 가지 학술 출처에서 인용되었습니다: 빌헬름 (1924) (Eugen Diederichs Verlag), 제임스 레그 (공공 도메인), 그리고 원전 주역. 케어리 베인스의 1950년 영어 번역본 (Princeton University Press)도 비교 참조로 보관됩니다. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
     related: ["methodNotes"],
   },
   {
     id: "library-source-language",
     question: "앱 언어를 바꿔도 도서관의 괘사 텍스트는 왜 언어가 바뀌지 않나요?",
     answer:
-      "출판된 그대로 보여주기 때문입니다. 빌헬름/베인스 번역본과 레그 번역본은 원래의 영어 그대로, 주역은 고전 중국어 그대로, 11개 인터페이스 언어 모두에서 동일한 문구로 표시됩니다. 번역본을 다시 번역하면 번역자 본인의 표현이 의역으로 바뀌어 수십 년간 확립된 학술적 성과를 왜곡할 수 있습니다. 목표는 가장 신뢰할 수 있는 출판 원전에 직접 접근하게 하는 것이며, 그것의 파생본을 제공하는 것이 아닙니다. 이는 AI 상담과는 다릅니다. AI는 항상 귀하의 질문 언어로 답하지만, 그것은 이미 형성된 결과를 귀하를 위해 해석하는 것이지 원전 텍스트를 제시하는 것이 아닙니다.",
+      "출판된 그대로 보여주기 때문입니다. 빌헬름 (1924) 번역본과 레그 번역본은 학술 영어 그대로, 주역은 고전 중국어 그대로, 11개 인터페이스 언어 모두에서 동일한 문구로 표시됩니다. 번역본을 다시 번역하면 번역자 본인의 표현이 의역으로 바뀌어 수십 년간 확립된 학술적 성과를 왜곡할 수 있습니다. 목표는 가장 신뢰할 수 있는 출판 원전에 직접 접근하게 하는 것이며, 그것의 파생본을 제공하는 것이 아닙니다. 이는 AI 상담과는 다릅니다. AI는 항상 귀하의 질문 언어로 답하지만, 그것은 이미 형성된 결과를 귀하를 위해 해석하는 것이지 원전 텍스트를 제시하는 것이 아닙니다.",
     moreInfoLink: { href: "/library", label: "도서관 열기 →" },
     related: ["methodNotes"],
   },
@@ -1579,7 +1579,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "tier-features",
     question: "토큰 외에 각 팩에는 무엇이 포함되나요?",
     answer:
-      "Free에는 주역(세 동전 또는 서죽, 자동 또는 수동)과 갑골이 포함되며, Wilhelm/Baynes 번역본을 사용할 수 있습니다. Seeker는 전체 도서관과 Legge 번역본을 추가합니다. Practitioner는 원전 주역 텍스트를 추가합니다. Master는 세 번역본을 동시에 삼각 측정하는 Master (3) 합성을 추가합니다. 현재 토큰 수량, 스레드 한도, 구매 방법은 앱 헤더에서 토큰 센터를 열어 확인하세요.",
+      "Free에는 주역(세 동전 또는 서죽, 자동 또는 수동)과 갑골이 포함되며, Wilhelm (1924) 번역본을 사용할 수 있습니다. Seeker는 전체 도서관과 Legge 번역본을 추가합니다. Practitioner는 원전 주역 텍스트를 추가합니다. Master는 세 번역본을 동시에 삼각 측정하는 Master (3) 합성을 추가합니다. 현재 토큰 수량, 스레드 한도, 구매 방법은 앱 헤더에서 토큰 센터를 열어 확인하세요.",
     related: ["tokenPacks"],
   },
   {
@@ -1639,7 +1639,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "iching-how-answers",
     question: "Como é que o I Ching funciona e de onde vêm as suas respostas?",
     answer:
-      "O I Ching opera através de 64 hexagramas, um catálogo milenar dos padrões de mudança na natureza e na vida humana. Cada hexagrama é uma figura estruturada, com um significado clássico preservado nas obras clássicas de Wilhelm/Baynes, James Legge ou no texto original Zhou Yi. Cada consulta parte da tua pergunta concreta. O algoritmo matemático lança as linhas segundo as regras clássicas de seleção de linha (o sistema de redução de Alfred Huang) para determinar o hexagrama presente, as linhas em movimento (caso existam) e o hexagrama futuro resultante. Em seguida a IA articula esse resultado já formado no teu idioma, aplicando o significado clássico desses hexagramas ao teu contexto particular. Por isso cada leitura é única e pessoal: os mesmos hexagramas podem aparecer para pessoas diferentes, mas a resposta nunca é a mesma, porque depende da pergunta concreta, do momento de vida e do contexto pessoal do consultante. Não existe uma interpretação universal aplicável a mais de uma pessoa em simultâneo.",
+      "O I Ching opera através de 64 hexagramas, um catálogo milenar dos padrões de mudança na natureza e na vida humana. Cada hexagrama é uma figura estruturada, com um significado clássico preservado nas obras clássicas de Wilhelm (1924), James Legge ou no texto original Zhou Yi. Cada consulta parte da tua pergunta concreta. O algoritmo matemático lança as linhas segundo as regras clássicas de seleção de linha (o sistema de redução de Alfred Huang) para determinar o hexagrama presente, as linhas em movimento (caso existam) e o hexagrama futuro resultante. Em seguida a IA articula esse resultado já formado no teu idioma, aplicando o significado clássico desses hexagramas ao teu contexto particular. Por isso cada leitura é única e pessoal: os mesmos hexagramas podem aparecer para pessoas diferentes, mas a resposta nunca é a mesma, porque depende da pergunta concreta, do momento de vida e do contexto pessoal do consultante. Não existe uma interpretação universal aplicável a mais de uma pessoa em simultâneo.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -1724,7 +1724,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     question:
       "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
-      "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três traduções académicas disponíveis na app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (domínio público) e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
+      "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três fontes académicas disponíveis na app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (domínio público) e o Zhou Yi original. A versão inglesa de Cary Baynes (Princeton University Press, 1950) também está disponível como referência comparativa. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
     related: ["methodNotes"],
   },
   {
@@ -1732,7 +1732,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     question:
       "Por que o texto dos hexagramas na Biblioteca não muda de idioma quando mudo o idioma do app?",
     answer:
-      "É mostrado exatamente como foi publicado. Wilhelm/Baynes e Legge aparecem no seu inglês original, e o Zhou Yi em chinês clássico, as mesmas palavras nos 11 idiomas da interface. Voltar a traduzir uma tradução substituiria as palavras do próprio tradutor por uma paráfrase e poderia distorcer décadas de trabalho académico já estabelecido. O objetivo é dar acesso direto à fonte publicada mais confiável, não a uma versão derivada dela. Isso é diferente da sua consulta com a IA, que responde sempre no idioma da sua pergunta: ali a IA interpreta para si um resultado já formado, não apresenta um texto primário.",
+      "É mostrado exatamente como foi publicado. Wilhelm (1924) e Legge aparecem no seu inglês acadêmico, e o Zhou Yi em chinês clássico, as mesmas palavras nos 11 idiomas da interface. Voltar a traduzir uma tradução substituiria as palavras do próprio tradutor por uma paráfrase e poderia distorcer décadas de trabalho académico já estabelecido. O objetivo é dar acesso direto à fonte publicada mais confiável, não a uma versão derivada dela. Isso é diferente da sua consulta com a IA, que responde sempre no idioma da sua pergunta: ali a IA interpreta para si um resultado já formado, não apresenta um texto primário.",
     moreInfoLink: { href: "/library", label: "Abre a Biblioteca →" },
     related: ["methodNotes"],
   },
@@ -1775,7 +1775,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "tier-features",
     question: "O que inclui cada pack, além dos tokens?",
     answer:
-      "O Free inclui o I Ching (Três Moedas ou Varetas de Milefólio, automático ou manual) e os Ossos Oraculares, com o tradutor Wilhelm/Baynes. O Seeker adiciona a Biblioteca completa e o tradutor Legge. O Practitioner adiciona o texto original do Zhou Yi. O Master adiciona a síntese Master (3), que triangula os três tradutores em simultâneo. Para ver quantidades de tokens em vigor, limites por fio e como comprar, abre o Centro de tokens no cabeçalho da app.",
+      "O Free inclui o I Ching (Três Moedas ou Varetas de Milefólio, automático ou manual) e os Ossos Oraculares, com o tradutor Wilhelm (1924). O Seeker adiciona a Biblioteca completa e o tradutor Legge. O Practitioner adiciona o texto original do Zhou Yi. O Master adiciona a síntese Master (3), que triangula os três tradutores em simultâneo. Para ver quantidades de tokens em vigor, limites por fio e como comprar, abre o Centro de tokens no cabeçalho da app.",
     related: ["tokenPacks"],
   },
   {
@@ -1836,7 +1836,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Wie funktioniert das I Ging tatsächlich, und woher kommen seine Antworten?",
     answer:
-      "Das I Ging arbeitet über 64 Hexagramme, einen jahrtausendealten Katalog von Wandlungsmustern in Natur und menschlichem Leben. Jedes Hexagramm ist eine strukturierte Figur, deren klassische Bedeutung in den Wilhelm/Baynes-Texten bewahrt ist. Jede Beratung beginnt mit Ihrer konkreten Frage. Der mathematische Algorithmus wirft die Linien nach den klassischen Linienauswahlregeln (Alfred Huangs Reduktionssystem) und bestimmt das gegenwärtige Hexagramm, die wandelnden Linien (falls vorhanden) und das daraus resultierende zukünftige Hexagramm. Anschließend formuliert die KI dieses bereits gebildete Ergebnis in Ihrer Sprache und überträgt die klassische Bedeutung dieser Hexagramme auf Ihren persönlichen Kontext. Genau deshalb ist jede Lesung einzigartig und persönlich: Dieselben Hexagramme können bei verschiedenen Menschen auftreten, doch die Antwort ist nie dieselbe, sie hängt von der konkreten Frage, dem Lebensmoment und dem persönlichen Kontext des Ratsuchenden ab. Es gibt keine allgemeingültige Deutung, die zugleich für mehrere Personen gilt.",
+      "Das I Ging arbeitet über 64 Hexagramme, einen jahrtausendealten Katalog von Wandlungsmustern in Natur und menschlichem Leben. Jedes Hexagramm ist eine strukturierte Figur, deren klassische Bedeutung in den Wilhelm (1924)-Texten bewahrt ist. Jede Beratung beginnt mit Ihrer konkreten Frage. Der mathematische Algorithmus wirft die Linien nach den klassischen Linienauswahlregeln (Alfred Huangs Reduktionssystem) und bestimmt das gegenwärtige Hexagramm, die wandelnden Linien (falls vorhanden) und das daraus resultierende zukünftige Hexagramm. Anschließend formuliert die KI dieses bereits gebildete Ergebnis in Ihrer Sprache und überträgt die klassische Bedeutung dieser Hexagramme auf Ihren persönlichen Kontext. Genau deshalb ist jede Lesung einzigartig und persönlich: Dieselben Hexagramme können bei verschiedenen Menschen auftreten, doch die Antwort ist nie dieselbe, sie hängt von der konkreten Frage, dem Lebensmoment und dem persönlichen Kontext des Ratsuchenden ab. Es gibt keine allgemeingültige Deutung, die zugleich für mehrere Personen gilt.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -1924,7 +1924,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
-      "Sie sind authentisch. Das Textmaterial (Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme) stammt aus drei wissenschaftlichen Übersetzungen, die in der App verfügbar sind: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (gemeinfrei) und das originale Zhou Yi. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
+      "Sie sind authentisch. Das Textmaterial (Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme) stammt aus drei wissenschaftlichen Quellen, die in der App verfügbar sind: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (gemeinfrei) und das originale Zhou Yi. Cary Baynes' englische Fassung von 1950 (Princeton University Press) ist ebenfalls als Vergleichsreferenz verfügbar. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
     related: ["methodNotes"],
   },
   {
@@ -1932,7 +1932,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Warum ändert sich der Hexagramm-Text in der Bibliothek nicht, wenn ich die Sprache der App wechsle?",
     answer:
-      "Er wird genau so angezeigt, wie er veröffentlicht wurde. Wilhelm/Baynes und Legge erscheinen in ihrem ursprünglichen Englisch, und das Zhou Yi in klassischem Chinesisch, mit denselben Worten in allen 11 Oberflächensprachen. Eine Übersetzung erneut zu übersetzen würde die eigenen Worte des Übersetzers durch eine Paraphrase ersetzen und könnte Jahrzehnte etablierter Forschung verzerren. Ziel ist direkter Zugang zur zuverlässigsten veröffentlichten Quelle, nicht zu einer abgeleiteten Version davon. Das unterscheidet sich von Ihrer KI-Beratung, die immer in der Sprache Ihrer Frage antwortet: dort interpretiert die KI ein bereits geformtes Ergebnis für Sie, sie stellt keinen Primärtext dar.",
+      "Er wird genau so angezeigt, wie er veröffentlicht wurde. Wilhelm (1924) und Legge erscheinen in ihrem akademischen Englisch, und das Zhou Yi in klassischem Chinesisch, mit denselben Worten in allen 11 Oberflächensprachen. Eine Übersetzung erneut zu übersetzen würde die eigenen Worte des Übersetzers durch eine Paraphrase ersetzen und könnte Jahrzehnte etablierter Forschung verzerren. Ziel ist direkter Zugang zur zuverlässigsten veröffentlichten Quelle, nicht zu einer abgeleiteten Version davon. Das unterscheidet sich von Ihrer KI-Beratung, die immer in der Sprache Ihrer Frage antwortet: dort interpretiert die KI ein bereits geformtes Ergebnis für Sie, sie stellt keinen Primärtext dar.",
     moreInfoLink: { href: "/library", label: "Bibliothek öffnen →" },
     related: ["methodNotes"],
   },
@@ -1975,7 +1975,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "tier-features",
     question: "Was enthält jedes Paket, abgesehen von den Tokens?",
     answer:
-      "Free umfasst das I Ging (Drei Münzen oder Schafgarbenstäbe, automatisch oder manuell) und Orakelknochen, mit dem Übersetzer Wilhelm/Baynes. Seeker fügt die vollständige Bibliothek und den Übersetzer Legge hinzu. Practitioner fügt den originalen Zhou-Yi-Text hinzu. Master fügt die Master (3)-Synthese hinzu, die alle drei Übersetzer gleichzeitig trianguliert. Aktuelle Token-Mengen, Thread-Limits und wie Sie kaufen können, finden Sie im Token-Center, das Sie über den App-Header öffnen.",
+      "Free umfasst das I Ging (Drei Münzen oder Schafgarbenstäbe, automatisch oder manuell) und Orakelknochen, mit dem Übersetzer Wilhelm (1924). Seeker fügt die vollständige Bibliothek und den Übersetzer Legge hinzu. Practitioner fügt den originalen Zhou-Yi-Text hinzu. Master fügt die Master (3)-Synthese hinzu, die alle drei Übersetzer gleichzeitig trianguliert. Aktuelle Token-Mengen, Thread-Limits und wie Sie kaufen können, finden Sie im Token-Center, das Sie über den App-Header öffnen.",
     related: ["tokenPacks"],
   },
   {
@@ -2036,7 +2036,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "Come funziona davvero l'I Ching e da dove arrivano le sue risposte?",
     answer:
-      "L'I Ching opera attraverso 64 esagrammi, un catalogo millenario dei pattern di cambiamento nella natura e nella vita umana. Ogni esagramma è una figura strutturata con un significato classico preservato nei testi Wilhelm/Baynes. Ogni consultazione parte dalla tua domanda concreta. L'algoritmo matematico lancia le linee secondo le regole classiche di selezione della linea (il sistema di riduzione di Alfred Huang) per determinare l'esagramma presente, le eventuali linee in movimento e l'esagramma futuro risultante. L'IA articola poi quel risultato già formato nella tua lingua, applicando il significato classico di quegli esagrammi al tuo contesto particolare. Per questo ogni lettura è unica e personale: gli stessi esagrammi possono comparire per persone diverse, ma la risposta non è mai la stessa, perché dipende dalla domanda specifica, dal momento di vita e dal contesto personale di chi consulta. Non esiste un'interpretazione universale applicabile a più di una persona contemporaneamente.",
+      "L'I Ching opera attraverso 64 esagrammi, un catalogo millenario dei pattern di cambiamento nella natura e nella vita umana. Ogni esagramma è una figura strutturata con un significato classico preservato nei testi Wilhelm (1924). Ogni consultazione parte dalla tua domanda concreta. L'algoritmo matematico lancia le linee secondo le regole classiche di selezione della linea (il sistema di riduzione di Alfred Huang) per determinare l'esagramma presente, le eventuali linee in movimento e l'esagramma futuro risultante. L'IA articola poi quel risultato già formato nella tua lingua, applicando il significato classico di quegli esagrammi al tuo contesto particolare. Per questo ogni lettura è unica e personale: gli stessi esagrammi possono comparire per persone diverse, ma la risposta non è mai la stessa, perché dipende dalla domanda specifica, dal momento di vita e dal contesto personale di chi consulta. Non esiste un'interpretazione universale applicabile a più di una persona contemporaneamente.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -2124,7 +2124,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
-      "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre traduzioni accademiche disponibili nell'app: Wilhelm/Baynes (Princeton University Press, 1950), James Legge (di pubblico dominio) e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
+      "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre fonti accademiche disponibili nell'app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (di pubblico dominio) e lo Zhou Yi originale. La versione inglese di Cary Baynes (Princeton University Press, 1950) è disponibile anche come riferimento comparativo. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
     related: ["methodNotes"],
   },
   {
@@ -2132,7 +2132,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "Perché il testo degli esagrammi nella Biblioteca non cambia lingua quando cambio la lingua dell'app?",
     answer:
-      "Viene mostrato esattamente come è stato pubblicato. Wilhelm/Baynes e Legge appaiono nel loro inglese originale, e lo Zhou Yi in cinese classico, le stesse parole in tutte le 11 lingue dell'interfaccia. Ritradurre una traduzione sostituirebbe le parole proprie del traduttore con una parafrasi e potrebbe distorcere decenni di lavoro accademico già consolidato. L'obiettivo è darti accesso diretto alla fonte pubblicata più affidabile, non a una versione derivata di essa. Questo è diverso dalla tua consultazione con l'IA, che risponde sempre nella lingua della tua domanda: lì l'IA interpreta per te un risultato già formato, non presenta un testo primario.",
+      "Viene mostrato esattamente come è stato pubblicato. Wilhelm (1924) e Legge appaiono nel loro inglese accademico, e lo Zhou Yi in cinese classico, le stesse parole in tutte le 11 lingue dell'interfaccia. Ritradurre una traduzione sostituirebbe le parole proprie del traduttore con una parafrasi e potrebbe distorcere decenni di lavoro accademico già consolidato. L'obiettivo è darti accesso diretto alla fonte pubblicata più affidabile, non a una versione derivata di essa. Questo è diverso dalla tua consultazione con l'IA, che risponde sempre nella lingua della tua domanda: lì l'IA interpreta per te un risultato già formato, non presenta un testo primario.",
     moreInfoLink: { href: "/library", label: "Apri la Biblioteca →" },
     related: ["methodNotes"],
   },
@@ -2175,7 +2175,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "tier-features",
     question: "Cosa include ciascun pack, oltre ai token?",
     answer:
-      "Free include l'I Ching (Tre Monete o Steli di Achillea, automatico o manuale) e gli Ossi Oracolari, con il traduttore Wilhelm/Baynes. Seeker aggiunge la Biblioteca completa e il traduttore Legge. Practitioner aggiunge il testo originale dello Zhou Yi. Master aggiunge la sintesi Master (3), che triangola i tre traduttori contemporaneamente. Per vedere le quantità di token in vigore, i limiti per filo e come acquistare, apri il Centro token dall'intestazione dell'app.",
+      "Free include l'I Ching (Tre Monete o Steli di Achillea, automatico o manuale) e gli Ossi Oracolari, con il traduttore Wilhelm (1924). Seeker aggiunge la Biblioteca completa e il traduttore Legge. Practitioner aggiunge il testo originale dello Zhou Yi. Master aggiunge la sintesi Master (3), che triangola i tre traduttori contemporaneamente. Per vedere le quantità di token in vigore, i limiti per filo e come acquistare, apri il Centro token dall'intestazione dell'app.",
     related: ["tokenPacks"],
   },
   {
@@ -2238,7 +2238,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Comment le I Ching fonctionne-t-il réellement, et d'où viennent ses réponses ?",
     answer:
-      "Le I Ching fonctionne grâce à 64 hexagrammes, un catalogue millénaire des motifs de changement dans la nature et la vie humaine. Chaque hexagramme est une figure structurée dont le sens classique est conservé dans les textes Wilhelm/Baynes. Chaque consultation part de votre question concrète. L'algorithme mathématique lance les traits selon les règles classiques de sélection de trait (le système de réduction d'Alfred Huang) pour déterminer l'hexagramme présent, les éventuels traits en mouvement et l'hexagramme futur qui en résulte. L'IA articule ensuite ce résultat déjà formé dans votre langue, en appliquant le sens classique de ces hexagrammes à votre contexte particulier. C'est pourquoi chaque lecture est unique et personnelle : les mêmes hexagrammes peuvent apparaître pour des personnes différentes, mais la réponse n'est jamais la même, car elle dépend de la question concrète, du moment de vie et du contexte personnel du consultant. Il n'existe pas d'interprétation universelle applicable à plusieurs personnes en même temps.",
+      "Le I Ching fonctionne grâce à 64 hexagrammes, un catalogue millénaire des motifs de changement dans la nature et la vie humaine. Chaque hexagramme est une figure structurée dont le sens classique est conservé dans les textes Wilhelm (1924). Chaque consultation part de votre question concrète. L'algorithme mathématique lance les traits selon les règles classiques de sélection de trait (le système de réduction d'Alfred Huang) pour déterminer l'hexagramme présent, les éventuels traits en mouvement et l'hexagramme futur qui en résulte. L'IA articule ensuite ce résultat déjà formé dans votre langue, en appliquant le sens classique de ces hexagrammes à votre contexte particulier. C'est pourquoi chaque lecture est unique et personnelle : les mêmes hexagrammes peuvent apparaître pour des personnes différentes, mais la réponse n'est jamais la même, car elle dépend de la question concrète, du moment de vie et du contexte personnel du consultant. Il n'existe pas d'interprétation universelle applicable à plusieurs personnes en même temps.",
     related: ["methodNotes", "userGuide"],
   },
   {
@@ -2326,7 +2326,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
-      "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois traductions académiques disponibles dans l'app : Wilhelm/Baynes (Princeton University Press, 1950), James Legge (domaine public) et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
+      "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois sources académiques disponibles dans l'app : Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (domaine public) et le Zhou Yi original. La version anglaise de Cary Baynes (Princeton University Press, 1950) est également disponible comme référence comparative. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
     related: ["methodNotes"],
   },
   {
@@ -2334,7 +2334,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Pourquoi le texte des hexagrammes dans la Bibliothèque ne change pas de langue quand je change la langue de l'application ?",
     answer:
-      "Il est montré exactement comme il a été publié. Wilhelm/Baynes et Legge apparaissent dans leur anglais original, et le Zhou Yi en chinois classique, les mêmes mots dans les 11 langues de l'interface. Retraduire une traduction remplacerait les mots propres du traducteur par une paraphrase et pourrait déformer des décennies de travail académique déjà établi. L'objectif est de vous donner un accès direct à la source publiée la plus fiable, pas à une version dérivée de celle-ci. C'est différent de votre consultation avec l'IA, qui répond toujours dans la langue de votre question : là, l'IA interprète pour vous un résultat déjà formé, elle ne présente pas un texte primaire.",
+      "Il est montré exactement comme il a été publié. Wilhelm (1924) et Legge apparaissent dans leur anglais académique, et le Zhou Yi en chinois classique, les mêmes mots dans les 11 langues de l'interface. Retraduire une traduction remplacerait les mots propres du traducteur par une paraphrase et pourrait déformer des décennies de travail académique déjà établi. L'objectif est de vous donner un accès direct à la source publiée la plus fiable, pas à une version dérivée de celle-ci. C'est différent de votre consultation avec l'IA, qui répond toujours dans la langue de votre question : là, l'IA interprète pour vous un résultat déjà formé, elle ne présente pas un texte primaire.",
     moreInfoLink: { href: "/library", label: "Ouvre la Bibliothèque →" },
     related: ["methodNotes"],
   },
@@ -2377,7 +2377,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "tier-features",
     question: "Qu'inclut chaque pack, en plus des jetons ?",
     answer:
-      "Free comprend le I Ching (Trois Pièces ou Tiges d'Achillée, automatique ou manuel) et les Os de l'Oracle, avec le traducteur Wilhelm/Baynes. Seeker ajoute la Bibliothèque complète et le traducteur Legge. Practitioner ajoute le texte original du Zhou Yi. Master ajoute la synthèse Master (3), qui triangule les trois traducteurs simultanément. Pour voir les quantités de jetons en vigueur, les limites par fil et comment acheter, ouvrez le Centre de tokens depuis l'en-tête de l'app.",
+      "Free comprend le I Ching (Trois Pièces ou Tiges d'Achillée, automatique ou manuel) et les Os de l'Oracle, avec le traducteur Wilhelm (1924). Seeker ajoute la Bibliothèque complète et le traducteur Legge. Practitioner ajoute le texte original du Zhou Yi. Master ajoute la synthèse Master (3), qui triangule les trois traducteurs simultanément. Pour voir les quantités de jetons en vigueur, les limites par fil et comment acheter, ouvrez le Centre de tokens depuis l'en-tête de l'app.",
     related: ["tokenPacks"],
   },
   {

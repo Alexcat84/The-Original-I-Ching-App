@@ -96,6 +96,8 @@ const TIMELINE_META: Record<string, { verificationDateIso: string; sortOrder: nu
   "wilhelm-pantheon-pdf-2026-06-22": { verificationDateIso: "2026-06-23", sortOrder: 2 },
   "wilhelm-commentary-txt-maestro-2026-06-23": { verificationDateIso: "2026-06-24", sortOrder: 0 },
   "legge-commentary-txt-maestro-2026-06-23": { verificationDateIso: "2026-06-24", sortOrder: 1 },
+  "wilhelm-diederichs-1924-oracle-2026-06-30": { verificationDateIso: "2026-06-30", sortOrder: 0 },
+  "wilhelm-diederichs-1924-commentary-2026-06-30": { verificationDateIso: "2026-06-30", sortOrder: 1 },
   "huang-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 0 },
   "zhuxi-adler-mutation-pdf-2026-06-22": { verificationDateIso: "2026-06-22", sortOrder: 1 },
   "wilhelm-parma-initial-2026-06-21": { verificationDateIso: "2026-06-21", sortOrder: 0 },
@@ -229,7 +231,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: initial verification",
+    title: "Wilhelm (1924): initial cross-check (W/B 1950 comparative)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 Jun 2026",
     method:
@@ -240,12 +242,12 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Final: 514/514 fields matched (100%). Intermediate passes: 94.94% → 99.81% → 100%; the last 6 fields were completed from the printed edition where the web mirror had gaps.",
     statusKind: "superseded",
     statusLabel: "Obsolete.",
-    currentStatusNote: "",
+    currentStatusNote: "Comparative cross-reference against the Wilhelm/Baynes 1950 English rendering, retained for historical completeness. The app's oracle source is the first printed edition (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: verification (published edition)",
+    title: "Wilhelm (1924): verification (W/B 1950 comparative reference)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 Jun 2026",
     method:
@@ -253,9 +255,9 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     standardCompared:
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "Final: 514/514 fields matched (100%).",
-    statusKind: "current",
-    statusLabel: "Current as of this date.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superseded.",
+    currentStatusNote: "Comparative cross-reference against the Wilhelm/Baynes 1950 English rendering, retained for historical completeness. The app's oracle source is the first printed edition (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -319,9 +321,24 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Richard Wilhelm (1924): verification against the first edition",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 Jun 2026",
+    method:
+      "Field-by-field comparison of the app's oracle text against the first printed edition (Eugen Diederichs Verlag, Jena, 1924).",
+    standardCompared:
+      "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 for hexagrams 1 and 2 (514 fields total).",
+    result: "514/514 fields matched (100%).",
+    statusKind: "current",
+    statusLabel: "Current canonical source.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Classical commentaries: Wilhelm/Baynes",
+    title: "Classical commentaries: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 Jun 2026",
     method:
@@ -329,9 +346,9 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     standardCompared:
       "Wilhelm's own commentary and Confucius's Ten Wings notes on judgment, image, and each line; About this hexagram block; Words on the Text (hex 1-2 only); yong commentary (hex 1-2 only). 64 hexagrams.",
     result: "1920/1920 fields matched (100%).",
-    statusKind: "current",
-    statusLabel: "Current as of this date.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superseded.",
+    currentStatusNote: "Comparative cross-reference against the Wilhelm/Baynes 1950 English commentary, retained for completeness. Commentary is drawn from the first printed edition (Diederichs, 1924).",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -347,6 +364,21 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Footnotes and Great Symbolism image gloss fully covered (64/64, 100%); Lesser Symbolism line notes verified for every hexagram where Legge's edition includes them. Verification PASS.",
     statusKind: "current",
     statusLabel: "Current as of this date.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "Classical commentaries: Richard Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 Jun 2026",
+    method:
+      "Field-by-field comparison of the app's commentary text against the first printed edition (Eugen Diederichs Verlag, Jena, 1924), covering the third book (Die Kommentare), which contains Wilhelm's own notes and his rendering of the Confucian Ten Wings for all 64 hexagrams.",
+    standardCompared:
+      "Wilhelm's own commentary and the Ten Wings notes on judgment, image, and each line; About this hexagram block; Words on the Text (hexagrams 1 and 2 only); yong commentary (hexagrams 1 and 2 only). 64 hexagrams; 2,304 fields in total.",
+    result: "2,304/2,304 fields matched (100%).",
+    statusKind: "current",
+    statusLabel: "Current canonical source.",
     currentStatusNote: "",
   },
   {
@@ -444,7 +476,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: verificación inicial",
+    title: "Wilhelm (1924): verificación inicial (comparativo W/B 1950)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 jun 2026",
     method:
@@ -455,12 +487,12 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Final: 514/514 campos coincidentes (100%). Pasadas intermedias: 94.94% → 99.81% → 100%; los últimos 6 campos se completaron desde la edición impresa donde el mirror web tenía vacíos.",
     statusKind: "superseded",
     statusLabel: "Obsoleto.",
-    currentStatusNote: "",
+    currentStatusNote: "Cotejo comparativo contra la versión inglesa Wilhelm/Baynes de 1950, conservado por integridad histórica. La fuente oracular de la app es la primera edición impresa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: verificación (edición publicada)",
+    title: "Wilhelm (1924): verificación (referencia comparativa W/B 1950)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 jun 2026",
     method:
@@ -468,9 +500,9 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     standardCompared:
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "Final: 514/514 campos coincidentes (100%).",
-    statusKind: "current",
-    statusLabel: "Vigente a la fecha.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superado.",
+    currentStatusNote: "Cotejo comparativo contra la versión inglesa Wilhelm/Baynes de 1950, conservado por integridad histórica. La fuente oracular de la app es la primera edición impresa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -532,9 +564,24 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Richard Wilhelm (1924): verificación contra la primera edición",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 jun 2026",
+    method:
+      "Comparación campo por campo del texto oracular de la app contra la primera edición impresa (Eugen Diederichs Verlag, Jena, 1924).",
+    standardCompared:
+      "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 de los hexagramas 1 y 2 (514 campos en total).",
+    result: "514/514 campos coincidentes (100%).",
+    statusKind: "current",
+    statusLabel: "Fuente canónica vigente.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Comentarios clásicos: Wilhelm/Baynes",
+    title: "Comentarios clásicos: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 jun 2026",
     method:
@@ -542,9 +589,9 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     standardCompared:
       "Comentario propio de Wilhelm y notas de las Diez Alas de Confucio en juicio, imagen y cada línea; bloque Acerca de este hexagrama; Words on the Text (solo hex 1-2); comentario yong (solo hex 1-2). 64 hexagramas.",
     result: "1920/1920 campos coincidentes (100%).",
-    statusKind: "current",
-    statusLabel: "Vigente a la fecha.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superado.",
+    currentStatusNote: "Cotejo comparativo contra los comentarios de la versión inglesa Wilhelm/Baynes de 1950, conservado por integridad histórica. El comentario proviene de la primera edición impresa (Diederichs, 1924).",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -560,6 +607,21 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Footnotes y glosa de imagen del Gran Simbolismo cubiertos por completo (64/64, 100%); notas de Simbolismo menor verificadas en cada hexagrama donde la edición de Legge las incluye. Verificación PASS.",
     statusKind: "current",
     statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "Comentarios clásicos: Richard Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 jun 2026",
+    method:
+      "Comparación campo por campo del texto de comentario de la app contra la primera edición impresa (Eugen Diederichs Verlag, Jena, 1924), abarcando el tercer libro (Die Kommentare), que contiene las notas propias de Wilhelm y su traducción de las Diez Alas confucianas para los 64 hexagramas.",
+    standardCompared:
+      "Comentario propio de Wilhelm y las Diez Alas confucianas en juicio, imagen y cada línea; bloque Acerca de este hexagrama; Wen Yen (hexagramas 1 y 2 solamente); comentario yong (hexagramas 1 y 2 solamente). 64 hexagramas; 2.304 campos en total.",
+    result: "2.304/2.304 campos coincidentes (100%).",
+    statusKind: "current",
+    statusLabel: "Fuente canónica vigente.",
     currentStatusNote: "",
   },
   {
@@ -659,7 +721,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: verificação inicial",
+    title: "Wilhelm (1924): verificação inicial (comparativo W/B 1950)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 de junho de 2026",
     method:
@@ -670,12 +732,12 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Final: 514/514 campos correspondentes (100%). Passagens intermédias: 94.94% → 99.81% → 100%; os últimos 6 campos foram completados a partir da edição impressa onde o mirror web tinha lacunas.",
     statusKind: "superseded",
     statusLabel: "Obsoleto.",
-    currentStatusNote: "",
+    currentStatusNote: "Cotejo comparativo contra a versão inglesa Wilhelm/Baynes de 1950, mantido por integridade histórica. A fonte oracular da app é a primeira edição impressa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: verificação (edição publicada)",
+    title: "Wilhelm (1924): verificação (referência comparativa W/B 1950)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 de junho de 2026",
     method:
@@ -683,9 +745,9 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     standardCompared:
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "Final: 514/514 campos correspondentes (100%).",
-    statusKind: "current",
-    statusLabel: "Vigente nesta data.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superado.",
+    currentStatusNote: "Cotejo comparativo contra a versão inglesa Wilhelm/Baynes de 1950, mantido por integridade histórica. A fonte oracular da app é a primeira edição impressa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -747,9 +809,24 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Richard Wilhelm (1924): verificação contra a primeira edição",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 de junho de 2026",
+    method:
+      "Comparação campo a campo do texto oracular da app com a primeira edição impressa (Eugen Diederichs Verlag, Jena, 1924).",
+    standardCompared:
+      "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 para os hexagramas 1 e 2 (514 campos no total).",
+    result: "514/514 campos correspondentes (100%).",
+    statusKind: "current",
+    statusLabel: "Fonte canónica atual.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Comentários clássicos: Wilhelm/Baynes",
+    title: "Comentários clássicos: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 de junho de 2026",
     method:
@@ -757,9 +834,9 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     standardCompared:
       "Comentário próprio de Wilhelm e notas das Dez Asas de Confúcio em juízo, imagem e cada linha; bloco Sobre este hexagrama; Words on the Text (apenas hex 1-2); comentário yong (apenas hex 1-2). 64 hexagramas.",
     result: "1920/1920 campos coincidentes (100%).",
-    statusKind: "current",
-    statusLabel: "Vigente nesta data.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superado.",
+    currentStatusNote: "Cotejo comparativo contra os comentários da versão inglesa Wilhelm/Baynes de 1950, mantido por integridade histórica. O comentário provém da primeira edição impressa (Diederichs, 1924).",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -775,6 +852,21 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Footnotes e glosa de imagem do Grande Simbolismo totalmente cobertos (64/64, 100%); notas de Simbolismo menor verificadas em cada hexagrama onde a edição de Legge as inclui. Verificação PASS.",
     statusKind: "current",
     statusLabel: "Vigente nesta data.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "Comentários clássicos: Richard Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 de junho de 2026",
+    method:
+      "Comparação campo a campo do texto de comentário da app com a primeira edição impressa (Eugen Diederichs Verlag, Jena, 1924), abrangendo o terceiro livro (Die Kommentare), que contém as notas do próprio Wilhelm e a sua tradução das Dez Asas confucianas para os 64 hexagramas.",
+    standardCompared:
+      "Comentário próprio de Wilhelm e as Dez Asas confucianas sobre julgamento, imagem e cada linha; bloco Sobre este hexagrama; Wen Yen (hexagramas 1 e 2 apenas); comentário yong (hexagramas 1 e 2 apenas). 64 hexagramas; 2.304 campos no total.",
+    result: "2.304/2.304 campos correspondentes (100%).",
+    statusKind: "current",
+    statusLabel: "Fonte canónica atual.",
     currentStatusNote: "",
   },
   {
@@ -874,7 +966,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: vérification initiale",
+    title: "Wilhelm (1924): vérification initiale (comparatif W/B 1950)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 juin 2026",
     method:
@@ -885,12 +977,12 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Final : 514/514 champs correspondants (100 %). Passes intermédiaires : 94.94 % → 99.81 % → 100 % ; les 6 derniers champs ont été complétés à partir de l'édition imprimée là où le mirror web avait des lacunes.",
     statusKind: "superseded",
     statusLabel: "Obsolète.",
-    currentStatusNote: "",
+    currentStatusNote: "Référence croisée comparative vis-à-vis de la version anglaise Wilhelm/Baynes de 1950, conservée à titre historique. La source oraculaire de l'application est la première édition imprimée (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: vérification (édition publiée)",
+    title: "Wilhelm (1924): vérification (référence comparative W/B 1950)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 juin 2026",
     method:
@@ -898,9 +990,9 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     standardCompared:
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %).",
-    statusKind: "current",
-    statusLabel: "En vigueur à ce jour.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Supplanté.",
+    currentStatusNote: "Référence croisée comparative vis-à-vis de la version anglaise Wilhelm/Baynes de 1950, conservée à titre historique. La source oraculaire de l'application est la première édition imprimée (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -962,9 +1054,24 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Richard Wilhelm (1924): vérification contre la première édition",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 juin 2026",
+    method:
+      "Comparaison champ par champ du texte oraculaire de l'app avec la première édition imprimée (Eugen Diederichs Verlag, Jena, 1924).",
+    standardCompared:
+      "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 pour les hexagrammes 1 et 2 (514 champs au total).",
+    result: "514/514 champs correspondants (100 %).",
+    statusKind: "current",
+    statusLabel: "Source canonique en vigueur.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Commentaires classiques: Wilhelm/Baynes",
+    title: "Commentaires classiques: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 juin 2026",
     method:
@@ -972,9 +1079,9 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     standardCompared:
       "Commentaire propre de Wilhelm et notes des Dix Ailes de Confucius sur jugement, image et chaque ligne; bloc À propos de cet hexagramme; Words on the Text (hex 1-2 seulement); commentaire yong (hex 1-2 seulement). 64 hexagrammes.",
     result: "1920/1920 champs concordants (100%).",
-    statusKind: "current",
-    statusLabel: "En vigueur à ce jour.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Supplanté.",
+    currentStatusNote: "Référence croisée comparative vis-à-vis des commentaires de la version anglaise Wilhelm/Baynes de 1950, conservée à titre historique. Le commentaire est tiré de la première édition imprimée (Diederichs, 1924).",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -990,6 +1097,21 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Footnotes et glose d'image du Grand Symbolisme entièrement couverts (64/64, 100 %); notes de Petit Symbolisme vérifiées pour chaque hexagramme où l'édition de Legge les inclut. Vérification PASS.",
     statusKind: "current",
     statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "Commentaires classiques: Richard Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 juin 2026",
+    method:
+      "Comparaison champ par champ du texte de commentaire de l'app avec la première édition imprimée (Eugen Diederichs Verlag, Jena, 1924), couvrant le troisième livre (Die Kommentare), qui contient les notes propres de Wilhelm et sa traduction des Dix Ailes confucéennes pour les 64 hexagrammes.",
+    standardCompared:
+      "Commentaire propre de Wilhelm et les Dix Ailes confucéennes sur jugement, image et chaque trait; bloc À propos de cet hexagramme; Wen Yen (hexagrammes 1 et 2 uniquement); commentaire yong (hexagrammes 1 et 2 uniquement). 64 hexagrammes; 2 304 champs au total.",
+    result: "2 304/2 304 champs concordants (100 %).",
+    statusKind: "current",
+    statusLabel: "Source canonique en vigueur.",
     currentStatusNote: "",
   },
   {
@@ -1089,7 +1211,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: erste Verifikation",
+    title: "Wilhelm (1924): erste Verifikation (Vergleich W/B 1950)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21. Juni 2026",
     method:
@@ -1100,12 +1222,12 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Final: 514/514 Felder übereinstimmend (100 %). Zwischenstände: 94.94 % → 99.81 % → 100 %; die letzten 6 Felder wurden aus der gedruckten Ausgabe ergänzt, wo der Web-Mirror Lücken hatte.",
     statusKind: "superseded",
     statusLabel: "Obsolet.",
-    currentStatusNote: "",
+    currentStatusNote: "Vergleichsreferenz gegen die englische Wilhelm/Baynes-Fassung von 1950, aufbewahrt für die historische Vollständigkeit. Die Orakelquelle der App ist die erste Druckausgabe (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: Verifikation (veröffentlichte Ausgabe)",
+    title: "Wilhelm (1924): Verifikation (Vergleichsreferenz W/B 1950)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23. Juni 2026",
     method:
@@ -1113,9 +1235,9 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     standardCompared:
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "Final: 514/514 Felder übereinstimmend (100 %).",
-    statusKind: "current",
-    statusLabel: "Gültig zum Stichtag.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Abgelöst.",
+    currentStatusNote: "Vergleichsreferenz gegen die englische Wilhelm/Baynes-Fassung von 1950, aufbewahrt für die historische Vollständigkeit. Die Orakelquelle der App ist die erste Druckausgabe (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1177,9 +1299,24 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Richard Wilhelm (1924): Verifikation gegen die erste Ausgabe",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30. Juni 2026",
+    method:
+      "Feld-für-Feld-Vergleich des Orakeltexts der App mit der ersten Druckausgabe (Eugen Diederichs Verlag, Jena, 1924).",
+    standardCompared:
+      "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 für Hexagramm 1 und 2 (514 Felder insgesamt).",
+    result: "514/514 Felder übereinstimmend (100 %).",
+    statusKind: "current",
+    statusLabel: "Aktuelle kanonische Quelle.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Klassische Kommentare: Wilhelm/Baynes",
+    title: "Klassische Kommentare: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24. Juni 2026",
     method:
@@ -1187,9 +1324,9 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     standardCompared:
       "Wilhelms eigener Kommentar und Konfuzius' Zehn-Flügel-Noten zu Urteil, Bild und jeder Linie; Block Über dieses Hexagramm; Words on the Text (nur Hex 1-2); yong-Kommentar (nur Hex 1-2). 64 Hexagramme.",
     result: "1920/1920 Felder übereinstimmend (100%).",
-    statusKind: "current",
-    statusLabel: "Gültig zum Stichtag.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Abgelöst.",
+    currentStatusNote: "Vergleichsreferenz gegen den Kommentar der englischen Wilhelm/Baynes-Fassung von 1950, aufbewahrt für die historische Vollständigkeit. Der Kommentar entstammt der ersten Druckausgabe (Diederichs, 1924).",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1205,6 +1342,21 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Footnotes und Große-Symbolik-Bildglosse vollständig abgedeckt (64/64, 100 %); Kleinere-Symbolik-Liniennoten für jedes Hexagramm verifiziert, in dem Legges Ausgabe sie enthält. Verifikation PASS.",
     statusKind: "current",
     statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "Klassische Kommentare: Richard Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30. Juni 2026",
+    method:
+      "Feld-für-Feld-Vergleich des Kommentartexts der App mit der ersten Druckausgabe (Eugen Diederichs Verlag, Jena, 1924), die das dritte Buch (Die Kommentare) umfasst, das Wilhelms eigene Anmerkungen und seine Übertragung der konfuzianischen Zehn Flügel für alle 64 Hexagramme enthält.",
+    standardCompared:
+      "Wilhelms eigener Kommentar und die Zehn-Flügel-Noten zu Urteil, Bild und jeder Linie; Block Über dieses Hexagramm; Wen Yen (nur Hexagramm 1 und 2); yong-Kommentar (nur Hexagramm 1 und 2). 64 Hexagramme; 2.304 Felder insgesamt.",
+    result: "2.304/2.304 Felder übereinstimmend (100 %).",
+    statusKind: "current",
+    statusLabel: "Aktuelle kanonische Quelle.",
     currentStatusNote: "",
   },
   {
@@ -1303,7 +1455,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: verifica iniziale",
+    title: "Wilhelm (1924): verifica iniziale (comparativo W/B 1950)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 giugno 2026",
     method:
@@ -1314,12 +1466,12 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Final: 514/514 campi corrispondenti (100%), passaggi intermedi: 94.94% → 99.81% → 100%; gli ultimi 6 campi sono stati completati dall'edizione stampata dove il mirror web aveva lacune.",
     statusKind: "superseded",
     statusLabel: "Obsoleto.",
-    currentStatusNote: "",
+    currentStatusNote: "Riferimento incrociato comparativo rispetto alla versione inglese Wilhelm/Baynes del 1950, conservato per completezza storica. La fonte oraculare dell'app è la prima edizione a stampa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: verifica (edizione pubblicata)",
+    title: "Wilhelm (1924): verifica (riferimento comparativo W/B 1950)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 giugno 2026",
     method:
@@ -1327,9 +1479,9 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     standardCompared:
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "Final: 514/514 campi corrispondenti (100%).",
-    statusKind: "current",
-    statusLabel: "Vigente alla data.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superato.",
+    currentStatusNote: "Riferimento incrociato comparativo rispetto alla versione inglese Wilhelm/Baynes del 1950, conservato per completezza storica. La fonte oraculare dell'app è la prima edizione a stampa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1391,9 +1543,24 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Richard Wilhelm (1924): verifica contro la prima edizione",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 giugno 2026",
+    method:
+      "Confronto campo per campo del testo oracolare dell'app con la prima edizione a stampa (Eugen Diederichs Verlag, Jena, 1924).",
+    standardCompared:
+      "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 per gli esagrammi 1 e 2 (514 campi totali).",
+    result: "514/514 campi corrispondenti (100%).",
+    statusKind: "current",
+    statusLabel: "Fonte canonica corrente.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "Commenti classici: Wilhelm/Baynes",
+    title: "Commenti classici: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 giugno 2026",
     method:
@@ -1401,9 +1568,9 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     standardCompared:
       "Commento proprio di Wilhelm e note delle Dieci Ali di Confucio su giudizio, immagine e ogni linea; blocco Informazioni su questo esagramma; Words on the Text (solo hex 1-2); commento yong (solo hex 1-2). 64 esagrammi.",
     result: "1920/1920 campi coincidenti (100%).",
-    statusKind: "current",
-    statusLabel: "Vigente alla data.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "Superato.",
+    currentStatusNote: "Riferimento incrociato comparativo rispetto ai commenti della versione inglese Wilhelm/Baynes del 1950, conservato per completezza storica. Il commento è tratto dalla prima edizione a stampa (Diederichs, 1924).",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1419,6 +1586,21 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Footnotes e glossa dell'immagine del Grande Simbolismo completamente coperti (64/64, 100%); note di Simbolismo minore verificate per ogni esagramma in cui l'edizione di Legge le include. Verifica PASS.",
     statusKind: "current",
     statusLabel: "Vigente alla data.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "Commenti classici: Richard Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 giugno 2026",
+    method:
+      "Confronto campo per campo del testo di commento dell'app con la prima edizione a stampa (Eugen Diederichs Verlag, Jena, 1924), che comprende il terzo libro (Die Kommentare), contenente le note proprie di Wilhelm e la sua traduzione delle Dieci Ali confuciane per tutti i 64 esagrammi.",
+    standardCompared:
+      "Commento proprio di Wilhelm e le note delle Dieci Ali confuciane su giudizio, immagine e ogni linea; blocco Informazioni su questo esagramma; Wen Yen (solo esagrammi 1 e 2); commento yong (solo esagrammi 1 e 2). 64 esagrammi; 2.304 campi in totale.",
+    result: "2.304/2.304 campi corrispondenti (100%).",
+    statusKind: "current",
+    statusLabel: "Fonte canonica corrente.",
     currentStatusNote: "",
   },
   {
@@ -1517,7 +1699,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: 初回検証",
+    title: "Wilhelm (1924): 初回照合 (W/B 1950 比較参照)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "2026年6月21日",
     method:
@@ -1528,21 +1710,21 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "最終: 514/514フィールドが一致（100%）。中間結果: 94.94% → 99.81% → 100%; Webミラーに欠けていた最後の6フィールドは印刷版で補完。",
     statusKind: "superseded",
     statusLabel: "廃止。",
-    currentStatusNote: "",
+    currentStatusNote: "1950年英訳（Wilhelm/Baynes）との比較照合として記録を保持しています。アプリのオラクルソースは初版刊行本（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）です。",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: 検証（出版版）",
+    title: "Wilhelm (1924): 検証（W/B 1950 比較参照）",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月23日",
     method:
       "出版版のローカルEPUBから抽出したテキストとアプリが提供するテキストとの間で、自動化されたフィールド単位の比較を実施。",
     standardCompared: "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、用九/用六を含む、合計514フィールド。",
     result: "最終: 514/514フィールドが一致（100%）。",
-    statusKind: "current",
-    statusLabel: "現時点で有効。",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "廃止。",
+    currentStatusNote: "1950年英訳（Wilhelm/Baynes）との比較照合として記録を保持しています。アプリのオラクルソースは初版刊行本（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）です。",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1602,9 +1784,24 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "リヒャルト・ヴィルヘルム（1924年）: 初版との照合",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "2026年6月30日",
+    method:
+      "初版刊行本（Eugen Diederichs Verlag、イェーナ、1924年）に対するアプリのオラクルテキストのフィールド単位の比較。",
+    standardCompared:
+      "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、卦1・卦2の用九/用六を含む、合計514フィールド。",
+    result: "514/514フィールドが一致（100%）。",
+    statusKind: "current",
+    statusLabel: "現在の標準オラクルソース。",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "古典注釈: Wilhelm/Baynes",
+    title: "古典注釈: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月24日",
     method:
@@ -1612,9 +1809,9 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     standardCompared:
       "ウィルヘルム自身の注釈と孔子の十翼による卦辞・象辞・各爻への注；この卦についてブロック；Words on the Text（卦1-2のみ）；用の注釈（卦1-2のみ）。64卦。",
     result: "1920/1920フィールド一致（100%）。",
-    statusKind: "current",
-    statusLabel: "現時点で有効。",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "廃止。",
+    currentStatusNote: "1950年英訳（Wilhelm/Baynes）の注釈との比較照合として記録を保持しています。注釈は初版刊行本（Diederichs、1924年）から取得しています。",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1630,6 +1827,21 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "脚注と大象伝の象解は完全カバー（64/64、100%）；小象伝の各爻注はレッジ版に収録されている卦すべてで検証済み。検証PASS。",
     statusKind: "current",
     statusLabel: "現時点で有効。",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "古典注釈: リヒャルト・ヴィルヘルム（1924年）",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "2026年6月30日",
+    method:
+      "初版刊行本（Eugen Diederichs Verlag、イェーナ、1924年）に対するアプリの注釈テキストのフィールド単位の比較。対象は第三書（Die Kommentare）全体で、ヴィルヘルム自身の注釈と64卦すべてに対する十翼の訳を含む。",
+    standardCompared:
+      "ヴィルヘルム自身の注釈と十翼による卦辞・象辞・各爻への注；この卦についてブロック；Wen Yen（卦1・卦2のみ）；用九/用六の注釈（卦1・卦2のみ）。64卦；合計2,304フィールド。",
+    result: "2,304/2,304フィールドが一致（100%）。",
+    statusKind: "current",
+    statusLabel: "現在の標準注釈ソース。",
     currentStatusNote: "",
   },
   {
@@ -1727,7 +1939,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "卫礼贤/贝恩斯: 初步验证",
+    title: "卫礼贤 (1924): 初步交叉核验 (W/B 1950 比较参照)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "2026年6月21日",
     method: "在从镜像站提取的文本与应用提供的文本之间进行自动化逐字段比对。",
@@ -1737,21 +1949,21 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "最终: 514/514个字段一致（100%）。中间结果: 94.94% → 99.81% → 100%；最后6个字段从印刷版补全，因网页镜像存在空缺。",
     statusKind: "superseded",
     statusLabel: "已废止。",
-    currentStatusNote: "",
+    currentStatusNote: "作为与1950年英译本（卫礼贤/贝恩斯）的对照参考予以保留，以供历史完整性参考。本应用的卦辞来源为初版印刷版（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）。",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "卫礼贤/贝恩斯: 验证（出版版）",
+    title: "卫礼贤 (1924): 验证（W/B 1950 比较参照）",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月23日",
     method:
       "在出版版本地EPUB提取的文本与应用提供的文本之间进行自动化逐字段比对。",
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%）。",
-    statusKind: "current",
-    statusLabel: "截至本日有效。",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "已超代。",
+    currentStatusNote: "作为与1950年英译本（卫礼贤/贝恩斯）的对照参考予以保留，以供历史完整性参考。本应用的卦辞来源为初版印刷版（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）。",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -1811,9 +2023,24 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "卫礼贤（1924年）: 对照初版验证",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "2026年6月30日",
+    method:
+      "将应用卦辞文本与初版印刷版（Eugen Diederichs Verlag，耶拿，1924年）进行逐字段比对。",
+    standardCompared:
+      "全部64卦的卦辭、象辭，以及6条爻辭，包括第1、2卦的用九/用六（共514个字段）。",
+    result: "514/514个字段一致（100%）。",
+    statusKind: "current",
+    statusLabel: "当前标准卦辞来源。",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "古典注释: 卫礼贤/贝恩斯",
+    title: "古典注释: 卫礼贤 (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026年6月24日",
     method:
@@ -1821,9 +2048,9 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     standardCompared:
       "卫礼贤本人注释与孔子十翼对卦辞、象辞及六爻的注；关于此卦块；Words on the Text（仅第1-2卦）；用九/用六注释（仅第1-2卦）。64卦。",
     result: "1920/1920 字段一致（100%）。",
-    statusKind: "current",
-    statusLabel: "截至本日有效。",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "已超代。",
+    currentStatusNote: "作为与1950年英译本（卫礼贤/贝恩斯）注释的对照参考予以保留。注释取自初版印刷版（Diederichs，1924年）。",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -1839,6 +2066,21 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "脚注与大象传象解已全覆盖（64/64，100%）；小象传各爻注已在理雅各版本收录的所有卦中验证。验证PASS。",
     statusKind: "current",
     statusLabel: "截至本日有效。",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "古典注释: 卫礼贤（1924年）",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "2026年6月30日",
+    method:
+      "将应用注释文本与初版印刷版（Eugen Diederichs Verlag，耶拿，1924年）进行逐字段比对，涵盖第三册（Die Kommentare），其中包含卫礼贤本人注释及其对所有64卦儒家十翼的翻译。",
+    standardCompared:
+      "卫礼贤本人注释与儒家十翼对卦辞、象辞及六爻的注；关于此卦块；Wen Yen（仅第1、2卦）；用九/用六注释（仅第1、2卦）。64卦；共2,304个字段。",
+    result: "2,304/2,304个字段一致（100%）。",
+    statusKind: "current",
+    statusLabel: "当前标准注释来源。",
     currentStatusNote: "",
   },
   {
@@ -1935,7 +2177,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: 초기 검증",
+    title: "Wilhelm (1924): 초기 교차 검토 (W/B 1950 비교 참조)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "2026년 6월 21일",
     method: "미러에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교 수행.",
@@ -1945,21 +2187,21 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "최종: 514/514개 필드 일치(100%). 중간 결과: 94.94% → 99.81% → 100%; 웹 미러에 빠져 있던 마지막 6개 필드는 인쇄판으로 보완.",
     statusKind: "superseded",
     statusLabel: "폐기됨.",
-    currentStatusNote: "",
+    currentStatusNote: "1950년 영어 번역본（Wilhelm/Baynes）과의 비교 대조 참고용으로 기록을 보관합니다. 앱의 오라클 출처는 초판 인쇄본（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）입니다.",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: 검증 (출판판)",
+    title: "Wilhelm (1924): 검증 (W/B 1950 비교 참조)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026년 6월 23일",
     method:
       "출판판 로컬 EPUB에서 추출한 텍스트와 앱이 제공하는 텍스트 간의 자동화된 필드별 비교 수행.",
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
-    statusKind: "current",
-    statusLabel: "현재 기준 유효.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "대체됨.",
+    currentStatusNote: "1950년 영어 번역본（Wilhelm/Baynes）과의 비교 대조 참고용으로 기록을 보관합니다. 앱의 오라클 출처는 초판 인쇄본（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）입니다.",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -2019,9 +2261,24 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Wilhelm (1924): 초판 대조 검증",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "2026년 6월 30일",
+    method:
+      "앱의 오라클 텍스트를 초판 인쇄본(Eugen Diederichs Verlag, 예나, 1924년)과 필드별로 비교.",
+    standardCompared:
+      "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 괘 1과 2의 용구/용육(用九/用六) 포함, 총 514개 필드.",
+    result: "514/514개 필드 일치(100%).",
+    statusKind: "current",
+    statusLabel: "현행 표준 오라클 출처.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "고전 주석: Wilhelm/Baynes",
+    title: "고전 주석: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "2026년 6월 24일",
     method:
@@ -2029,9 +2286,9 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared:
       "Wilhelm 자신의 주석과 공자 십익의 괘사·상사·각 효 주석; 이 괘에 대하여 블록; Words on the Text(1-2괴만); 용 주석(1-2괴만). 64괴.",
     result: "1920/1920 필드 일치(100%).",
-    statusKind: "current",
-    statusLabel: "현재 기준 유효.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "대체됨.",
+    currentStatusNote: "1950년 영어 번역본（Wilhelm/Baynes）의 주석과의 비교 대조 참고용으로 보관합니다. 주석은 초판 인쇄본（Diederichs, 1924년）에서 가져온 것입니다.",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -2047,6 +2304,21 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "각주와 대상전 상 해설은 완전 커버(64/64, 100%); 소상전 효별 주석은 Legge판에 수록된 모든 괴에서 검증 완료. 검증 PASS.",
     statusKind: "current",
     statusLabel: "현재 기준 유효.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "고전 주석: Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "2026년 6월 30일",
+    method:
+      "앱의 주석 텍스트를 초판 인쇄본(Eugen Diederichs Verlag, 예나, 1924년)과 필드별로 비교. 64괘 전체에 대한 Wilhelm 자신의 주석과 유교 십익 번역을 담은 제3권(Die Kommentare) 전체를 대상으로 함.",
+    standardCompared:
+      "Wilhelm 자신의 주석과 십익의 괘사, 상사, 각 효 주석; 이 괘에 대하여 블록; Wen Yen(괘 1, 2만); 용 주석(괘 1, 2만). 64괘; 총 2,304개 필드.",
+    result: "2,304/2,304개 필드 일치(100%).",
+    statusKind: "current",
+    statusLabel: "현행 표준 주석 출처.",
     currentStatusNote: "",
   },
   {
@@ -2144,7 +2416,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: التحقق الأولي",
+    title: "Wilhelm (1924): التحقق المتقاطع الأولي (مرجع W/B 1950 المقارن)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 يونيو 2026",
     method:
@@ -2155,21 +2427,21 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "نهائي: تطابق 514/514 حقلاً (100%)، مراحل وسيطة: 94.94% → 99.81% → 100%؛ اكتملت الحقول الستة الأخيرة من النسخة المطبوعة حيث كان للمرآة فراغات.",
     statusKind: "superseded",
     statusLabel: "مهمل.",
-    currentStatusNote: "",
+    currentStatusNote: "مرجع مقارن مقابل الترجمة الإنجليزية Wilhelm/Baynes عام 1950، محتفظ به لاستيفاء السجل التاريخي. مصدر الأوراكل في التطبيق هو الطبعة الأولى المطبوعة (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: التحقق (النسخة المنشورة)",
+    title: "Wilhelm (1924): التحقق (المرجع المقارن W/B 1950)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 يونيو 2026",
     method:
       "مقارنة تلقائية حقل بحقل بين نص مستخرج من EPUB محلي للنسخة المنشورة والنص الذي يقدمه التطبيق.",
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
-    statusKind: "current",
-    statusLabel: "ساري حتى هذا التاريخ.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "تجاوزه نظير أحدث.",
+    currentStatusNote: "مرجع مقارن مقابل الترجمة الإنجليزية Wilhelm/Baynes عام 1950، محتفظ به لاستيفاء السجل التاريخي. مصدر الأوراكل في التطبيق هو الطبعة الأولى المطبوعة (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -2229,9 +2501,24 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "ريتشارد فيلهلم (1924): التحقق مقابل الطبعة الأولى",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 يونيو 2026",
+    method:
+      "مقارنة حقل بحقل لنص الأوراكل في التطبيق مقابل الطبعة الأولى المطبوعة (Eugen Diederichs Verlag، يينا، 1924).",
+    standardCompared:
+      "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 للهكساغرامين 1 و2 (514 حقلاً إجمالاً).",
+    result: "تطابق 514/514 حقلاً (100%).",
+    statusKind: "current",
+    statusLabel: "المصدر الأساسي الساري.",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "شروح تقليدية: Wilhelm/Baynes",
+    title: "شروح تقليدية: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 يونيو 2026",
     method:
@@ -2239,9 +2526,9 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared:
       "شرح Wilhelm نفسه وملاحظات العشرة أجنحة لConfucius على الحكم والصورة وكل خط؛ كتلة حول هذا الHexagram؛ Words on the Text (Hexagram 1-2 فقط)؛ شرح yong (1-2 فقط). 64 hexagram.",
     result: "1920/1920 حقلاً متطابقاً (100%).",
-    statusKind: "current",
-    statusLabel: "ساري حتى هذا التاريخ.",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "تجاوزه نظير أحدث.",
+    currentStatusNote: "مرجع مقارن مقابل تعليق الترجمة الإنجليزية Wilhelm/Baynes عام 1950، محتفظ به لاستيفاء السجل التاريخي. التعليق مستمد من الطبعة الأولى المطبوعة (Diederichs، 1924).",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -2257,6 +2544,21 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "Footnotes وشرح صورة الرمزية الكبرى مغطاة بالكامل (64/64، 100%)؛ ملاحظات الرمزية الصغرى مُحققة لكل hexagram تتضمنه نسخة Legge. تحقق PASS.",
     statusKind: "current",
     statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "شروح تقليدية: ريتشارد فيلهلم (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 يونيو 2026",
+    method:
+      "مقارنة حقل بحقل لنص التعليق في التطبيق مقابل الطبعة الأولى المطبوعة (Eugen Diederichs Verlag، يينا، 1924)، تشمل الكتاب الثالث (Die Kommentare) الذي يحتوي على ملاحظات فيلهلم نفسه وترجمته للعشرة أجنحة الكونفوشيوسية لجميع الـ64 هكساغرام.",
+    standardCompared:
+      "شرح فيلهلم نفسه وملاحظات العشرة أجنحة على الحكم والصورة وكل خط؛ كتلة حول هذا الهكساغرام؛ Wen Yen (هكساغرام 1 و2 فقط)؛ شرح yong (هكساغرام 1 و2 فقط). 64 هكساغرام؛ 2,304 حقلا إجمالا.",
+    result: "تطابق 2,304/2,304 حقلاً (100%).",
+    statusKind: "current",
+    statusLabel: "المصدر الأساسي الساري.",
     currentStatusNote: "",
   },
   {
@@ -2354,7 +2656,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
   {
     id: "wilhelm-parma-initial-2026-06-21",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: प्रारंभिक सत्यापन",
+    title: "Wilhelm (1924): प्रारंभिक क्रॉस-चेक (W/B 1950 तुलनात्मक)",
     source: CITATIONS.wilhelmParma,
     verificationDate: "21 जून 2026",
     method:
@@ -2365,21 +2667,21 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)। मध्यवर्ती चरण: 94.94% → 99.81% → 100%; अंतिम 6 फ़ील्ड मुद्रित संस्करण से पूरे किए गए जहाँ वेब मिरर में अंतराल थे।",
     statusKind: "superseded",
     statusLabel: "अप्रचलित।",
-    currentStatusNote: "",
+    currentStatusNote: "1950 के Wilhelm/Baynes अंग्रेज़ी अनुवाद के साथ तुलनात्मक क्रॉस-रेफरेंस के रूप में संग्रहीत। ऐप का ओरेकल स्रोत प्रथम मुद्रित संस्करण (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag) है।",
   },
   {
     id: "wilhelm-pantheon-pdf-2026-06-22",
     category: "oracle-text",
-    title: "Wilhelm/Baynes: सत्यापन (प्रकाशित संस्करण)",
+    title: "Wilhelm (1924): सत्यापन (W/B 1950 तुलनात्मक संदर्भ)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "23 जून 2026",
     method:
       "प्रकाशित संस्करण के स्थानीय EPUB से निकाले गए पाठ और ऐप द्वारा परोसे गए पाठ के बीच स्वचालित फ़ील्ड-दर-फ़ील्ड तुलना।",
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)।",
-    statusKind: "current",
-    statusLabel: "इस तिथि तक वैध।",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "अतिक्रमित।",
+    currentStatusNote: "1950 के Wilhelm/Baynes अंग्रेज़ी अनुवाद के साथ तुलनात्मक क्रॉस-रेफरेंस के रूप में संग्रहीत। ऐप का ओरेकल स्रोत प्रथम मुद्रित संस्करण (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag) है।",
   },
   {
     id: "legge-sacred-texts-initial-2026-06-21",
@@ -2439,9 +2741,24 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     currentStatusNote: "",
   },
   {
+    id: "wilhelm-diederichs-1924-oracle-2026-06-30",
+    category: "oracle-text",
+    title: "Richard Wilhelm (1924): प्रथम संस्करण के विरुद्ध सत्यापन",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 जून 2026",
+    method:
+      "प्रथम मुद्रित संस्करण (Eugen Diederichs Verlag, Jena, 1924) के विरुद्ध ऐप के ओरेकल पाठ की फ़ील्ड-दर-फ़ील्ड तुलना।",
+    standardCompared:
+      "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), हेक्साग्राम 1 और 2 के 用九/用六 सहित (कुल 514 फ़ील्ड)।",
+    result: "514/514 फ़ील्ड मेल खाए (100%)।",
+    statusKind: "current",
+    statusLabel: "वर्तमान प्रामाणिक स्रोत।",
+    currentStatusNote: "",
+  },
+  {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
     category: "library-commentary",
-    title: "शास्त्रीय टिप्पणियाँ: Wilhelm/Baynes",
+    title: "शास्त्रीय टिप्पणियाँ: Wilhelm (1924)",
     source: CITATIONS.wilhelmPantheon,
     verificationDate: "24 जून 2026",
     method:
@@ -2449,9 +2766,9 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     standardCompared:
       "Wilhelm का अपना टीका और Confucius के दस पंख की judgment/image/प्रत्येक रेखा पर टिप्पणियाँ; About this hexagram ब्लॉक; Words on the Text (केवल hex 1-2); yong टीका (1-2)। 64 हेक्साग्राम।",
     result: "1920/1920 फ़ील्ड मेल (100%)।",
-    statusKind: "current",
-    statusLabel: "इस तिथि तक वैध।",
-    currentStatusNote: "",
+    statusKind: "superseded",
+    statusLabel: "अतिक्रमित।",
+    currentStatusNote: "1950 के Wilhelm/Baynes अंग्रेज़ी टीके के साथ तुलनात्मक क्रॉस-रेफरेंस के रूप में संग्रहीत। टिप्पणी प्रथम मुद्रित संस्करण (Diederichs, 1924) से ली गई है।",
   },
   {
     id: "legge-commentary-txt-maestro-2026-06-23",
@@ -2467,6 +2784,21 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "Footnotes और Great Symbolism image-ग्लोस पूर्ण रूप से कवर (64/64, 100%); Lesser Symbolism रेखा-टिप्पणियाँ हर उस हेक्साग्राम के लिए सत्यापित जहाँ Legge का संस्करण उन्हें शामिल करता है। सत्यापन PASS।",
     statusKind: "current",
     statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "",
+  },
+  {
+    id: "wilhelm-diederichs-1924-commentary-2026-06-30",
+    category: "library-commentary",
+    title: "शास्त्रीय टिप्पणियाँ: Richard Wilhelm (1924)",
+    source: CITATIONS.wilhelmDiederichs1924,
+    verificationDate: "30 जून 2026",
+    method:
+      "प्रथम मुद्रित संस्करण (Eugen Diederichs Verlag, Jena, 1924) के विरुद्ध ऐप के टिप्पणी पाठ की फ़ील्ड-दर-फ़ील्ड तुलना, तीसरी पुस्तक (Die Kommentare) को कवर करते हुए, जिसमें सभी 64 हेक्साग्राम के लिए Wilhelm की अपनी टिप्पणियाँ और कन्फ्यूशियस के दस पंखों का उनका अनुवाद है।",
+    standardCompared:
+      "Wilhelm की अपनी टिप्पणी और निर्णय, छवि और प्रत्येक रेखा पर दस पंखों की टिप्पणियाँ; About this hexagram ब्लॉक; Wen Yen (केवल हेक्साग्राम 1 और 2); yong टिप्पणी (केवल हेक्साग्राम 1 और 2)। 64 हेक्साग्राम; कुल 2,304 फ़ील्ड।",
+    result: "2,304/2,304 फ़ील्ड मेल खाए (100%)।",
+    statusKind: "current",
+    statusLabel: "वर्तमान प्रामाणिक स्रोत।",
     currentStatusNote: "",
   },
   {

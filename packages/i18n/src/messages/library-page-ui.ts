@@ -105,7 +105,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
   es: {
     title: "Biblioteca de hexagramas",
     subtitle:
-      "Los 64 hexagramas en orden King Wen, con las traducciones de Wilhelm/Baynes y James Legge y el texto original Zhou Yi. Esta sección no consume tokens: es una enciclopedia para consultar, comparar y estudiar.",
+      "Los 64 hexagramas en orden King Wen, con las traducciones de Wilhelm (1924) y James Legge y el texto original Zhou Yi. Esta sección no consume tokens: es una enciclopedia para consultar, comparar y estudiar.",
     backToOracle: "← Volver al oráculo",
     searchPlaceholder: "Buscar por número, nombre o pinyin",
     searchAriaLabel: "Buscar hexagramas",
@@ -119,7 +119,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "Ningún hexagrama coincide con los filtros actuales.",
     detailCrumb: "Biblioteca",
     translationsHeading: "Traducciones",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (chino)",
     judgmentHeading: "Juicio",
@@ -150,14 +150,14 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "No se encontró ese hexagrama. Vuelve a la biblioteca y prueba con un número entre 1 y 64.",
     metaDescription:
-      "Biblioteca completa de los 64 hexagramas del I Ching con Wilhelm/Baynes, Legge y Zhou Yi original. Búsqueda y comparación lado a lado.",
+      "Biblioteca completa de los 64 hexagramas del I Ching con Wilhelm (1924), Legge y Zhou Yi original. Búsqueda y comparación lado a lado.",
     detailMetaTitle: (label) =>
       `${label} | Biblioteca | The Original I Ching App`,
   },
   en: {
     title: "Hexagram library",
     subtitle:
-      "All 64 hexagrams in King Wen order with Wilhelm/Baynes, James Legge, and the original Zhou Yi text. This section never consumes tokens; it is an encyclopedia for browsing, comparing, and study.",
+      "All 64 hexagrams in King Wen order with Wilhelm (1924), James Legge, and the original Zhou Yi text. This section never consumes tokens; it is an encyclopedia for browsing, comparing, and study.",
     backToOracle: "← Back to oracle",
     searchPlaceholder: "Search by number, name, or pinyin",
     searchAriaLabel: "Search hexagrams",
@@ -171,7 +171,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "No hexagram matches the current filters.",
     detailCrumb: "Library",
     translationsHeading: "Translations",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (Chinese)",
     judgmentHeading: "Judgment",
@@ -202,13 +202,13 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "That hexagram could not be found. Go back to the library and pick a number between 1 and 64.",
     metaDescription:
-      "Complete library of the 64 I Ching hexagrams with Wilhelm/Baynes, Legge, and original Zhou Yi. Side-by-side search and comparison.",
+      "Complete library of the 64 I Ching hexagrams with Wilhelm (1924), Legge, and original Zhou Yi. Side-by-side search and comparison.",
     detailMetaTitle: (label) => `${label} | Library | The Original I Ching App`,
   },
   pt: {
     title: "Biblioteca de hexagramas",
     subtitle:
-      "Os 64 hexagramas na ordem King Wen, com as traduções de Wilhelm/Baynes e James Legge e o texto original Zhou Yi. Esta secção não consome tokens: é uma enciclopédia para consulta, comparação e estudo.",
+      "Os 64 hexagramas na ordem King Wen, com as traduções de Wilhelm (1924) e James Legge e o texto original Zhou Yi. Esta secção não consome tokens: é uma enciclopédia para consulta, comparação e estudo.",
     backToOracle: "← Voltar ao oráculo",
     searchPlaceholder: "Procurar por número, nome ou pinyin",
     searchAriaLabel: "Procurar hexagramas",
@@ -222,7 +222,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "Nenhum hexagrama corresponde aos filtros actuais.",
     detailCrumb: "Biblioteca",
     translationsHeading: "Traduções",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (chinês)",
     judgmentHeading: "Juízo",
@@ -253,14 +253,14 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "Hexagrama não encontrado. Volte à biblioteca e tente um número entre 1 e 64.",
     metaDescription:
-      "Biblioteca completa dos 64 hexagramas do I Ching com Wilhelm/Baynes, Legge e Zhou Yi original. Pesquisa e comparação lado a lado.",
+      "Biblioteca completa dos 64 hexagramas do I Ching com Wilhelm (1924), Legge e Zhou Yi original. Pesquisa e comparação lado a lado.",
     detailMetaTitle: (label) =>
       `${label} | Biblioteca | The Original I Ching App`,
   },
   fr: {
     title: "Bibliothèque des hexagrammes",
     subtitle:
-      "Les 64 hexagrammes dans l'ordre du Roi Wen, avec les traductions de Wilhelm/Baynes, James Legge et le texte original Zhou Yi. Cette section ne consomme aucun jeton; c'est une encyclopédie de consultation et de comparaison.",
+      "Les 64 hexagrammes dans l'ordre du Roi Wen, avec les traductions de Wilhelm (1924), James Legge et le texte original Zhou Yi. Cette section ne consomme aucun jeton; c'est une encyclopédie de consultation et de comparaison.",
     backToOracle: "← Retour à l’oracle",
     searchPlaceholder: "Rechercher par numéro, nom ou pinyin",
     searchAriaLabel: "Rechercher des hexagrammes",
@@ -274,7 +274,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "Aucun hexagramme ne correspond aux filtres actuels.",
     detailCrumb: "Bibliothèque",
     translationsHeading: "Traductions",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (chinois)",
     judgmentHeading: "Jugement",
@@ -305,14 +305,14 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "Cet hexagramme est introuvable. Revenez à la bibliothèque et choisissez un numéro entre 1 et 64.",
     metaDescription:
-      "Bibliothèque complète des 64 hexagrammes du I Ching avec Wilhelm/Baynes, Legge et Zhou Yi original. Recherche et comparaison côte à côte.",
+      "Bibliothèque complète des 64 hexagrammes du I Ching avec Wilhelm (1924), Legge et Zhou Yi original. Recherche et comparaison côte à côte.",
     detailMetaTitle: (label) =>
       `${label} | Bibliothèque | The Original I Ching App`,
   },
   de: {
     title: "Hexagramm-Bibliothek",
     subtitle:
-      "Alle 64 Hexagramme in der Reihenfolge nach König Wen mit Wilhelm/Baynes, James Legge und dem originalen Zhou-Yi-Text. Dieser Bereich verbraucht keine Token; er ist eine Enzyklopädie zum Vergleichen und Studieren.",
+      "Alle 64 Hexagramme in der Reihenfolge nach König Wen mit Wilhelm (1924), James Legge und dem originalen Zhou-Yi-Text. Dieser Bereich verbraucht keine Token; er ist eine Enzyklopädie zum Vergleichen und Studieren.",
     backToOracle: "← Zurück zum Orakel",
     searchPlaceholder: "Nach Nummer, Name oder Pinyin suchen",
     searchAriaLabel: "Hexagramme durchsuchen",
@@ -326,7 +326,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "Kein Hexagramm entspricht den aktuellen Filtern.",
     detailCrumb: "Bibliothek",
     translationsHeading: "Übersetzungen",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (Chinesisch)",
     judgmentHeading: "Urteil",
@@ -357,14 +357,14 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "Dieses Hexagramm wurde nicht gefunden. Kehre zur Bibliothek zurück und wähle eine Zahl zwischen 1 und 64.",
     metaDescription:
-      "Vollständige Bibliothek der 64 I-Ging-Hexagramme mit Wilhelm/Baynes, Legge und Original-Zhou Yi. Suche und Seite-an-Seite-Vergleich.",
+      "Vollständige Bibliothek der 64 I-Ging-Hexagramme mit Wilhelm (1924), Legge und Original-Zhou Yi. Suche und Seite-an-Seite-Vergleich.",
     detailMetaTitle: (label) =>
       `${label} | Bibliothek | The Original I Ching App`,
   },
   it: {
     title: "Biblioteca degli esagrammi",
     subtitle:
-      "Tutti i 64 esagrammi nell'ordine di Re Wen con Wilhelm/Baynes, James Legge e il testo originale Zhou Yi. Questa sezione non consuma token: è un'enciclopedia per consultare, confrontare e studiare.",
+      "Tutti i 64 esagrammi nell'ordine di Re Wen con Wilhelm (1924), James Legge e il testo originale Zhou Yi. Questa sezione non consuma token: è un'enciclopedia per consultare, confrontare e studiare.",
     backToOracle: "← Torna all’oracolo",
     searchPlaceholder: "Cerca per numero, nome o pinyin",
     searchAriaLabel: "Cerca esagrammi",
@@ -378,7 +378,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "Nessun esagramma corrisponde ai filtri attuali.",
     detailCrumb: "Biblioteca",
     translationsHeading: "Traduzioni",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (cinese)",
     judgmentHeading: "Giudizio",
@@ -409,14 +409,14 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "Esagramma non trovato. Torna alla biblioteca e prova un numero tra 1 e 64.",
     metaDescription:
-      "Biblioteca completa dei 64 esagrammi dell'I Ching con Wilhelm/Baynes, Legge e Zhou Yi originale. Ricerca e confronto fianco a fianco.",
+      "Biblioteca completa dei 64 esagrammi dell'I Ching con Wilhelm (1924), Legge e Zhou Yi originale. Ricerca e confronto fianco a fianco.",
     detailMetaTitle: (label) =>
       `${label} | Biblioteca | The Original I Ching App`,
   },
   ja: {
     title: "卦のライブラリ",
     subtitle:
-      "King Wen 順の64卦すべてを Wilhelm/Baynes、James Legge、原文 Zhou Yi の三つの典拠で収録しています。このセクションはトークンを消費しません, 比較・参照・学習のための事典です。",
+      "King Wen 順の64卦すべてを Wilhelm (1924)、James Legge、原文 Zhou Yi の三つの典拠で収録しています。このセクションはトークンを消費しません, 比較・参照・学習のための事典です。",
     backToOracle: "← オラクルに戻る",
     searchPlaceholder: "番号・名前・拼音で検索",
     searchAriaLabel: "卦を検索",
@@ -430,7 +430,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "現在のフィルタに一致する卦はありません。",
     detailCrumb: "ライブラリ",
     translationsHeading: "翻訳",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (漢文)",
     judgmentHeading: "卦辞",
@@ -461,14 +461,14 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "その卦は見つかりませんでした。ライブラリに戻り、1〜64 の番号を選んでください。",
     metaDescription:
-      "易経 64 卦の完全ライブラリ。Wilhelm/Baynes、Legge、原文 Zhou Yi を並べて検索・比較できます。",
+      "易経 64 卦の完全ライブラリ。Wilhelm (1924)、Legge、原文 Zhou Yi を並べて検索・比較できます。",
     detailMetaTitle: (label) =>
       `${label} | ライブラリ | The Original I Ching App`,
   },
   zh: {
     title: "卦象图书馆",
     subtitle:
-      "依周文王序列收录全部 64 卦，配以卫礼贤／贝恩斯、理雅各（James Legge）以及原始周易文本。本区不消耗代币，是一个用于浏览、比较与研习的百科。",
+      "依周文王序列收录全部 64 卦，配以卫礼贤（1924）、理雅各（James Legge）以及原始周易文本。本区不消耗代币，是一个用于浏览、比较与研习的百科。",
     backToOracle: "← 返回占卜",
     searchPlaceholder: "按编号、名称或拼音搜索",
     searchAriaLabel: "搜索卦象",
@@ -482,7 +482,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "没有符合当前筛选条件的卦象。",
     detailCrumb: "图书馆",
     translationsHeading: "译本",
-    tabWilhelm: "卫礼贤／贝恩斯",
+    tabWilhelm: "卫礼贤（1924）",
     tabLegge: "理雅各（James Legge）",
     tabZhouyi: "周易（中文）",
     judgmentHeading: "卦辞",
@@ -512,13 +512,13 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     zhouyiClassicalNotice: "",
     notFound: "未找到该卦。请返回图书馆，并选择 1 至 64 之间的编号。",
     metaDescription:
-      "易经 64 卦的完整图书馆，并列收录卫礼贤／贝恩斯、理雅各与原始周易，可搜索与对照。",
+      "易经 64 卦的完整图书馆，并列收录卫礼贤（1924）、理雅各与原始周易，可搜索与对照。",
     detailMetaTitle: (label) => `${label} | 图书馆 | The Original I Ching App`,
   },
   ko: {
     title: "괘 라이브러리",
     subtitle:
-      "주문왕 순서의 64괘 전체를 빌헬름/베인스, 제임스 레게, 원문 주역과 함께 제공합니다. 이 섹션은 토큰을 사용하지 않습니다, 열람·비교·학습을 위한 백과사전입니다.",
+      "주문왕 순서의 64괘 전체를 빌헬름 (1924), 제임스 레게, 원문 주역과 함께 제공합니다. 이 섹션은 토큰을 사용하지 않습니다, 열람·비교·학습을 위한 백과사전입니다.",
     backToOracle: "← 오라클로 돌아가기",
     searchPlaceholder: "번호·이름·병음으로 검색",
     searchAriaLabel: "괘 검색",
@@ -532,7 +532,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "현재 필터와 일치하는 괘가 없습니다.",
     detailCrumb: "라이브러리",
     translationsHeading: "번역",
-    tabWilhelm: "빌헬름/베인스",
+    tabWilhelm: "빌헬름 (1924)",
     tabLegge: "제임스 레게",
     tabZhouyi: "주역 (한문)",
     judgmentHeading: "괘사",
@@ -563,14 +563,14 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "해당 괘를 찾을 수 없습니다. 라이브러리로 돌아가 1부터 64 사이의 번호를 선택하세요.",
     metaDescription:
-      "역경 64괘 전체 라이브러리. 빌헬름/베인스, 레게, 원문 주역을 나란히 검색·비교합니다.",
+      "역경 64괘 전체 라이브러리. 빌헬름 (1924), 레게, 원문 주역을 나란히 검색·비교합니다.",
     detailMetaTitle: (label) =>
       `${label} | 라이브러리 | The Original I Ching App`,
   },
   ar: {
     title: "مكتبة الأغراض",
     subtitle:
-      "جميع الأغراض الأربعة والستين بترتيب الملك Wen، مع ترجمة Wilhelm/Baynes وترجمة James Legge والنص الأصلي Zhou Yi. لا يستهلك هذا القسم أي رموز، إنه موسوعة للمقارنة والاطلاع والدراسة.",
+      "جميع الأغراض الأربعة والستين بترتيب الملك Wen، مع ترجمة Wilhelm (1924) وترجمة James Legge والنص الأصلي Zhou Yi. لا يستهلك هذا القسم أي رموز، إنه موسوعة للمقارنة والاطلاع والدراسة.",
     backToOracle: "← العودة إلى الأوراكل",
     searchPlaceholder: "ابحث بالرقم أو الاسم أو البينين",
     searchAriaLabel: "بحث في الأغراض",
@@ -584,7 +584,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "لا يوجد غرض يطابق الفلاتر الحالية.",
     detailCrumb: "المكتبة",
     translationsHeading: "الترجمات",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (الصينية)",
     judgmentHeading: "الحكم",
@@ -615,13 +615,13 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "تعذر العثور على هذا الغرض. عُد إلى المكتبة واختر رقمًا بين 1 و 64.",
     metaDescription:
-      "مكتبة كاملة للأغراض الـ 64 في الـ I Ching مع Wilhelm/Baynes و Legge و Zhou Yi الأصلي. بحث ومقارنة جنبًا إلى جنب.",
+      "مكتبة كاملة للأغراض الـ 64 في الـ I Ching مع Wilhelm (1924) و Legge و Zhou Yi الأصلي. بحث ومقارنة جنبًا إلى جنب.",
     detailMetaTitle: (label) => `${label} | المكتبة | The Original I Ching App`,
   },
   hi: {
     title: "हेक्साग्राम पुस्तकालय",
     subtitle:
-      "सभी 64 हेक्साग्राम राजा वेन क्रम में, Wilhelm/Baynes, James Legge और मूल Zhou Yi पाठ के साथ। यह अनुभाग टोकन का उपयोग नहीं करता, यह तुलना, अध्ययन और संदर्भ के लिए एक विश्वकोश है।",
+      "सभी 64 हेक्साग्राम राजा वेन क्रम में, Wilhelm (1924), James Legge और मूल Zhou Yi पाठ के साथ। यह अनुभाग टोकन का उपयोग नहीं करता, यह तुलना, अध्ययन और संदर्भ के लिए एक विश्वकोश है।",
     backToOracle: "← ओरेकल पर वापस",
     searchPlaceholder: "क्रमांक, नाम या पिनयिन से खोजें",
     searchAriaLabel: "हेक्साग्राम खोजें",
@@ -635,7 +635,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     resultsEmpty: "मौजूदा फ़िल्टर से कोई हेक्साग्राम मेल नहीं खाता।",
     detailCrumb: "पुस्तकालय",
     translationsHeading: "अनुवाद",
-    tabWilhelm: "Wilhelm/Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi (चीनी)",
     judgmentHeading: "निर्णय",
@@ -666,7 +666,7 @@ const LIBRARY_PAGE_UI: Record<AppLocale, LibraryPageUiMessages> = {
     notFound:
       "वह हेक्साग्राम नहीं मिला। पुस्तकालय पर वापस जाएँ और 1 से 64 के बीच कोई संख्या चुनें।",
     metaDescription:
-      "64 I Ching हेक्साग्रामों का पूरा पुस्तकालय Wilhelm/Baynes, Legge और मूल Zhou Yi के साथ। साथ-साथ खोज और तुलना।",
+      "64 I Ching हेक्साग्रामों का पूरा पुस्तकालय Wilhelm (1924), Legge और मूल Zhou Yi के साथ। साथ-साथ खोज और तुलना।",
     detailMetaTitle: (label) =>
       `${label} | पुस्तकालय | The Original I Ching App`,
   },

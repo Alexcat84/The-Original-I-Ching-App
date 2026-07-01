@@ -323,7 +323,7 @@ Section roles (cognitive arc — dense paragraphs, 2–4 sentences each; avoid l
     const zhouyiLines = t.zhouyiSelectedLineTexts?.map(formatLineEntry).join("\n") || "";
 
     textsBlock = `
---- TRADITION: WILHELM / BAYNES ---
+--- TRADITION: WILHELM (1924, German) ---
 JUDGMENT: ${t.primaryJudgment}
 ${t.primaryImage ? `THE IMAGE: ${t.primaryImage}` : ""}
 ${t.specialYaoText ? `SPECIAL YAO (用九/用六): ${t.specialYaoText}` : ""}
@@ -344,8 +344,8 @@ ${
   tr && t.transformedJudgment
     ? `
 TRANSFORMED HEXAGRAM (Reference): #${tr.number} — ${tr.chineseName} · ${tr.pinyin} (${tr.name})
-WILHELM JUDGMENT: ${t.transformedJudgment}
-${t.transformedImage ? `WILHELM IMAGE: ${t.transformedImage}` : ""}
+WILHELM (1924) JUDGMENT: ${t.transformedJudgment}
+${t.transformedImage ? `WILHELM (1924) IMAGE: ${t.transformedImage}` : ""}
 ${t.leggeTransformedJudgment ? `LEGGE JUDGMENT: ${t.leggeTransformedJudgment}` : ""}
 ${t.leggeTransformedImage ? `LEGGE IMAGE: ${t.leggeTransformedImage}` : ""}
 ${t.zhouyiTransformedJudgment ? `ZHOU YI JUDGMENT: ${t.zhouyiTransformedJudgment}` : ""}

@@ -1,6 +1,6 @@
 # Wilhelm DE 1924 — fuente de verdad de runtime
 
-**Código:** `20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth` · **Familia:** DAT-W · **Estado:** open (switch runtime en `feature/wilhelm-de-dataset`; pendiente merge staging)
+**Código:** `20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth` · **Familia:** DAT-W · **Estado:** closed (2026-07-01)
 
 ## Objetivo
 
@@ -58,9 +58,12 @@ Maestro runtime: `tools/datasets/wilhelm-de/book-one/wilhelm-de-64hex-merged.jso
 | Contaminación slots oráculo | **0** |
 | Commentary bookOne inline (Erstes Buch) | **Relleno desde Zeno** |
 | Ten Wings (Drittes Buch) | Parcial (~82% merged OCR legacy) |
-| `/audits` Pantheon → Obsoleto + entrada Diederichs 1924 | **Pendiente** |
-| `/notes` i18n 9 locales | **Pendiente** (ES/EN OK) |
-| Merge `feature/wilhelm-de-dataset` → `staging` | **Pendiente** smoke Preview |
+| `/audits` Pantheon → Obsoleto + entrada Diederichs 1924 | **Done** (audits-page-ui.ts — 2026-07-01) |
+| `/notes` i18n 11 locales Wilhelm 1924 | **Done** (notes-page-ui.ts — 2026-07-01) |
+| Merge `feature/wilhelm-de-dataset` → `staging` | **Done** (2026-06-30) |
+| Master 3 overlay: Legge name en lugar de Wilhelm DE | **Done** (engine.ts — 2026-07-01) |
+| Library: tab Wilhelm con `lang="de"` correcto | **Done** (HexagramTabs.tsx — 2026-07-01) |
+| Claude prompt: etiqueta `TRADITION: WILHELM (1924, German)` | **Done** (interpretation.ts — 2026-07-01) |
 
 ## Producto
 

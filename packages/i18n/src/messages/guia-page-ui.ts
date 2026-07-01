@@ -90,7 +90,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "En Opciones eliges el tipo de consulta (I Ching o Huesos); con I Ching también el modo de tirada (automática o manual), ves la profundidad permitida en el hilo activo, gestionas tokens y 2FA, y al final tienes enlaces a documentación, privacidad y términos.",
     libraryFeatureBody:
-      "Contamos con una biblioteca que incluye la colección completa de los 64 hexagramas utilizando las tres fuentes principales de la obra: la traducción clásica de Wilhelm/Baynes, la versión de James Legge y el texto original Zhou Yi (chino). Esta sección permite contrastar tus respuestas o tiradas manuales con los escritos auténticos, diseñados para el estudio serio del I Ching. Los textos se presentan en su formato original para preservar la fidelidad absoluta de las fuentes.",
+      "Contamos con una biblioteca que incluye la colección completa de los 64 hexagramas utilizando las tres fuentes principales de la obra: la traducción clásica de Wilhelm (1924), la versión de James Legge y el texto original Zhou Yi (chino). Esta sección permite contrastar tus respuestas o tiradas manuales con los escritos auténticos, diseñados para el estudio serio del I Ching. Los textos se presentan en su formato original para preservar la fidelidad absoluta de las fuentes.",
     methodsHeading: "Cómo usar los métodos",
     methodsIntro:
       "El I Ching y los Huesos son métodos distintos. El I Ching trabaja por hexagrama y líneas, e incluye dos formas de tirada: Tres Monedas y Varillas de milenrama. Los Huesos siguen un esquema separado, sin hexagramas.",
@@ -138,7 +138,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "Documentación",
     s6Docs: "Guía de uso · Notas y origen de los métodos (I Ching y Huesos) · Política de Privacidad · Términos del Servicio · Preguntas frecuentes · Sobre la app.",
     libraryTabsBullet:
-      "Cada página de hexagrama tiene tres pestañas: Wilhelm/Baynes, James Legge y el texto original Zhou Yi en chino clásico.",
+      "Cada página de hexagrama tiene tres pestañas: Wilhelm (1924), James Legge y el texto original Zhou Yi en chino clásico.",
     libraryCommentaryBullet:
       "Las pestañas de Wilhelm y Legge añaden un comentario clásico opcional, mostrado como un pequeño \"+\" junto al Juicio, la Imagen y cada línea. Despliega las notas propias del traductor (el comentario de Wilhelm más las Diez Alas confucianas; las notas de Legge más su Gran y Menor Simbolismo) sin alterar el texto del oráculo.",
     libraryWenYenBullet:
@@ -169,7 +169,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "In Options you pick the consultation type (I Ching or Bones); with I Ching you also pick the cast mode (automatic or manual), see allowed depth for the active thread, manage tokens and 2FA, and find links to documentation, privacy, and terms at the bottom.",
     libraryFeatureBody:
-      "We offer a library that includes the complete collection of the 64 hexagrams using the three main sources of the work: the classical translation by Wilhelm/Baynes, the version by James Legge, and the original Zhou Yi (Chinese) text. This section allows you to compare your answers or manual casts with the authentic writings, designed for the serious study of the I Ching. The texts are presented in their original format to preserve the absolute fidelity of the sources.",
+      "We offer a library that includes the complete collection of the 64 hexagrams using the three main sources of the work: the classical translation by Wilhelm (1924), the version by James Legge, and the original Zhou Yi (Chinese) text. This section allows you to compare your answers or manual casts with the authentic writings, designed for the serious study of the I Ching. The texts are presented in their original format to preserve the absolute fidelity of the sources.",
     methodsHeading: "How to use the methods",
     methodsIntro:
       "I Ching and Bones are different methods. I Ching reads by hexagram and lines and offers two casting modes: Three Coins and Yarrow Stalks. Bones follow a separate scheme, without hexagrams.",
@@ -217,7 +217,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "Documentation",
     s6Docs: "User guide · Method notes and origins (I Ching and Bones) · Privacy Policy · Terms of Service · FAQs · About the app.",
     libraryTabsBullet:
-      "Each hexagram page has three tabs: Wilhelm/Baynes, James Legge, and the original Zhou Yi text in Classical Chinese.",
+      "Each hexagram page has three tabs: Wilhelm (1924), James Legge, and the original Zhou Yi text in Classical Chinese.",
     libraryCommentaryBullet:
       "Wilhelm's and Legge's tabs add an optional classical commentary, shown as a small \"+\" next to the Judgment, the Image, and each line. It expands the scholar's own notes (Wilhelm's commentary plus the Confucian Ten Wings; Legge's footnotes plus his Great and Lesser Symbolism) without changing the oracle text itself.",
     libraryWenYenBullet:
@@ -248,7 +248,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "Em Opções escolhes o tipo de consulta (I Ching ou Ossos); com o I Ching também o modo de tiragem (automática ou manual), vês a profundidade permitida no fio ativo, geres tokens e 2FA, e no final tens ligações a documentação, privacidade e termos.",
     libraryFeatureBody:
-      "Dispomos de uma biblioteca onde podes realizar consultas profundas utilizando as três fontes principais da obra: a tradução clássica de Wilhelm/Baynes, a versão de James Legge e o texto original Zhou Yi. Esta secção permite contrastar as tuas respostas ou tiragens manuais com os escritos autênticos, desenhados para o estudo sério do I Ching. Os textos são apresentados no seu formato original para preservar a fidelidade absoluta das fontes.",
+      "Dispomos de uma biblioteca onde podes realizar consultas profundas utilizando as três fontes principais da obra: a tradução clássica de Wilhelm (1924), a versão de James Legge e o texto original Zhou Yi. Esta secção permite contrastar as tuas respostas ou tiragens manuais com os escritos autênticos, desenhados para o estudo sério do I Ching. Os textos são apresentados no seu formato original para preservar a fidelidade absoluta das fontes.",
     methodsHeading: "Como usar os métodos",
     methodsIntro:
       "O I Ching e os Ossos são métodos diferentes. O I Ching lê por hexagrama e linhas e oferece duas formas de tiragem: Três Moedas e Varetas de aquilégia. Os Ossos seguem um esquema próprio, sem hexagramas.",
@@ -296,7 +296,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "Documentação",
     s6Docs: "Guia de uso · Notas e origem dos métodos (I Ching e Ossos) · Política de Privacidade · Termos de Serviço · Perguntas frequentes · Sobre a app.",
     libraryTabsBullet:
-      "Cada página de hexagrama tem três abas: Wilhelm/Baynes, James Legge e o texto original Zhou Yi em chinês clássico.",
+      "Cada página de hexagrama tem três abas: Wilhelm (1924), James Legge e o texto original Zhou Yi em chinês clássico.",
     libraryCommentaryBullet:
       "As abas de Wilhelm e Legge acrescentam um comentário clássico opcional, mostrado como um pequeno \"+\" junto ao Julgamento, à Imagem e a cada linha. Ele expande as notas do próprio tradutor (o comentário de Wilhelm mais as Dez Alas confucianas; as notas de Legge mais o seu Grande e Menor Simbolismo) sem alterar o texto do oráculo.",
     libraryWenYenBullet:
@@ -327,7 +327,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "Dans Options vous choisissez le type de consultation (I Ching ou Os) ; avec I Ching aussi le mode de tirage (automatique ou manuel), voyez la profondeur autorisée du fil actif, gérez les jetons et la 2FA, et trouvez en bas les liens vers la documentation, la confidentialité et les conditions.",
     libraryFeatureBody:
-      "Nous proposons une bibliothèque où vous pouvez effectuer des consultations approfondies en utilisant les trois sources principales de l'œuvre : la traduction classique de Wilhelm/Baynes, la version de James Legge et le texte original Zhou Yi. Cette section permet de confronter vos réponses ou tirages manuels aux écrits authentiques, conçus pour l'étude sérieuse du I Ching. Les textes sont présentés dans leur format d'origine afin de préserver la fidélité absolue des sources.",
+      "Nous proposons une bibliothèque où vous pouvez effectuer des consultations approfondies en utilisant les trois sources principales de l'œuvre : la traduction classique de Wilhelm (1924), la version de James Legge et le texte original Zhou Yi. Cette section permet de confronter vos réponses ou tirages manuels aux écrits authentiques, conçus pour l'étude sérieuse du I Ching. Les textes sont présentés dans leur format d'origine afin de préserver la fidélité absolue des sources.",
     methodsHeading: "Comment utiliser les méthodes",
     methodsIntro:
       "Le I Ching et les Os sont deux méthodes différentes. Le I Ching lit par hexagramme et traits et propose deux modes de tirage : Trois Pièces et Tiges d’achillée. Les Os suivent un schéma propre, sans hexagramme.",
@@ -375,7 +375,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "Documentation",
     s6Docs: "Guide d'utilisation · Notes et origines des méthodes (I Ching et Bones) · Politique de confidentialité · Conditions d'utilisation · FAQ · À propos de l'app.",
     libraryTabsBullet:
-      "Chaque page d'hexagramme a trois onglets : Wilhelm/Baynes, James Legge et le texte original Zhou Yi en chinois classique.",
+      "Chaque page d'hexagramme a trois onglets : Wilhelm (1924), James Legge et le texte original Zhou Yi en chinois classique.",
     libraryCommentaryBullet:
       "Les onglets de Wilhelm et de Legge ajoutent un commentaire classique optionnel, affiché comme un petit \"+\" près du Jugement, de l'Image et de chaque trait. Il déploie les notes propres du traducteur (le commentaire de Wilhelm plus les Dix Ailes confucéennes ; les notes de Legge plus son Grand et Petit Symbolisme) sans modifier le texte de l'oracle.",
     libraryWenYenBullet:
@@ -406,7 +406,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "In Optionen wählst du den Beratungstyp (I Ching oder Knochen); bei I Ging auch den Wurfmodus (automatisch oder manuell), siehst die erlaubte Tiefe im aktiven Thread, verwaltest Token und 2FA und findest unten Links zu Dokumentation, Datenschutz und Nutzungsbedingungen.",
     libraryFeatureBody:
-      "Wir bieten eine Bibliothek, in der Sie tiefgehende Konsultationen unter Verwendung der drei Hauptquellen des Werks durchführen können: die klassische Wilhelm/Baynes-Übersetzung, die James-Legge-Version und den originalen Zhou-Yi-Text. Dieser Bereich ermöglicht es Ihnen, Ihre Antworten oder manuellen Würfe mit den authentischen Schriften abzugleichen, die für ein ernsthaftes Studium des I Ging konzipiert wurden. Die Texte werden in ihrem Originalformat präsentiert, um die absolute Treue der Quellen zu bewahren.",
+      "Wir bieten eine Bibliothek, in der Sie tiefgehende Konsultationen unter Verwendung der drei Hauptquellen des Werks durchführen können: die klassische Wilhelm (1924)-Übersetzung, die James-Legge-Version und den originalen Zhou-Yi-Text. Dieser Bereich ermöglicht es Ihnen, Ihre Antworten oder manuellen Würfe mit den authentischen Schriften abzugleichen, die für ein ernsthaftes Studium des I Ging konzipiert wurden. Die Texte werden in ihrem Originalformat präsentiert, um die absolute Treue der Quellen zu bewahren.",
     methodsHeading: "So nutzt du die Methoden",
     methodsIntro:
       "I Ging und Knochen sind unterschiedliche Methoden. I Ging liest nach Hexagramm und Strichen und bietet zwei Wurfarten: Drei Münzen und Schafgarbenstäbe. Die Knochen folgen einem eigenen Schema, ohne Hexagramm.",
@@ -454,7 +454,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "Dokumentation",
     s6Docs: "Nutzungsanleitung · Methodennotizen und Herkunft (I Ching und Knochen) · Datenschutzerklärung · Nutzungsbedingungen · FAQ · Über die App.",
     libraryTabsBullet:
-      "Jede Hexagramm-Seite hat drei Tabs: Wilhelm/Baynes, James Legge und den ursprünglichen Zhou-Yi-Text in klassischem Chinesisch.",
+      "Jede Hexagramm-Seite hat drei Tabs: Wilhelm (1924), James Legge und den ursprünglichen Zhou-Yi-Text in klassischem Chinesisch.",
     libraryCommentaryBullet:
       "Die Tabs von Wilhelm und Legge enthalten einen optionalen klassischen Kommentar, gezeigt als kleines \"+\" neben dem Urteil, dem Bild und jeder Linie. Er öffnet die eigenen Anmerkungen des Gelehrten (Wilhelms Kommentar plus die konfuzianischen Zehn Flügel; Legges Fußnoten plus seine Große und Kleinere Symbolik), ohne den Orakeltext selbst zu verändern.",
     libraryWenYenBullet:
@@ -485,7 +485,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "In Opzioni scegli il tipo di consulta (I Ching o Ossa); con I Ching anche la modalità di lancio (automatica o manuale), vedi la profondità consentita nel thread attivo, gestisci token e 2FA e in fondo trovi link a documentazione, privacy e termini.",
     libraryFeatureBody:
-      "Disponiamo di una biblioteca in cui puoi effettuare consultazioni approfondite utilizzando le tre fonti principali dell'opera: la traduzione classica di Wilhelm/Baynes, la versione di James Legge e il testo originale Zhou Yi. Questa sezione ti permette di confrontare le tue risposte o i tuoi lanci manuali con gli scritti autentici, pensati per lo studio serio dell'I Ching. I testi sono presentati nel loro formato originale per preservare l'assoluta fedeltà delle fonti.",
+      "Disponiamo di una biblioteca in cui puoi effettuare consultazioni approfondite utilizzando le tre fonti principali dell'opera: la traduzione classica di Wilhelm (1924), la versione di James Legge e il testo originale Zhou Yi. Questa sezione ti permette di confrontare le tue risposte o i tuoi lanci manuali con gli scritti autentici, pensati per lo studio serio dell'I Ching. I testi sono presentati nel loro formato originale per preservare l'assoluta fedeltà delle fonti.",
     methodsHeading: "Come usare i metodi",
     methodsIntro:
       "I Ching e Ossa sono metodi differenti. L’I Ching legge per esagramma e linee e offre due modi di lancio: Tre Monete e Stecche di achillea. Le Ossa seguono uno schema proprio, senza esagramma.",
@@ -533,7 +533,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "Documentazione",
     s6Docs: "Guida all'uso · Note e origini dei metodi (I Ching e Ossa) · Informativa sulla privacy · Termini di servizio · FAQ · Informazioni sull'app.",
     libraryTabsBullet:
-      "Ogni pagina di esagramma ha tre schede: Wilhelm/Baynes, James Legge e il testo originale Zhou Yi in cinese classico.",
+      "Ogni pagina di esagramma ha tre schede: Wilhelm (1924), James Legge e il testo originale Zhou Yi in cinese classico.",
     libraryCommentaryBullet:
       "Le schede di Wilhelm e Legge aggiungono un commento classico opzionale, mostrato come un piccolo \"+\" accanto al Giudizio, all'Immagine e a ciascuna linea. Apre le note proprie dello studioso (il commento di Wilhelm più le Dieci Ali confuciane; le note di Legge più il suo Grande e Piccolo Simbolismo) senza modificare il testo dell'oracolo.",
     libraryWenYenBullet:
@@ -564,7 +564,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "オプションでは相談タイプ（I Ching または甲骨）を選び、I Ching では占い方（自動または手動）も選べます。アクティブスレッドの深さ、トークンと2FAの管理、下部のドキュメント・プライバシー・利用規約リンクもここです。",
     libraryFeatureBody:
-      "当アプリは、Wilhelm/Baynes 訳、James Legge 版、および原典の周易という3つの主要な典拠を用いて、深い内省を可能にするライブラリを備えています。このセクションでは、ご自身の回答や手作りの占い結果を、易経の本格的な研究のために設計された本物の記述と照らし合わせることができます。テキストは、出典の忠実性を完全に保つために元の形式で提供されます。",
+      "当アプリは、Wilhelm (1924) 訳、James Legge 版、および原典の周易という3つの主要な典拠を用いて、深い内省を可能にするライブラリを備えています。このセクションでは、ご自身の回答や手作りの占い結果を、易経の本格的な研究のために設計された本物の記述と照らし合わせることができます。テキストは、出典の忠実性を完全に保つために元の形式で提供されます。",
     methodsHeading: "占いの方式の使い分け",
     methodsIntro:
       "易経と甲骨は別の方式です。易経は卦と爻で読み、占い方は二通り（三銭と蓍草）です。甲骨は卦を作らず、独自の流れで進みます。",
@@ -612,7 +612,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "ドキュメント",
     s6Docs: "利用ガイド · 方法のノートと起源（易経と骨）· プライバシーポリシー · 利用規約 · よくある質問 · アプリについて。",
     libraryTabsBullet:
-      "各卦のページには3つのタブがあります。ヴィルヘルム/バインズ、レッグ、そして古典中国語による周易の原典です。",
+      "各卦のページには3つのタブがあります。ヴィルヘルム（1924）、レッグ、そして古典中国語による周易の原典です。",
     libraryCommentaryBullet:
       "ヴィルヘルムとレッグのタブには、判断・象・各爻の横に小さな「+」で表示される任意の古典注釈が追加されています。開くと学者自身の注（ヴィルヘルムの注釈と儒教の十翼、レッグの注記と大象解・小象解）が表示されますが、卦辞そのものは変わりません。",
     libraryWenYenBullet:
@@ -641,7 +641,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "在选项中选择咨询类型（I Ching 或甲骨）；选易经时还可选择起卦方式（自动或手动），查看当前会话允许的深度、管理代币与双因素认证，底部有文档、隐私政策与服务条款链接。",
     libraryFeatureBody:
-      "我们提供一个资料库，您可以使用该作品的三大主要来源进行深度查询：经典的卫礼贤/贝恩斯译本、理雅各（James Legge）版本以及《周易》古经。该板块允许您将自己的解答或手动起卦与旨在进行严肃易经研究的正宗著作进行对比。文本以其原始格式呈现，以保持来源的绝对忠实度。",
+      "我们提供一个资料库，您可以使用该作品的三大主要来源进行深度查询：经典的卫礼贤（1924）译本、理雅各（James Legge）版本以及《周易》古经。该板块允许您将自己的解答或手动起卦与旨在进行严肃易经研究的正宗著作进行对比。文本以其原始格式呈现，以保持来源的绝对忠实度。",
     methodsHeading: "如何使用各方法",
     methodsIntro:
       "易经和甲骨是两种不同的方法。易经按卦象与爻辞解读，并有两种起卦方式：三钱与蓍草。甲骨自成体系，不形成卦象。",
@@ -688,7 +688,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "文档",
     s6Docs: "使用指南 · 方法说明与起源（易经与甲骨）· 隐私政策 · 服务条款 · 常见问题 · 关于本应用。",
     libraryTabsBullet:
-      "每个卦的页面都有三个标签：威廉/贝恩斯、理雅各，以及古典中文原典周易。",
+      "每个卦的页面都有三个标签：卫礼贤（1924）、理雅各，以及古典中文原典周易。",
     libraryCommentaryBullet:
       "威廉和理雅各的标签新增了可选的古典注释，显示为判断、象和每条爻旁边的一个小「+」。展开后是学者本人的注（威廉的注释加儒家十翼；理雅各的注记加他的大象解与小象解），但不会改变卦辞本身。",
     libraryWenYenBullet:
@@ -719,7 +719,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "옵션에서 상담 유형(I Ching 또는 갑골)을 고르고, I Ching일 때는 점 방식(자동 또는 수동)도 고릅니다. 활성 스레드 허용 깊이, 토큰 및 2FA 관리, 하단의 문서·개인정보·약관 링크도 여기 있습니다.",
     libraryFeatureBody:
-      "저희는 이 저작의 세 가지 주요 출처인 빌헬름/베인즈 번역, 제임스 레그 버전, 그리고 원전 주역을 사용하여 심층적인 조회를 수행할 수 있는 라이브러리를 제공합니다. 이 섹션에서는 진지한 주역 공부를 위해 고안된 정통 문헌과 본인의 답변 또는 수동 점괘를 대조할 수 있습니다. 텍스트는 출처의 절대적인 충실도를 유지하기 위해 원문 형식으로 제공됩니다.",
+      "저희는 이 저작의 세 가지 주요 출처인 빌헬름 (1924) 번역, 제임스 레그 버전, 그리고 원전 주역을 사용하여 심층적인 조회를 수행할 수 있는 라이브러리를 제공합니다. 이 섹션에서는 진지한 주역 공부를 위해 고안된 정통 문헌과 본인의 답변 또는 수동 점괘를 대조할 수 있습니다. 텍스트는 출처의 절대적인 충실도를 유지하기 위해 원문 형식으로 제공됩니다.",
     methodsHeading: "방법별 사용법",
     methodsIntro:
       "역경과 갑골은 서로 다른 방법입니다. 역경은 괘와 효로 풀이하며 점치는 방식이 두 가지(삼전과 시초)입니다. 갑골은 괘를 만들지 않고 독자적인 흐름을 따릅니다.",
@@ -767,7 +767,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "문서",
     s6Docs: "사용 안내 · 방법 메모 및 기원 (주역과 갑골) · 개인정보 처리방침 · 서비스 이용약관 · 자주 묻는 질문 · 앱 소개.",
     libraryTabsBullet:
-      "각 괘 페이지에는 세 개의 탭이 있습니다: 빌헬름/베인스, 제임스 레그, 그리고 고전 중국어로 된 주역 원전입니다.",
+      "각 괘 페이지에는 세 개의 탭이 있습니다: 빌헬름 (1924), 제임스 레그, 그리고 고전 중국어로 된 주역 원전입니다.",
     libraryCommentaryBullet:
       "빌헬름과 레그 탭에는 괘사, 상, 각 효 옆에 작은 \"+\"로 표시되는 선택적 고전 주석이 추가되어 있습니다. 이를 열면 학자 본인의 주석(빌헬름의 주석과 유교의 십익, 레그의 주석과 대상해 및 소상해)이 펼쳐지지만 괘사 자체는 바뀌지 않습니다.",
     libraryWenYenBullet:
@@ -798,7 +798,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "في الخيارات تختار نوع الاستشارة (I Ching أو العظام)، ومع I Ching تختار أيضًا وضع القَسْم (تلقائي أو يدوي)، وترى العمق المسموح به في الخيط النشط، وتدير الرموز و2FA، وفي الأسفل روابط للوثائق والخصوصية والشروط.",
     libraryFeatureBody:
-      "نقدم لك مكتبة يمكنك من خلالها إجراء استشارات عميقة باستخدام المصادر الثلاثة الرئيسية للعمل: ترجمة فيلهلم/باينز الكلاسيكية، ونسخة جيمس ليغ، وجو يي الأصلي. يتيح لك هذا القسم مقارنة إجاباتك أو قراءاتك اليدوية مع الكتابات الأصلية المصممة للدراسة الجادة لـ I Ching. تُعرض النصوص بتنسيقها الأصلي للحفاظ على الدقة المطلقة للمصادر.",
+      "نقدم لك مكتبة يمكنك من خلالها إجراء استشارات عميقة باستخدام المصادر الثلاثة الرئيسية للعمل: ترجمة فيلهلم (1924) الكلاسيكية، ونسخة جيمس ليغ، وجو يي الأصلي. يتيح لك هذا القسم مقارنة إجاباتك أو قراءاتك اليدوية مع الكتابات الأصلية المصممة للدراسة الجادة لـ I Ching. تُعرض النصوص بتنسيقها الأصلي للحفاظ على الدقة المطلقة للمصادر.",
     methodsHeading: "كيف تستخدم كل طريقة",
     methodsIntro:
       "I Ching والعظام طريقتان مختلفتان. يقرأ I Ching وفق الهكساغرام والخطوط ويتيح أسلوبين للقَسْم: ثلاث عملات وعيدان الزنبق. تتبع العظام مخططها الخاص بدون هكساغرام.",
@@ -846,7 +846,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "التوثيق",
     s6Docs: "دليل المستخدم · ملاحظات المنهج وأصوله (الي تشينج والعظام) · سياسة الخصوصية · شروط الخدمة · الأسئلة الشائعة · حول التطبيق.",
     libraryTabsBullet:
-      "تحتوي كل صفحة هكساغرام على ثلاث علامات تبويب: ويلهلم/باينس، وجيمس ليج، والنص الأصلي تشو يي بالصينية الكلاسيكية.",
+      "تحتوي كل صفحة هكساغرام على ثلاث علامات تبويب: ويلهلم (1924)، وجيمس ليج، والنص الأصلي تشو يي بالصينية الكلاسيكية.",
     libraryCommentaryBullet:
       "تضيف علامتا تبويب ويلهلم وليج تعليقًا كلاسيكيًا اختياريًا، يظهر كعلامة \"+\" صغيرة بجانب الحكم والصورة وكل خط. يعرض هذا التعليق ملاحظات العالم نفسه (تعليق ويلهلم بالإضافة إلى الأجنحة العشرة الكونفوشيوسية، وملاحظات ليج بالإضافة إلى رمزيته العظيمة والصغرى) دون تغيير نص الأوراكل نفسه.",
     libraryWenYenBullet:
@@ -877,7 +877,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     optionsIntro:
       "विकल्प में आप परामर्श प्रकार (I Ching या हड्डियाँ) चुनते हैं; I Ching के साथ कास्ट मोड (स्वचालित या मैन्युअल) भी, सक्रिय थ्रेड की अनुमत गहराई, टोकन और 2FA प्रबंधित करते हैं, और नीचे दस्तावेज़ीकरण, गोपनीयता और शर्तों के लिंक होते हैं।",
     libraryFeatureBody:
-      "हमारे पास एक पुस्तकालय है जहाँ आप कार्य के तीन मुख्य स्रोतों का उपयोग करके गहन परामर्श कर सकते हैं: विल्हेल्म/बेंस का शास्त्रीय अनुवाद, जेम्स लेग संस्करण, और मूल झोउ यी। यह अनुभाग आपको अपने उत्तरों या मैन्युअल कास्ट की तुलना गंभीर I Ching अध्ययन के लिए डिज़ाइन किए गए प्रामाणिक लेखों से करने की अनुमति देता है। स्रोतों की पूर्ण प्रामाणिकता बनाए रखने के लिए लेखों को उनके मूल प्रारूप में प्रस्तुत किया गया है।",
+      "हमारे पास एक पुस्तकालय है जहाँ आप कार्य के तीन मुख्य स्रोतों का उपयोग करके गहन परामर्श कर सकते हैं: विल्हेल्म (1924) का शास्त्रीय अनुवाद, जेम्स लेग संस्करण, और मूल झोउ यी। यह अनुभाग आपको अपने उत्तरों या मैन्युअल कास्ट की तुलना गंभीर I Ching अध्ययन के लिए डिज़ाइन किए गए प्रामाणिक लेखों से करने की अनुमति देता है। स्रोतों की पूर्ण प्रामाणिकता बनाए रखने के लिए लेखों को उनके मूल प्रारूप में प्रस्तुत किया गया है।",
     methodsHeading: "विधियों का उपयोग कैसे करें",
     methodsIntro:
       "I Ching और हड्डियाँ अलग विधियाँ हैं। I Ching हेक्साग्राम और रेखाओं के माध्यम से पढ़ता है और दो कास्टिंग मोड प्रदान करता है: तीन सिक्के और यारो छड़ें। हड्डियाँ अपनी अलग प्रणाली से चलती हैं, हेक्साग्राम के बिना।",
@@ -925,7 +925,7 @@ const GUIA_PAGE_UI: Record<AppLocale, GuiaPageUiMessages> = {
     s6DocsTitle: "दस्तावेज़ीकरण",
     s6Docs: "उपयोगकर्ता मार्गदर्शिका · विधि नोट्स और उत्पत्ति (I Ching और हड्डियाँ) · गोपनीयता नीति · सेवा की शर्तें · अक्सर पूछे जाने वाले प्रश्न · ऐप के बारे में।",
     libraryTabsBullet:
-      "हर हेक्साग्राम पेज में तीन टैब होते हैं: विल्हेम/बेन्स, जेम्स लेग, और शास्त्रीय चीनी भाषा में मूल झोउ यी पाठ।",
+      "हर हेक्साग्राम पेज में तीन टैब होते हैं: विल्हेम (1924), जेम्स लेग, और शास्त्रीय चीनी भाषा में मूल झोउ यी पाठ।",
     libraryCommentaryBullet:
       "विल्हेम और लेग के टैब में एक वैकल्पिक शास्त्रीय टिप्पणी जोड़ी गई है, जो निर्णय, छवि और हर रेखा के पास एक छोटे \"+\" के रूप में दिखती है। यह विद्वान की अपनी टिप्पणियाँ खोलती है (विल्हेम की टिप्पणी और कन्फ्यूशियाई दस पंख; लेग के नोट्स और उनका महान व लघु प्रतीकवाद), बिना मूल पाठ को बदले।",
     libraryWenYenBullet:

@@ -12,8 +12,16 @@
  *  2. All 10 mutation rules: correct line selection, fromHexagram, position
  *  3. master_combined: Legge/ZhouYi special yao texts for QIAN/KUN (engine fix)
  *  4. Additional I Ching rules beyond changing lines: applyMutations, H7 edge cases
+ *  5. Wilhelm (1924, German) — fingerprint tests for the canonical German oracle source
  *
  * No live I18n / API calls. All hexagram texts come from the bundled data package.
+ *
+ * NOTE ON SOURCE CHANGE (2026-07-01):
+ *  The app's Wilhelm source is the 1924 first German printed edition (public domain).
+ *  Tests marked "[W/B 1950 EN — historical reference]" were written against the old
+ *  Baynes English 1950 rendering and now FAIL intentionally — they serve as historical
+ *  documentation of what the W/B 1950 text said. The canonical assertions for the
+ *  current German source are in describe("Wilhelm (1924, German) — oracle text fingerprints").
  *
  * Reference: docs/auditorias/20260614-AUD-MUT-01-changing-lines.md
  */
@@ -94,9 +102,10 @@ describe("H6 regression — #44 姤 → #51 震 with 5 changing lines", () => {
     expect(texts.selectedLineTexts[0]!.fromHexagram).toBe("transformed");
   });
 
-  it("Wilhelm line text is 'Shock is mired.' (line 4 of #51)", () => {
+  it("[W/B 1950 EN — historical reference, not active source] Wilhelm line text was 'Shock is mired.' (line 4 of #51)", () => {
+    // HISTORICAL: W/B Baynes English 1950 fingerprint. Active source is Wilhelm 1924 German.
+    // See describe block "Wilhelm (1924, German) — oracle text fingerprints" for current assertions.
     const { texts } = cast([...LINE_VALUES]);
-    // Verbatim check — this is the fingerprint the H1 gate uses
     expect(texts.selectedLineTexts[0]!.text).toBe("Shock is mired.");
   });
 
@@ -222,24 +231,26 @@ describe("selectTextsForClaude — complete coverage of all 10 Zhu Xi rules", ()
   });
 
   // ------ QIAN_ALL_NINE -----------------------------------------------------
+  // [W/B 1950 EN — historical reference] Active source is Wilhelm 1924 German; see German fingerprint block.
   it("QIAN_ALL_NINE: 0 line texts, specialYaoText (用九) set, primaryImage NOT cleared", () => {
     const { texts, rule, primary } = cast([9, 9, 9, 9, 9, 9]);
     expect(primary.number).toBe(1);
     expect(rule).toBe("QIAN_ALL_NINE");
     expect(texts.selectedLineTexts).toHaveLength(0);
     expect(texts.specialYaoText).toBeTruthy();
-    expect(texts.specialYaoText).toContain("dragons"); // Wilhelm 用九
+    expect(texts.specialYaoText).toContain("dragons"); // W/B 1950 EN: "dragons appear without a head"
     expect(texts.primaryImage).not.toBe(""); // image is NOT cleared for Qian
   });
 
   // ------ KUN_ALL_SIX -------------------------------------------------------
+  // [W/B 1950 EN — historical reference] Active source is Wilhelm 1924 German; see German fingerprint block.
   it("KUN_ALL_SIX: 0 line texts, specialYaoText (用六) set", () => {
     const { texts, rule, primary } = cast([6, 6, 6, 6, 6, 6]);
     expect(primary.number).toBe(2);
     expect(rule).toBe("KUN_ALL_SIX");
     expect(texts.selectedLineTexts).toHaveLength(0);
     expect(texts.specialYaoText).toBeTruthy();
-    expect(texts.specialYaoText).toContain("perseverance"); // Wilhelm 用六
+    expect(texts.specialYaoText).toContain("perseverance"); // W/B 1950 EN: "furthering through perseverance"
     expect(texts.primaryImage).not.toBe("");
   });
 });
@@ -410,5 +421,41 @@ describe("CHANGING_COUNT vs LINE_TEXTS mismatch — prompt trigger logic", () =>
     const { changing, texts } = cast(values);
     const triggers = changing.length > texts.selectedLineTexts.length;
     expect(triggers).toBe(expectedTrigger);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Wilhelm (1924, German) — oracle text fingerprints
+// The app's canonical Wilhelm source is the first printed edition (1924, German).
+// These tests document the actual German oracle text now loaded from iching-data.
+// ---------------------------------------------------------------------------
+
+describe("Wilhelm (1924, German) — oracle text fingerprints", () => {
+  it("FIVE_ONLY_STABLE: Wilhelm line 4 of #51 is the 1924 German text", () => {
+    // [6,9,9,7,9,9]: hex#44→#51 with 5 changing lines, stable position=4 of transformed #51
+    const { texts } = cast([6, 9, 9, 7, 9, 9]);
+    expect(texts.selectedLineTexts[0]!.text).toBe("Das Erschüttern gerät in Schlamm.");
+  });
+
+  it("QIAN_ALL_NINE: Wilhelm 用九 (yongJiu) text is in German", () => {
+    const { texts } = cast([9, 9, 9, 9, 9, 9]);
+    expect(texts.specialYaoText).toBeTruthy();
+    expect(texts.specialYaoText).toContain("Drachen");
+    expect(texts.specialYaoText).toBe("Es erscheint eine Schar von Drachen ohne Haupt. Heil!");
+  });
+
+  it("KUN_ALL_SIX: Wilhelm 用六 (yongLiu) text is in German", () => {
+    const { texts } = cast([6, 6, 6, 6, 6, 6]);
+    expect(texts.specialYaoText).toBeTruthy();
+    expect(texts.specialYaoText).toContain("Beharrlichkeit");
+    expect(texts.specialYaoText).toBe("Fördernd ist dauernde Beharrlichkeit.");
+  });
+
+  it("master_combined: primaryJudgment is Wilhelm 1924 German, not English", () => {
+    const { texts } = cast([9, 8, 7, 8, 7, 8], "master_combined");
+    // German text must be present; English Baynes must not be
+    expect(texts.primaryJudgment).toBeTruthy();
+    expect(texts.primaryJudgment).not.toContain("Shock is mired");
+    expect(texts.primaryJudgment).not.toContain("perseverance");
   });
 });

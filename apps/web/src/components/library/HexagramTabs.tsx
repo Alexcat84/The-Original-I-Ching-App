@@ -201,7 +201,7 @@ function TabPanel({
   wilhelmCommentary,
   leggeCommentary,
 }: TabPanelProps) {
-  const langAttr = isClassicalChinese(id) ? "zh-Hant" : "en";
+  const langAttr = isClassicalChinese(id) ? "zh-Hant" : id === "wilhelm" ? "de" : "en";
   const orderedLines = useMemo(
     () => [...record.lines].sort((a, b) => a.position - b.position),
     [record.lines],
@@ -564,7 +564,7 @@ function TabPanel({
 }
 
 export function HexagramTabs({ records, commentary, sources, messages, lineLabels }: Props) {
-  const [active, setActive] = useState<TranslatorId>("wilhelm");
+  const [active, setActive] = useState<TranslatorId>("legge");
 
   return (
     <div className="library-tabs">

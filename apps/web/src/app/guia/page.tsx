@@ -61,7 +61,7 @@ export default async function GuiaRapidaPage() {
         <h3 id="traductor">{g.translatorsHeading}</h3>
         <ul>
           <li>
-            <strong>Wilhelm/Baynes</strong>: {g.translatorsWilhelm}
+            <strong>Wilhelm (1924)</strong>: {g.translatorsWilhelm}
           </li>
           <li>
             <strong>James Legge</strong>: {g.translatorsLegge}
