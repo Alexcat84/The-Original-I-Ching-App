@@ -700,6 +700,22 @@
       ]
     },
     {
+      "code": "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab",
+      "title": "Mutation Explorer — 2 tabs, CastRitualDiagram, reachableCastsFromPrimary",
+      "shortName": "mutation-explorer-unified-cast-tab",
+      "type": "PLAN",
+      "family": "MUT",
+      "date": "2026-06-30",
+      "status": "closed",
+      "path": "docs/auditorias/20260630-PLAN-MUT-09-mutation-explorer-unified-cast-tab.md",
+      "relatedCodes": [
+        "20260628-PLAN-MUT-06 mutation-explorer",
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation",
+        "20260628-PLAN-MUT-08 mutation-rules-ssot-migration"
+      ],
+      "relatedTests": ["TS-ENG-004 mutation-explore"]
+    },
+    {
       "code": "20260622-AUD-DOC-01 user-docs-vs-implementation",
       "title": "User-facing docs vs implementation audit",
       "shortName": "user-docs-vs-implementation",

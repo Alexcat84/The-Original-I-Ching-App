@@ -55,6 +55,8 @@ export {
   lineValuesFromLines,
   maskFromChangingLines,
   MutationExploreError,
+  reachableCastsFromPrimary,
+  type ReachableCastFromPrimary,
   textsToSelections,
   type CastCatalogEntry,
   type CastCatalogSystemEntry,
