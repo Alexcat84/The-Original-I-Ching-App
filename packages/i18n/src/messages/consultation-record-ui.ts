@@ -18,6 +18,11 @@ export type ConsultationRecordUiMessages = {
   charge: string;
   chargePositive: string;
   chargeNegative: string;
+  verificationCode: string;
+  changingLinesLabel: string;
+  changingLinesNone: string;
+  verifyReadingLink: string;
+  verifyReadingLockedHint: string;
   /** BCP 47 locale tag passed to `toLocaleDateString`. */
   dateLocale: string;
 };
@@ -40,6 +45,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Cargo:",
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
+    verificationCode: "Código de verificación:",
+    changingLinesLabel: "Líneas mutantes:",
+    changingLinesNone: "Ninguna",
+    verifyReadingLink: "Verificar tirada",
+    verifyReadingLockedHint: "Disponible con pack Seeker o superior",
     dateLocale: "es",
   },
   en: {
@@ -59,6 +69,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Charge:",
     chargePositive: "Positive 吉",
     chargeNegative: "Negative 凶",
+    verificationCode: "Verification code:",
+    changingLinesLabel: "Changing lines:",
+    changingLinesNone: "None",
+    verifyReadingLink: "Verify reading",
+    verifyReadingLockedHint: "Available with Seeker pack or higher",
     dateLocale: "en",
   },
   pt: {
@@ -78,6 +93,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Carga:",
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
+    verificationCode: "Código de verificação:",
+    changingLinesLabel: "Linhas mutantes:",
+    changingLinesNone: "Nenhuma",
+    verifyReadingLink: "Verificar tiragem",
+    verifyReadingLockedHint: "Disponível com pack Seeker ou superior",
     dateLocale: "pt",
   },
   fr: {
@@ -97,6 +117,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Charge :",
     chargePositive: "Positif 吉",
     chargeNegative: "Négatif 凶",
+    verificationCode: "Code de vérification :",
+    changingLinesLabel: "Lignes mutantes :",
+    changingLinesNone: "Aucune",
+    verifyReadingLink: "Vérifier la lecture",
+    verifyReadingLockedHint: "Disponible avec le pack Seeker ou supérieur",
     dateLocale: "fr",
   },
   de: {
@@ -116,6 +141,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Ladung:",
     chargePositive: "Positiv 吉",
     chargeNegative: "Negativ 凶",
+    verificationCode: "Verifizierungscode:",
+    changingLinesLabel: "Mutierende Linien:",
+    changingLinesNone: "Keine",
+    verifyReadingLink: "Wurf prüfen",
+    verifyReadingLockedHint: "Verfügbar ab Seeker-Pack oder höher",
     dateLocale: "de",
   },
   it: {
@@ -135,6 +165,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "Carica:",
     chargePositive: "Positivo 吉",
     chargeNegative: "Negativo 凶",
+    verificationCode: "Codice di verifica:",
+    changingLinesLabel: "Linee mutanti:",
+    changingLinesNone: "Nessuna",
+    verifyReadingLink: "Verifica tirata",
+    verifyReadingLockedHint: "Disponibile con pack Seeker o superiore",
     dateLocale: "it",
   },
   ja: {
@@ -154,6 +189,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "荷電:",
     chargePositive: "陽 吉",
     chargeNegative: "陰 凶",
+    verificationCode: "検証コード:",
+    changingLinesLabel: "変爻:",
+    changingLinesNone: "なし",
+    verifyReadingLink: "占いを検証",
+    verifyReadingLockedHint: "Seekerパック以上で利用可能",
     dateLocale: "ja",
   },
   zh: {
@@ -173,6 +213,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "命：",
     chargePositive: "正命 吉",
     chargeNegative: "负命 凶",
+    verificationCode: "验证码:",
+    changingLinesLabel: "变爻:",
+    changingLinesNone: "无",
+    verifyReadingLink: "验证占卜",
+    verifyReadingLockedHint: "Seeker 套餐及以上可用",
     dateLocale: "zh",
   },
   ko: {
@@ -192,6 +237,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "전하:",
     chargePositive: "양성 吉",
     chargeNegative: "음성 凶",
+    verificationCode: "검증 코드:",
+    changingLinesLabel: "변효:",
+    changingLinesNone: "없음",
+    verifyReadingLink: "점괘 검증",
+    verifyReadingLockedHint: "Seeker 팩 이상에서 이용 가능",
     dateLocale: "ko",
   },
   ar: {
@@ -211,6 +261,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "الشحنة:",
     chargePositive: "موجب 吉",
     chargeNegative: "سالب 凶",
+    verificationCode: "رمز التحقق:",
+    changingLinesLabel: "الخطوط المتغيرة:",
+    changingLinesNone: "لا شيء",
+    verifyReadingLink: "التحقق من القراءة",
+    verifyReadingLockedHint: "متاح مع حزمة Seeker أو أعلى",
     dateLocale: "ar",
   },
   hi: {
@@ -230,6 +285,11 @@ const CONSULTATION_RECORD_UI: Record<AppLocale, ConsultationRecordUiMessages> = 
     charge: "आवेश:",
     chargePositive: "सकारात्मक 吉",
     chargeNegative: "नकारात्मक 凶",
+    verificationCode: "सत्यापन कोड:",
+    changingLinesLabel: "परिवर्तित रेखाएँ:",
+    changingLinesNone: "कोई नहीं",
+    verifyReadingLink: "रीडिंग सत्यापित करें",
+    verifyReadingLockedHint: "Seeker पैक या उससे ऊपर उपलब्ध",
     dateLocale: "hi",
   },
 };

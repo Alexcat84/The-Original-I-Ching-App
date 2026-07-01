@@ -24,13 +24,14 @@ import {
   getOracleBonesVerdictLabel,
   getPackMarketingLine,
   getPdfExportUiMessages,
+  getConsultationRecordUiMessages,
+  getMutationExplorerUiMessages,
   formatPdfEntryLine,
   formatPdfThreadReadingLine,
   getPricingUiMessages,
   getRitualStatusUiMessages,
   getTokenPanelUiMessages,
   getTwoFactorUiMessages,
-  getIchingMutationRuleLabel,
   getOnboardingUiMessages,
   getOraclePresentationUiMessages,
   htmlLangFromAppLocale,
@@ -40,6 +41,7 @@ import {
   type AppLocale,
 } from "@iching-oracle/i18n";
 import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
+import { encodeCastIndex, maskFromChangingLines } from "@iching-oracle/iching-engine";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { detectInputLanguage } from "@/lib/detect-input-language";
 import { ConsultationRecordCard } from "@/components/ConsultationRecordCard";
@@ -61,6 +63,8 @@ import {
   getSupabaseBrowser,
   isSupabaseBrowserConfigured,
 } from "@/lib/supabase-browser";
+import { formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
+import { formatConsultRef } from "@/lib/mutation-explorer/explore-mutation";
 import {
   buildCanvasReadingLines,
   drawPdfContinuationChrome,
@@ -714,6 +718,7 @@ export default function HomePage() {
     primaryHexagramChinese: string;
     transformedHexagram: number | null;
     mutationRule: string;
+    changingLines: number[];
   } | null>(null);
   const {
     sessions,
@@ -1330,6 +1335,8 @@ export default function HomePage() {
   async function exportChatPdf(): Promise<void> {
     if (!activeThread.length) return;
     const pdfUi = getPdfExportUiMessages(locale);
+    const recordLabels = getConsultationRecordUiMessages(locale);
+    const explorerUi = getMutationExplorerUiMessages(locale);
     const isRnWebView =
       typeof window !== "undefined" &&
       "ReactNativeWebView" in window;
@@ -1459,6 +1466,79 @@ export default function HomePage() {
       return y;
     };
 
+    /** Summary row: label column (serif + accent) + value column (sans), like ConsultationRecordCard grid. */
+    const drawSummaryField = (
+      ctx: CanvasRenderingContext2D,
+      label: string,
+      value: string,
+      x: number,
+      yStart: number,
+      maxWidth: number,
+      lineHeight: number,
+      fontSize: number,
+      labelColWidth: number,
+      maxValueLines: number,
+      accentColor: string,
+    ): number => {
+      const labelPlain = label.trimEnd();
+      const valueX = x + labelColWidth;
+      const valueMaxWidth = Math.max(80, maxWidth - labelColWidth);
+
+      ctx.fillStyle = accentColor;
+      ctx.font = `700 ${fontSize}px ${serifFont}`;
+      ctx.fillText(labelPlain, x, yStart);
+
+      ctx.fillStyle = "#22313f";
+      ctx.font = `500 ${fontSize}px ${cjkFont}`;
+      const wrapped = wrapText(ctx, value, valueMaxWidth);
+      const valueLines = wrapped.slice(0, maxValueLines);
+      const truncated = wrapped.length > maxValueLines;
+
+      if (valueLines.length === 0) {
+        return yStart + lineHeight + 6;
+      }
+
+      for (let i = 0; i < valueLines.length; i++) {
+        let line = valueLines[i]!;
+        if (truncated && i === valueLines.length - 1) {
+          line = `${line}…`;
+        }
+        ctx.fillText(line, valueX, yStart + i * lineHeight);
+      }
+
+      return yStart + valueLines.length * lineHeight + 6;
+    };
+
+    const measureSummaryLabelColWidth = (ctx: CanvasRenderingContext2D, fontSize: number) => {
+      const labels = [
+        recordLabels.trace,
+        explorerUi.readingRefLabel,
+        recordLabels.verificationCode,
+        recordLabels.changingLinesLabel,
+        recordLabels.translatorLabel,
+        recordLabels.lineReading,
+        recordLabels.rule,
+        recordLabels.thread,
+        pdfUi.verdict,
+        pdfUi.medium,
+        pdfUi.charge,
+        pdfUi.inThread,
+      ];
+      ctx.font = `700 ${fontSize}px ${serifFont}`;
+      const maxLabel = Math.max(...labels.map((l) => ctx.measureText(l.trimEnd()).width));
+      return Math.ceil(maxLabel + 14);
+    };
+
+    let summaryLabelColWidth = 200;
+    const summaryFontSize = 25;
+    {
+      const measureCanvas = document.createElement("canvas");
+      const measureCtx = measureCanvas.getContext("2d");
+      if (measureCtx) {
+        summaryLabelColWidth = measureSummaryLabelColWidth(measureCtx, summaryFontSize);
+      }
+    }
+
     for (let i = 0; i < activeThread.length; i++) {
       const entry = activeThread[i]!;
       if (i > 0) doc.addPage();
@@ -1510,7 +1590,7 @@ export default function HomePage() {
 
       // Summary + image cards
       const cardY = 394;
-      const cardH = 360;
+      const cardH = entry.oracleType === "oracle_bones" ? 360 : 520;
       const leftW = 560;
       const rightW = pageW - 54 - 54 - leftW - 24;
 
@@ -1530,12 +1610,24 @@ export default function HomePage() {
       ctx.font = `700 24px ${cjkFont}`;
       ctx.fillStyle = accent;
       ctx.fillText(pdfUi.summary, 84, cardY + 46);
-      ctx.font = `500 25px ${cjkFont}`;
-      ctx.fillStyle = "#22313f";
+      const summaryLineHeight = 34;
+      const summaryX = 84;
+      const summaryMaxWidth = leftW - 60;
       let sy = cardY + 92;
-      const summaryLine = (label: string, value: string) => {
-        sy =
-          drawWrapped(ctx, `${label} ${value}`, 84, sy, leftW - 60, 34, 2) + 6;
+      const summaryLine = (label: string, value: string, maxValueLines = 3) => {
+        sy = drawSummaryField(
+          ctx,
+          label,
+          value,
+          summaryX,
+          sy,
+          summaryMaxWidth,
+          summaryLineHeight,
+          summaryFontSize,
+          summaryLabelColWidth,
+          maxValueLines,
+          accent,
+        );
       };
       const pdfDateStr = new Date(entry.createdAt ?? Date.now()).toLocaleDateString(
         locale,
@@ -1565,19 +1657,47 @@ export default function HomePage() {
         const trace = entry.transformedHexagram != null
           ? `#${entry.primaryHexagram} ${entry.primaryHexagramChinese} → #${entry.transformedHexagram} ${entry.transformedHexagramChinese ?? ""}`
           : `#${entry.primaryHexagram} ${entry.primaryHexagramChinese}`;
-        summaryLine(pdfUi.trace, trace);
-        summaryLine(pdfUi.rule, getIchingMutationRuleLabel(locale, entry.mutationRule));
+        summaryLine(recordLabels.trace, trace);
+        summaryLine(
+          explorerUi.readingRefLabel,
+          formatConsultRef(entry.consultationId),
+        );
+        summaryLine(
+          recordLabels.verificationCode,
+          String(
+            encodeCastIndex(
+              entry.primaryHexagram,
+              maskFromChangingLines(entry.changingLines ?? []),
+            ),
+          ),
+        );
+        summaryLine(
+          recordLabels.changingLinesLabel,
+          entry.changingLines?.length
+            ? entry.changingLines.join(", ")
+            : recordLabels.changingLinesNone,
+        );
         if (entry.translator && pdfTranslatorName[entry.translator]) {
-          summaryLine(pdfUi.translator, pdfTranslatorName[entry.translator]!);
+          summaryLine(recordLabels.translatorLabel, pdfTranslatorName[entry.translator]!);
         }
         summaryLine(
-          pdfUi.lineReading,
+          recordLabels.lineReading,
           entry.lineReadingSystem === "zhuxi"
             ? manualWizardChrome.lineReadingSystemZhuxiShort
             : manualWizardChrome.lineReadingSystemHuangShort,
         );
+        if (entry.mutationRule) {
+          const ruleSummary = formatMutationRuleSummaryForUi({
+            mutationRule: entry.mutationRule,
+            lineReadingSystem: entry.lineReadingSystem === "zhuxi" ? "zhuxi" : "huang",
+            locale,
+          });
+          if (ruleSummary) {
+            summaryLine(recordLabels.rule, ruleSummary, 4);
+          }
+        }
         summaryLine(
-          pdfUi.inThread,
+          recordLabels.thread,
           formatPdfThreadReadingLine(pdfUi, entry.sessionPosition, pdfDateStr),
         );
       }
@@ -1602,7 +1722,7 @@ export default function HomePage() {
       }
 
       // Reading panel
-      const panelY = 786;
+      const panelY = cardY + cardH + 32;
       const panelH = pageH - panelY - 58;
       ctx.fillStyle = "rgba(255,255,255,0.96)";
       ctx.strokeStyle = "rgba(52,117,145,0.3)";
@@ -3500,6 +3620,7 @@ export default function HomePage() {
           transformedHexagram:
             manualCastPreviewEngine.transformedHexagram?.number ?? null,
           mutationRule: manualCastPreviewEngine.mutationRule,
+          changingLines: manualCastPreviewEngine.changingLines,
         });
       } catch {
         manualCastPreviewEngine = null;
@@ -4857,13 +4978,18 @@ export default function HomePage() {
                       <div className="reading-record-visual-row">
                         <ConsultationRecordCard
                           consultationId={entry.consultationId}
-                          question={entry.question}
                           sessionPosition={entry.sessionPosition}
                           primaryHexagram={entry.primaryHexagram}
                           primaryHexagramChinese={entry.primaryHexagramChinese}
                           transformedHexagram={entry.transformedHexagram}
                           transformedHexagramChinese={entry.transformedHexagramChinese}
                           mutationRule={entry.mutationRule}
+                          castIndex={encodeCastIndex(
+                            entry.primaryHexagram,
+                            maskFromChangingLines(entry.changingLines),
+                          )}
+                          changingLines={entry.changingLines}
+                          verifyRulesLocked={!isAdmin && tierAccessKey === "free"}
                           translator={entry.translator}
                           lineReadingSystem={entry.lineReadingSystem}
                           oracleType={entry.oracleType ?? "iching"}
@@ -4885,7 +5011,6 @@ export default function HomePage() {
                       <div className="reading-record-visual-row">
                         <ConsultationRecordCard
                           consultationId={entry.consultationId}
-                          question={entry.question}
                           sessionPosition={entry.sessionPosition}
                           primaryHexagram={0}
                           primaryHexagramChinese=""
@@ -4950,7 +5075,6 @@ export default function HomePage() {
                     <div className="reading-record-visual-row">
                       <ConsultationRecordCard
                         consultationId="00000000-0000-4000-8000-000000000001"
-                        question={pendingUserQuestion}
                         sessionPosition={activeThread.length + 1}
                         primaryHexagram={manualCastPreview.primaryHexagram}
                         primaryHexagramChinese={
@@ -4960,6 +5084,12 @@ export default function HomePage() {
                           manualCastPreview.transformedHexagram
                         }
                         mutationRule={manualCastPreview.mutationRule}
+                        castIndex={encodeCastIndex(
+                          manualCastPreview.primaryHexagram,
+                          maskFromChangingLines(manualCastPreview.changingLines),
+                        )}
+                        changingLines={manualCastPreview.changingLines}
+                        verifyRulesLocked={!isAdmin && tierAccessKey === "free"}
                         lineReadingSystem={ichingLineReadingSystem}
                         oracleType="iching"
                         locale={locale}
@@ -5898,7 +6028,7 @@ export default function HomePage() {
                       <p className="meta-line tier-hint-line">
                         {chrome.libraryDescription}
                       </p>
-                      <div className="composer-panel-actions">
+                      <div className="composer-panel-actions composer-panel-actions--pair">
                         <button
                           id="tour-library-btn"
                           type="button"
@@ -5907,6 +6037,14 @@ export default function HomePage() {
                           disabled={!accessToken || (!isAdmin && tierAccessKey === "free")}
                         >
                           {chrome.openLibrary}
+                        </button>
+                        <button
+                          type="button"
+                          className="composer-reading-pill is-active"
+                          onClick={() => router.push("/mutation-explorer")}
+                          disabled={!accessToken || (!isAdmin && tierAccessKey === "free")}
+                        >
+                          {chrome.openMutationExplorer}
                         </button>
                       </div>
                     </div>

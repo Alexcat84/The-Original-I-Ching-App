@@ -107,11 +107,10 @@ describe("H6 regression — #44 姤 → #51 震 with 5 changing lines", () => {
     expect(sentText).not.toContain("No fish in the tank");
   });
 
-  it("ruleExplanation is human-readable and contains 'TRANSFORMADO'", () => {
+  it("mutationRuleBookText is human-readable and contains English description", () => {
     const { texts } = cast([...LINE_VALUES]);
-    expect(texts.ruleExplanation).toContain("Cinco");
-    expect(texts.ruleExplanation).toContain("TRANSFORMADO");
-    expect(texts.ruleExplanation).toContain("4");
+    expect(texts.mutationRuleBookText).toContain("five moving lines");
+    expect(texts.mutationRuleBookText).toContain("nonmoving line");
   });
 
   it("master_combined supplies Legge line 4 of #51 for the same stable position", () => {
@@ -140,12 +139,12 @@ describe("H6 regression — #44 姤 → #51 震 with 5 changing lines", () => {
 
 describe("selectTextsForClaude — complete coverage of all 10 Zhu Xi rules", () => {
   // ------ NO_CHANGING -------------------------------------------------------
-  it("NO_CHANGING: 0 line texts, no transformed, stability ruleExplanation", () => {
+  it("NO_CHANGING: 0 line texts, no transformed, stability mutationRuleBookText", () => {
     const { texts, changing } = cast([7, 8, 7, 8, 7, 8]);
     expect(changing).toHaveLength(0);
     expect(texts.selectedLineTexts).toHaveLength(0);
     expect(texts.transformedJudgment).toBeNull();
-    expect(texts.ruleExplanation).toMatch(/sin mutaci/i);
+    expect(texts.mutationRuleBookText).toMatch(/no moving line/i);
   });
 
   // ------ ONE_CHANGING ------------------------------------------------------
@@ -188,7 +187,7 @@ describe("selectTextsForClaude — complete coverage of all 10 Zhu Xi rules", ()
     expect(texts.selectedLineTexts).toHaveLength(1);
     expect(texts.selectedLineTexts[0]!.position).toBe(2);
     expect(texts.selectedLineTexts[0]!.fromHexagram).toBe("primary");
-    expect(texts.ruleExplanation).toContain("central");
+    expect(texts.mutationRuleBookText).toContain("middle one");
   });
 
   // ------ FOUR_LOWEST_STABLE ------------------------------------------------

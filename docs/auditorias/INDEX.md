@@ -67,8 +67,14 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260619-AUD-MUT-03 huang-rules-alignment` | 2026-06-19 | Alineación reglas Huang | closed | [20260619-AUD-MUT-03-huang-rules-alignment.md](./20260619-AUD-MUT-03-huang-rules-alignment.md) |
 | `20260622-AUD-MUT-04 mutation-rules-pdf-gold` | 2026-06-22 | Reglas mutación vs PDF gold | closed | [20260622-AUD-MUT-04-mutation-rules-pdf-gold.md](./20260622-AUD-MUT-04-mutation-rules-pdf-gold.md) |
 | `20260622-AUD-MUT-05 retry-fallback-economics` | 2026-06-22 | Economía reintentos vs fallback | decided | [20260622-AUD-MUT-05-retry-fallback-economics.md](./20260622-AUD-MUT-05-retry-fallback-economics.md) |
+| `20260628-PLAN-MUT-06 mutation-explorer` | 2026-06-28 | Mapa de Mutaciones (Mutation Explorer) | open | [20260628-PLAN-MUT-06-mutation-explorer.md](./20260628-PLAN-MUT-06-mutation-explorer.md) |
+| `20260628-PLAN-MUT-07 mutation-explorer-implementation` | 2026-06-28 | Mutation Explorer — plan de implementación detallado | open | [20260628-PLAN-MUT-07-mutation-explorer-implementation.md](./20260628-PLAN-MUT-07-mutation-explorer-implementation.md) |
+| `20260628-PLAN-MUT-08 mutation-rules-ssot-migration` | 2026-06-28 | Migración SSoT reglas de mutación (gold → iching-data) | closed | [20260628-PLAN-MUT-08-mutation-rules-ssot-migration.md](./20260628-PLAN-MUT-08-mutation-rules-ssot-migration.md) |
+| `20260628-AUD-MUT-08 mutation-rules-ssot-antigravity-audit` | 2026-06-28 | Auditoría Antigravity MUT-08 + remediación UI/i18n | closed | [20260628-AUD-MUT-08-mutation-rules-ssot-antigravity-audit.md](./20260628-AUD-MUT-08-mutation-rules-ssot-antigravity-audit.md) |
+| `20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab` | 2026-06-30 | Explorer: 2 tabs + CastRitualDiagram + reachableCastsFromPrimary | closed | [20260630-PLAN-MUT-09-mutation-explorer-unified-cast-tab.md](./20260630-PLAN-MUT-09-mutation-explorer-unified-cast-tab.md) |
+| `20260630-AUD-MUT-09 mutation-reading-hierarchy-parity` | 2026-06-30 | Jerarquía tres capas — paridad explorer, motor y prompt | closed | [20260630-AUD-MUT-09-mutation-reading-hierarchy-parity.md](./20260630-AUD-MUT-09-mutation-reading-hierarchy-parity.md) |
 
-**Tests:** `QA-MUT-001`, `TS-ENG-002`, `TS-CLAUDE-001`…`004`, `AU-MUT-001`…`002`
+**Tests:** `QA-MUT-001`, `TS-ENG-002`, `TS-ENG-004`, `TS-WEB-015`, `TS-CLAUDE-001`…`004`, `AU-MUT-001`…`002` (gate `VF-MUT-001` pendiente Fase 2 MUT-08)
 
 ---
 

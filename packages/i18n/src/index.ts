@@ -121,10 +121,18 @@ export {
   type SiteMetaUiMessages,
 } from "./messages/site-meta-ui.js";
 export {
-  getIchingMutationRuleLabel,
+  getMutationRuleTranslation,
   ICHING_MUTATION_RULE_IDS,
   type IchingMutationRuleId,
+  type MutationRuleTranslationSystem,
 } from "./messages/iching-mutation-ui.js";
+export {
+  getMutationRuleSummaryLabel,
+  type MutationRuleSummarySystem,
+} from "./messages/iching-mutation-summary-ui.js";
+
+/** @deprecated Use getMutationRuleSummaryLabel. */
+export { getMutationRuleSummaryLabel as getIchingMutationRuleLabel } from "./messages/iching-mutation-summary-ui.js";
 export {
   formatLoginConfigErrorBody,
   formatLoginRegisterApiError,
@@ -155,6 +163,10 @@ export {
   type AuditTimelineEntryKind,
 } from "./messages/audits-page-ui.js";
 export { getLibraryPageUiMessages, type LibraryPageUiMessages, type LibraryPageUiSerialized } from "./messages/library-page-ui.js";
+export {
+  getMutationExplorerUiMessages,
+  type MutationExplorerUiMessages,
+} from "./messages/mutation-explorer-ui.js";
 export { getPrivacyPageMessages, type PrivacyPageMessages } from "./messages/privacy-page-ui.js";
 export {
   formatPerThreadCap,

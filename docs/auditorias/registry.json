@@ -625,6 +625,113 @@
       ]
     },
     {
+      "code": "20260628-PLAN-MUT-06 mutation-explorer",
+      "title": "Mutation Explorer (Mapa de Mutaciones) implementation plan",
+      "shortName": "mutation-explorer",
+      "type": "PLAN",
+      "family": "MUT",
+      "date": "2026-06-28",
+      "status": "open",
+      "path": "docs/auditorias/20260628-PLAN-MUT-06-mutation-explorer.md",
+      "relatedCodes": [
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+        "20260619-AUD-MUT-03 huang-rules-alignment",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260628-PLAN-MUT-07 mutation-explorer-implementation",
+      "title": "Mutation Explorer — plan de implementación detallado",
+      "shortName": "mutation-explorer-implementation",
+      "type": "PLAN",
+      "family": "MUT",
+      "date": "2026-06-28",
+      "status": "open",
+      "path": "docs/auditorias/20260628-PLAN-MUT-07-mutation-explorer-implementation.md",
+      "relatedCodes": [
+        "20260628-PLAN-MUT-06 mutation-explorer",
+        "20260628-PLAN-MUT-08 mutation-rules-ssot-migration",
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+        "20260619-AUD-MUT-03 huang-rules-alignment"
+      ],
+      "relatedTests": [
+        "TS-ENG-004 mutation-explore"
+      ]
+    },
+    {
+      "code": "20260628-PLAN-MUT-08 mutation-rules-ssot-migration",
+      "title": "Mutation rules SSoT migration (gold → iching-data → prompt/UI)",
+      "shortName": "mutation-rules-ssot-migration",
+      "type": "PLAN",
+      "family": "MUT",
+      "date": "2026-06-28",
+      "status": "closed",
+      "path": "docs/auditorias/20260628-PLAN-MUT-08-mutation-rules-ssot-migration.md",
+      "relatedCodes": [
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation",
+        "20260620-AUD-LRS-01 zhuxi-line-reading-selector",
+        "20260628-AUD-MUT-08 mutation-rules-ssot-antigravity-audit"
+      ],
+      "relatedTests": [
+        "TS-ENG-002 mutation-rules",
+        "AU-MUT-001 huang-rules-vs-pdf-gold",
+        "AU-MUT-002 zhuxi-rules-vs-adler-gold"
+      ]
+    },
+    {
+      "code": "20260628-AUD-MUT-08 mutation-rules-ssot-antigravity-audit",
+      "title": "MUT-08 Antigravity audit — SSoT mutation rules partial implementation",
+      "shortName": "mutation-rules-ssot-antigravity-audit",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-28",
+      "status": "closed",
+      "path": "docs/auditorias/20260628-AUD-MUT-08-mutation-rules-ssot-antigravity-audit.md",
+      "relatedCodes": [
+        "20260628-PLAN-MUT-08 mutation-rules-ssot-migration",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold"
+      ],
+      "relatedTests": [
+        "VF-FID-003 mutation-rules-fidelity",
+        "TS-ENG-002 mutation-rules"
+      ]
+    },
+    {
+      "code": "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab",
+      "title": "Mutation Explorer — 2 tabs, CastRitualDiagram, reachableCastsFromPrimary",
+      "shortName": "mutation-explorer-unified-cast-tab",
+      "type": "PLAN",
+      "family": "MUT",
+      "date": "2026-06-30",
+      "status": "closed",
+      "path": "docs/auditorias/20260630-PLAN-MUT-09-mutation-explorer-unified-cast-tab.md",
+      "relatedCodes": [
+        "20260628-PLAN-MUT-06 mutation-explorer",
+        "20260628-PLAN-MUT-07 mutation-explorer-implementation",
+        "20260628-PLAN-MUT-08 mutation-rules-ssot-migration"
+      ],
+      "relatedTests": ["TS-ENG-004 mutation-explore"]
+    },
+    {
+      "code": "20260630-AUD-MUT-09 mutation-reading-hierarchy-parity",
+      "title": "Jerarquía tres capas — paridad explorer, motor y prompt",
+      "shortName": "mutation-reading-hierarchy-parity",
+      "type": "AUD",
+      "family": "MUT",
+      "date": "2026-06-30",
+      "status": "closed",
+      "path": "docs/auditorias/20260630-AUD-MUT-09-mutation-reading-hierarchy-parity.md",
+      "relatedCodes": [
+        "20260615-AUD-MUT-02 prompt-mutation-gates",
+        "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
+        "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab"
+      ],
+      "relatedTests": ["TS-WEB-015 mutation-explorer-oracle-blocks", "TS-ENG-004 mutation-explore"]
+    },
+    {
       "code": "20260622-AUD-DOC-01 user-docs-vs-implementation",
       "title": "User-facing docs vs implementation audit",
       "shortName": "user-docs-vs-implementation",

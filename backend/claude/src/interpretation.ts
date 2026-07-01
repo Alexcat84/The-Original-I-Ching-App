@@ -193,12 +193,12 @@ function offlineFallbackText(
   reason: "groq_error" | "no_model_api_key",
 ): string {
   if (language === "es") {
-    return `[Sin conexión / ${reason}] Lectura provisional para el hexagrama #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+    return `[Sin conexión / ${reason}] Lectura provisional para el hexagrama #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.mutationRuleBookText}`;
   }
   if (language === "en") {
-    return `[Offline / ${reason}] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+    return `[Offline / ${reason}] Mock interpretation for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.mutationRuleBookText}`;
   }
-  return `[Offline / ${reason}] ${getLanguageName(language)} reading fallback for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.ruleExplanation}`;
+  return `[Offline / ${reason}] ${getLanguageName(language)} reading fallback for hexagram #${castResult.primaryHexagram.number}. ${castResult.textsForClaude.mutationRuleBookText}`;
 }
 
 function castingMethodNote(method: CastingMethod | undefined): string {
@@ -366,7 +366,8 @@ ${
   tr && t.transformedJudgment
     ? `
 TRANSFORMED HEXAGRAM: #${tr.number} — ${tr.chineseName} (${tr.name})
-JUDGMENT: ${t.transformedJudgment}`
+JUDGMENT: ${t.transformedJudgment}
+${t.transformedImage ? `THE IMAGE: ${t.transformedImage}` : ""}`
     : ""
 }
 `.trim();
@@ -461,7 +462,7 @@ SELECTED_TRANSLATOR: ${selectedTranslatorLabel}
 PRIMARY HEXAGRAM: #${p.number} — ${p.chineseName} · ${p.pinyin} (${p.name})
 ${p.upperTrigram} over ${p.lowerTrigram}
 
-MUTATION RULE: ${t.ruleExplanation}
+MUTATION RULE: ${t.mutationRuleBookText}
 
 ${interpretedLinesBlock}
 ${omittedBlock ? `${omittedBlock}\n` : ""}

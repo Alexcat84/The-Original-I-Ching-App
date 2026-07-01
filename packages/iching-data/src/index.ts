@@ -84,3 +84,18 @@ export type {
 export { getAllTrigrams } from "./trigrams.js";
 export type { TrigramRecord, TrigramId } from "./trigrams.js";
 export { TRIGRAM_IDS } from "./trigrams.js";
+
+export {
+  getCastCatalogEntry,
+  getAllCastCatalogEntries,
+  castCatalogBundle,
+  type CastCatalogEntry,
+  type CastCatalogSelection,
+} from "./cast-catalog.js";
+
+export {
+  getMutationRuleRecord,
+  getMutationRuleBookText,
+  type MutationSystem,
+} from "./mutation-rules.js";
+export type { MutationRuleRecord, MutationRulesBundle } from "./schema.js";

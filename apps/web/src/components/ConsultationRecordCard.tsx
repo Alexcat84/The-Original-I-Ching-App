@@ -1,8 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import {
   getConsultationRecordUiMessages,
-  getIchingMutationRuleLabel,
   getManualWizardMessages,
   parseAppLocale,
 } from "@iching-oracle/i18n";
@@ -13,15 +13,19 @@ type OracleBonesCardData = {
   verdict: string;
 };
 
+import { formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
+
 type Props = {
   consultationId: string;
-  question: string;
   sessionPosition: number;
   primaryHexagram: number;
   primaryHexagramChinese: string;
   transformedHexagram: number | null;
   transformedHexagramChinese?: string | null;
-  mutationRule: string;
+  castIndex?: number;
+  changingLines?: number[];
+  mutationRule?: string;
+  verifyRulesLocked?: boolean;
   translator?: "wilhelm" | "legge" | "zhouyi" | "master_combined";
   lineReadingSystem?: "huang" | "zhuxi" | null;
   oracleType?: "iching" | "oracle_bones";
@@ -38,13 +42,15 @@ function formatConsultRef(id: string): string {
 
 export function ConsultationRecordCard({
   consultationId,
-  question,
   sessionPosition,
   primaryHexagram,
   primaryHexagramChinese,
   transformedHexagram,
   transformedHexagramChinese,
+  castIndex,
+  changingLines,
   mutationRule,
+  verifyRulesLocked = false,
   translator,
   lineReadingSystem,
   oracleType = "iching",
@@ -59,6 +65,15 @@ export function ConsultationRecordCard({
     lineReadingSystem === "zhuxi"
       ? wizardLabels.lineReadingSystemZhuxiShort
       : wizardLabels.lineReadingSystemHuangShort;
+
+  const ruleSummaryLabel =
+    mutationRule && oracleType === "iching"
+      ? formatMutationRuleSummaryForUi({
+          mutationRule,
+          lineReadingSystem: lineReadingSystem === "zhuxi" ? "zhuxi" : "huang",
+          locale: ruleLocale,
+        })
+      : "";
 
   const translatorDisplayName: Record<string, string> = {
     wilhelm: "Wilhelm / Baynes",
@@ -105,10 +120,6 @@ export function ConsultationRecordCard({
             </span>
           </p>
         </div>
-        <p className="consultation-record-question">
-          <span className="consultation-record-question-label">{labels.question}</span>
-          {question.length > 160 ? `${question.slice(0, 160)}…` : question}
-        </p>
       </aside>
     );
   }
@@ -131,12 +142,24 @@ export function ConsultationRecordCard({
             {trace}
           </span>
         </p>
-        <p className="consultation-record-row">
-          <span className="consultation-record-key">{labels.rule}</span>
-          <span className="consultation-record-value">
-            {getIchingMutationRuleLabel(ruleLocale, mutationRule)}
-          </span>
-        </p>
+        {castIndex != null ? (
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.verificationCode}</span>
+            <span className="consultation-record-value" translate="no">
+              {castIndex}
+            </span>
+          </p>
+        ) : null}
+        {changingLines != null ? (
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.changingLinesLabel}</span>
+            <span className="consultation-record-value" translate="no">
+              {changingLines.length > 0
+                ? changingLines.join(", ")
+                : labels.changingLinesNone}
+            </span>
+          </p>
+        ) : null}
         {translator && translatorDisplayName[translator] ? (
           <p className="consultation-record-row">
             <span className="consultation-record-key">{labels.translatorLabel}</span>
@@ -147,6 +170,12 @@ export function ConsultationRecordCard({
           <span className="consultation-record-key">{labels.lineReading}</span>
           <span className="consultation-record-value">{lineReadingSystemName}</span>
         </p>
+        {ruleSummaryLabel ? (
+          <p className="consultation-record-row">
+            <span className="consultation-record-key">{labels.rule}</span>
+            <span className="consultation-record-value">{ruleSummaryLabel}</span>
+          </p>
+        ) : null}
         <p className="consultation-record-row">
           <span className="consultation-record-key">{labels.thread}</span>
           <span className="consultation-record-value">
@@ -154,10 +183,26 @@ export function ConsultationRecordCard({
           </span>
         </p>
       </div>
-      <p className="consultation-record-question">
-        <span className="consultation-record-question-label">{labels.question}</span>
-        {question.length > 160 ? `${question.slice(0, 160)}…` : question}
-      </p>
+      {castIndex != null ? (
+        <p className="consultation-record-row consultation-record-row--verify">
+          {verifyRulesLocked ? (
+            <span
+              className="consultation-record-verify-link consultation-record-verify-link--locked"
+              aria-disabled="true"
+              title={labels.verifyReadingLockedHint}
+            >
+              {labels.verifyReadingLink}
+            </span>
+          ) : (
+            <Link
+              href={`/mutation-explorer?cid=${encodeURIComponent(consultationId)}`}
+              className="consultation-record-verify-link"
+            >
+              {labels.verifyReadingLink}
+            </Link>
+          )}
+        </p>
+      ) : null}
     </aside>
   );
 }

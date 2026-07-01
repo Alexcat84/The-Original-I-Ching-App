@@ -32,6 +32,8 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-ENG-001 engine-core` | `packages/iching-engine/src/engine` | 1.0.0 | `engine.test.ts` | `npm run test --prefix packages/iching-engine` | `AUD-DIV-01` |
 | `TS-ENG-002 mutation-rules` | `packages/iching-engine/src/engine.mutation-rules` | 1.1.0 | `engine.mutation-rules.test.ts` | idem | `AUD-MUT-01`, `AUD-MUT-02` |
 | `TS-ENG-003 line-reading-systems` | `packages/iching-engine/src/engine.line-reading-systems` | 1.0.0 | `engine.line-reading-systems.test.ts` | idem | `AUD-LRS-01` |
+| `TS-ENG-004 mutation-explore` | `packages/iching-engine/src/mutation-explore` | 1.0.0 | `mutation-explore.test.ts` | idem | `PLAN-MUT-06`, `PLAN-MUT-07` |
+| `VF-ENG-001 cast-catalog` | `scripts/verify-cast-catalog` | 1.0.0 | `verify:cast-catalog` | — | 4096 parity |
 
 ### Claude / interpretación — `TS-CLAUDE-*`
 
@@ -60,6 +62,7 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-WEB-012 revenuecat-webhook-idempotency` | `apps/web/src/lib/revenuecat-webhook-idempotency` | 1.0.0 | `revenuecat-webhook-idempotency.test.ts` | Idempotencia 039 |
 | `TS-WEB-013 session-thread-hydration` | `apps/web/src/lib/session-thread-hydration` | 1.0.0 | `session-thread-hydration.test.ts` | Hydration gate |
 | `TS-WEB-014 manual-coin-value` | `apps/web/src/lib/manual-coin-value` | 1.0.0 | `manual-coin-value.test.ts` | H-DIV-02-01 (`AUD-DIV-02`) |
+| `TS-WEB-015 mutation-explorer-oracle-blocks` | `apps/web/src/lib/mutation-explorer/explore-mutation` | 1.1.0 | `explore-mutation.test.ts` | Jerarquía tres capas (`AUD-MUT-09`) |
 
 ### Overlay — `TS-WEB-OVR-*`
 
@@ -71,6 +74,8 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-WEB-OVR-004 overlay-title-pango` | `apps/web/src/lib/overlay-title-pango` | 1.2.0 | Segmentacion mixta Zhou Yi + fontkit por chunk + render real ZH+EN | `npm run test --prefix apps/web -- overlay-title-pango` |
 | `TS-WEB-OVR-005 overlay-title-pango-exhaustive` | `apps/web/src/lib/overlay-title-pango` | 1.1.0 | Grilla 64×63 × **3** traductores (12096 renders, ~6 min). ZH+EN ink | `npm run test:overlay-exhaustive --prefix apps/web` |
 | `TS-WEB-OVR-006 overlay-title-pango-e2e-samples` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | 4 muestras e2e: Together FLUX + overlay prod + resvg + composite. Config `vitest.overlay-samples.config.ts`; skip sin `TOGETHER_API_KEY` | `npm run gen:overlay-e2e-samples --prefix apps/web` |
+| `TS-WEB-OVR-007 overlay-title-long-name-samples` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | Títulos Wilhelm largos que expanden a dos líneas de subtítulo | `npm run test --prefix apps/web -- overlay-title-pango.long-name-samples` |
+| `TS-WEB-OVR-008 overlay-title-random-samples` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | Muestras random de overlay (ruta prod); skip sin `TOGETHER_API_KEY` | `npm run gen:overlay-random-samples --prefix apps/web` |
 
 ### Data / context — `TS-DATA-*`, `TS-CTX-*`
 
@@ -135,6 +140,7 @@ Detalle y versiones: [`registry.json`](./registry.json).
 
 | Código | Area | v | npm script | Artefactos |
 |--------|------|---|------------|------------|
+| `GEN-ENG-001 cast-catalog` | `scripts/generate-cast-catalog` | 1.0.0 | `generate:cast-catalog` | `packages/iching-data/src/generated/cast-catalog.json` |
 | `GEN-WEB-OVR-001 sumi-fallback-samples` | `scripts/generate-sumi-fallback-glyph-samples` | 1.0.0 | `generate:sumi-fallback-glyphs` | `reports/sumi-fallback-glyphs/` + manifest |
 | — | — | — | `generate:sumi-fallback-glyphs:quick` | variante `:quick` → vitest smoke |
 

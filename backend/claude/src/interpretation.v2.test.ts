@@ -5,7 +5,10 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { getMutationRuleBookText } from "@iching-oracle/iching-data";
+import { buildCastFixture } from "@iching-oracle/iching-engine";
 import { buildV2HistoricalUserBlock } from "./interpretation-context.js";
+import { buildAnthropicUserPayloadForCast } from "./interpretation.js";
 import type { ConsultationSummary } from "@iching-oracle/context-engine";
 
 // ---- Fixtures ---------------------------------------------------------------
@@ -110,6 +113,18 @@ describe("buildV2HistoricalUserBlock – I Ching content", () => {
       "en",
     );
     expect(block).not.toContain("UNIQUE_SUMMARY_MARKER");
+  });
+});
+
+describe("buildAnthropicUserPayloadForCast – MUTATION RULE SSoT (MUT-08)", () => {
+  it("prompt uses gold EN bookText, never locale i18n translation", () => {
+    const cast = buildCastFixture("THREE_MIDDLE", "wilhelm");
+    const bookText = getMutationRuleBookText("huang", "THREE_MIDDLE");
+    const { user } = buildAnthropicUserPayloadForCast(cast, "seeker", "es");
+
+    expect(user).toContain(`MUTATION RULE: ${bookText}`);
+    expect(user).not.toContain("Si hay tres líneas móviles");
+    expect(user).not.toContain("Tres líneas centrales en juego");
   });
 });
 
