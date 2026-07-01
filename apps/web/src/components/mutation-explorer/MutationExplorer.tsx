@@ -631,7 +631,10 @@ export function MutationExplorer({ locale }: Props) {
                     type="radio"
                     name="lineReadingSystem"
                     checked={lineReadingSystem === "huang"}
-                    onChange={() => setLineReadingSystem("huang")}
+                    onChange={() => {
+                      setLineReadingSystem("huang");
+                      if (canVerify) runExplore("huang");
+                    }}
                   />
                   {ui.lineReadingHuang}
                 </label>
@@ -640,21 +643,26 @@ export function MutationExplorer({ locale }: Props) {
                     type="radio"
                     name="lineReadingSystem"
                     checked={lineReadingSystem === "zhuxi"}
-                    onChange={() => setLineReadingSystem("zhuxi")}
+                    onChange={() => {
+                      setLineReadingSystem("zhuxi");
+                      if (canVerify) runExplore("zhuxi");
+                    }}
                   />
                   {ui.lineReadingZhuxi}
                 </label>
               </div>
             </fieldset>
 
-            <button
-              type="button"
-              className="mutation-explorer-verify-btn"
-              disabled={!canVerify}
-              onClick={() => runExplore(lineReadingSystem)}
-            >
-              {ui.verifyButton}
-            </button>
+            {!result ? (
+              <button
+                type="button"
+                className="mutation-explorer-verify-btn"
+                disabled={!canVerify}
+                onClick={() => runExplore(lineReadingSystem)}
+              >
+                {ui.verifyButton}
+              </button>
+            ) : null}
           </div>
         </section>
       ) : null}
