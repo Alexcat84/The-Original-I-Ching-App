@@ -1,6 +1,8 @@
 import {
   getHexagramRecordByBinaryTopFirst,
   getHexagramRecordByNumber,
+  getMutationRuleRecord,
+  type MutationSystem,
 } from "@iching-oracle/iching-data";
 import {
   applyMutations,
@@ -201,6 +203,13 @@ function resolvePrimaryAndMask(input: MutationExploreInput): { primary: number; 
   );
 }
 
+function goldWantsYong(textTypes: readonly string[]): boolean {
+  return textTypes.some(
+    (t) => t === "specialYaoText" || t.includes("yongJiu") || t.includes("yongLiu"),
+  );
+}
+
+/** Derive read selections from gold mutation-rules textTypes + engine TextsForClaude. */
 export function textsToSelections(
   texts: TextsForClaude,
   primary: Hexagram,
@@ -210,6 +219,10 @@ export function textsToSelections(
   system: LineReadingSystem,
 ): MutationTextSelection[] {
   const selections: MutationTextSelection[] = [];
+  const systemKey: MutationSystem = system === "zhuxi" ? "zhuxi" : "huang";
+  const gold = getMutationRuleRecord(systemKey, rule);
+  const { textTypes, readsFrom } = gold;
+  const judgmentSlots = textTypes.filter((t) => t === "judgment").length;
 
   for (const line of texts.selectedLineTexts) {
     selections.push({
@@ -220,12 +233,30 @@ export function textsToSelections(
     });
   }
 
-  const includePrimaryJudgment =
-    changingLines.length === 0 ||
-    rule === "ZX_THREE_JUDGMENTS" ||
-    rule === "THREE_MIDDLE" ||
-    texts.readBothJudgments === true ||
-    (system === "zhuxi" && changingLines.length === 3);
+  let includePrimaryJudgment =
+    judgmentSlots > 0 &&
+    (readsFrom.includes("primary") || changingLines.length === 0);
+  let includeTransformedJudgment = judgmentSlots > 0 && readsFrom.includes("transformed");
+
+  if (rule === "ONE_CHANGING" && system === "huang") {
+    includePrimaryJudgment = false;
+    includeTransformedJudgment = true;
+  }
+
+  if (rule === "ZX_THREE_JUDGMENTS") {
+    includePrimaryJudgment = true;
+    includeTransformedJudgment = true;
+  }
+
+  if (rule === "SIX_ALL_CHANGING" || rule === "ZX_SIX_TRANSFORMED") {
+    includePrimaryJudgment = false;
+    includeTransformedJudgment = true;
+  }
+
+  if (texts.readBothJudgments) {
+    includePrimaryJudgment = true;
+    includeTransformedJudgment = true;
+  }
 
   if (includePrimaryJudgment) {
     selections.push({
@@ -236,13 +267,6 @@ export function textsToSelections(
     });
   }
 
-  const includeTransformedJudgment =
-    texts.readBothJudgments === true ||
-    texts.judgmentEmphasis === "transformed" ||
-    rule === "ZX_THREE_JUDGMENTS" ||
-    rule === "SIX_ALL_CHANGING" ||
-    rule === "ZX_SIX_TRANSFORMED";
-
   if (includeTransformedJudgment && texts.transformedJudgment) {
     selections.push({
       kind: "judgment",
@@ -252,14 +276,16 @@ export function textsToSelections(
     });
   }
 
-  if (changingLines.length === 0 || texts.readBothJudgments) {
+  if (texts.readBothJudgments) {
     selections.push({ kind: "image", hex: primary.number, judgmentScope: "primary" });
     if (texts.transformedImage && transformed) {
       selections.push({ kind: "image", hex: transformed.number, judgmentScope: "transformed" });
     }
+  } else if (textTypes.includes("image") && changingLines.length === 0) {
+    selections.push({ kind: "image", hex: primary.number, judgmentScope: "primary" });
   }
 
-  if (texts.specialYaoText) {
+  if (goldWantsYong(textTypes) && texts.specialYaoText) {
     selections.push({ kind: "yong", hex: primary.number });
   }
 

@@ -37,6 +37,7 @@ export type MutationExplorerUiMessages = {
   changingLineVerbatimHeading: (position: number) => string;
   oracleTexts: string;
   oracleTextsReadHint: string;
+  oracleTextsReadLegend: (lineReadingLabel: string) => string;
   translatorAppliedLabel: string;
   compareOtherSystem: string;
   tabWilhelm: string;
@@ -99,7 +100,10 @@ const EN: MutationExplorerUiMessages = {
   stableLines: "Stable lines",
   changingLineVerbatimHeading: (position) => `Changing line ${position} (literal text)`,
   oracleTexts: "Oracle texts",
-  oracleTextsReadHint: "Only the sections below are read under the selected line-reading rule. Badges mark the governing text when several apply.",
+  oracleTextsReadHint:
+    "Full context below — expand any section. Highlighted blocks are the texts read under your selected line-reading rule.",
+  oracleTextsReadLegend: (lineReadingLabel) =>
+    `Highlighted = read under ${lineReadingLabel}.`,
   translatorAppliedLabel: "Translator",
   compareOtherSystem: "View rule under the other system",
   tabWilhelm: "Wilhelm / Baynes",
@@ -170,7 +174,9 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     changingLineVerbatimHeading: (position) => `Línea ${position} (mutante, texto literal)`,
     oracleTexts: "Textos oráculo",
     oracleTextsReadHint:
-      "Solo se leen las secciones siguientes según la regla elegida. Las etiquetas marcan el texto rector cuando hay varios.",
+      "Contexto completo abajo — expande cualquier sección. Los bloques resaltados son los textos leídos según la regla elegida.",
+    oracleTextsReadLegend: (lineReadingLabel) =>
+      `Resaltado = leído bajo ${lineReadingLabel}.`,
     translatorAppliedLabel: "Traductor:",
     compareOtherSystem: "Ver regla bajo el otro sistema",
     tabWilhelm: "Wilhelm / Baynes",

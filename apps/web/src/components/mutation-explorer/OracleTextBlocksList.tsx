@@ -14,16 +14,19 @@ export function OracleTextBlocksList({ blocks, ui, listId }: Props) {
   return (
     <div className="mutation-explorer-oracle-blocks">
       {blocks.map((block) => (
-        <article key={`${listId}-${block.id}`} className="mutation-explorer-oracle-block">
-          <details className="mutation-explorer-oracle-details">
+        <article
+          key={`${listId}-${block.id}`}
+          className={`mutation-explorer-oracle-block${block.isRead ? " mutation-explorer-oracle-block--read" : ""}`}
+        >
+          <details className="mutation-explorer-oracle-details" open={block.isRead}>
             <summary className="mutation-explorer-oracle-summary">
               <span className="mutation-explorer-oracle-toggle" aria-hidden="true" />
               <span className="mutation-explorer-oracle-heading">
                 {block.heading}
-                {block.emphasis === "primary" ? (
+                {block.isRead && block.emphasis === "primary" ? (
                   <span className="mutation-explorer-badge">{ui.primaryEmphasis}</span>
                 ) : null}
-                {block.emphasis === "secondary" ? (
+                {block.isRead && block.emphasis === "secondary" ? (
                   <span className="mutation-explorer-badge">{ui.secondaryEmphasis}</span>
                 ) : null}
               </span>
