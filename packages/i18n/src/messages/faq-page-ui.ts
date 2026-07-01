@@ -248,7 +248,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "data-reliability",
     question: "How reliable are the I Ching texts provided in the app?",
     answer:
-      "Reliability means the oracle text you read, the Judgment, the Image, and each line, is never written or altered by AI. It is a direct citation checked word for word against a named published source. The English text comes from Richard Wilhelm and Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) and from James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); the classical Chinese Zhou Yi comes from the Chinese Text Project. The changing-line rules come from Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) and, for the classical alternative, from Zhu Xi's Yixue Qimeng in Joseph Adler's translation (Introduction to the Study of the Classic of Change, 2002). The AI interprets these already-cited texts for your question; it never generates or rewrites them. See the Fidelity Audits page for the full verification log.",
+      "Reliability means the oracle text you read, the Judgment, the Image, and each line, is never written or altered by AI. It is a direct citation checked word for word against a named published source. The Wilhelm text comes from Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924), in German; the English scholarly text from James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); the classical Chinese Zhou Yi comes from the Chinese Text Project. The changing-line rules come from Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) and, for the classical alternative, from Zhu Xi's Yixue Qimeng in Joseph Adler's translation (Introduction to the Study of the Classic of Change, 2002). The AI interprets these already-cited texts for your question; it never generates or rewrites them. See the Fidelity Audits page for the full verification log.",
     related: ["fidelityAudits"],
   },
   {
@@ -363,7 +363,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     question:
       "Are the I Ching texts that appear in the reading authentic or AI-generated?",
     answer:
-      "They are authentic. The textual material (Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams) is drawn from three scholarly sources available in the app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (public domain), and the original Zhou Yi. Cary Baynes's 1950 English rendering of Wilhelm (Princeton University Press) is also available as a comparative reference. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source.",
+      "They are authentic. The textual material (Judgments (卦辞), lines in motion (爻辞), and resulting hexagrams) is drawn from three scholarly sources available in the app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (public domain), and the original Zhou Yi. The AI cites and contextualises the relevant texts with your question, but does not modify or replace them. You can compare any text with the original source. Each consultation summary includes a 'Verify Reading' link at the bottom: it opens the Verification page for that cast, where you can compare the oracle texts cited in your reading directly against the complete hexagram library.",
     related: ["methodNotes"],
   },
   {
@@ -408,7 +408,7 @@ const FAQ_ITEMS_EN: FaqItem[] = [
     id: "translators-three",
     question: "What are the three translators available in the app?",
     answer:
-      "The app draws on three classical translations of the I Ching, shown as separate tabs. Richard Wilhelm and Cary F. Baynes (Princeton University Press, 1950) is the most widely read Western edition, with extensive commentary. James Legge (The Sacred Books of the East, vol. XVI, 1882) is the pioneering English scholarly translation, with his own footnotes and symbolism. The Zhou Yi is the original classical Chinese text itself, the root all later commentaries were written about, shown with no added commentary layer. All three describe the same 64 hexagrams; they differ in scholarly voice, language, and how much explanatory material surrounds the core text.",
+      "The app draws on three classical translations of the I Ching, shown as separate tabs. Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924) is the foundational German-language edition, with extensive scholarly commentary in German. James Legge (The Sacred Books of the East, vol. XVI, 1882) is the pioneering English scholarly translation, with his own footnotes and symbolism. The Zhou Yi is the original classical Chinese text itself, the root all later commentaries were written about, shown with no added commentary layer. All three describe the same 64 hexagrams; they differ in scholarly voice, language, and how much explanatory material surrounds the core text.",
   },
   {
     id: "tier-features",
@@ -436,7 +436,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
   {
     id: "translators-three",
     question: "¿Cuáles son los tres traductores disponibles en la app?",
-    answer: "La app se apoya en tres traducciones clásicas del I Ching, mostradas como pestañas separadas. Richard Wilhelm y Cary F. Baynes (Princeton University Press, 1950) es la edición occidental más leída, con un comentario extenso. James Legge (The Sacred Books of the East, vol. XVI, 1882) es la traducción académica pionera en inglés, con sus propias notas y simbolismo. El Zhou Yi es el texto original en chino clásico, la raíz sobre la que se escribieron los comentarios posteriores, mostrado sin ninguna capa de comentario añadida. Los tres describen los mismos 64 hexagramas; difieren en la voz del traductor, el idioma y cuánto material explicativo rodea al texto central.",
+    answer: "La app se apoya en tres traducciones clásicas del I Ching, mostradas como pestañas separadas. Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924) es la edición fundacional en alemán, con extenso comentario académico en alemán. James Legge (The Sacred Books of the East, vol. XVI, 1882) es la traducción académica pionera en inglés, con sus propias notas y simbolismo. El Zhou Yi es el texto original en chino clásico, la raíz sobre la que se escribieron los comentarios posteriores, mostrado sin ninguna capa de comentario añadida. Los tres describen los mismos 64 hexagramas; difieren en la voz del traductor, el idioma y cuánto material explicativo rodea al texto central.",
   },
   {
     id: "tier-features",
@@ -468,7 +468,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     id: "data-reliability",
     question: "¿Qué tan fiables son los textos del I Ching en la aplicación?",
     answer:
-      "Fiabilidad significa que el texto del oráculo que lees, el Juicio, la Imagen y cada línea, nunca es escrito ni alterado por la IA. Es una cita directa, verificada palabra por palabra contra una fuente publicada con nombre propio. El texto en inglés proviene de Richard Wilhelm y Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) y de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); el Zhou Yi en chino clásico proviene del Chinese Text Project. Las reglas de líneas cambiantes provienen de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) y, para la alternativa clásica, del Yixue Qimeng de Zhu Xi en la traducción de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). La IA interpreta estos textos ya citados para tu pregunta; nunca los genera ni los reescribe. Consulta la página Auditorías de fidelidad para el registro completo de verificación.",
+      "Fiabilidad significa que el texto del oráculo que lees, el Juicio, la Imagen y cada línea, nunca es escrito ni alterado por la IA. Es una cita directa, verificada palabra por palabra contra una fuente publicada con nombre propio. El texto de Wilhelm proviene de Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924), en alemán; el texto académico en inglés de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); el Zhou Yi en chino clásico proviene del Chinese Text Project. Las reglas de líneas cambiantes provienen de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) y, para la alternativa clásica, del Yixue Qimeng de Zhu Xi en la traducción de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). La IA interpreta estos textos ya citados para tu pregunta; nunca los genera ni los reescribe. Consulta la página Auditorías de fidelidad para el registro completo de verificación.",
     related: ["fidelityAudits"],
   },
   {
@@ -585,7 +585,7 @@ const FAQ_ITEMS_ES: FaqItem[] = [
     question:
       "¿Los textos del I Ching que aparecen en la lectura son auténticos o generados por IA?",
     answer:
-      "Son auténticos. El material textual (Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes) proviene de tres fuentes académicas disponibles en la app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (dominio público) y el Zhou Yi original. La versión inglesa de Cary Baynes (Princeton University Press, 1950) también está disponible como referencia comparativa. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original.",
+      "Son auténticos. El material textual (Juicios (卦辞), líneas en movimiento (爻辞) y hexagramas resultantes) proviene de tres fuentes académicas disponibles en la app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (dominio público) y el Zhou Yi original. La IA los cita y contextualiza con tu pregunta, pero no los modifica ni los reemplaza. Puedes contrastar cualquier texto con la fuente original. Cada resumen de consulta incluye un enlace 'Verificar lectura' al final: abre la página de Verificación de esa tirada, donde puedes comparar los textos del oráculo citados en tu lectura directamente con la biblioteca completa de hexagramas.",
     related: ["methodNotes"],
   },
   {
@@ -640,7 +640,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "data-reliability",
     question: "ما مدى موثوقية نصوص الآي تشينغ في التطبيق؟",
     answer:
-      "الموثوقية تعني أن نص الأوراكل الذي تقرأه، الحكم والصورة وكل خط، لا تكتبه ولا تعدّله الذكاء الاصطناعي أبداً. إنه اقتباس مباشر، مُحقَّق كلمة بكلمة مقابل مصدر منشور باسمه الصريح. يأتي النص الإنجليزي من Richard Wilhelm وCary F. Baynes (The I Ching or Book of Changes، Princeton University Press، 1950) ومن James Legge (The Sacred Books of the East، المجلد XVI، أكسفورد، 1882)؛ ويأتي التشو يي بالصينية الكلاسيكية من Chinese Text Project. تأتي قواعد الخطوط المتغيرة من Alfred Huang (The Complete I Ching، الطبعة العاشرة التذكارية، 2010)، ومن أجل البديل الكلاسيكي، من كتاب Yixue Qimeng لـZhu Xi بترجمة Joseph Adler (Introduction to the Study of the Classic of Change، 2002). يفسّر الذكاء الاصطناعي هذه النصوص المقتبسة سلفاً من أجل سؤالك؛ ولا يولّدها أو يعيد كتابتها أبداً. راجع صفحة تدقيقات المطابقة للسجل الكامل للتحقق.",
+      "الموثوقية تعني أن نص الأوراكل الذي تقرأه، الحكم والصورة وكل خط، لا تكتبه ولا تعدّله الذكاء الاصطناعي أبداً. إنه اقتباس مباشر، مُحقَّق كلمة بكلمة مقابل مصدر منشور باسمه الصريح. يأتي نص Wilhelm من Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag، 1924)، باللغة الألمانية؛ والنص الأكاديمي الإنجليزي من James Legge (The Sacred Books of the East، المجلد XVI، أكسفورد، 1882)؛ ويأتي التشو يي بالصينية الكلاسيكية من Chinese Text Project. تأتي قواعد الخطوط المتغيرة من Alfred Huang (The Complete I Ching، الطبعة العاشرة التذكارية، 2010)، ومن أجل البديل الكلاسيكي، من كتاب Yixue Qimeng لـZhu Xi بترجمة Joseph Adler (Introduction to the Study of the Classic of Change، 2002). يفسّر الذكاء الاصطناعي هذه النصوص المقتبسة سلفاً من أجل سؤالك؛ ولا يولّدها أو يعيد كتابتها أبداً. راجع صفحة تدقيقات المطابقة للسجل الكامل للتحقق.",
     related: ["fidelityAudits"],
   },
   {
@@ -754,7 +754,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     question:
       "هل نصوص I Ching التي تظهر في القراءة أصيلة أم يولّدها الذكاء الاصطناعي؟",
     answer:
-      "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاثة مصادر أكاديمية متاحة في التطبيق: Wilhelm (1924) (Eugen Diederichs Verlag)، وJames Legge (في الملك العام)، والتشو يي الأصلي. النسخة الإنجليزية لكاري باينز (Princeton University Press، 1950) متاحة أيضًا كمرجع مقارن. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي.",
+      "إنها أصيلة. المادة النصية، أحكام (卦辞)، وخطوط متحركة (爻辞)، وهكساجرامات ناتجة، مستقاة من ثلاثة مصادر أكاديمية متاحة في التطبيق: Wilhelm (1924) (Eugen Diederichs Verlag)، وJames Legge (في الملك العام)، والتشو يي الأصلي. يستشهد الذكاء الاصطناعي بالنصوص ذات الصلة ويضعها في سياق سؤالك، لكنه لا يعدلها ولا يستبدلها. يمكنك مقارنة أي نص مع المصدر الأصلي. يتضمن كل ملخص استشارة رابط 'التحقق من القراءة' في الأسفل: يفتح صفحة التحقق من تلك التوزيعة، حيث يمكنك مقارنة نصوص الأوراكل المستشهد بها في قراءتك مباشرةً مع مكتبة الهكساجرامات الكاملة.",
     related: ["methodNotes"],
   },
   {
@@ -799,7 +799,7 @@ const FAQ_ITEMS_AR: FaqItem[] = [
     id: "translators-three",
     question: "ما هي الترجمات الثلاث المتوفرة في التطبيق؟",
     answer:
-      "يستند التطبيق إلى ثلاث ترجمات كلاسيكية للآي تشينغ، تُعرض كعلامات تبويب منفصلة. ترجمة Richard Wilhelm وCary F. Baynes (Princeton University Press، 1950) هي النسخة الغربية الأكثر قراءة، وتتضمن تعليقاً موسعاً. ترجمة James Legge (The Sacred Books of the East، المجلد XVI، 1882) هي الترجمة الأكاديمية الإنجليزية الرائدة، وتتضمن ملاحظاته الخاصة ورمزيته. والتشو يي هو النص الأصلي بالصينية الكلاسيكية نفسه، الجذر الذي كُتبت عنه التعليقات اللاحقة كلها، ويُعرض دون أي طبقة تعليق مُضافة. تصف الثلاث جميعها السداسيات الأربع والستين نفسها؛ وتختلف في صوت المترجم واللغة وكمّ المادة التوضيحية المحيطة بالنص الأساسي.",
+      "يستند التطبيق إلى ثلاث ترجمات كلاسيكية للآي تشينغ، تُعرض كعلامات تبويب منفصلة. ترجمة Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag، 1924) هي الطبعة الألمانية الأساسية، مع تعليق أكاديمي موسع باللغة الألمانية. ترجمة James Legge (The Sacred Books of the East، المجلد XVI، 1882) هي الترجمة الأكاديمية الإنجليزية الرائدة، وتتضمن ملاحظاته الخاصة ورمزيته. والتشو يي هو النص الأصلي بالصينية الكلاسيكية نفسه، الجذر الذي كُتبت عنه التعليقات اللاحقة كلها، ويُعرض دون أي طبقة تعليق مُضافة. تصف الثلاث جميعها السداسيات الأربع والستين نفسها؛ وتختلف في صوت المترجم واللغة وكمّ المادة التوضيحية المحيطة بالنص الأساسي.",
   },
   {
     id: "tier-features",
@@ -835,7 +835,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "data-reliability",
     question: "ऐप में दिए गए आई चिंग ग्रंथों की विश्वसनीयता क्या है?",
     answer:
-      "विश्वसनीयता का अर्थ है कि आप जो ओरेकल पाठ पढ़ते हैं, निर्णय, छवि और हर रेखा, वह कभी AI द्वारा न लिखा जाता है न बदला जाता है। यह एक प्रत्यक्ष उद्धरण है, जिसे एक नामित प्रकाशित स्रोत के विरुद्ध शब्द-दर-शब्द सत्यापित किया गया है। अंग्रेज़ी पाठ Richard Wilhelm और Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) तथा James Legge (The Sacred Books of the East, खंड XVI, ऑक्सफ़ोर्ड, 1882) से आता है; शास्त्रीय चीनी Zhou Yi Chinese Text Project से आता है। बदलती-रेखा नियम Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) से आते हैं, और शास्त्रीय विकल्प के लिए, Zhu Xi के Yixue Qimeng से, Joseph Adler के अनुवाद में (Introduction to the Study of the Classic of Change, 2002)। AI आपके प्रश्न के लिए इन पहले से उद्धृत पाठों की व्याख्या करता है; यह इन्हें कभी उत्पन्न या फिर से नहीं लिखता। पूर्ण सत्यापन लॉग के लिए निष्ठा ऑडिट पृष्ठ देखें।",
+      "विश्वसनीयता का अर्थ है कि आप जो ओरेकल पाठ पढ़ते हैं, निर्णय, छवि और हर रेखा, वह कभी AI द्वारा न लिखा जाता है न बदला जाता है। यह एक प्रत्यक्ष उद्धरण है, जिसे एक नामित प्रकाशित स्रोत के विरुद्ध शब्द-दर-शब्द सत्यापित किया गया है। Wilhelm का पाठ Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924), जर्मन में, से आता है; अंग्रेज़ी विद्वत्तापूर्ण पाठ James Legge (The Sacred Books of the East, खंड XVI, ऑक्सफ़ोर्ड, 1882) से आता है; शास्त्रीय चीनी Zhou Yi Chinese Text Project से आता है। बदलती-रेखा नियम Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) से आते हैं, और शास्त्रीय विकल्प के लिए, Zhu Xi के Yixue Qimeng से, Joseph Adler के अनुवाद में (Introduction to the Study of the Classic of Change, 2002)। AI आपके प्रश्न के लिए इन पहले से उद्धृत पाठों की व्याख्या करता है; यह इन्हें कभी उत्पन्न या फिर से नहीं लिखता। पूर्ण सत्यापन लॉग के लिए निष्ठा ऑडिट पृष्ठ देखें।",
     related: ["fidelityAudits"],
   },
   {
@@ -950,7 +950,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     question:
       "पठन में दिखाई देने वाले I Ching के पाठ प्रामाणिक हैं या AI द्वारा उत्पन्न?",
     answer:
-      "वे प्रामाणिक हैं। पाठ्य सामग्री (निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम) ऐप में उपलब्ध तीन विद्वत्तापूर्ण स्रोतों से ली गई है: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (सार्वजनिक डोमेन), और मूल Zhou Yi। Cary Baynes का 1950 का अंग्रेज़ी अनुवाद (Princeton University Press) तुलनात्मक संदर्भ के रूप में भी उपलब्ध है। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं।",
+      "वे प्रामाणिक हैं। पाठ्य सामग्री (निर्णय (卦辞), चलती रेखाएँ (爻辞), और परिणामी हेक्साग्राम) ऐप में उपलब्ध तीन विद्वत्तापूर्ण स्रोतों से ली गई है: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (सार्वजनिक डोमेन), और मूल Zhou Yi। AI संबंधित पाठों को आपके प्रश्न के साथ उद्धृत और संदर्भित करता है, लेकिन उन्हें संशोधित या प्रतिस्थापित नहीं करता। आप किसी भी पाठ की मूल स्रोत से तुलना कर सकते हैं। प्रत्येक परामर्श सारांश में नीचे एक 'पठन सत्यापित करें' लिंक शामिल है: यह उस जाल की सत्यापन पृष्ठ खोलता है, जहाँ आप अपनी पठन में उद्धृत ओरेकल पाठों की सीधे पूर्ण हेक्साग्राम पुस्तकालय से तुलना कर सकते हैं।",
     related: ["methodNotes"],
   },
   {
@@ -988,7 +988,7 @@ const FAQ_ITEMS_HI: FaqItem[] = [
     id: "translators-three",
     question: "ऐप में उपलब्ध तीन अनुवादक कौन-कौन से हैं?",
     answer:
-      "यह ऐप I Ching के तीन शास्त्रीय अनुवादों पर आधारित है, जो अलग-अलग टैब के रूप में दिखाए जाते हैं। Richard Wilhelm और Cary F. Baynes (Princeton University Press, 1950) सबसे अधिक पढ़ा जाने वाला पश्चिमी संस्करण है, जिसमें विस्तृत टिप्पणी है। James Legge (The Sacred Books of the East, खंड XVI, 1882) अग्रणी अंग्रेज़ी विद्वत्तापूर्ण अनुवाद है, जिसमें उनके अपने फुटनोट और प्रतीकवाद हैं। Zhou Yi मूल शास्त्रीय चीनी पाठ स्वयं है, वह जड़ जिसके बारे में बाद की सभी टिप्पणियाँ लिखी गईं, जिसे टिप्पणी की किसी अतिरिक्त परत के बिना दिखाया जाता है। तीनों एक जैसे 64 हेक्साग्रामों का वर्णन करते हैं; वे अनुवादक की आवाज़, भाषा और मूल पाठ के आसपास कितनी व्याख्यात्मक सामग्री है, इसमें भिन्न हैं।",
+      "यह ऐप I Ching के तीन शास्त्रीय अनुवादों पर आधारित है, जो अलग-अलग टैब के रूप में दिखाए जाते हैं। Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924) जर्मन भाषा का मूलभूत संस्करण है, जिसमें जर्मन में विस्तृत विद्वत्तापूर्ण टिप्पणी है। James Legge (The Sacred Books of the East, खंड XVI, 1882) अग्रणी अंग्रेज़ी विद्वत्तापूर्ण अनुवाद है, जिसमें उनके अपने फुटनोट और प्रतीकवाद हैं। Zhou Yi मूल शास्त्रीय चीनी पाठ स्वयं है, वह जड़ जिसके बारे में बाद की सभी टिप्पणियाँ लिखी गईं, जिसे टिप्पणी की किसी अतिरिक्त परत के बिना दिखाया जाता है। तीनों एक जैसे 64 हेक्साग्रामों का वर्णन करते हैं; वे अनुवादक की आवाज़, भाषा और मूल पाठ के आसपास कितनी व्याख्यात्मक सामग्री है, इसमें भिन्न हैं।",
   },
   {
     id: "tier-features",
@@ -1031,7 +1031,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "data-reliability",
     question: "アプリで提供される易経のテキストの信頼性はどの程度ですか？",
     answer:
-      "信頼性とは、あなたが読む神託のテキスト、彖辞、象、そして各爻が、AIによって書かれたり改変されたりすることが決してないことを意味します。これは、名前の明示された出版済みの典拠と一語一句照合された直接の引用です。英語テキストはRichard WilhelmとCary F. Baynes（The I Ching or Book of Changes、Princeton University Press、1950年）およびJames Legge（The Sacred Books of the East、第XVI巻、オックスフォード、1882年）に由来し、古典中国語の周易はChinese Text Projectに由来します。変爻のルールはAlfred Huang（The Complete I Ching、10th Anniversary Edition、2010年）に由来し、古典的な選択肢としては、朱熹の『易学啓蒙』のJoseph Adlerによる英訳（Introduction to the Study of the Classic of Change、2002年）に由来します。AIはあなたの質問のためにこれらすでに引用されたテキストを解釈するのみで、生成したり書き換えたりすることは決してありません。完全な検証ログは忠実度監査ページをご覧ください。",
+      "信頼性とは、あなたが読む神託のテキスト、彖辞、象、そして各爻が、AIによって書かれたり改変されたりすることが決してないことを意味します。これは、名前の明示された出版済みの典拠と一語一句照合された直接の引用です。ヴィルヘルムのテキストはRichard Wilhelm（I Ging: Das Buch der Wandlungen、Eugen Diederichs Verlag、1924年）のドイツ語版に由来し、英語の学術テキストはJames Legge（The Sacred Books of the East、第XVI巻、オックスフォード、1882年）に由来し、古典中国語の周易はChinese Text Projectに由来します。変爻のルールはAlfred Huang（The Complete I Ching、10th Anniversary Edition、2010年）に由来し、古典的な選択肢としては、朱熹の『易学啓蒙』のJoseph Adlerによる英訳（Introduction to the Study of the Classic of Change、2002年）に由来します。AIはあなたの質問のためにこれらすでに引用されたテキストを解釈するのみで、生成したり書き換えたりすることは決してありません。完全な検証ログは忠実度監査ページをご覧ください。",
     related: ["fidelityAudits"],
   },
   {
@@ -1145,7 +1145,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     question:
       "解釈に表示されるI Chingのテキストは本物ですか、それともAIが生成したものですか？",
     answer:
-      "本物です。テキスト素材（卦辞、動爻（爻辞）、変卦）はアプリで利用できる3つの学術的典拠から引用されています：ヴィルヘルム（1924年）（Eugen Diederichs Verlag）、ジェームズ・レッグ（パブリックドメイン）、そして原典の周易。ケーリー・ベインズによる1950年英訳（Princeton University Press）は比較参照として保管されています。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。",
+      "本物です。テキスト素材（卦辞、動爻（爻辞）、変卦）はアプリで利用できる3つの学術的典拠から引用されています：ヴィルヘルム（1924年）（Eugen Diederichs Verlag）、ジェームズ・レッグ（パブリックドメイン）、そして原典の周易。AIは関連するテキストをあなたの質問に合わせて引用し文脈化しますが、変更や置き換えは一切しません。すべてのテキストを原典と照合することができます。各相談の要約の下部には「読みを確認する」リンクがあります。クリックするとその卦の確認ページが開き、あなたの読みで引用されたオラクルテキストを完全な六十四卦ライブラリーと直接照合できます。",
     related: ["methodNotes"],
   },
   {
@@ -1190,7 +1190,7 @@ const FAQ_ITEMS_JA: FaqItem[] = [
     id: "translators-three",
     question: "アプリで利用できる3つの翻訳者とは何ですか？",
     answer:
-      "このアプリは易経の3つの古典的な翻訳に基づいており、それぞれ別のタブとして表示されます。Richard WilhelmとCary F. Baynes訳（Princeton University Press、1950年）は最も広く読まれている西洋版で、充実した注釈が付いています。James Legge訳（The Sacred Books of the East、第XVI巻、1882年）は先駆的な英語学術翻訳で、彼自身の脚注と象徴解釈が付いています。周易は原典の古典中国語のテキスト自体であり、後のすべての注釈が書かれた対象となる根本であって、注釈の層が一切加えられていない形で示されます。3つとも同じ64卦を説明しますが、訳者の文体、言語、そして核となるテキストを取り囲む説明資料の量が異なります。",
+      "このアプリは易経の3つの古典的な翻訳に基づいており、それぞれ別のタブとして表示されます。Richard Wilhelm訳（I Ging: Das Buch der Wandlungen、Eugen Diederichs Verlag、1924年）はドイツ語の基礎的な版で、ドイツ語による充実した学術的注釈が付いています。James Legge訳（The Sacred Books of the East、第XVI巻、1882年）は先駆的な英語学術翻訳で、彼自身の脚注と象徴解釈が付いています。周易は原典の古典中国語のテキスト自体であり、後のすべての注釈が書かれた対象となる根本であって、注釈の層が一切加えられていない形で示されます。3つとも同じ64卦を説明しますが、訳者の文体、言語、そして核となるテキストを取り囲む説明資料の量が異なります。",
   },
   {
     id: "tier-features",
@@ -1226,7 +1226,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "data-reliability",
     question: "应用中提供的易经文本可靠性如何？",
     answer:
-      "可靠性意味着您读到的神谕文本，卦辞、象辞和每条爻辞，绝不由 AI 撰写或更改。它是与具名出版来源逐字核对的直接引用。英文文本来自 Richard Wilhelm 与 Cary F. Baynes（《The I Ching or Book of Changes》，Princeton University Press，1950年）以及 James Legge（《The Sacred Books of the East》第 XVI 卷，牛津，1882年）；古典中文的周易来自 Chinese Text Project。变爻规则来自 Alfred Huang（《The Complete I Ching》，10th Anniversary Edition，2010年），经典替代方案则来自朱熹《易学启蒙》的 Joseph Adler 英译本（《Introduction to the Study of the Classic of Change》，2002年）。AI 只为您的问题诠释这些已经引用好的文本，绝不生成或重写它们。完整核验记录请见保真审计页面。",
+      "可靠性意味着您读到的神谕文本，卦辞、象辞和每条爻辞，绝不由 AI 撰写或更改。它是与具名出版来源逐字核对的直接引用。卫礼贤译文来自 Richard Wilhelm（I Ging: Das Buch der Wandlungen，Eugen Diederichs Verlag，1924年），为德文；英文学术文本来自 James Legge（《The Sacred Books of the East》第 XVI 卷，牛津，1882年）；古典中文的周易来自 Chinese Text Project。变爻规则来自 Alfred Huang（《The Complete I Ching》，10th Anniversary Edition，2010年），经典替代方案则来自朱熹《易学启蒙》的 Joseph Adler 英译本（《Introduction to the Study of the Classic of Change》，2002年）。AI 只为您的问题诠释这些已经引用好的文本，绝不生成或重写它们。完整核验记录请见保真审计页面。",
     related: ["fidelityAudits"],
   },
   {
@@ -1338,7 +1338,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "authentic-texts",
     question: "解读中出现的易经文本是真实的还是AI生成的？",
     answer:
-      "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：卫礼贤（1924年）（Eugen Diederichs Verlag）、詹姆斯·理雅各（公有领域）和原典周易。贝恩斯1950年英译本（普林斯顿大学出版社）亦作为比较参考保存。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。",
+      "是真实的。文本素材（卦辞、动爻（爻辞）和变卦）来自应用中提供的三种学术译本：卫礼贤（1924年）（Eugen Diederichs Verlag）、詹姆斯·理雅各（公有领域）和原典周易。AI引用相关文本并结合您的问题加以诠释，但不对其进行修改或替换。您可以将任何文本与原始资料进行对照。每条咨询摘要底部都有一个「验证解读」链接：点击即可打开该次卦象的验证页面，您可以直接将解读中引用的神谕文本与完整的六十四卦图书馆进行对照。",
     related: ["methodNotes"],
   },
   {
@@ -1381,7 +1381,7 @@ const FAQ_ITEMS_ZH: FaqItem[] = [
     id: "translators-three",
     question: "应用中提供的三种译本是什么？",
     answer:
-      "本应用基于《易经》的三种经典译本，以独立标签呈现。Richard Wilhelm 与 Cary F. Baynes 译本（Princeton University Press，1950年）是西方读者最广泛阅读的版本，附有详尽的注释。James Legge 译本（《The Sacred Books of the East》第 XVI 卷，1882年）是开创性的英文学术译本，附有他自己的注脚和象征解读。周易则是古典中文原典本身，是后世所有注释据以撰写的根本，呈现时不附加任何注释层。三者描述的都是同样的六十四卦；区别在于译者的笔调、语言，以及围绕核心文字的注解材料多少。",
+      "本应用基于《易经》的三种经典译本，以独立标签呈现。Richard Wilhelm 译本（I Ging: Das Buch der Wandlungen，Eugen Diederichs Verlag，1924年）是德语奠基版，附有详尽的德文学术注释。James Legge 译本（《The Sacred Books of the East》第 XVI 卷，1882年）是开创性的英文学术译本，附有他自己的注脚和象征解读。周易则是古典中文原典本身，是后世所有注释据以撰写的根本，呈现时不附加任何注释层。三者描述的都是同样的六十四卦；区别在于译者的笔调、语言，以及围绕核心文字的注解材料多少。",
   },
   {
     id: "tier-features",
@@ -1417,7 +1417,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "data-reliability",
     question: "앱에서 제공되는 주역 텍스트는 얼마나 신뢰할 수 있습니까?",
     answer:
-      "신뢰성이란 당신이 읽는 신탁문, 즉 괘사, 상사, 그리고 각 효사가 AI에 의해 쓰이거나 변경되는 일이 결코 없다는 의미입니다. 이는 명시된 출판 원전과 한 글자씩 대조하여 검증된 직접 인용입니다. 영문 텍스트는 Richard Wilhelm과 Cary F. Baynes(『The I Ching or Book of Changes』, Princeton University Press, 1950년)와 James Legge(『The Sacred Books of the East』 제16권, 옥스퍼드, 1882년)에서 가져왔으며, 고전 중국어 주역은 Chinese Text Project에서 가져왔습니다. 변효 규칙은 Alfred Huang(『The Complete I Ching』, 10th Anniversary Edition, 2010년)에서, 고전적 대안은 주희의 『易學啓蒙』을 Joseph Adler가 번역한 『Introduction to the Study of the Classic of Change』(2002년)에서 가져왔습니다. AI는 귀하의 질문을 위해 이미 인용된 이 텍스트들을 해석할 뿐, 결코 생성하거나 다시 쓰지 않습니다. 전체 검증 기록은 충실도 감사 페이지를 참조하세요.",
+      "신뢰성이란 당신이 읽는 신탁문, 즉 괘사, 상사, 그리고 각 효사가 AI에 의해 쓰이거나 변경되는 일이 결코 없다는 의미입니다. 이는 명시된 출판 원전과 한 글자씩 대조하여 검증된 직접 인용입니다. 빌헬름 텍스트는 Richard Wilhelm(I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924년)의 독일어판에서, 영문 학술 텍스트는 James Legge(『The Sacred Books of the East』 제16권, 옥스퍼드, 1882년)에서 가져왔으며, 고전 중국어 주역은 Chinese Text Project에서 가져왔습니다. 변효 규칙은 Alfred Huang(『The Complete I Ching』, 10th Anniversary Edition, 2010년)에서, 고전적 대안은 주희의 『易學啓蒙』을 Joseph Adler가 번역한 『Introduction to the Study of the Classic of Change』(2002년)에서 가져왔습니다. AI는 귀하의 질문을 위해 이미 인용된 이 텍스트들을 해석할 뿐, 결코 생성하거나 다시 쓰지 않습니다. 전체 검증 기록은 충실도 감사 페이지를 참조하세요.",
     related: ["fidelityAudits"],
   },
   {
@@ -1530,7 +1530,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "authentic-texts",
     question: "해석에 나타나는 주역 텍스트는 진본인가요, AI가 생성한 것인가요?",
     answer:
-      "진본입니다. 텍스트 자료(괘사(卦辞), 동효의 효사(爻辞), 변괘)는 앱에서 제공하는 세 가지 학술 출처에서 인용되었습니다: 빌헬름 (1924) (Eugen Diederichs Verlag), 제임스 레그 (공공 도메인), 그리고 원전 주역. 케어리 베인스의 1950년 영어 번역본 (Princeton University Press)도 비교 참조로 보관됩니다. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다.",
+      "진본입니다. 텍스트 자료(괘사(卦辞), 동효의 효사(爻辞), 변괘)는 앱에서 제공하는 세 가지 학술 출처에서 인용되었습니다: 빌헬름 (1924) (Eugen Diederichs Verlag), 제임스 레그 (공공 도메인), 그리고 원전 주역. AI는 관련 텍스트를 귀하의 질문에 맞게 인용하고 맥락화하지만, 수정하거나 대체하지 않습니다. 원본과 텍스트를 비교해 볼 수 있습니다. 각 상담 요약의 하단에는 '읽기 확인' 링크가 있습니다. 클릭하면 해당 점괘의 확인 페이지가 열리며, 읽기에서 인용된 신탁 텍스트를 완전한 괘 도서관과 직접 비교할 수 있습니다.",
     related: ["methodNotes"],
   },
   {
@@ -1573,7 +1573,7 @@ const FAQ_ITEMS_KO: FaqItem[] = [
     id: "translators-three",
     question: "앱에서 제공되는 세 가지 번역본은 무엇인가요?",
     answer:
-      "이 앱은 주역의 세 가지 고전 번역본을 기반으로 하며, 각각 별도의 탭으로 표시됩니다. Richard Wilhelm과 Cary F. Baynes 번역본(Princeton University Press, 1950년)은 가장 널리 읽힌 서양판으로, 방대한 주석이 달려 있습니다. James Legge 번역본(『The Sacred Books of the East』 제16권, 1882년)은 선구적인 영문 학술 번역본으로, 그 자신의 주석과 상징 해석이 달려 있습니다. 주역은 원전 고전 중국어 텍스트 그 자체로, 후대의 모든 주석이 그것을 두고 쓰인 근본이며, 어떤 주석 층도 더해지지 않은 채로 표시됩니다. 세 가지 모두 같은 64괘를 설명하지만, 번역자의 어조, 언어, 그리고 핵심 텍스트를 둘러싼 설명 자료의 양에서 차이가 있습니다.",
+      "이 앱은 주역의 세 가지 고전 번역본을 기반으로 하며, 각각 별도의 탭으로 표시됩니다. Richard Wilhelm 번역본(I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924년)은 독일어의 기초적인 판으로, 독일어로 방대한 학술 주석이 달려 있습니다. James Legge 번역본(『The Sacred Books of the East』 제16권, 1882년)은 선구적인 영문 학술 번역본으로, 그 자신의 주석과 상징 해석이 달려 있습니다. 주역은 원전 고전 중국어 텍스트 그 자체로, 후대의 모든 주석이 그것을 두고 쓰인 근본이며, 어떤 주석 층도 더해지지 않은 채로 표시됩니다. 세 가지 모두 같은 64괘를 설명하지만, 번역자의 어조, 언어, 그리고 핵심 텍스트를 둘러싼 설명 자료의 양에서 차이가 있습니다.",
   },
   {
     id: "tier-features",
@@ -1609,7 +1609,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "data-reliability",
     question: "Quão confiáveis são os textos do I Ching no aplicativo?",
     answer:
-      "Confiabilidade significa que o texto do oráculo que lês, o Julgamento, a Imagem e cada linha, nunca é escrito nem alterado pela IA. É uma citação direta, verificada palavra por palavra contra uma fonte publicada com nome próprio. O texto em inglês vem de Richard Wilhelm e Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) e de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); o Zhou Yi em chinês clássico vem do Chinese Text Project. As regras de linhas mutantes vêm de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) e, para a alternativa clássica, do Yixue Qimeng de Zhu Xi na tradução de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). A IA interpreta estes textos já citados para a tua pergunta; nunca os gera nem os reescreve. Consulta a página Auditorias de fidelidade para o registo completo de verificação.",
+      "Confiabilidade significa que o texto do oráculo que lês, o Julgamento, a Imagem e cada linha, nunca é escrito nem alterado pela IA. É uma citação direta, verificada palavra por palavra contra uma fonte publicada com nome próprio. O texto de Wilhelm vem de Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924), em alemão; o texto académico em inglês de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); o Zhou Yi em chinês clássico vem do Chinese Text Project. As regras de linhas mutantes vêm de Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) e, para a alternativa clássica, do Yixue Qimeng de Zhu Xi na tradução de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). A IA interpreta estes textos já citados para a tua pergunta; nunca os gera nem os reescreve. Consulta a página Auditorias de fidelidade para o registo completo de verificação.",
     related: ["fidelityAudits"],
   },
   {
@@ -1724,7 +1724,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     question:
       "Os textos do I Ching que aparecem na leitura são autênticos ou gerados por IA?",
     answer:
-      "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três fontes académicas disponíveis na app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (domínio público) e o Zhou Yi original. A versão inglesa de Cary Baynes (Princeton University Press, 1950) também está disponível como referência comparativa. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original.",
+      "São autênticos. O material textual (Julgamentos (卦辞), linhas em movimento (爻辞) e hexagramas resultantes) provém de três fontes académicas disponíveis na app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (domínio público) e o Zhou Yi original. A IA cita e contextualiza os textos relevantes com a sua pergunta, mas não os modifica nem substitui. Pode comparar qualquer texto com a fonte original. Cada resumo de consulta inclui um link 'Verificar leitura' no final: abre a página de Verificação dessa tirada, onde pode comparar os textos do oráculo citados na sua leitura diretamente com a biblioteca completa de hexagramas.",
     related: ["methodNotes"],
   },
   {
@@ -1769,7 +1769,7 @@ const FAQ_ITEMS_PT: FaqItem[] = [
     id: "translators-three",
     question: "Quais são os três tradutores disponíveis na app?",
     answer:
-      "A app apoia-se em três traduções clássicas do I Ching, mostradas como separadores distintos. Richard Wilhelm e Cary F. Baynes (Princeton University Press, 1950) é a edição ocidental mais lida, com um comentário extenso. James Legge (The Sacred Books of the East, vol. XVI, 1882) é a tradução académica pioneira em inglês, com as suas próprias notas e simbolismo. O Zhou Yi é o texto original em chinês clássico, a raiz sobre a qual foram escritos os comentários posteriores, mostrado sem nenhuma camada de comentário adicionada. Os três descrevem os mesmos 64 hexagramas; diferem na voz do tradutor, no idioma e em quanto material explicativo rodeia o texto central.",
+      "A app apoia-se em três traduções clássicas do I Ching, mostradas como separadores distintos. Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924) é a edição fundacional em alemão, com extenso comentário académico em alemão. James Legge (The Sacred Books of the East, vol. XVI, 1882) é a tradução académica pioneira em inglês, com as suas próprias notas e simbolismo. O Zhou Yi é o texto original em chinês clássico, a raiz sobre a qual foram escritos os comentários posteriores, mostrado sem nenhuma camada de comentário adicionada. Os três descrevem os mesmos 64 hexagramas; diferem na voz do tradutor, no idioma e em quanto material explicativo rodeia o texto central.",
   },
   {
     id: "tier-features",
@@ -1805,7 +1805,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "data-reliability",
     question: "Wie zuverlässig sind die I-Ging-Texte in der App?",
     answer:
-      "Zuverlässigkeit bedeutet, dass der Orakeltext, den Sie lesen, das Urteil, das Bild und jede Linie, niemals von der KI geschrieben oder verändert wird. Es ist ein direktes Zitat, Wort für Wort gegen eine namentlich genannte veröffentlichte Quelle geprüft. Der englische Text stammt von Richard Wilhelm und Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) und von James Legge (The Sacred Books of the East, Bd. XVI, Oxford, 1882); das klassische chinesische Zhou Yi stammt vom Chinese Text Project. Die Regeln für wandelnde Linien stammen von Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) und, für die klassische Alternative, aus Zhu Xis Yixue Qimeng in der Übersetzung von Joseph Adler (Introduction to the Study of the Classic of Change, 2002). Die KI interpretiert diese bereits zitierten Texte für Ihre Frage; sie erzeugt oder schreibt sie niemals neu. Das vollständige Verifizierungsprotokoll finden Sie auf der Fidelitätsprüfungen-Seite.",
+      "Zuverlässigkeit bedeutet, dass der Orakeltext, den Sie lesen, das Urteil, das Bild und jede Linie, niemals von der KI geschrieben oder verändert wird. Es ist ein direktes Zitat, Wort für Wort gegen eine namentlich genannte veröffentlichte Quelle geprüft. Der Wilhelm-Text stammt von Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924), auf Deutsch; der englischsprachige Wissenschaftstext von James Legge (The Sacred Books of the East, Bd. XVI, Oxford, 1882); das klassische chinesische Zhou Yi stammt vom Chinese Text Project. Die Regeln für wandelnde Linien stammen von Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) und, für die klassische Alternative, aus Zhu Xis Yixue Qimeng in der Übersetzung von Joseph Adler (Introduction to the Study of the Classic of Change, 2002). Die KI interpretiert diese bereits zitierten Texte für Ihre Frage; sie erzeugt oder schreibt sie niemals neu. Das vollständige Verifizierungsprotokoll finden Sie auf der Fidelitätsprüfungen-Seite.",
     related: ["fidelityAudits"],
   },
   {
@@ -1924,7 +1924,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     question:
       "Sind die I-Ching-Texte in der Lesung authentisch oder KI-generiert?",
     answer:
-      "Sie sind authentisch. Das Textmaterial (Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme) stammt aus drei wissenschaftlichen Quellen, die in der App verfügbar sind: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (gemeinfrei) und das originale Zhou Yi. Cary Baynes' englische Fassung von 1950 (Princeton University Press) ist ebenfalls als Vergleichsreferenz verfügbar. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen.",
+      "Sie sind authentisch. Das Textmaterial (Urteile (卦辞), sich bewegende Linien (爻辞) und resultierende Hexagramme) stammt aus drei wissenschaftlichen Quellen, die in der App verfügbar sind: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (gemeinfrei) und das originale Zhou Yi. Die KI zitiert und kontextualisiert die relevanten Texte mit Ihrer Frage, ändert oder ersetzt sie aber nicht. Sie können jeden Text mit der Originalquelle vergleichen. Jede Konsultationszusammenfassung enthält unten einen Link 'Lesung überprüfen': Er öffnet die Überprüfungsseite für diese Wurfkonstellation, wo Sie die in Ihrer Lesung zitierten Orakeltexte direkt mit der vollständigen Hexagramm-Bibliothek vergleichen können.",
     related: ["methodNotes"],
   },
   {
@@ -1969,7 +1969,7 @@ const FAQ_ITEMS_DE: FaqItem[] = [
     id: "translators-three",
     question: "Welche drei Übersetzer stehen in der App zur Verfügung?",
     answer:
-      "Die App stützt sich auf drei klassische Übersetzungen des I Ging, die als separate Tabs angezeigt werden. Richard Wilhelm und Cary F. Baynes (Princeton University Press, 1950) ist die meistgelesene westliche Ausgabe, mit einem ausführlichen Kommentar. James Legge (The Sacred Books of the East, Bd. XVI, 1882) ist die bahnbrechende englische wissenschaftliche Übersetzung, mit seinen eigenen Fußnoten und seiner Symbolik. Das Zhou Yi ist der originale klassische chinesische Text selbst, die Wurzel, über die alle späteren Kommentare geschrieben wurden, dargestellt ohne jede hinzugefügte Kommentarschicht. Alle drei beschreiben dieselben 64 Hexagramme; sie unterscheiden sich in der Stimme des Übersetzers, der Sprache und dem Umfang des erklärenden Materials rund um den Kerntext.",
+      "Die App stützt sich auf drei klassische Übersetzungen des I Ging, die als separate Tabs angezeigt werden. Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924) ist die grundlegende deutschsprachige Ausgabe, mit ausführlichem wissenschaftlichem Kommentar auf Deutsch. James Legge (The Sacred Books of the East, Bd. XVI, 1882) ist die bahnbrechende englische wissenschaftliche Übersetzung, mit seinen eigenen Fußnoten und seiner Symbolik. Das Zhou Yi ist der originale klassische chinesische Text selbst, die Wurzel, über die alle späteren Kommentare geschrieben wurden, dargestellt ohne jede hinzugefügte Kommentarschicht. Alle drei beschreiben dieselben 64 Hexagramme; sie unterscheiden sich in der Stimme des Übersetzers, der Sprache und dem Umfang des erklärenden Materials rund um den Kerntext.",
   },
   {
     id: "tier-features",
@@ -2005,7 +2005,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "data-reliability",
     question: "Quanto sono affidabili i testi dell'I Ching nell'app?",
     answer:
-      "Affidabilità significa che il testo dell'oracolo che leggi, il Giudizio, l'Immagine e ogni linea, non viene mai scritto né alterato dall'IA. È una citazione diretta, verificata parola per parola rispetto a una fonte pubblicata con nome proprio. Il testo in inglese proviene da Richard Wilhelm e Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) e da James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); lo Zhou Yi in cinese classico proviene dal Chinese Text Project. Le regole delle linee mutanti provengono da Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) e, per l'alternativa classica, dallo Yixue Qimeng di Zhu Xi nella traduzione di Joseph Adler (Introduction to the Study of the Classic of Change, 2002). L'IA interpreta questi testi già citati per la tua domanda; non li genera né li riscrive mai. Consulta la pagina Audit di fedeltà per il registro completo di verifica.",
+      "Affidabilità significa che il testo dell'oracolo che leggi, il Giudizio, l'Immagine e ogni linea, non viene mai scritto né alterato dall'IA. È una citazione diretta, verificata parola per parola rispetto a una fonte pubblicata con nome proprio. Il testo di Wilhelm proviene da Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924), in tedesco; il testo accademico in inglese da James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882); lo Zhou Yi in cinese classico proviene dal Chinese Text Project. Le regole delle linee mutanti provengono da Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) e, per l'alternativa classica, dallo Yixue Qimeng di Zhu Xi nella traduzione di Joseph Adler (Introduction to the Study of the Classic of Change, 2002). L'IA interpreta questi testi già citati per la tua domanda; non li genera né li riscrive mai. Consulta la pagina Audit di fedeltà per il registro completo di verifica.",
     related: ["fidelityAudits"],
   },
   {
@@ -2124,7 +2124,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     question:
       "I testi dell'I Ching che appaiono nella lettura sono autentici o generati dall'IA?",
     answer:
-      "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre fonti accademiche disponibili nell'app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (di pubblico dominio) e lo Zhou Yi originale. La versione inglese di Cary Baynes (Princeton University Press, 1950) è disponibile anche come riferimento comparativo. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale.",
+      "Sono autentici. Il materiale testuale (Giudizi (卦辞), linee in movimento (爻辞) ed esagrammi risultanti) proviene da tre fonti accademiche disponibili nell'app: Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (di pubblico dominio) e lo Zhou Yi originale. L'IA cita e contestualizza i testi rilevanti con la tua domanda, ma non li modifica né li sostituisce. Puoi confrontare qualsiasi testo con la fonte originale. Ogni riepilogo di consultazione include un link 'Verifica lettura' in fondo: apre la pagina di Verifica per quella tirata, dove puoi confrontare i testi dell'oracolo citati nella tua lettura direttamente con la biblioteca completa degli esagrammi.",
     related: ["methodNotes"],
   },
   {
@@ -2169,7 +2169,7 @@ const FAQ_ITEMS_IT: FaqItem[] = [
     id: "translators-three",
     question: "Quali sono i tre traduttori disponibili nell'app?",
     answer:
-      "L'app si basa su tre traduzioni classiche dell'I Ching, mostrate come schede separate. Richard Wilhelm e Cary F. Baynes (Princeton University Press, 1950) è l'edizione occidentale più letta, con un commento esteso. James Legge (The Sacred Books of the East, vol. XVI, 1882) è la traduzione accademica inglese pionieristica, con le sue note e il suo simbolismo. Lo Zhou Yi è il testo originale in cinese classico stesso, la radice su cui sono stati scritti tutti i commenti successivi, mostrato senza alcuno strato di commento aggiunto. Tutti e tre descrivono gli stessi 64 esagrammi; differiscono per la voce del traduttore, la lingua e quanto materiale esplicativo circonda il testo centrale.",
+      "L'app si basa su tre traduzioni classiche dell'I Ching, mostrate come schede separate. Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924) è l'edizione fondamentale in tedesco, con un esteso commento accademico in tedesco. James Legge (The Sacred Books of the East, vol. XVI, 1882) è la traduzione accademica inglese pionieristica, con le sue note e il suo simbolismo. Lo Zhou Yi è il testo originale in cinese classico stesso, la radice su cui sono stati scritti tutti i commenti successivi, mostrato senza alcuno strato di commento aggiunto. Tutti e tre descrivono gli stessi 64 esagrammi; differiscono per la voce del traduttore, la lingua e quanto materiale esplicativo circonda il testo centrale.",
   },
   {
     id: "tier-features",
@@ -2207,7 +2207,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "À quel point les textes du Yi King sont-ils fiables dans l'application ?",
     answer:
-      "La fiabilité signifie que le texte de l'oracle que vous lisez, le Jugement, l'Image et chaque trait, n'est jamais écrit ni modifié par l'IA. C'est une citation directe, vérifiée mot pour mot par rapport à une source publiée nommément. Le texte anglais provient de Richard Wilhelm et Cary F. Baynes (The I Ching or Book of Changes, Princeton University Press, 1950) et de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882) ; le Zhou Yi en chinois classique provient du Chinese Text Project. Les règles des traits mutants proviennent d'Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) et, pour l'alternative classique, du Yixue Qimeng de Zhu Xi dans la traduction de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). L'IA interprète ces textes déjà cités pour votre question ; elle ne les génère ni ne les réécrit jamais. Consultez la page Audits de fidélité pour le journal complet de vérification.",
+      "La fiabilité signifie que le texte de l'oracle que vous lisez, le Jugement, l'Image et chaque trait, n'est jamais écrit ni modifié par l'IA. C'est une citation directe, vérifiée mot pour mot par rapport à une source publiée nommément. Le texte de Wilhelm provient de Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924), en allemand ; le texte académique en anglais de James Legge (The Sacred Books of the East, vol. XVI, Oxford, 1882) ; le Zhou Yi en chinois classique provient du Chinese Text Project. Les règles des traits mutants proviennent d'Alfred Huang (The Complete I Ching, 10th Anniversary Edition, 2010) et, pour l'alternative classique, du Yixue Qimeng de Zhu Xi dans la traduction de Joseph Adler (Introduction to the Study of the Classic of Change, 2002). L'IA interprète ces textes déjà cités pour votre question ; elle ne les génère ni ne les réécrit jamais. Consultez la page Audits de fidélité pour le journal complet de vérification.",
     related: ["fidelityAudits"],
   },
   {
@@ -2326,7 +2326,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     question:
       "Les textes du I Ching dans la lecture sont-ils authentiques ou générés par IA ?",
     answer:
-      "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois sources académiques disponibles dans l'app : Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (domaine public) et le Zhou Yi original. La version anglaise de Cary Baynes (Princeton University Press, 1950) est également disponible comme référence comparative. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale.",
+      "Ils sont authentiques. Le matériel textuel (Jugements (卦辞), lignes en mouvement (爻辞) et hexagrammes résultants) provient de trois sources académiques disponibles dans l'app : Wilhelm (1924) (Eugen Diederichs Verlag), James Legge (domaine public) et le Zhou Yi original. L'IA cite et contextualise les textes pertinents avec votre question, mais ne les modifie ni ne les remplace. Vous pouvez comparer n'importe quel texte avec la source originale. Chaque résumé de consultation inclut un lien 'Vérifier la lecture' en bas : il ouvre la page de Vérification pour ce tirage, où vous pouvez comparer les textes de l'oracle cités dans votre lecture directement avec la bibliothèque complète des hexagrammes.",
     related: ["methodNotes"],
   },
   {
@@ -2371,7 +2371,7 @@ const FAQ_ITEMS_FR: FaqItem[] = [
     id: "translators-three",
     question: "Quels sont les trois traducteurs disponibles dans l'app ?",
     answer:
-      "L'application s'appuie sur trois traductions classiques du I Ching, présentées comme des onglets distincts. Richard Wilhelm et Cary F. Baynes (Princeton University Press, 1950) est l'édition occidentale la plus lue, accompagnée d'un commentaire étendu. James Legge (The Sacred Books of the East, vol. XVI, 1882) est la traduction académique anglaise pionnière, avec ses propres notes et son symbolisme. Le Zhou Yi est le texte original en chinois classique lui-même, la racine sur laquelle tous les commentaires postérieurs ont été écrits, présenté sans aucune couche de commentaire ajoutée. Les trois décrivent les mêmes 64 hexagrammes ; ils diffèrent par la voix du traducteur, la langue et la quantité de matériel explicatif entourant le texte central.",
+      "L'application s'appuie sur trois traductions classiques du I Ching, présentées comme des onglets distincts. Richard Wilhelm (I Ging: Das Buch der Wandlungen, Eugen Diederichs Verlag, 1924) est l'édition fondamentale en allemand, avec un commentaire académique étendu en allemand. James Legge (The Sacred Books of the East, vol. XVI, 1882) est la traduction académique anglaise pionnière, avec ses propres notes et son symbolisme. Le Zhou Yi est le texte original en chinois classique lui-même, la racine sur laquelle tous les commentaires postérieurs ont été écrits, présenté sans aucune couche de commentaire ajoutée. Les trois décrivent les mêmes 64 hexagrammes ; ils diffèrent par la voix du traducteur, la langue et la quantité de matériel explicatif entourant le texte central.",
   },
   {
     id: "tier-features",

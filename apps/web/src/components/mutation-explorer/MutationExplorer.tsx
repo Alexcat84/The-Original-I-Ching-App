@@ -87,7 +87,7 @@ function isValidCastIndex(n: number): boolean {
 }
 
 function hexHeader(number: number): CastHexHeader {
-  const record = getHexagramRecordByNumber(number, { translator: "wilhelm" });
+  const record = getHexagramRecordByNumber(number, { translator: "legge" });
   return {
     number: record.number,
     chineseName: record.chineseName,
@@ -136,7 +136,7 @@ export function MutationExplorer({ locale }: Props) {
 
   const hexOptions = useMemo(
     () =>
-      getAllHexagramRecords({ translator: "wilhelm" }).map((h) => ({
+      getAllHexagramRecords({ translator: "legge" }).map((h) => ({
         number: h.number,
         label: `#${h.number} ${h.chineseName} · ${h.name}`,
       })),
@@ -177,7 +177,7 @@ export function MutationExplorer({ locale }: Props) {
     if (primaryNumber === null) return [];
     return reachableCastsFromPrimary(primaryNumber)
       .map((entry: ReachableCastFromPrimary) => {
-        const h = getHexagramRecordByNumber(entry.transformedNumber, { translator: "wilhelm" });
+        const h = getHexagramRecordByNumber(entry.transformedNumber, { translator: "legge" });
         return {
           transformed: entry.transformedNumber,
           label: `#${h.number} ${h.chineseName} · ${h.name}`,
@@ -305,11 +305,11 @@ export function MutationExplorer({ locale }: Props) {
   const oracleBlocks = result ? buildOracleTextBlocks(result, activeTranslator, ui) : [];
 
   const consultationPrimaryHex = consultation
-    ? getHexagramRecordByNumber(consultation.primaryHexagram, { translator: "wilhelm" })
+    ? getHexagramRecordByNumber(consultation.primaryHexagram, { translator: "legge" })
     : null;
   const consultationTransformedHex =
     consultation?.transformedHexagram != null
-      ? getHexagramRecordByNumber(consultation.transformedHexagram, { translator: "wilhelm" })
+      ? getHexagramRecordByNumber(consultation.transformedHexagram, { translator: "legge" })
       : null;
 
   const consultationLineReadingLabel =
@@ -460,22 +460,23 @@ export function MutationExplorer({ locale }: Props) {
 
         <section className="mutation-explorer-oracle-section">
           <h2 className="mutation-explorer-section-title">{ui.oracleTexts}</h2>
-          {consultationTranslators.length === 1 ? (
-            <OracleTextBlocksList blocks={oracleBlocks} ui={ui} listId={consultationTranslators[0] ?? "wilhelm"} />
-          ) : (
-            consultationTranslators.map((translatorId) => (
-              <div key={translatorId} className="mutation-explorer-translator-section">
-                <h3 className="mutation-explorer-translator-heading">
-                  {translatorTabLabel(ui, translatorId)}
-                </h3>
-                <OracleTextBlocksList
-                  blocks={buildOracleTextBlocks(result, translatorId, ui)}
-                  ui={ui}
-                  listId={translatorId}
-                />
-              </div>
-            ))
-          )}
+          {consultationTranslators.length > 1 ? (
+            <div className="library-tablist mutation-explorer-translator-tabs" role="tablist">
+              {consultationTranslators.map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === id}
+                  className={`library-tab${tab === id ? " library-tab--active" : ""}`}
+                  onClick={() => setTab(id)}
+                >
+                  {translatorTabLabel(ui, id)}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          <OracleTextBlocksList blocks={oracleBlocks} ui={ui} listId={activeTranslator} />
         </section>
 
         <p className="mutation-explorer-footer-nav">
