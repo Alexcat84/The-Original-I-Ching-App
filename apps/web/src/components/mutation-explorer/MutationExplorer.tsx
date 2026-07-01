@@ -257,7 +257,12 @@ export function MutationExplorer({ locale }: Props) {
   const parsedCastIndex = parseCastIndexInput(castIndexInput);
   const castIndexInRange =
     parsedCastIndex === null || isValidCastIndex(parsedCastIndex);
-  const canVerify = castPreviewReady && castIndexInRange;
+
+  useEffect(() => {
+    if (isConsultationMode) return;
+    if (primaryNumber === null || transformedNumber === null || !castIndexInRange) return;
+    runExplore(lineReadingSystem);
+  }, [isConsultationMode, primaryNumber, transformedNumber, castIndexInRange, lineReadingSystem, runExplore]);
 
   useEffect(() => {
     if (!cid) return;
@@ -647,14 +652,6 @@ export function MutationExplorer({ locale }: Props) {
               </div>
             </fieldset>
 
-            <button
-              type="button"
-              className="mutation-explorer-verify-btn"
-              disabled={!canVerify}
-              onClick={() => runExplore(lineReadingSystem)}
-            >
-              {ui.verifyButton}
-            </button>
           </div>
         </section>
       ) : null}
