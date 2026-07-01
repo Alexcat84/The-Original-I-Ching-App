@@ -139,6 +139,21 @@ export function applyMaskToPrimary(primaryNumber: number, mask: number): number 
   return getHexagramRecordByBinaryTopFirst(bits.join("")).number;
 }
 
+export type ReachableCastFromPrimary = {
+  mask: number;
+  transformedNumber: number;
+  changingLines: number[];
+};
+
+/** All 64 single-cast outcomes from a fixed primary (mask 0..63). */
+export function reachableCastsFromPrimary(primaryNumber: number): ReachableCastFromPrimary[] {
+  return Array.from({ length: 64 }, (_, mask) => ({
+    mask,
+    transformedNumber: applyMaskToPrimary(primaryNumber, mask),
+    changingLines: changingLinesFromMask(mask),
+  }));
+}
+
 export function buildSyntheticLinesFromMask(primaryNumber: number, mask: number): Line[] {
   const lines: Line[] = [];
   for (let pos = 1; pos <= 6; pos++) {

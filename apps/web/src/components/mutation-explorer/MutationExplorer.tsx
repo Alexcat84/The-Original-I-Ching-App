@@ -6,15 +6,18 @@ import { useSearchParams } from "next/navigation";
 import { getAllHexagramRecords, getHexagramRecordByNumber } from "@iching-oracle/iching-data";
 import {
   applyMaskToPrimary,
-  changingLinesFromMask,
+  buildSyntheticLinesFromMask,
   decodeCastIndex,
   deriveChangingLinesFromHexPair,
   encodeCastIndex,
   exploreMutation,
+  lineValuesFromLines,
   maskFromChangingLines,
   MutationExploreError,
+  reachableCastsFromPrimary,
   type LineReadingSystem,
   type MutationExploreResult,
+  type ReachableCastFromPrimary,
 } from "@iching-oracle/iching-engine";
 import {
   getConsultationRecordUiMessages,
@@ -23,7 +26,7 @@ import {
   parseAppLocale,
   type MutationExplorerUiMessages,
 } from "@iching-oracle/i18n";
-import { formatMutationRuleForUi, formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
+import { formatMutationRuleSummaryForUi } from "@/lib/mutation-rule-display";
 import { getSupabaseBrowser } from "@/lib/supabase-browser";
 import {
   buildOracleTextBlocks,
@@ -31,10 +34,13 @@ import {
   runExploreFromConsultation,
   type ConsultationExploreContext,
 } from "@/lib/mutation-explorer/explore-mutation";
-import { CastRitualDiagram } from "@/components/mutation-explorer/CastRitualDiagram";
+import {
+  CastRitualDiagram,
+  type CastHexHeader,
+} from "@/components/mutation-explorer/CastRitualDiagram";
 import { OracleTextBlocksList } from "@/components/mutation-explorer/OracleTextBlocksList";
 
-type InputMode = "code" | "hex" | "interactive";
+type InputMode = "code" | "hex";
 type TranslatorTab = "wilhelm" | "legge" | "zhouyi";
 
 interface Props {
@@ -66,91 +72,41 @@ function translatorTabLabel(ui: MutationExplorerUiMessages, tab: TranslatorTab):
   return ui.tabZhouyi;
 }
 
-function HexLine({
-  isYang,
-  isChanging,
-  position,
-  interactive,
-  onToggle,
-  labels,
-}: {
-  isYang: boolean;
-  isChanging: boolean;
-  position: number;
-  interactive: boolean;
-  onToggle?: () => void;
-  labels: MutationExplorerUiMessages;
-}) {
-  const bar = isYang ? (
-    <span className="ritual-hex-line ritual-hex-line--yang" aria-hidden />
-  ) : (
-    <span className="ritual-hex-line ritual-hex-line--yin" aria-hidden>
-      <span />
-      <span />
-    </span>
-  );
-
-  const className = [
-    "mutation-explorer-line",
-    isChanging ? "is-changing" : "",
-    interactive ? "is-interactive" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  if (interactive && onToggle) {
-    return (
-      <button
-        type="button"
-        className={className}
-        aria-pressed={isChanging}
-        aria-label={`${labels.lineToggleLabel(position)} — ${
-          isChanging ? labels.lineMutating : labels.lineStable
-        }`}
-        onClick={onToggle}
-      >
-        {bar}
-        <span className="mutation-explorer-line__label">
-          {labels.lineToggleLabel(position)}
-        </span>
-      </button>
-    );
-  }
-
-  return (
-    <div className={className} aria-label={labels.lineToggleLabel(position)}>
-      {bar}
-    </div>
-  );
+function hexHeader(number: number): CastHexHeader {
+  const record = getHexagramRecordByNumber(number, { translator: "wilhelm" });
+  return {
+    number: record.number,
+    chineseName: record.chineseName,
+    name: record.name,
+  };
 }
 
-function ReadingRulesSection({
-  ui,
-  ruleLocale,
-  result,
+function ManualCastDiagram({
+  primaryNumber,
+  transformedNumber,
+  mask,
+  ariaLabel,
 }: {
-  ui: MutationExplorerUiMessages;
-  ruleLocale: ReturnType<typeof parseAppLocale>;
-  result: MutationExploreResult;
+  primaryNumber: number;
+  transformedNumber: number;
+  mask: number;
+  ariaLabel: string;
 }) {
-  const { originalEn, translation } = formatMutationRuleForUi({
-    mutationRule: result.mutationRule,
-    lineReadingSystem: result.lineReadingSystem,
-    locale: ruleLocale,
-  });
-  if (!originalEn) return null;
+  const lineValues = useMemo(() => {
+    const lines = buildSyntheticLinesFromMask(primaryNumber, mask);
+    return lineValuesFromLines(lines);
+  }, [primaryNumber, mask]);
 
   return (
-    <section className="mutation-explorer-reading-rules-section">
-      <h2 className="mutation-explorer-section-title">{ui.readingRulesSectionTitle}</h2>
-      <p lang="en" className="mutation-explorer-reading-rules-detail">
-        {originalEn}
-      </p>
-      {translation ? (
-        <p className="mutation-explorer-reading-rules-detail mutation-explorer-reading-rules-detail--muted">
-          {translation}
-        </p>
-      ) : null}
+    <section
+      className="coins-stage ritual-coins-stage mutation-explorer-cast-stage"
+      aria-label={ariaLabel}
+    >
+      <CastRitualDiagram
+        lines={lineValues}
+        primaryHeader={hexHeader(primaryNumber)}
+        transformedHeader={hexHeader(transformedNumber)}
+      />
     </section>
   );
 }
@@ -192,7 +148,28 @@ export function MutationExplorer({ locale }: Props) {
     const transformed = applyMaskToPrimary(primary, nextMask);
     setTransformedNumber(transformed);
     setCastIndexInput(String(encodeCastIndex(primary, nextMask)));
+    setExploreError(null);
   }, []);
+
+  const syncFromHexPair = useCallback(
+    (primary: number, transformed: number) => {
+      const { changingLines: derived } = deriveChangingLinesFromHexPair(primary, transformed);
+      syncFromMask(primary, maskFromChangingLines(derived));
+    },
+    [syncFromMask],
+  );
+
+  const reachableTransformedOptions = useMemo(() => {
+    return reachableCastsFromPrimary(primaryNumber)
+      .map((entry: ReachableCastFromPrimary) => {
+        const h = getHexagramRecordByNumber(entry.transformedNumber, { translator: "wilhelm" });
+        return {
+          transformed: entry.transformedNumber,
+          label: `#${h.number} ${h.chineseName} · ${h.name}`,
+        };
+      })
+      .sort((a, b) => a.transformed - b.transformed);
+  }, [primaryNumber]);
 
   const runExplore = useCallback(
     (system: LineReadingSystem) => {
@@ -277,12 +254,6 @@ export function MutationExplorer({ locale }: Props) {
     };
   }, [cid, syncFromMask, ui.consultationNotFound]);
 
-  const changingLines = changingLinesFromMask(mask);
-  const stableLines = [1, 2, 3, 4, 5, 6].filter((p) => !changingLines.includes(p));
-  const displayPrimaryBinary = getAllHexagramRecords({ translator: "wilhelm" }).find(
-    (h) => h.number === (result?.primaryNumber ?? primaryNumber),
-  )?.binaryTopFirst;
-
   const consultationTranslators = consultation
     ? translatorsForConsultation(consultation.translator)
     : [];
@@ -314,6 +285,12 @@ export function MutationExplorer({ locale }: Props) {
   const resultStableLines = [1, 2, 3, 4, 5, 6].filter(
     (p) => !resultChangingLines.includes(p),
   );
+
+  const displayPrimary = result?.primaryNumber ?? primaryNumber;
+  const displayTransformed = result?.transformedNumber ?? transformedNumber;
+  const displayMask = result
+    ? maskFromChangingLines(result.changingLines)
+    : mask;
 
   if (isConsultationMode) {
     if (loadError) {
@@ -440,12 +417,6 @@ export function MutationExplorer({ locale }: Props) {
           </p>
         </div>
 
-        <ReadingRulesSection
-          ui={ui}
-          ruleLocale={ruleLocale}
-          result={result}
-        />
-
         <hr className="mutation-explorer-section-divider" aria-hidden="true" />
 
         <section className="mutation-explorer-oracle-section">
@@ -488,7 +459,6 @@ export function MutationExplorer({ locale }: Props) {
               [
                 ["code", ui.inputModeCode],
                 ["hex", ui.inputModeHexPair],
-                ["interactive", ui.inputModeInteractive],
               ] as const
             ).map(([mode, label]) => (
               <button
@@ -526,92 +496,55 @@ export function MutationExplorer({ locale }: Props) {
             </label>
           ) : null}
 
-          {inputMode === "hex" || inputMode === "code" ? (
-            <div className="mutation-explorer-hex-row">
-              <label className="mutation-explorer-field">
-                <span>{ui.primaryHexLabel}</span>
-                <select
-                  value={primaryNumber}
-                  onChange={(e) => {
-                    const primary = Number(e.target.value);
-                    syncFromMask(primary, mask);
-                  }}
-                >
-                  {hexOptions.map((h) => (
-                    <option key={h.number} value={h.number}>
-                      {h.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="mutation-explorer-field">
-                <span>{ui.transformedHexLabel}</span>
-                <select
-                  value={transformedNumber}
-                  onChange={(e) => {
-                    const transformed = Number(e.target.value);
-                    try {
-                      const { changingLines: derived } = deriveChangingLinesFromHexPair(
-                        primaryNumber,
-                        transformed,
-                      );
-                      syncFromMask(primaryNumber, maskFromChangingLines(derived));
-                    } catch {
-                      setExploreError(ui.invalidHexPair);
-                    }
-                  }}
-                >
-                  {hexOptions.map((h) => (
-                    <option key={h.number} value={h.number}>
-                      {h.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          ) : null}
+          <div className="mutation-explorer-hex-row">
+            <label className="mutation-explorer-field">
+              <span>{ui.primaryHexLabel}</span>
+              <select
+                value={primaryNumber}
+                onChange={(e) => {
+                  const primary = Number(e.target.value);
+                  try {
+                    syncFromHexPair(primary, transformedNumber);
+                  } catch {
+                    setExploreError(ui.invalidHexPair);
+                  }
+                }}
+              >
+                {hexOptions.map((h) => (
+                  <option key={h.number} value={h.number}>
+                    {h.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="mutation-explorer-field">
+              <span>{ui.transformedHexLabel}</span>
+              <select
+                value={transformedNumber}
+                onChange={(e) => {
+                  const transformed = Number(e.target.value);
+                  try {
+                    syncFromHexPair(primaryNumber, transformed);
+                  } catch {
+                    setExploreError(ui.invalidHexPair);
+                  }
+                }}
+              >
+                {reachableTransformedOptions.map((option) => (
+                  <option key={option.transformed} value={option.transformed}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
 
-          {inputMode === "interactive" ? (
-            <>
-              <label className="mutation-explorer-field">
-                <span>{ui.primaryHexLabel}</span>
-                <select
-                  value={primaryNumber}
-                  onChange={(e) => syncFromMask(Number(e.target.value), mask)}
-                >
-                  {hexOptions.map((h) => (
-                    <option key={h.number} value={h.number}>
-                      {h.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <p className="mutation-explorer-hint">{ui.interactiveHint}</p>
-              <div className="mutation-explorer-diagram">
-                {[6, 5, 4, 3, 2, 1].map((position) => {
-                  const idx = 6 - position;
-                  const isYang = displayPrimaryBinary?.[idx] === "1";
-                  const isChanging = changingLines.includes(position);
-                  return (
-                    <HexLine
-                      key={position}
-                      position={position}
-                      isYang={isYang}
-                      isChanging={isChanging}
-                      interactive
-                      labels={ui}
-                      onToggle={() => {
-                        const nextMask = isChanging
-                          ? mask & ~(1 << (position - 1))
-                          : mask | (1 << (position - 1));
-                        syncFromMask(primaryNumber, nextMask);
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </>
-          ) : null}
+          <ManualCastDiagram
+            primaryNumber={primaryNumber}
+            transformedNumber={transformedNumber}
+            mask={mask}
+            ariaLabel={recordLabels.summary}
+          />
 
           <fieldset className="mutation-explorer-field mutation-explorer-fieldset">
             <legend>{ui.lineReadingSystemLabel}</legend>
@@ -651,6 +584,13 @@ export function MutationExplorer({ locale }: Props) {
 
       {result && !isConsultationMode ? (
         <section className="mutation-explorer-results">
+          <ManualCastDiagram
+            primaryNumber={displayPrimary}
+            transformedNumber={displayTransformed}
+            mask={displayMask}
+            ariaLabel={recordLabels.summary}
+          />
+
           <div className="consultation-record-grid mutation-explorer-meta-grid">
             <p className="consultation-record-row">
               <span className="consultation-record-key">{ui.verificationCodeLabel}:</span>
@@ -667,7 +607,7 @@ export function MutationExplorer({ locale }: Props) {
             <p className="consultation-record-row">
               <span className="consultation-record-key">{ui.stableLines}:</span>
               <span className="consultation-record-value" translate="no">
-                {stableLines.length > 0 ? stableLines.join(", ") : "—"}
+                {resultStableLines.length > 0 ? resultStableLines.join(", ") : "—"}
               </span>
             </p>
             <p className="consultation-record-row">
@@ -676,23 +616,6 @@ export function MutationExplorer({ locale }: Props) {
                 {lineReadingSystem === "zhuxi" ? ui.lineReadingZhuxi : ui.lineReadingHuang}
               </span>
             </p>
-          </div>
-
-          <div className="mutation-explorer-diagram mutation-explorer-diagram--readonly">
-            {[6, 5, 4, 3, 2, 1].map((position) => {
-              const idx = 6 - position;
-              const isYang = displayPrimaryBinary?.[idx] === "1";
-              return (
-                <HexLine
-                  key={position}
-                  position={position}
-                  isYang={isYang}
-                  isChanging={result.changingLines.includes(position)}
-                  interactive={false}
-                  labels={ui}
-                />
-              );
-            })}
           </div>
 
           <button
@@ -706,12 +629,6 @@ export function MutationExplorer({ locale }: Props) {
             {ui.compareOtherSystem} (
             {otherSystem === "huang" ? ui.lineReadingHuang : ui.lineReadingZhuxi})
           </button>
-
-          <ReadingRulesSection
-            ui={ui}
-            ruleLocale={ruleLocale}
-            result={result}
-          />
 
           <hr className="mutation-explorer-section-divider" aria-hidden="true" />
 

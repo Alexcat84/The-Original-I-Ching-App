@@ -13,7 +13,6 @@ export type MutationExplorerUiMessages = {
   manualTitle: string;
   inputModeCode: string;
   inputModeHexPair: string;
-  inputModeInteractive: string;
   castIndexLabel: string;
   castIndexPlaceholder: string;
   primaryHexLabel: string;
@@ -28,7 +27,6 @@ export type MutationExplorerUiMessages = {
   lineToggleLabel: (position: number) => string;
   lineMutating: string;
   lineStable: string;
-  interactiveHint: string;
   readingRulesSectionTitle: string;
   ruleApplied: string;
   ruleExplanationHeading: string;
@@ -75,8 +73,7 @@ const EN: MutationExplorerUiMessages = {
   manualTitle: "Explore a cast manually",
   inputModeCode: "Verification code",
   inputModeHexPair: "Hexagram pair",
-  inputModeInteractive: "Interactive hexagram",
-  castIndexLabel: "Verification code (1–4096)",
+  castIndexLabel: "Verification code",
   castIndexPlaceholder: "e.g. 573",
   primaryHexLabel: "Primary hexagram",
   transformedHexLabel: "Transformed hexagram",
@@ -90,7 +87,6 @@ const EN: MutationExplorerUiMessages = {
   lineToggleLabel: (position) => `Line ${position}`,
   lineMutating: "Changing",
   lineStable: "Stable",
-  interactiveHint: "Tap a line to toggle changing / stable. The transformed hexagram updates automatically.",
   readingRulesSectionTitle: "Reading rules applied",
   ruleApplied: "Rule applied",
   ruleExplanationHeading: "How the reading rule selects texts",
@@ -122,7 +118,7 @@ const EN: MutationExplorerUiMessages = {
   loading: "Loading…",
   accessDenied: "Access denied",
   consultationNotFound: "Consultation not found",
-  noResultsYet: "Choose input and press Verify to see the rule and oracle texts.",
+  noResultsYet: "Choose input and press Verify to see the oracle texts.",
 };
 
 function L(partial: Partial<MutationExplorerUiMessages>): MutationExplorerUiMessages {
@@ -144,8 +140,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     manualTitle: "Explorar una tirada manualmente",
     inputModeCode: "Código de verificación",
     inputModeHexPair: "Par de hexagramas",
-    inputModeInteractive: "Hexagrama interactivo",
-    castIndexLabel: "Código de verificación (1–4096)",
+    castIndexLabel: "Código de verificación",
     castIndexPlaceholder: "ej. 573",
     primaryHexLabel: "Hexagrama primario",
     transformedHexLabel: "Hexagrama transformado",
@@ -159,8 +154,6 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     lineToggleLabel: (position) => `Línea ${position}`,
     lineMutating: "Mutante",
     lineStable: "Estable",
-    interactiveHint:
-      "Toca cada línea para alternar mutante / estable. El hexagrama transformado se actualiza automáticamente.",
     readingRulesSectionTitle: "Reglas de lectura aplicadas",
     ruleApplied: "Regla aplicada",
     ruleExplanationHeading: "Criterio de la regla de lectura",
@@ -194,7 +187,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     accessDenied: "Acceso denegado",
     consultationNotFound: "Consulta no encontrada",
     noResultsYet:
-      "Elige la entrada y pulsa Verificar para ver la regla y los textos oráculo.",
+      "Elige la entrada y pulsa Verificar para ver los textos oráculo.",
   }),
   en: EN,
   pt: L({

@@ -17,6 +17,7 @@ import {
   lineValuesFromLines,
   maskFromChangingLines,
   MutationExploreError,
+  reachableCastsFromPrimary,
 } from "./mutation-explore.js";
 import { buildLine } from "./engine.js";
 import type { Line } from "./types.js";
@@ -163,6 +164,19 @@ describe("exploreMutation — rule matrix", () => {
     const mask = 63;
     const huang = exploreMutation({ primaryNumber: 2, mask, lineReadingSystem: "huang" });
     expect(huang.mutationRule).toBe("KUN_ALL_SIX");
+  });
+});
+
+describe("reachableCastsFromPrimary", () => {
+  it("returns 64 unique transformed hexes per primary", () => {
+    for (let primary = 1; primary <= 64; primary++) {
+      const casts = reachableCastsFromPrimary(primary);
+      expect(casts).toHaveLength(64);
+      const transformed = new Set(casts.map((entry) => entry.transformedNumber));
+      expect(transformed.size).toBe(64);
+      expect(casts[0]?.mask).toBe(0);
+      expect(casts[0]?.transformedNumber).toBe(primary);
+    }
   });
 });
 
