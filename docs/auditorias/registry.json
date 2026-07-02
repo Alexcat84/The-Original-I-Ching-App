@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-06-25",
+  "updatedAt": "2026-07-01",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -1247,6 +1247,24 @@
         "20260622-AUD-DAT-FID-04 fidelity-mutation-master"
       ],
       "relatedTests": []
+    },
+    {
+      "code": "20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination",
+      "title": "Auditoría externa Sonnet 5: contaminación OCR y sangrado text→bookOne en Wilhelm DE 1924 runtime",
+      "shortName": "wilhelm-de-ocr-field-contamination",
+      "type": "EXT",
+      "family": "DAT-W",
+      "date": "2026-07-01",
+      "status": "open",
+      "path": "docs/auditorias/20260701-EXT-DAT-W-08-wilhelm-de-ocr-field-contamination.md",
+      "relatedCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
+        "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation",
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"
+      ],
+      "relatedTests": [
+        "VF-FID-001 hexagram-fidelity-runtime"
+      ]
     }
   ]
 }
