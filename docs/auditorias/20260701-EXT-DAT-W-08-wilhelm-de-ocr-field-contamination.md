@@ -1,5 +1,5 @@
 # Auditoría externa: Contaminación OCR y sangrado de campos en Wilhelm DE 1924
-**Código:** `20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination` · **Familia:** DAT-W · **Estado:** remediado-pendiente-verificacion
+**Código:** `20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination` · **Familia:** DAT-W · **Estado:** remediado-pendiente-run-final
 
 **Validado por:** Claude Sonnet 5 (auditor externo bilingüe DE/EN)
 **Fecha:** 1 jul 2026
@@ -102,3 +102,14 @@ El patrón es uniforme: el texto oracular de la línea fue cortado en el proceso
 **Script de validación actualizado:** `scripts/validate-wilhelm-de-fidelity.py` actualizado con patrones OCR conocidos y verificación completa campo a campo. Ejecutar para re-auditoría post-remediación.
 
 **Criterio de cierre:** re-ejecución de `scripts/validate-wilhelm-de-fidelity.py` devuelve `"Todos perfectos."` en los 8 lotes, confirmado por revisión manual de casos dudosos contra fuente impresa.
+
+---
+
+## Historial de validaciones
+
+| Run | Commit dataset | Errores encontrados | Acción |
+|-----|---------------|---------------------|--------|
+| [Run 01](20260701-EXT-DAT-W-08-run01-validacion-fidelidad.md) | `b485d92a` | 30 errores en 6 lotes | Todos corregidos en `652e9e57` + `50705abf` |
+| [Run 02](20260701-EXT-DAT-W-08-run02-validacion-fidelidad.md) | `1e9ea602` | 2 errores + lote 9-16 vacío (API) | Corregidos en `be47dede` |
+| [Run 03](20260702-EXT-DAT-W-08-run03-validacion-fidelidad.md) | `1e9ea602` | 3 errores en lote 9-16 | Corregidos en `be47dede` |
+| Run final | `be47dede` | pendiente | — |
