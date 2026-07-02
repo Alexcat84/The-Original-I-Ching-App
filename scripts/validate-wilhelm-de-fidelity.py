@@ -12,26 +12,76 @@ if not api_key or api_key == "tu_clave_api_aqui":
 client = anthropic.Anthropic(api_key=api_key)
 
 SYSTEM_PROMPT = """
-Eres un erudito bilingüe (Alemán e Inglés) y un auditor ultra-estricto de control de calidad.
+Eres un erudito bilingüe (Alemán e Inglés) y un auditor ultra-estricto de control de calidad de textos del I Ching de Wilhelm (1924).
 Recibirás dos estructuras JSON que contienen hexagramas del I Ching y sus comentarios:
-- Versión GOLD: Traducción en Inglés (Baynes, 1950) extraída de un EPUB, garantizada como perfecta.
-- Versión TARGET: Traducción en Alemán (Wilhelm, 1924) extraída de un PDF mediante OCR, propensa a errores.
+- Versión GOLD: Traducción en Inglés (Baynes, 1950) extraída de un EPUB digital, garantizada como texto perfecto.
+- Versión TARGET: Traducción en Alemán (Wilhelm, 1924) extraída de un PDF mediante OCR. Esta versión es PROPENSA A ERRORES DE OCR que debes detectar con máxima rigurosidad.
 
-Tu tarea es actuar como un humano experto: debes leer ambos textos y verificar campo a campo que el MENSAJE y EL SIGNIFICADO SEMÁNTICO sean exactamente equivalentes.
-El hecho de que estén en idiomas distintos no es excusa para perder el sentido original ni el misticismo del texto.
+═══════════════════════════════════════════════════════════
+PATRONES DE ERROR OCR CONOCIDOS PARA ESTE PDF ESPECÍFICO
+(tipografía gótica alemana del siglo XX — muy difícil para OCR)
+═══════════════════════════════════════════════════════════
+Debes buscar activamente estos errores de escritura alemana que el OCR comete con frecuencia:
 
-BUSCAMOS ERRORES CRÍTICOS COMO ESTOS:
-1. Pérdida de significado: El texto en alemán no transmite el mismo mensaje que la versión en inglés (ej. una traducción rota, cortada a medias o un OCR que arruinó el sentido de la frase).
-2. Estructura y mezcla: Falta una línea entera, faltan secciones de las Diez Alas, o texto del 'Juicio' está mezclado con la 'Imagen'.
-3. Basura PDF: Aparición de caracteres extraños, números de página u OCR basura incrustados en los párrafos en alemán.
+A) SUSTITUCIONES DE LETRAS:
+   - "ch" → "dl" o "cl" (ej.: "nidlt" en vez de "nicht", "wadlsen" en vez de "wachsen")
+   - "ch" → "cb" o "ch" normal cuando la fuente lo permite
+   - Capital "A" → "./l" o ".A" (ej.: "./luch" en vez de "Auch", "./luf" en vez de "Auf")
+   - "ß" → "b" o "p" (ej.: "dab" en vez de "daß", "mub" en vez de "muß")
+   - "W" mayúscula → "V" (ej.: "Vahrheit" en vez de "Wahrheit")
+   - "ü" → "u" o "ii" (ej.: "uber" en vez de "über", "Giite" en vez de "Güte")
+   - "ö" → "o" o "6" (ej.: "gr6ß" en vez de "großß")
+   - "ä" → "a" o "a" con acento raro
 
-INSTRUCCIONES DE RESPUESTA ESTRICTAS (PARA AHORRAR TOKENS):
-1. **NO REPORTE HEXAGRAMAS PERFECTOS.** Si un hexagrama está bien, ignóralo completamente.
-2. Por cada hexagrama que TENGA UN ERROR, indica:
-   ❌ [Hexagrama X] ERROR CRÍTICO: [Describe el error, cita qué fragmento no coincide semánticamente, qué falta o qué está contaminado].
-3. Si TODOS los hexagramas de este lote están perfectos y no hay absolutamente ningún error, devuelve EXCLUSIVAMENTE este texto: "Todos perfectos."
+B) PALABRAS COMPUESTAS INCORRECTAMENTE DIVIDIDAS:
+   - El alemán une palabras que el OCR separa con espacio (ej.: "Vereinigungs mittelpunkt" en vez de "Vereinigungsmittelpunkt")
+   - Guiones de corte de línea que quedan en el texto (ej.: "zusam-\nmenhalten" en vez de "zusammenhalten")
 
-MUY IMPORTANTE: ES OBLIGATORIO que devuelvas el análisis de TODOS los hexagramas solicitados que tengan errores. Bajo ninguna circunstancia puedes devolver una respuesta vacía.
+C) MEZCLA DE COLUMNAS / INTERLINEADO:
+   - Palabras de una columna adyacente insertadas en medio de una oración
+   - Encabezados de página (nombres de hexagramas, números romanos) insertados en el texto
+   - Sellos de biblioteca o marcas de archivo (ej.: "UNIVERSITY OF ILLINOIS")
+
+D) PÉRDIDA O CORTE DE TEXTO:
+   - Frases que terminan abruptamente a la mitad (sin conclusión)
+   - Versos oraculares que faltan el remate final (ej.: "Heil!", "Unheil.", "Kein Makel.")
+   - Secciones completas ausentes comparadas con el GOLD inglés
+
+E) CONTAMINACIÓN ENTRE CAMPOS:
+   - Texto oracular (oracle text) apareciendo al inicio del campo de comentario (bookOne)
+   - Texto de un hexagrama adyacente insertado en otro hexagrama
+
+═══════════════════════════════════════════════════════════
+VERIFICACIÓN COMPLETA — TODOS LOS CAMPOS
+═══════════════════════════════════════════════════════════
+Para CADA hexagrama en el lote, verifica TODOS estos campos uno por uno:
+
+1. CAMPOS BASE (hexagrams.wilhelm.json / hexagrams.baynes.json):
+   - judgment.text: ¿El juicio alemán transmite el mismo mensaje que el inglés? ¿Está completo?
+   - image.text: ¿La imagen alemana es completa y equivalente?
+   - lines[0-5].text: ¿Cada línea oracular está completa? ¿Falta algún verso final?
+
+2. CAMPOS DE COMENTARIO (hexagrams.wilhelm.commentary.json / hexagrams.baynes.commentary.json):
+   - judgment.bookOne: ¿Comentario del Juicio (Libro I) equivalente y sin contaminación?
+   - judgment.tenWings: ¿Comentario del Juicio (Diez Alas) limpio?
+   - image.bookOne: ¿Comentario de la Imagen (Libro I) limpio?
+   - image.tenWings: ¿Comentario de la Imagen (Diez Alas) limpio, sin contenido de líneas individuales?
+   - lines[0-5].commentary.bookOne: ¿Comentario por línea limpio? ¿No empieza con texto oracular?
+   - lines[0-5].commentary.tenWings: ¿Comentario de Diez Alas por línea limpio?
+   - about.intro: ¿Introducción del hexagrama completa?
+   - about.rulerNote: ¿Nota sobre el Herr del hexagrama correcta y sin prefijos OCR?
+   - wenYen (solo hex 1 y 2): ¿Texto de Wen Yen limpio?
+
+═══════════════════════════════════════════════════════════
+INSTRUCCIONES DE RESPUESTA
+═══════════════════════════════════════════════════════════
+1. **Reporta TODOS los errores** — no omitas ninguno aunque parezca menor.
+2. Por cada error encontrado, indica:
+   ❌ [Hexagrama X] [CAMPO AFECTADO] ERROR: [Describe el error con precisión. Cita el fragmento alemán problemático y el equivalente inglés correcto.]
+3. Si detectas un patrón OCR (ej.: "nidlt" por "nicht"), cita el fragmento exacto donde aparece.
+4. Si TODOS los hexagramas del lote están perfectos sin ningún error, devuelve EXCLUSIVAMENTE: "Todos perfectos."
+5. ES OBLIGATORIO analizar todos los hexagramas del lote. No devuelvas respuesta vacía.
+6. Sé RIGUROSO: un texto "casi correcto" con un error OCR sutil es un ERROR que debes reportar."""
 """
 
 def extract_hexagrams(data_list, start_idx, end_idx):

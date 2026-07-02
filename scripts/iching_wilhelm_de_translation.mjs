@@ -495,7 +495,7 @@ export default {
         "text": "Zieht man Bandgras aus, so geht der Rasen mit.\nJeder nach seiner Art. Unternehmungen bringen Heil."
       },
       "2": {
-        "text": "Die Ungebildeten in Milde tragen,\nentschlossen den Fluß durchschreiten,\ndas Ferne nicht vernachlässigen,\ndie Genossen nicht berücksichtigen:"
+        "text": "Die Ungebildeten in Milde tragen,\nentschlossen den Fluß durchschreiten,\ndas Ferne nicht vernachlässigen,\ndie Genossen nicht berücksichtigen:\nSo mag man es fertigbringen, in der Mitte zu wandeln"
       },
       "3": {
         "text": "Keine Ebene, auf die nicht ein Abhang folgt,\nkein Hingang, auf den nicht die Wiederkehr folgt.\nOhne Makel ist, wer beharrlich bleibt in Gefahr.\nBeklage dich nicht über diese Wahrheit,\ngenieße das Glück, das du noch hast."
@@ -550,7 +550,7 @@ export default {
         "text": "Wer auf Befehl des Höchsten wirkt, bleibt ohne Makel.\nDie Gleichgesinnten genießen des Segens."
       },
       "5": {
-        "text": "Die Stockung läßt nach. Dem großen Manne Heil!\n»Wenn es mißlänge, wenn es mißlänge!«"
+        "text": "Die Stockung läßt nach. Dem großen Manne Heil!\n»Wenn es mißlänge, wenn es mißlänge!«\nDadurch bindet er es an ein Bündel von Maulbeerstauden."
       },
       "6": {
         "text": "Die Stockung hört auf.\nErst Stockung, dann Heil."
@@ -596,7 +596,7 @@ export default {
         "text": "Er steigt auf seine Mauer, er kann nicht angreifen. Heil!"
       },
       "5": {
-        "text": "Die gemeinsamen Menschen weinen erst und klagen,\naber nachher lachen sie."
+        "text": "Die gemeinsamen Menschen weinen erst und klagen,\naber nachher lachen sie.\nNach großen Kämpfen gelingt es ihnen, sich zu treffen."
       },
       "6": {
         "text": "Gemeinschaft mit Menschen auf dem Anger: keine Reue."
@@ -691,7 +691,7 @@ export default {
         "text": "Nicht pochen auf Reichtum seinem Nächsten gegenüber.\nFördernd ist es, mit Gewalt anzugreifen.\nNichts, das nicht fördernd wäre."
       },
       "6": {
-        "text": "Sich äußernde Bescheidenheit.\nFördernd ist es, Heere marschieren zu lassen,"
+        "text": "Sich äußernde Bescheidenheit.\nFördernd ist es, Heere marschieren zu lassen,\num die eigne Stadt und das eigene Land zu züchtigen"
       }
     }
   },
@@ -961,7 +961,7 @@ export default {
         "text": "Beißt auf altes Dörrfleisch und trifft auf Giftiges.\nKleine Beschämung. Kein Makel."
       },
       "4": {
-        "text": "Beißt auf getrocknetes Knorpelfleisch.\nErhält Metallpfeile.\nFördernd ist es,"
+        "text": "Beißt auf getrocknetes Knorpelfleisch.\nErhält Metallpfeile.\nFördernd ist es,\nder Schwierigkeiten eingedenk und beharrlich zu sein.\nHeil!"
       },
       "5": {
         "text": "Beißt auf getrocknetes Muskelfleisch.\nErhält gelbes Gold.\nBeharrlich der Gefahr bewußt sein. Kein Makel."
@@ -1105,7 +1105,7 @@ export default {
         "text": "Großzügige Wiederkehr. Keine Reue."
       },
       "6": {
-        "text": "Verfehlung der Wiederkehr. Unheil.\nUnglück von außen und innen.\nWenn man so Heere marschieren läßt,"
+        "text": "Verfehlung der Wiederkehr. Unheil.\nUnglück von außen und innen.\nWenn man so Heere marschieren läßt,\nwird man schließlich eine große Niederlage erleiden,\nso daß es für den Landesherrn unheilvoll ist.\nZehn Jahre lang ist man nicht mehr imstande anzugreifen."
       }
     }
   },
@@ -1234,7 +1234,7 @@ export default {
         "text": "Nach dem Gipfel sich wenden um Ernährung.\nVom Wege abweichen, um von dem Hügel\nErnährung zu suchen:\nWenn man so fortmacht, bringt es Unheil."
       },
       "3": {
-        "text": "Abweichen von der Ernährung.\nBeharrlichkeit bringt Unheil."
+        "text": "Abweichen von der Ernährung.\nBeharrlichkeit bringt Unheil.\nZehn Jahre handle nicht danach. Nichts ist fördernd."
       },
       "4": {
         "text": "Nach dem Gipfel sich wenden um Ernährung bringt Heil.\nMit scharfen Augen wie ein Tiger umherspähen\nin unersättlichem Begehren. Kein Makel."
@@ -1372,7 +1372,7 @@ export default {
         "text": "Gelber Schein. Erhabenes Heil."
       },
       "3": {
-        "text": "Beim Schein der untergehenden Sonne\nschlagen die Menschen entweder auf den Topf und singen,"
+        "text": "Beim Schein der untergehenden Sonne\nschlagen die Menschen entweder auf den Topf und singen,\noder sie seufzen laut über das nahende Greisenalter.\nUnheil."
       },
       "4": {
         "text": "Plötzlich ist sein Kommen;\nes brennt auf, erstirbt, wird weggeworfen."
@@ -1559,7 +1559,7 @@ export default {
         "text": "Der Gemeine wirkt durch Macht, der Edle wirkt nicht so.\nFortmachen ist gefährlich.\nEin Ziegenbock stößt gegen eine Hecke\nund verwickelt seine Hörner."
       },
       "4": {
-        "text": "Beharrlichkeit bringt Heil.\nDie Reue schwindet.\nDie Hecke öffnet sich, es gibt keine Verwicklung."
+        "text": "Beharrlichkeit bringt Heil.\nDie Reue schwindet.\nDie Hecke öffnet sich, es gibt keine Verwicklung.\nDie Macht beruht auf der Achse eines großen Wagens."
       },
       "5": {
         "text": "Verliert den Bock in Leichtigkeit.\nKeine Reue."
@@ -1596,7 +1596,7 @@ export default {
     },
     "wilhelm_lines": {
       "1": {
-        "text": "Fortschreitend, aber zurückgewiesen.\nBeharrlichkeit bringt Heil."
+        "text": "Fortschreitend, aber zurückgewiesen.\nBeharrlichkeit bringt Heil.\nWenn man kein Vertrauen findet, so bleibe man gelassen.\nKein Fehler."
       },
       "2": {
         "text": "Fortschreitend, aber in Trauer.\nBeharrlichkeit bringt Heil.\nMan bekommt dann großes Glück von seiner Ahnfrau."
@@ -1642,7 +1642,7 @@ export default {
     },
     "wilhelm_lines": {
       "1": {
-        "text": "Verfinsterung des Lichts im Fluge.\nEr senkt seine Flügel."
+        "text": "Verfinsterung des Lichts im Fluge.\nEr senkt seine Flügel.\nDer Edle auf seiner Wanderschaft ißt drei Tage nichts.\nAber er hat, wohin er geht.\nDer Wirt hat über ihn zu reden."
       },
       "2": {
         "text": "Die Verfinsterung des Lichts verletzt ihn am linken Schenkel.\nEr wirkt Hilfe mit der Macht eines Pferdes. Heil."
@@ -1734,7 +1734,7 @@ export default {
     },
     "wilhelm_lines": {
       "1": {
-        "text": "Die Reue schwindet.\nWenn du dein Pferd verlierst, so lauf ihm nicht nach.\nEs kommt von selber wieder."
+        "text": "Die Reue schwindet.\nWenn du dein Pferd verlierst, so lauf ihm nicht nach.\nEs kommt von selber wieder.\nWenn du böse Menschen siehst, so hüte dich vor Fehlern."
       },
       "2": {
         "text": "Man begegnet seinem Herrn in enger Gasse.\nKein Makel."
@@ -1930,7 +1930,7 @@ export default {
         "text": "Wenn du in der Mitte wandelst\nund dem Fürsten berichtest,\nso wird er folgen.\nFördernd ist es, benützt zu werden\nbei der Verlegung der Hauptstadt."
       },
       "5": {
-        "text": "Wenn du wahrhaftig ein gütiges Herz hast,\nso frage nicht. Erhabenes Heil!"
+        "text": "Wenn du wahrhaftig ein gütiges Herz hast,\nso frage nicht. Erhabenes Heil!\nWahrhaftig wird Güte als deine Tugend anerkannt werden."
       },
       "6": {
         "text": "Er gereicht niemand zur Mehrung.\nEs schlägt ihn wohl gar jemand.\nEr hält sein Herz nicht dauernd fest. Unheil!"
@@ -2056,10 +2056,10 @@ export default {
     },
     "wilhelm_lines": {
       "1": {
-        "text": "Wenn du wahrhaftig bist, doch nicht bis zum Ende,\nso gibt es bald Verwirrung, bald Sammlung."
+        "text": "Wenn du wahrhaftig bist, doch nicht bis zum Ende,\nso gibt es bald Verwirrung, bald Sammlung.\nWenn du rufst, so kannst du nach einem Griff wieder lachen.\nBedaure nichts. Hingehen ist ohne Makel."
       },
       "2": {
-        "text": "Sich ziehen lassen bringt Heil und bleibt ohne Makel.\nWenn man wahrhaftig ist,"
+        "text": "Sich ziehen lassen bringt Heil und bleibt ohne Makel.\nWenn man wahrhaftig ist,\nist es auch fördernd, ein kleines Opfer zu bringen"
       },
       "3": {
         "text": "Sammlung unter Seufzen. Nichts, das fördernd wäre.\nHingehen ist ohne Makel. Kleine Beschämung."
@@ -2154,7 +2154,7 @@ export default {
         "text": "Man ist bedrängt bei Wein und Speisen.\nDer Mann mit den scharlachroten Kniebinden kommt eben.\nFördernd ist es, Opfer darzubringen.\nAufbrechen ist von Unheil.\nKein Makel."
       },
       "3": {
-        "text": "Man läßt sich bedrängen durch Stein\nund stützt sich auf Dornen und Disteln."
+        "text": "Man läßt sich bedrängen durch Stein\nund stützt sich auf Dornen und Disteln.\nMan geht in sein Haus und sieht nicht seine Frau. Unheil!"
       },
       "4": {
         "text": "Er kommt ganz sachte, bedrängt in einem goldnen Wagen.\nBeschämung, aber man kommt zu Ende."
@@ -2246,7 +2246,7 @@ export default {
         "text": "Am eigenen Tage, da mag man umwälzen.\nAufbruch bringt Heil. Kein Makel."
       },
       "3": {
-        "text": "Aufbruch bringt Unheil. Beharrlichkeit bringt Gefahr.\nWenn die Rede von der Umwälzung dreimal ergangen ist,"
+        "text": "Aufbruch bringt Unheil. Beharrlichkeit bringt Gefahr.\nWenn die Rede von der Umwälzung dreimal ergangen ist,\ndann mag man sich ihm zuwenden und wird Glauben finden."
       },
       "4": {
         "text": "Die Reue schwindet. Man findet Glauben.\nDie Staatsordnung zu wechseln, bringt Heil."
@@ -2292,7 +2292,7 @@ export default {
         "text": "Im Tiegel ist Nahrung.\nMeine Genossen haben Neid,\naber sie können mir nichts anhaben.\nHeil!"
       },
       "3": {
-        "text": "Der Henkel des Tiegels ist verändert.\nMan ist behindert in seinem Wandel.\nDas Fett des Fasans wird nicht gegessen."
+        "text": "Der Henkel des Tiegels ist verändert.\nMan ist behindert in seinem Wandel.\nDas Fett des Fasans wird nicht gegessen.\nWenn erst der Regen fällt, dann erschöpft sich die Reue.\nEndlich kommt Heil."
       },
       "4": {
         "text": "Der Tiegel bricht die Beine.\nDas Mahl des Fürsten wird verschüttet,\nund die Gestalt wird befleckt.\nUnheil!"
@@ -2430,7 +2430,7 @@ export default {
         "text": "Die Wildgans zieht allmählich dem Felsen zu.\nEssen und Trinken in Frieden und Eintracht. Heil!"
       },
       "3": {
-        "text": "Die Wildgans zieht allmählich der Hochebene zu.\nDer Mann zieht aus und kehrt nicht wieder."
+        "text": "Die Wildgans zieht allmählich der Hochebene zu.\nDer Mann zieht aus und kehrt nicht wieder.\nDie Frau trägt ein Kind, aber bringt es nicht zur Welt.\nUnheil!\nFördernd ist es, Räuber abzuwehren."
       },
       "4": {
         "text": "Die Wildgans zieht allmählich dem Baume zu.\nVielleicht bekommt sie einen flachen Ast. Kein Makel."
@@ -2700,7 +2700,7 @@ export default {
     },
     "wilhelm_lines": {
       "1": {
-        "text": "Er bringt Hilfe mit der Macht eines Pferdes."
+        "text": "Er bringt Hilfe mit der Macht eines Pferdes.\nHeil!"
       },
       "2": {
         "text": "Bei der Auflösung läuft er seiner Stütze zu.\nDie Reue schwindet."
@@ -2795,7 +2795,7 @@ export default {
         "text": "Bereitsein bringt Heil.\nSind Hintergedanken da, so ist das beunruhigend."
       },
       "2": {
-        "text": "Ein rufender Kranich im Schatten.\nSein Junges antwortet ihm."
+        "text": "Ein rufender Kranich im Schatten.\nSein Junges antwortet ihm.\nIch habe einen guten Becher. Ich will ihn mit dir teilen."
       },
       "3": {
         "text": "Er findet einen Genossen,\nbald trommelt er, bald hört er auf.\nBald schluchzt er, bald singt er."
@@ -2896,7 +2896,7 @@ export default {
         "text": "Die schönsten Kleider geben Lumpen.\nDen ganzen Tag sei vorsichtig."
       },
       "5": {
-        "text": "Der Nachbar im Osten, der einen Ochsen schlachtet,\nbekommt nicht soviel wirkliches Glück"
+        "text": "Der Nachbar im Osten, der einen Ochsen schlachtet,\nbekommt nicht soviel wirkliches Glück\nwie der Nachbar im Westen mit seinem kleinen Opfer."
       },
       "6": {
         "text": "Er kommt mit dem Haupt ins Wasser. Gefahr."
@@ -2939,7 +2939,7 @@ export default {
         "text": "Vor der Vollendung bringt Angriff Unheil.\nFördernd ist es, das große Wasser zu durchqueren."
       },
       "4": {
-        "text": "Beharrlichkeit bringt Heil. Reue schwindet.\nErschütterung, um das Teufelsland zu züchtigen."
+        "text": "Beharrlichkeit bringt Heil. Reue schwindet.\nErschütterung, um das Teufelsland zu züchtigen.\nDrei Jahre lang gibt es Belohnungen mit großen Reichen."
       },
       "5": {
         "text": "Beharrlichkeit bringt Heil. Keine Reue.\nDas Licht des Edlen ist wahrhaftig.\nHeil!"

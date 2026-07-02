@@ -1,5 +1,5 @@
 # Auditoría externa: Contaminación OCR y sangrado de campos en Wilhelm DE 1924
-**Código:** `20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination` · **Familia:** DAT-W · **Estado:** open
+**Código:** `20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination` · **Familia:** DAT-W · **Estado:** remediado-pendiente-verificacion
 
 **Validado por:** Claude Sonnet 5 (auditor externo bilingüe DE/EN)
 **Fecha:** 1 jul 2026
@@ -84,8 +84,21 @@ El patrón es uniforme: el texto oracular de la línea fue cortado en el proceso
 
 ---
 
-## Plan de remediación (pendiente planificación)
+## Remediación aplicada (2026-07-01)
 
-Ver documento de plan: `20260701-PLAN-DAT-W-09-wilhelm-de-ocr-fix.md` (por crear).
+**Archivos editados (fuentes upstream):**
+- `scripts/iching_wilhelm_de_translation.mjs` — 23 textos oraculares restaurados (Tipo A)
+- `tools/datasets/wilhelm-de/book-one/wilhelm-de-64hex-merged.json` — 23 fragmentos extraídos del inicio de `_comentario` (Tipo A) + fixes previos de `_oraculo`
+- `tools/datasets/wilhelm-de/comments/wilhelm-de-64hex-comments-merged.json` — 9 campos Tipo B saneados
 
-**Criterio de cierre:** re-ejecución de `scripts/validate-wilhelm-de-fidelity.py` devuelve `"Todos perfectos."` en los 8 lotes, y `npm run verify:hexagram-fidelity` pasa sin regresiones en Legge/Baynes/ZhouYi.
+**Archivos regenerados (`npm run build:data`):**
+- `packages/iching-data/src/generated/hexagrams.wilhelm.json`
+- `packages/iching-data/src/generated/hexagrams.wilhelm.commentary.json`
+
+**Metodología de restauración (Tipo A):** los fragmentos faltantes estaban desplazados al inicio del campo `_comentario` (o `L{n}_comentario`) del mismo hexagrama. Se movieron al campo `_oraculo` / oracle text correspondiente. El contenido fue validado semánticamente por Sonnet 5 contra Baynes EN gold antes de su aplicación.
+
+**Limitación conocida:** los fragmentos restaurados provienen del mismo OCR que generó los defectos originales. Es posible que contengan errores sutiles de escritura alemana (sustituciones `ch`→`dl`, `ß`→`b`, palabras compuestas mal divididas). Se requiere verificación contra fuente impresa para cierre definitivo.
+
+**Script de validación actualizado:** `scripts/validate-wilhelm-de-fidelity.py` actualizado con patrones OCR conocidos y verificación completa campo a campo. Ejecutar para re-auditoría post-remediación.
+
+**Criterio de cierre:** re-ejecución de `scripts/validate-wilhelm-de-fidelity.py` devuelve `"Todos perfectos."` en los 8 lotes, confirmado por revisión manual de casos dudosos contra fuente impresa.
