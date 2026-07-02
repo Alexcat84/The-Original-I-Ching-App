@@ -2010,7 +2010,7 @@ export default {
     },
     "wilhelm_lines": {
       "1": {
-        "text": "Man muß es hemmen mit ehernem Radschuh.\nBeharrlichkeit ist von Heil.\nWenn man es hingehen läßt, so erfährt man Unheil."
+        "text": "Man muß es hemmen mit ehernem Radschuh.\nBeharrlichkeit ist von Heil.\nWenn man es hingehen läßt, so erfährt man Unheil.\nAuch ein mageres Schwein hat die Anlage dazu, umherzutoben."
       },
       "2": {
         "text": "Im Behälter ist ein Fisch. Kein Makel!\nNicht fördernd für Gäste."
