@@ -19,12 +19,12 @@ describe("library-data (Wilhelm DE runtime)", () => {
     }
   });
 
-  it("uses German Wilhelm titles for hex 1, 56, and 64", () => {
+  it("uses Legge transliterations as display names (englishName comes from Legge, not Wilhelm DE)", () => {
     const summaries = getLibrarySummaries();
     const byNumber = new Map(summaries.map((s) => [s.number, s]));
-    expect(byNumber.get(1)?.englishName).toBe("DAS SCHÖPFERISCHE");
-    expect(byNumber.get(56)?.englishName).toBe("DER WANDERER");
-    expect(byNumber.get(64)?.englishName).toBe("VOR DER VOLLENDUNG");
+    expect(byNumber.get(1)?.englishName).toBe("Khien");
+    expect(byNumber.get(56)?.englishName).toBe("Lü");
+    expect(byNumber.get(64)?.englishName).toBe("Wei Žî");
   });
 
   it("loads Wilhelm DE commentary for detail pages", () => {
