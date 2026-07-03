@@ -1,8 +1,128 @@
-<!-- changelog:last-release:c31aeee -->
+<!-- changelog:last-release:17a68f7b -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.2.1] — 2026-07-02 | versionCode: 61 | Stage: Production
+
+### New
+- feat(library): remove redundant romanized names; add verification section to guide; expand tour target | commit: 4c6a5160
+- feat(wilhelm-de): use Legge name on master_combined overlay, fix lang attr, update prompt labels | commit: 8466b913
+- feat(wilhelm-de): integrate Wilhelm 1924 German edition as runtime translator | commit: 6a0e5e99
+- feat(mutation-explorer): remove verify button; auto-run on input ready | commit: 7d023b68
+- feat(mutation-explorer): auto-update results on line reading system change | commit: 5051a082
+- feat(mutation-explorer): three-tier reading hierarchy + prompt transformedImage fix | commit: d30f8e68
+- feat(mutation-explorer): full oracle context with theme-aware read highlight | commit: feeef0d9
+- feat(mutation-explorer): MUT-09 two tabs with live cast diagram | commit: 12cfd7b0
+- feat(wilhelm-de): cerrar JPG literal hex 49-64 + 1-2-8 (AUD-DAT-W-07) | commit: 6af73499
+- feat(data): JPG literal audit Wilhelm DE Ten Wings hex 44-48 (AUD-DAT-W-07). | commit: e510d4c0
+- feat(data): JPG literal audit Wilhelm DE Ten Wings hex 3-43 (AUD-DAT-W-07). | commit: 97153a44
+- feat(data): sync Wilhelm DE Ten Wings chinese_roman from Erstes (fase F). | commit: 628519e1
+- feat(data): promote Wilhelm DE Ten Wings AU to merged maestro (fase E). | commit: f67d7511
+- feat(data): close Wilhelm DE Ten Wings AU JPG phase D (64×37). | commit: d9849802
+- feat(data): switch Wilhelm runtime to clean Zeno DE 1924 maestro. | commit: 58cfb073
+- feat(data): Wilhelm DE Erstes Buch extract from zeno.org at 514/514 commentary fill. | commit: 793de48e
+- feat(data): complete Wilhelm DE Ten Wings parity with Baynes | commit: 604e6d37
+- feat(data): ingest Wilhelm DE Ten Wings (Drittes Buch) and fix CI tests | commit: 615e521e
+- feat(data): Wilhelm DE 1924 as runtime wilhelm source (514/514 gate) | commit: 413eb56a
+- feat(web): polish Mutation Explorer reading verification UX | commit: 7620c750
+- feat(mut-08): SSoT mutation rules — bundle EN prompt + UI i18n remediación | commit: f1d204cd
+- feat(mutation-explorer): add cast catalog, engine, UI and consultation verify mode | commit: fbee84c5
+
+### Fix
+- fix(data): W-08 CAT-B round2 — 13 fixes from physical book (hex 2/6/15/49/55/56) | commit: 40b3fd98
+- fix(data): W-08 CAT-B round1 — 11 fixes from physical book (hex 44/45/49/52/55) | commit: ef1872e7
+- fix(data): apply W-08 run04 CAT-A remediation — 49 OCR fixes + new hex44 Type A bleed | commit: 2cd8eb5f
+- fix(data): W-08 run02/run03 — 6 residual OCR fixes in Wilhelm DE | commit: be47dede
+- fix(data): W-08 ruler_note corrections from physical book (hex 49/60/61) | commit: 50705abf
+- fix(data): hex2 commentary_image repair Hingebung hyphenation | commit: 1e9ea602
+- fix(data): W-08 round 2 — 35 OCR contamination fixes in Wilhelm DE 1924 | commit: 652e9e57
+- fix(data): remediate W-08 OCR field contamination in Wilhelm DE 1924 | commit: b485d92a
+- fix(library): use Legge names for hexagram display throughout library, mutation explorer, and historical diagrams | commit: 69b04717
+- fix(i18n): replace em-dashes with commas/semicolons/colons in mutation-explorer-ui | commit: fb250646
+- fix(mutation-explorer): validate cast code and show only selected oracle texts | commit: 80fd31cb
+- fix(mutation-explorer): results cleanup and per-translator expand | commit: 40255756
+- fix(data): strip Zeno layout bullets and cite Wilhelm 1924 as primary source. | commit: de020e70
+- fix(data): accept der/die in canonical Zeno trigram lines (hex 5). | commit: abbbc1d7
+- fix(data): keep canonical trigram lines separate from Zeno intro narrative. | commit: b8910a42
+- fix(data): split Urteil/Bild oracle when zeno marks all paragraphs as commentary. | commit: 864dc64f
+- fix(data): align Wilhelm DE trigrams, library filter, and runtime build for overlay smoke. | commit: 3f6185cc
+- fix(i18n): remove false Wilhelm/Baynes public-domain claims in FAQ and notes | commit: 7185f33f
+- fix(i18n): remove false Wilhelm/Baynes public-domain claims in FAQ and notes | commit: d95d09ac
+- fix(web): PDF summary two-column layout matching record card | commit: 723645f1
+- fix(web): drop redundant question from record card; align PDF summary | commit: ac166ce7
+- fix(mut-08): Zhu Xi Qian/Kun Explorer translation matches Adler preamble EN | commit: ee825a6a
+- fix(mut-08): short mutation rule summary in card/PDF, full text only in Explorer | commit: ba372365
+- fix(mut-08): judgment-image-gate test uses mutationRuleBookText | commit: fed1d8af
+- fix(web): library and mutation verifier buttons side by side in options panel | commit: ab9f8e47
+- fix(mutation-explorer): center hex titles and split reading rules from oracle | commit: 935ebaae
+- fix(mutation-explorer): full gold oracle texts and cast diagram polish | commit: 35ddc6d8
+- fix(mutation-explorer): read-only consultation verify with ritual cast view | commit: 808de7fd
+- fix(mutation-explorer): require Seeker+ for all verify modes | commit: 26c46a46
+- fix(overlay): segment mixed CJK/Latin in Zhou Yi subtitle lines | commit: 4f8dd2ae
+- fix(overlay): remove unused GlobalFonts import blocking Vercel build | commit: dda97328
+- fix(overlay): resolve title font paths for Vercel serverless bundles | commit: a46f3a9f
+- fix(overlay): migrate title renderer from Pango/sharp to @napi-rs/canvas (Skia) | commit: c0286688
+- fix(overlay): replace blurry 8-offset stroke hack with alpha-dilation halo | commit: 41326145
+- fix(overlay): vendor a complete CJK font subset, closing a pre-existing tofu gap | commit: 67973d32
+- fix(overlay): render hexagram title via Pango/sharp instead of resvg <text> | commit: 73b2dba5
+- fix(sentry): suppress Facebook in-app browser postMessage noise | commit: e22f7d65
+- fix(css): promote oracle-toggle thumb/glow to GPU layer (completes af37871) | commit: 173428a0
+- fix(play): correct Confucian/footnote conflation in 4.2.0 notes; sync CHANGELOG.md | commit: 9e50993c
+
+### i18n
+- merge: fix/copyright-wilhelm-attribution — remove false Wilhelm/Baynes PD claims in i18n | commit: 207c94db
+- merge: MUT-08 SSoT mutation rules (bookText EN prompt + UI i18n) | commit: 2e6e7f05
+
+### Docs
+- docs(audit): cerrar W-08 — documentar CAT-B rounds 1/2 + confirmación H15 verificada | commit: 17a68f7b
+- docs(audit): codificar runs 01-03 de validación W-08 + actualizar doc principal | commit: 68749d1b
+- docs(mut-08): document display split and lineReadingSystem in rule summaries | commit: 8cd82445
+- docs(overlay): close AU IMG-OVR-03; add prod-pipeline sample generators | commit: 563b1670
+- docs(img-ovr): diagnose production tofu+arrow-overlap regression (Legge #2 Khwan -> #1 Khien) | commit: 2ab368da
+- docs(mob-ios): reject framework-migration advice, add push notifications as optional D6 | commit: 8e1cf845
+- docs(mob-ios): add iOS App Store launch plan | commit: c6a937d1
+- docs(sup): close Warp/PostgREST audit with live cross-checked evidence | commit: 7144782e
+- docs: close Oracle Bones audits (business decision) + Supabase Warp/OOM audit | commit: 37b746b5
+- docs(oracle-bones): close F2-1/F2-2 in checklists, fix stale pending markers | commit: 55b67785
+
+### Maintenance
+- chore(qa): codificar auditoría externa W-08 + script validación fidelidad Wilhelm DE | commit: f9f94dd9
+- chore(data): add hexagrams.baynes.commentary.json as gold reference dataset | commit: c745b545
+- style(data): pretty-print hexagrams.wilhelm.json (2-space indent, matches baynes format) | commit: 2b2b2432
+- chore(data): add hexagrams.baynes.json as gold reference dataset | commit: 3c49a9cb
+- style(mutation-explorer): remove box background/border from oracle blocks | commit: feb542bd
+- chore(overlay): add QA headers + register TS-WEB-OVR-007/008 in registry | commit: d1eed272
+- merge: feature/mutation-explorer — full context and read highlight | commit: 7fdee099
+- merge: feature/mutation-explorer — cast validation and selection-based oracle texts | commit: 3487070d
+- merge: feature/mutation-explorer — results cleanup per-translator expand | commit: 8a17a175
+- merge: feature/mutation-explorer — single tab UI polish | commit: bfd942fd
+- refactor(mutation-explorer): single manual panel with polished UI | commit: a7571a79
+- merge: feature/mutation-explorer — MUT-09 cast diagram two tabs | commit: 840d88bd
+- Close Wilhelm DE Ten Wings JPG attestation (2304/2304). | commit: 01bd692f
+- merge: fix/mut-08-ssot-completion — PDF summary two-column layout | commit: f6ac9213
+- merge: fix/mut-08-ssot-completion — record card question removal and PDF summary parity | commit: 3e376245
+- merge: fix/mut-08-ssot-completion — Mutation Explorer reading verification UX | commit: d48b88e7
+- merge: fix/mut-08-ssot-completion — MUT-08 summary docs and Q/K lineReadingSystem | commit: 860e6e16
+- merge: fix/mut-08-ssot-completion — Zhu Xi Q/K translation fix | commit: c0d00710
+- merge: fix/mut-08-ssot-completion — short rule summary in card/PDF | commit: 330e02c1
+- merge: fix/mut-08-ssot-completion — build fix judgment-image-gate test | commit: a307b92b
+- merge: mutation-explorer hex title centering and reading rules section | commit: 5ff8bb42
+- test(overlay): add e2e sample generator using full production pipeline | commit: 3bf77fd6
+- merge: overlay title Pango render fix + CJK font subset (closes 20260627-AUD-IMG-OVR-03) | commit: dfaf9c65
+- merge: staging — suppress Facebook in-app browser Sentry noise | commit: ffed7201
+- merge: staging — GPU layer fix for oracle-toggle thumb/glow (line-reading selector glitch) | commit: dc4b58a7
+- merge: staging — Warp/PostgREST audit closed with live Supabase MCP + Axiom evidence | commit: 0bdbadda
+- merge: staging — close Oracle Bones + Supabase Warp/OOM audits (business decisions) | commit: 567f19b2
+- merge: staging — oracle bones checklist debt cleanup | commit: 30a85f41
+- merge: staging — final debt sweep (stale plan status) | commit: c5aea919
+- chore(docs): fix stale open status on closed Zhu Xi 32-charts plan | commit: 06821076
+- merge: staging — Play Store 4.2.0 changelog fix + CHANGELOG.md sync | commit: f5f16ce4
+- merge: staging — yarrow/coins exact-math review fixes + Oracle Bones DIV-03 audit | commit: 4088b2d8
+- merge: staging — audits UI, build fixes, turbo cache | commit: 76bcd378
+
+---
 
 ## [4.2.0] — 2026-06-25 | versionCode: 60 | Stage: Production
 
@@ -1915,7 +2035,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.2.0 | 60 | 2026-06-25 | Production | 60 | honest legacy framing in FAQ/notes + Keightley reprint citation; add I Ching casting methods section from DIV-01/DIV-02; replace /audits sections with single expandable timeline |
+| 4.2.1 | 61 | 2026-07-02 | Production | 106 | remove redundant romanized names; add verification section to guide; expand t…; use Legge name on master_combined overlay, fix lang attr, update prompt labels; integrate Wilhelm 1924 German edition as runtime translator |
+| 4.2.0 | 60 | 2026-06-25 | Production | 0 | — |
 | 4.1.9 | 59 | 2026-06-24 | Production | 0 | — |
 | 4.1.8 | 58 | 2026-06-22 | Production | 0 | — |
 | 4.1.7 | 57 | 2026-06-20 | Closed Testing | 0 | — |
