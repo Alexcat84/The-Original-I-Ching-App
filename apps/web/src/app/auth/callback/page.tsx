@@ -30,11 +30,16 @@ export default function AuthCallbackPage() {
       try {
         const params = new URLSearchParams(window.location.search);
         const code = params.get("code");
+        const isRecovery = params.get("type") === "recovery";
         if (code) {
           const { error } = await sb.auth.exchangeCodeForSession(code);
           if (error) {
             console.warn("[auth/callback] exchangeCodeForSession:", error.message);
           }
+        }
+        if (isRecovery) {
+          destination = "/auth/update-password";
+          return;
         }
         const {
           data: { session },
