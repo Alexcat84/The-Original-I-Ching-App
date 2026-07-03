@@ -36,8 +36,6 @@ export type MutationExplorerUiMessages = {
   stableLines: string;
   changingLineVerbatimHeading: (position: number) => string;
   oracleTexts: string;
-  oracleTextsReadHint: string;
-  oracleTextsReadLegend: (lineReadingLabel: string) => string;
   translatorAppliedLabel: string;
   compareOtherSystem: string;
   tabWilhelm: string;
@@ -101,13 +99,9 @@ const EN: MutationExplorerUiMessages = {
   changingLineVerbatimHeading: (position) =>
     `Changing line ${position} (not read; reference only)`,
   oracleTexts: "Oracle texts",
-  oracleTextsReadHint:
-    "Three tiers apply: (1) primary judgment + image, (2) selected line(s) per the rule (other changing lines are omitted), (3) transformed judgment + image when the cast mutates.",
-  oracleTextsReadLegend: (lineReadingLabel) =>
-    `Line filter: ${lineReadingLabel}. Primary/secondary badges mark Zhu Xi emphasis when two lines or two judgments apply.`,
   translatorAppliedLabel: "Translator",
   compareOtherSystem: "View rule under the other system",
-  tabWilhelm: "Wilhelm / Baynes",
+  tabWilhelm: "Wilhelm (1924)",
   tabLegge: "James Legge",
   tabZhouyi: "Zhou Yi",
   primaryEmphasis: "Primary",
@@ -175,13 +169,9 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     changingLineVerbatimHeading: (position) =>
       `Línea ${position} mutante (no se lee; referencia)`,
     oracleTexts: "Textos oráculo",
-    oracleTextsReadHint:
-      "Tres capas: (1) juicio e imagen del primario, (2) línea(s) seleccionada(s) según la regla (las demás mutantes no aparecen), (3) juicio e imagen del transformado cuando hay mutación.",
-    oracleTextsReadLegend: (lineReadingLabel) =>
-      `Filtro de líneas: ${lineReadingLabel}. Las etiquetas primaria/secundaria marcan énfasis Zhu Xi cuando hay dos líneas o dos juicios.`,
     translatorAppliedLabel: "Traductor:",
     compareOtherSystem: "Ver regla bajo el otro sistema",
-    tabWilhelm: "Wilhelm / Baynes",
+    tabWilhelm: "Wilhelm (1924)",
     tabLegge: "James Legge",
     tabZhouyi: "Zhou Yi",
     primaryEmphasis: "Primaria",

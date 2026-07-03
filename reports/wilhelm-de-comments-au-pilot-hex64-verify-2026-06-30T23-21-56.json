@@ -1,0 +1,401 @@
+{
+  "updatedAt": "2026-06-30T23:21:56.832Z",
+  "hex": 64,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-64-pilot-au.tsv",
+  "ok": true,
+  "closed": 37,
+  "pending": 0,
+  "fieldsTotal": 37,
+  "disputedClosed": 7,
+  "disputedTotal": 7,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "64"
+      }
+    },
+    {
+      "field": "nombre",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "未濟"
+      }
+    },
+    {
+      "field": "chinese_roman",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 2,
+        "pdfSnippet": "WEI DSI",
+        "otherSnippet": "WE DSI"
+      }
+    },
+    {
+      "field": "hex_font",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "ruler_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz; denn die Zeit vor der Vollendung ist eine Zeit, da anfangs Wirren",
+        "otherSnippet": "Kernzeichen: Kan und Li\nDer anfangs Wirren und am Ende Order Herr des Zeichens ist die Sechs auf fünftem Platz; denn die"
+      }
+    },
+    {
+      "field": "sequence",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "misc_notes",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Vor der Vollendung. Gelingen.\nWenn aber der kleine Fuchs,\nwenn er beinahe den Übergang vollendet hat,\nmit dem Schwanz in",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "commentary_decision",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Vor der Vollendung. Gelingen\":\nDenn das Weiche erlangt die Mitte.\n\"Der kleine Fuchs hat beinahe den Übergang vollendet\"",
+        "otherSnippet": ",,Vor der Vollendung. Gelingen\":\nDenn das Weiche erlangt die Mitte.\n\"Der kleine Fuchs hat beinahe den Übergang vollendet"
+      }
+    },
+    {
+      "field": "image_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 462,
+        "pdfSnippet": "ich nicht\nbekämpfen.\nAnfangs Sechs:",
+        "otherSnippet": "ich nicht\nbekämpfen."
+      }
+    },
+    {
+      "field": "commentary_image",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 10,
+        "pdfSnippet": "Das Feuer schlägt nach oben, das Wasser dringt nach unten, daher keine\nVollendung. Wollte man sie gewaltsam durchführen,",
+        "otherSnippet": "Das Feuer ist oberhalb des Wassers: das Bild des Zustands\nvor dem Übergang. So ist der Edle vorsichtig in der Unterschei"
+      }
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 94,
+        "pdfSnippet": "d handelt so korrekt.\nHier ist das Bild des Rads und des Hemmens, das beim vorigen Zeichen dem\nersten Strich vermöge sei",
+        "otherSnippet": "d handelt so korrekt,\nHier ist das Bild des Rads und des Hemmens, das beim vorigen Zeichen dem\nersten Strich vermöge sei"
+      }
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 436,
+        "pdfSnippet": "s den ganzen Verhältnissen herauszukommen. Eine Anderung des Wesens ist nötig. Dadurch,\ndaß der Strich aus einer Sechs z",
+        "otherSnippet": "s den ganzen Verhält\nnissen herauszukommen. Eine Anderung des Wesens ist nötig. Dadurch,\ndaß der Strich aus einer Sechs "
+      }
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 1092,
+        "pdfSnippet": "eine offene Schale.\nNimmel\nErve\ndonner\nDas Stillehalten ist wie eine umgestülpte Tasse.\nDas Abgründige ist in der Mitte ",
+        "otherSnippet": "eine offene Schale.\nDas Stillehalten ist wie eine umgestülpte Tasse.\nDas Abgründige ist in der Mitte voll.\nDas Haftende "
+      }
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen_note",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    }
+  ]
+}

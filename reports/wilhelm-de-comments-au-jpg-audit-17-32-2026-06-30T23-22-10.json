@@ -1,0 +1,1045 @@
+{
+  "updatedAt": "2026-06-30T23:22:10.300Z",
+  "from": 17,
+  "to": 32,
+  "mismatches": [
+    {
+      "hex": 17,
+      "field": "ruler_note",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 334,
+      "expectedLen": 275,
+      "pilotSnippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem Platz. Der Grund, weshalb das ",
+      "expectedSnippet": "Sun und\nie Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem, daß der Starke es über"
+    },
+    {
+      "hex": 17,
+      "field": "sequence",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 96,
+      "expectedLen": 100,
+      "pilotSnippet": "Wo Begeisterung ist, da gibt es sicher Nachfolge. Darum\nfolgt darauf das Zeichen: die Nachfolge.",
+      "expectedSnippet": "Gen\nWo Begeisterung ist, da gibt es sicher Nachfolge. Darum\nfolgt darauf das Zeichen: die Nachfolge."
+    },
+    {
+      "hex": 17,
+      "field": "misc_notes",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 1333,
+      "expectedLen": 1331,
+      "pilotSnippet": "Nachfolge duldet keine alten Vorurteile.\nBeigefügte Urteile\nDie Heroen zähmten das Rind und spannten",
+      "expectedSnippet": "Nachfolge duldet keine alten Vorurteile.\nBeigefügte Urteile\nDie Heroen zähmten das Rind und spannten"
+    },
+    {
+      "hex": 17,
+      "field": "commentary_decision",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 907,
+      "expectedLen": 908,
+      "pilotSnippet": "Die Nachfolge. Das Feste kommt und stellt sich unter das\nWeiche. Bewegung und Heiterkeit: die Nachfo",
+      "expectedSnippet": "Die Nachfolge. Das Feste kommt und stellt sich unter das\nWeiche. Bewegung und Heiterkeit: die Nachfo"
+    },
+    {
+      "hex": 17,
+      "field": "image_oraculo",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 127,
+      "expectedLen": 129,
+      "pilotSnippet": "Inmitten des Sees ist der Donner: Das Bild der Nachfolge. So\nkehrt der Edle zur Zeit des Abenddunkel",
+      "expectedSnippet": "Inmitten des Sees ist der Donner: das Bild der Nachfolge.\\nSo kehrt der Edle zur Zeit des Abenddunke"
+    },
+    {
+      "hex": 17,
+      "field": "commentary_image",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 500,
+      "expectedLen": 510,
+      "pilotSnippet": "Das Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebenso ist im J",
+      "expectedSnippet": "Ruhe ein.\nDas Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebens"
+    },
+    {
+      "hex": 17,
+      "field": "L1_b_comentario",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 489,
+      "expectedLen": 491,
+      "pilotSnippet": "Das Maßgebende ändert sich.\"\nDem Korrekten folgen bringt Heil.\n„Zur Tür hinausgehen im Verkehr schaf",
+      "expectedSnippet": "Das Maßgebende ändert sich.\"\nDem Korrekten folgen bringt Heil.\n\"Zur Tür hinausgehen im Verkehr schaf"
+    },
+    {
+      "hex": 17,
+      "field": "L3_b_comentario",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 464,
+      "expectedLen": 464,
+      "pilotSnippet": "Hängt man dem starken Mann an\",\nso läßt der Wille den Unteren fahren.\nHier ist der kleine Knabe die ",
+      "expectedSnippet": "Hängt man dem starken Mann an\",\nso läßt der Wille den Unteren fahren.\nHier ist der kleine Knabe die "
+    },
+    {
+      "hex": 17,
+      "field": "L4_b_comentario",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 583,
+      "expectedLen": 585,
+      "pilotSnippet": "Die Nachfolge schafft Erfolg\":\nDas ist von unheilvoller Bedeutung.\n„Mit Wahrhaftigkeit auf dem Weg w",
+      "expectedSnippet": "Die Nachfolge schafft Erfolg\":\nDas ist von unheilvoller Bedeutung.\n„Mit Wahrhaftigkeit auf dem Weg w"
+    },
+    {
+      "hex": 18,
+      "field": "ruler_note",
+      "jpgPages": "396-399",
+      "au_estado": "cerrado",
+      "pilotLen": 261,
+      "expectedLen": 209,
+      "pilotSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz; denn alle Striche sind damit beschäftigt, Ver",
+      "expectedSnippet": "Dschen und\nDui\ner Herr des Zeichens ist die Sechs auf fünftem Platz; denn alle Striche\nDer\nten ist d"
+    },
+    {
+      "hex": 18,
+      "field": "sequence",
+      "jpgPages": "396-399",
+      "au_estado": "cerrado",
+      "pilotLen": 160,
+      "expectedLen": 206,
+      "pilotSnippet": "Wenn man in Lust andern folgt, so gibt es sicher Geschäfte. Darum folgt darauf das Zeichen: Die Arbe",
+      "expectedSnippet": "Wenn man in Lust andern folgt, so gibt es sicher Geschäfte. Arb, am\nDarum folgt darauf das Zeichen: "
+    },
+    {
+      "hex": 18,
+      "field": "commentary_decision",
+      "jpgPages": "396-399",
+      "au_estado": "cerrado",
+      "pilotLen": 2821,
+      "expectedLen": 2893,
+      "pilotSnippet": "Die Arbeit am Verdorbenen: Das Feste ist oben und das\nWeiche unten, sanft und stillestehend: das Ver",
+      "expectedSnippet": "Die Arbeit am Verdorbenen: Das Feste ist oben und das\nWeiche unten, sanft und stillestehend: das Ver"
+    },
+    {
+      "hex": 18,
+      "field": "commentary_image",
+      "jpgPages": "396-399",
+      "au_estado": "cerrado",
+      "pilotLen": 321,
+      "expectedLen": 317,
+      "pilotSnippet": "Der Wind, der am Berg herabfällt, bewirkt das Verderben. Aber andererseits wird durch die umgekehrte",
+      "expectedSnippet": "Der Wind, der am Berg herabfällt, bewirkt das Verderben. Aber andererseits wird durch die umgekehrte"
+    },
+    {
+      "hex": 19,
+      "field": "ruler_note",
+      "jpgPages": "400-402",
+      "au_estado": "cerrado",
+      "pilotLen": 159,
+      "expectedLen": 170,
+      "pilotSnippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf zweitem Platz, von denen es im Komment",
+      "expectedSnippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf zweitem Platz, von denen es im Komment"
+    },
+    {
+      "hex": 19,
+      "field": "L3_b_comentario",
+      "jpgPages": "400-402",
+      "au_estado": "cerrado",
+      "pilotLen": 526,
+      "expectedLen": 531,
+      "pilotSnippet": "Behagliche Annäherung.\"\nDer Platz ist nicht der gebührende.\nEin Makel, worüber Trauer erreicht ist, ",
+      "expectedSnippet": "Behagliche Annäherung.\"\nDer Platz ist nicht der gebührende.\nEin Makel, worüber Trauer erreicht ist, "
+    },
+    {
+      "hex": 20,
+      "field": "ruler_note",
+      "jpgPages": "403-405",
+      "au_estado": "cerrado",
+      "pilotLen": 167,
+      "expectedLen": 120,
+      "pilotSnippet": "Die Herren des Zeichens sind die Neun auf fünftem Platz und die obere Neun. Der Satz im Kommentar zu",
+      "expectedSnippet": "blick ist oben\" bezieht sich auf sie.\nGen und Kun\nie Herren des Zeichens sind die Neun auf fünftem P"
+    },
+    {
+      "hex": 20,
+      "field": "sequence",
+      "jpgPages": "403-405",
+      "au_estado": "cerrado",
+      "pilotLen": 104,
+      "expectedLen": 109,
+      "pilotSnippet": "Wenn die Dinge groß sind, dann kann man sie betrachten.\nDarum folgt darauf das Zeichen: die Betracht",
+      "expectedSnippet": "Wenn die Dinge groß sind, dann kann man sie betrachten.\nDarum folgt darauf das Zeichen: die Betracht"
+    },
+    {
+      "hex": 20,
+      "field": "commentary_decision",
+      "jpgPages": "403-405",
+      "au_estado": "cerrado",
+      "pilotLen": 1472,
+      "expectedLen": 1449,
+      "pilotSnippet": "Ein großer Anblick ist oben. Hingebend und sanft. Zentral\nund korrekt ist er ein Anblick für die Wel",
+      "expectedSnippet": "Ein großer Anblick ist oben. Hingebend und sanft. Zentral\nund korrekt ist er ein Anblick für die Wel"
+    },
+    {
+      "hex": 20,
+      "field": "L3_b_comentario",
+      "jpgPages": "403-405",
+      "au_estado": "cerrado",
+      "pilotLen": 326,
+      "expectedLen": 328,
+      "pilotSnippet": "Betrachtung meines Lebens entscheidet über Fortschritt oder\nRückzug.\"\nDer rechte Weg ist nicht verlo",
+      "expectedSnippet": "Betrachtung meines Lebens entscheidet über Fortschritt oder\nRückzug.\"\nDer rechte Weg ist nicht verlo"
+    },
+    {
+      "hex": 21,
+      "field": "ruler_note",
+      "jpgPages": "406-409",
+      "au_estado": "cerrado",
+      "pilotLen": 155,
+      "expectedLen": 98,
+      "pilotSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz, von der es im\nKommentar zur Entscheidung heiß",
+      "expectedSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz, von der es im\nDer\nplatz und geht nach oben."
+    },
+    {
+      "hex": 22,
+      "field": "ruler_note",
+      "jpgPages": "410-413",
+      "au_estado": "cerrado",
+      "pilotLen": 231,
+      "expectedLen": 176,
+      "pilotSnippet": "Die Herren des Zeichens sind die Sechs auf zweitem Platz und die obere Neun. Auf sie bezieht es sich",
+      "expectedSnippet": "Dschen und\nie Herren des Zeichens sind die Sechs auf zweitem Platz und die obere\nKan\nheißt: \"Das Wei"
+    },
+    {
+      "hex": 22,
+      "field": "sequence",
+      "jpgPages": "410-413",
+      "au_estado": "cerrado",
+      "pilotLen": 139,
+      "expectedLen": 868,
+      "pilotSnippet": "Die Dinge dürfen sich nicht ohne weiteres rücksichtslos vereinigen, darum folgt darauf das Zeichen: ",
+      "expectedSnippet": "Die Dinge dürfen sich nicht ohne weiteres rücksichtslos vereinigen, darum folgt darauf das Zeichen: "
+    },
+    {
+      "hex": 22,
+      "field": "commentary_decision",
+      "jpgPages": "410-413",
+      "au_estado": "cerrado",
+      "pilotLen": 2420,
+      "expectedLen": 2432,
+      "pilotSnippet": "„Anmut hat Gelingen.\" Das Weiche kommt und formt das\nFeste, darum: Gelingen. Ein abgelöstes Festes s",
+      "expectedSnippet": "„Anmut hat Gelingen.\" Das Weiche kommt und formt das\nFeste, darum: Gelingen. Ein abgelöstes Festes s"
+    },
+    {
+      "hex": 22,
+      "field": "L3_a_oraculo",
+      "jpgPages": "410-413",
+      "au_estado": "cerrado",
+      "pilotLen": 56,
+      "expectedLen": 85,
+      "pilotSnippet": "Anmutig und feucht. Dauernde Beharrlichkeit bringt Heil.",
+      "expectedSnippet": "Anmutig und feucht. Dauernde Beharrlichkeit bringt Heil.\n7 Das Buch der Wandlungen II"
+    },
+    {
+      "hex": 23,
+      "field": "ruler_note",
+      "jpgPages": "414-416",
+      "au_estado": "cerrado",
+      "pilotLen": 179,
+      "expectedLen": 125,
+      "pilotSnippet": "Der Herr des Zeichens ist die obere Neun. Obwohl das Schattige das Licht zersplittert, läßt sich das",
+      "expectedSnippet": "Kun und Kun\nDer Herr des Zeichens ist die obere Neun. Obwohl das Schattige das\nsplittern, darum ist "
+    },
+    {
+      "hex": 23,
+      "field": "misc_notes",
+      "jpgPages": "414-416",
+      "au_estado": "cerrado",
+      "pilotLen": 837,
+      "expectedLen": 841,
+      "pilotSnippet": "Zersplitterung bedeutet Verwesung.\nDer Gedanke, mit dem des nächsten Zeichens zusammengenommen, zeig",
+      "expectedSnippet": "Zersplitterung bedeutet Verwesung.\nDer Gedanke, mit dem des nächsten Zeichens zusammengenommen, zeig"
+    },
+    {
+      "hex": 23,
+      "field": "L5_a_oraculo",
+      "jpgPages": "414-416",
+      "au_estado": "cerrado",
+      "pilotLen": 72,
+      "expectedLen": 84,
+      "pilotSnippet": "Ein Zug Fische. Durch die Palastdamen kommt Gunst. Alles\nist förderlich.",
+      "expectedSnippet": "Ein Zug Fische. Durch die Palastdamen kommt Gunst. Alles\nist förderlich.\n4539``♥`V`N"
+    },
+    {
+      "hex": 24,
+      "field": "ruler_note",
+      "jpgPages": "417-420",
+      "au_estado": "cerrado",
+      "pilotLen": 138,
+      "expectedLen": 72,
+      "pilotSnippet": "Der Herr des Zeichens ist die Anfangsneun. Auf sie bezieht es sich, wenn\nes im Kommentar zur Entsche",
+      "expectedSnippet": "Der Herr des Zeichens ist die Anfangsneun. Auf sie bezieht es sich, wenn"
+    },
+    {
+      "hex": 24,
+      "field": "L5_b_comentario",
+      "jpgPages": "417-420",
+      "au_estado": "cerrado",
+      "pilotLen": 400,
+      "expectedLen": 400,
+      "pilotSnippet": "Großzügige Wiederkehr. Keine Reue.\"\nZentral, so vermag er sich selbst zu prüfen.\nAn sich ist die Lin",
+      "expectedSnippet": "Großzügige Wiederkehr. Keine Reue.\"\nZentral, so vermag er sich selbst zu prüfen.\nAn sich ist die Lin"
+    },
+    {
+      "hex": 24,
+      "field": "L6_b_comentario",
+      "jpgPages": "417-420",
+      "au_estado": "cerrado",
+      "pilotLen": 1098,
+      "expectedLen": 1096,
+      "pilotSnippet": "Das Unheil der verfehlten Wiederkehr liegt darin, daß man\ndem Weg des Edlen widerspricht.\nDie Linie ",
+      "expectedSnippet": "Das Unheil der verfehlten Wiederkehr liegt darin, daß man\ndem Weg des Edlen widerspricht.\nDie Linie "
+    },
+    {
+      "hex": 25,
+      "field": "commentary_decision",
+      "jpgPages": "421-424",
+      "au_estado": "cerrado",
+      "pilotLen": 1696,
+      "expectedLen": 1704,
+      "pilotSnippet": "Die Unschuld. Das Feste kommt von außen und wird zum\nHerrn im Innern. Bewegung und Stärke. Das Feste",
+      "expectedSnippet": "Die Unschuld. Das Feste kommt von außen und wird zum\nHerrn im Innern. Bewegung und Stärke. Das Feste"
+    },
+    {
+      "hex": 25,
+      "field": "image_oraculo",
+      "jpgPages": "421-424",
+      "au_estado": "cerrado",
+      "pilotLen": 181,
+      "expectedLen": 184,
+      "pilotSnippet": "Unter dem Himmel geht der Donner:\nAlle Dinge erlangen den Naturzustand der Unschuld.\nSo pflegten und",
+      "expectedSnippet": "Unter dem Himmel geht der Donner:\\nAlle Dinge erlangen den Naturzustand der Unschuld.\\nSo pflegten u"
+    },
+    {
+      "hex": 25,
+      "field": "commentary_image",
+      "jpgPages": "421-424",
+      "au_estado": "cerrado",
+      "pilotLen": 728,
+      "expectedLen": 910,
+      "pilotSnippet": "„Unter dem Himmel geht der Donner: alle Dinge erlangen den Naturzustand der Unschuld.\" Das erklärt s",
+      "expectedSnippet": "Unter dem Himmel geht der Donner: alle Dinge erlangen den\nNaturzustand der Unschuld. So pflegten und"
+    },
+    {
+      "hex": 26,
+      "field": "ruler_note",
+      "jpgPages": "425-428",
+      "au_estado": "cerrado",
+      "pilotLen": 192,
+      "expectedLen": 181,
+      "pilotSnippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere Neun. Auf sie bezieht es sich",
+      "expectedSnippet": "Dschen und\nDui\nie Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nes im Kommentar"
+    },
+    {
+      "hex": 26,
+      "field": "commentary_decision",
+      "jpgPages": "425-428",
+      "au_estado": "cerrado",
+      "pilotLen": 1846,
+      "expectedLen": 1848,
+      "pilotSnippet": "Des Großen Zähmungskraft. Festigkeit und Stärke. Echtheit\nund Wahrheit. Glanz und Licht. Täglich ern",
+      "expectedSnippet": "Des Großen Zähmungskraft. Festigkeit und Stärke. Echtheit\nund Wahrheit. Glanz und Licht. Täglich ern"
+    },
+    {
+      "hex": 26,
+      "field": "image_oraculo",
+      "jpgPages": "425-428",
+      "au_estado": "cerrado",
+      "pilotLen": 189,
+      "expectedLen": 193,
+      "pilotSnippet": "Der Himmel inmitten des Berges: Das Bild von des Großen\nZähmungskraft.\nSo lernt der Edle viele Worte",
+      "expectedSnippet": "Der Himmel inmitten des Berges:\\ndas Bild von des Großen Zähmungskraft.\\nSo lernt der Edle viele Wor"
+    },
+    {
+      "hex": 26,
+      "field": "commentary_image",
+      "jpgPages": "425-428",
+      "au_estado": "cerrado",
+      "pilotLen": 235,
+      "expectedLen": 312,
+      "pilotSnippet": "Der Himmel deutet auf den Charakter, die Tugend. Die Festigung wird angedeutet durch den Berg. Die M",
+      "expectedSnippet": "und Taten der Vergangenheit kennen, um dadurch seinen Charakter zu festigen.\nDer Himmel deutet auf d"
+    },
+    {
+      "hex": 26,
+      "field": "L2_b_comentario",
+      "jpgPages": "425-428",
+      "au_estado": "cerrado",
+      "pilotLen": 325,
+      "expectedLen": 330,
+      "pilotSnippet": "Dem Wagen werden die Achsenlager abgenommen.\"\nIn der Mitte ist kein Makel.\nKiän ist rund, daher das ",
+      "expectedSnippet": "Dem Wagen werden die Achsenlager abgenommen.\"\nIn der Mitte ist kein Makel.\nds\n¿\nKiän ist rund, daher"
+    },
+    {
+      "hex": 27,
+      "field": "ruler_note",
+      "jpgPages": "429-432",
+      "au_estado": "cerrado",
+      "pilotLen": 204,
+      "expectedLen": 216,
+      "pilotSnippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Auf sie bezieht es sich",
+      "expectedSnippet": "Kun und\nKun\nDie Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Auf sie bez"
+    },
+    {
+      "hex": 27,
+      "field": "commentary_image",
+      "jpgPages": "429-432",
+      "au_estado": "cerrado",
+      "pilotLen": 421,
+      "expectedLen": 552,
+      "pilotSnippet": "Der Donner ist das Zeichen, in dem Gott hervortritt, der Berg ist das Zeichen,\nin dem alle Dinge vol",
+      "expectedSnippet": "Unten am Berg ist der Donner: das Bild der Ernährung.\nSo hat der Edle acht auf seine Worte und ist m"
+    },
+    {
+      "hex": 27,
+      "field": "L3_b_comentario",
+      "jpgPages": "429-432",
+      "au_estado": "cerrado",
+      "pilotLen": 485,
+      "expectedLen": 491,
+      "pilotSnippet": "Zehn Jahre handle nicht danach\":\ndenn es widerspricht allzusehr dem rechten Weg.\nAuch dieser Strich,",
+      "expectedSnippet": "Zehn Jahre handle nicht danach\":\ndenn es widerspricht allzusehr dem rechten Weg.\nE.\nØs\nAuch dieser S"
+    },
+    {
+      "hex": 28,
+      "field": "ruler_note",
+      "jpgPages": "433-436",
+      "au_estado": "cerrado",
+      "pilotLen": 231,
+      "expectedLen": 288,
+      "pilotSnippet": "Die Herren des Zeichens sind die Neun auf zweitem Platz und die Neun\nauf viertem Platz. Die Neun auf",
+      "expectedSnippet": "DES GROSSEN ÜBERGEWICHT\n大​過​。\nKiän und Kiän\nDie Herren des Zeichens sind die Neun auf zweitem Platz "
+    },
+    {
+      "hex": 28,
+      "field": "misc_notes",
+      "jpgPages": "433-436",
+      "au_estado": "cerrado",
+      "pilotLen": 1413,
+      "expectedLen": 1421,
+      "pilotSnippet": "Des Großen Übergewicht ist der Gipfel.\nDer Gipfel bezieht sich auf das Bild des Firstbalkens, von de",
+      "expectedSnippet": "Des Großen Übergewicht ist der Gipfel.\nDer Gipfel bezieht sich auf das Bild des Firstbalkens, von de"
+    },
+    {
+      "hex": 28,
+      "field": "image_oraculo",
+      "jpgPages": "433-436",
+      "au_estado": "cerrado",
+      "pilotLen": 171,
+      "expectedLen": 174,
+      "pilotSnippet": "Der See geht über die Bäume weg: das Bild des Übergewichts\nim Großen.\nSo ist der Edle, wenn er allei",
+      "expectedSnippet": "Der See geht über die Bäume weg:\\ndas Bild des Übergewichts im Großen.\\nSo ist der Edle, wenn er all"
+    },
+    {
+      "hex": 28,
+      "field": "commentary_image",
+      "jpgPages": "433-436",
+      "au_estado": "cerrado",
+      "pilotLen": 241,
+      "expectedLen": 294,
+      "pilotSnippet": "Das Alleinstehen und der Verzicht auf die Welt ist durch die Situation des\nGesamtzeichens gegeben. D",
+      "expectedSnippet": "und, wenn er auf die Welt verzichten muß, unverzagt.\nDas Alleinstehen und der Verzicht auf die Welt "
+    },
+    {
+      "hex": 28,
+      "field": "L6_b_comentario",
+      "jpgPages": "433-436",
+      "au_estado": "cerrado",
+      "pilotLen": 1566,
+      "expectedLen": 1576,
+      "pilotSnippet": "Das Unheil des Durchschreitens des Wassers darf man nicht\ntadeln.\nDas obere Zeichen Dui ist ein See,",
+      "expectedSnippet": "Das Unheil des Durchschreitens des Wassers darf man nicht\ntadeln.\nDas obere Zeichen Dui ist ein See,"
+    },
+    {
+      "hex": 29,
+      "field": "ruler_note",
+      "jpgPages": "437-440",
+      "au_estado": "cerrado",
+      "pilotLen": 215,
+      "expectedLen": 144,
+      "pilotSnippet": "Die Herren des Zeichens sind die beiden Yangstriche auf zweitem und fünftem Platz. Auf sie bezieht e",
+      "expectedSnippet": "Gen und\nDschen\nie Herren des Zeichens sind die beiden Yangstriche auf zweitem und\n\"\ndas Wasser läuft"
+    },
+    {
+      "hex": 29,
+      "field": "misc_notes",
+      "jpgPages": "437-440",
+      "au_estado": "cerrado",
+      "pilotLen": 719,
+      "expectedLen": 725,
+      "pilotSnippet": "Das Abgründige ist nach unten gerichtet.\nDie Bewegung des Wassers geht von oben nach unten. Das Wass",
+      "expectedSnippet": "Das Abgründige ist nach unten gerichtet.\nDie Bewegung des Wassers geht von oben nach unten. Das Wass"
+    },
+    {
+      "hex": 29,
+      "field": "commentary_image",
+      "jpgPages": "437-440",
+      "au_estado": "cerrado",
+      "pilotLen": 234,
+      "expectedLen": 242,
+      "pilotSnippet": "Das Wasser ist dauernd in seinem Fließen; so ist der Edle dauernd in seiner\nTugend wie der feste Str",
+      "expectedSnippet": "7777777\nDas Wasser ist dauernd in seinem Fließen; so ist der Edle dauernd in seiner\nTugend wie der f"
+    },
+    {
+      "hex": 29,
+      "field": "L4_a_oraculo",
+      "jpgPages": "437-440",
+      "au_estado": "cerrado",
+      "pilotLen": 120,
+      "expectedLen": 125,
+      "pilotSnippet": "Ein Krug Wein, eine Reisschale als Zugabe, Tongeschirr,\neinfach zum Fenster hineingereicht: das ist ",
+      "expectedSnippet": "Ein Krug Wein, eine Reisschale als Zugabe, Tongeschirr,\nர்\nd\neinfach zum Fenster hineingereicht: das"
+    },
+    {
+      "hex": 30,
+      "field": "ruler_note",
+      "jpgPages": "441-444",
+      "au_estado": "cerrado",
+      "pilotLen": 195,
+      "expectedLen": 126,
+      "pilotSnippet": "Die Herren des Zeichens sind die beiden Yinstriche auf dem zweiten und fünften Platz, und zwar ist d",
+      "expectedSnippet": "Die Herren des Zeichens sind die beiden Yinstriche auf dem zweiten und\ndas Feuer ist am hellsten, we"
+    },
+    {
+      "hex": 30,
+      "field": "misc_notes",
+      "jpgPages": "441-444",
+      "au_estado": "cerrado",
+      "pilotLen": 441,
+      "expectedLen": 441,
+      "pilotSnippet": "Das Haftende ist nach oben gerichtet.\nBeigefügte Urteile\nFu Hi machte geknotete Stricke und benützte",
+      "expectedSnippet": "Das Haftende ist nach oben gerichtet.\nBeigefügte Urteile\nFu Hi machte geknotete Stricke und benützte"
+    },
+    {
+      "hex": 30,
+      "field": "L6_b_comentario",
+      "jpgPages": "441-444",
+      "au_estado": "cerrado",
+      "pilotLen": 372,
+      "expectedLen": 520,
+      "pilotSnippet": "\"Der König gebraucht ihn, auszuziehen und zu züchtigen\":\num das Land in Zucht zu bringen.\nDer König ",
+      "expectedSnippet": "\"Der König gebraucht ihn, auszuziehen und zu züchtigen\":\num das Land in Zucht zu bringen.\nDer König "
+    },
+    {
+      "hex": 31,
+      "field": "ruler_note",
+      "jpgPages": "445-448",
+      "au_estado": "cerrado",
+      "pilotLen": 388,
+      "expectedLen": 347,
+      "pilotSnippet": "Die Neun auf viertem Platz ist an der Stelle des Herzens. Das Herz ist\nder Herr der Einwirkung, daru",
+      "expectedSnippet": "Kiän und\nie Neun auf viertem Platz ist an der Stelle des Herzens. Das Herz ist\nder Herr des\nSun\nZeic"
+    },
+    {
+      "hex": 31,
+      "field": "commentary_image",
+      "jpgPages": "445-448",
+      "au_estado": "cerrado",
+      "pilotLen": 596,
+      "expectedLen": 615,
+      "pilotSnippet": "(Wörtl. So nimmt der Edle durch Leere die Menschen auf.)\nDer See auf dem Berg gibt dem Berg von sein",
+      "expectedSnippet": "herankommen.\n(Wörtl. So nimmt der Edle durch Leere die Menschen auf.)\nDer See auf dem Berg gibt dem "
+    },
+    {
+      "hex": 31,
+      "field": "L4_b_comentario",
+      "jpgPages": "445-448",
+      "au_estado": "cerrado",
+      "pilotLen": 1165,
+      "expectedLen": 1164,
+      "pilotSnippet": "Beharrlichkeit bringt Heil. Die Reue schwindet.\"\nDenn man regt auf diese Weise nichts Schädliches an",
+      "expectedSnippet": "Beharrlichkeit bringt Heil. Die Reue schwindet.\"\nDenn man regt auf diese Weise nichts Schädliches an"
+    },
+    {
+      "hex": 32,
+      "field": "ruler_note",
+      "jpgPages": "449-451",
+      "au_estado": "cerrado",
+      "pilotLen": 684,
+      "expectedLen": 686,
+      "pilotSnippet": "Dauer bedeutet das, was immer ist. Was in der Mitte ist, das bleibt\nimmer. In dem Zeichen ist der zw",
+      "expectedSnippet": "Da\nauer bedeutet das, was immer ist. Was in der Mitte ist, das bleibt\nimmer. In dem Zeichen ist der "
+    },
+    {
+      "hex": 32,
+      "field": "commentary_decision",
+      "jpgPages": "449-451",
+      "au_estado": "cerrado",
+      "pilotLen": 2315,
+      "expectedLen": 2325,
+      "pilotSnippet": "Dauer bedeutet das Langewährende. Das Starke ist oben,\ndas Schwache unten; Donner und Wind wirken zu",
+      "expectedSnippet": "Dauer bedeutet das Langewährende. Das Starke ist oben,\ndas Schwache unten; Donner und Wind wirken zu"
+    },
+    {
+      "hex": 32,
+      "field": "L4_a_oraculo",
+      "jpgPages": "449-451",
+      "au_estado": "cerrado",
+      "pilotLen": 22,
+      "expectedLen": 27,
+      "pilotSnippet": "Im Feld ist kein Wild.",
+      "expectedSnippet": "Im Feld ist kein Wild.\nT\n??"
+    },
+    {
+      "hex": 32,
+      "field": "L4_b_comentario",
+      "jpgPages": "449-451",
+      "au_estado": "cerrado",
+      "pilotLen": 580,
+      "expectedLen": 576,
+      "pilotSnippet": "Wenn man dauernd nicht auf seinem Platz ist, wie kann man\nda Wild finden!\nDschen hat als Attribut da",
+      "expectedSnippet": "Wenn man dauernd nicht auf seinem Platz ist, wie kann man\nda Wild finden!\nDschen hat als Attribut da"
+    },
+    {
+      "hex": 32,
+      "field": "L6_b_comentario",
+      "jpgPages": "449-451",
+      "au_estado": "cerrado",
+      "pilotLen": 475,
+      "expectedLen": 488,
+      "pilotSnippet": "Rastlosigkeit als Dauerzustand an oberer Stelle ist ganz ohne\nVerdienst.\nDschen hat als Eigenschaft ",
+      "expectedSnippet": "Rastlosigkeit als Dauerzustand an oberer Stelle ist ganz ohne\nVerdienst.\nDschen hat als Eigenschaft "
+    }
+  ],
+  "ninguno": [
+    {
+      "hex": 17,
+      "field": "ruler_note",
+      "jpgPages": "393-395",
+      "snippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem Platz. Der Grund, weshalb das Zeichen die Nachfolg"
+    },
+    {
+      "hex": 17,
+      "field": "misc_notes",
+      "jpgPages": "393-395",
+      "snippet": "Nachfolge duldet keine alten Vorurteile.\nBeigefügte Urteile\nDie Heroen zähmten das Rind und spannten das Pferd an.\nSo ko"
+    },
+    {
+      "hex": 17,
+      "field": "commentary_decision",
+      "jpgPages": "393-395",
+      "snippet": "Die Nachfolge. Das Feste kommt und stellt sich unter das\nWeiche. Bewegung und Heiterkeit: die Nachfolge. Großes\nGelingen"
+    },
+    {
+      "hex": 17,
+      "field": "image_oraculo",
+      "jpgPages": "393-395",
+      "snippet": "Inmitten des Sees ist der Donner: Das Bild der Nachfolge. So\nkehrt der Edle zur Zeit des Abenddunkels zu Erholung und\nRu"
+    },
+    {
+      "hex": 17,
+      "field": "commentary_image",
+      "jpgPages": "393-395",
+      "snippet": "Das Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebenso ist im Jahr die Zeit gezeich"
+    },
+    {
+      "hex": 17,
+      "field": "L1_b_comentario",
+      "jpgPages": "393-395",
+      "snippet": "Das Maßgebende ändert sich.\"\nDem Korrekten folgen bringt Heil.\n„Zur Tür hinausgehen im Verkehr schafft Werke.\"\nMan verli"
+    },
+    {
+      "hex": 17,
+      "field": "L4_b_comentario",
+      "jpgPages": "393-395",
+      "snippet": "Die Nachfolge schafft Erfolg\":\nDas ist von unheilvoller Bedeutung.\n„Mit Wahrhaftigkeit auf dem Weg wandeln\":\ndas bringt "
+    },
+    {
+      "hex": 18,
+      "field": "sequence",
+      "jpgPages": "396-399",
+      "snippet": "Wenn man in Lust andern folgt, so gibt es sicher Geschäfte. Darum folgt darauf das Zeichen: Die Arbeit am Verdorbenen.\nA"
+    },
+    {
+      "hex": 18,
+      "field": "commentary_decision",
+      "jpgPages": "396-399",
+      "snippet": "Die Arbeit am Verdorbenen: Das Feste ist oben und das\nWeiche unten, sanft und stillestehend: das Verdorbene.\n„Die Arbeit"
+    },
+    {
+      "hex": 18,
+      "field": "image_oraculo",
+      "jpgPages": "396-399",
+      "snippet": "Unten am Berg weht der Wind: das Bild des Verderbens.\nSo rüttelt der Edle die Leute auf und stärkt ihren Geist."
+    },
+    {
+      "hex": 18,
+      "field": "commentary_image",
+      "jpgPages": "396-399",
+      "snippet": "Der Wind, der am Berg herabfällt, bewirkt das Verderben. Aber andererseits wird durch die umgekehrte Bewegung — erst der"
+    },
+    {
+      "hex": 19,
+      "field": "ruler_note",
+      "jpgPages": "400-402",
+      "snippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf zweitem Platz, von denen es im Kommentar zur Entscheidung "
+    },
+    {
+      "hex": 19,
+      "field": "L3_b_comentario",
+      "jpgPages": "400-402",
+      "snippet": "Behagliche Annäherung.\"\nDer Platz ist nicht der gebührende.\nEin Makel, worüber Trauer erreicht ist, dauert nicht länger."
+    },
+    {
+      "hex": 20,
+      "field": "ruler_note",
+      "jpgPages": "403-405",
+      "snippet": "Die Herren des Zeichens sind die Neun auf fünftem Platz und die obere Neun. Der Satz im Kommentar zur Entscheidung: „Ein"
+    },
+    {
+      "hex": 20,
+      "field": "sequence",
+      "jpgPages": "403-405",
+      "snippet": "Wenn die Dinge groß sind, dann kann man sie betrachten.\nDarum folgt darauf das Zeichen: die Betrachtung."
+    },
+    {
+      "hex": 20,
+      "field": "commentary_decision",
+      "jpgPages": "403-405",
+      "snippet": "Ein großer Anblick ist oben. Hingebend und sanft. Zentral\nund korrekt ist er ein Anblick für die Welt.\n„Die Betrachtung."
+    },
+    {
+      "hex": 20,
+      "field": "image_oraculo",
+      "jpgPages": "403-405",
+      "snippet": "Der Wind geht über die Erde hin:\ndas Bild der Betrachtung.\nSo besuchten die alten Könige die Weltgegenden,\nbetrachteten "
+    },
+    {
+      "hex": 20,
+      "field": "commentary_image",
+      "jpgPages": "403-405",
+      "snippet": "Der Wind kommt überall hin auf Erden und zeigt alles. So wird durch das\nZeichen Sun, Wind, das Reisen der alten Könige s"
+    },
+    {
+      "hex": 21,
+      "field": "chinese_roman",
+      "jpgPages": "406-409",
+      "snippet": "Schï Ho"
+    },
+    {
+      "hex": 21,
+      "field": "ruler_note",
+      "jpgPages": "406-409",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz, von der es im\nKommentar zur Entscheidung heißt: Das Weiche erhält"
+    },
+    {
+      "hex": 21,
+      "field": "image_oraculo",
+      "jpgPages": "406-409",
+      "snippet": "Donner und Blitz: das Bild des Durchbeißens.\nSo festigten die früheren Könige\ndie Gesetze durch klarbestimmte Strafen."
+    },
+    {
+      "hex": 21,
+      "field": "commentary_image",
+      "jpgPages": "406-409",
+      "snippet": "Donner und Blitz folgen unfehlbar aufeinander. Es heißt Donner und Blitz,\nnicht Blitz und Donner, weil die Bewegung von "
+    },
+    {
+      "hex": 22,
+      "field": "ruler_note",
+      "jpgPages": "410-413",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf zweitem Platz und die obere Neun. Auf sie bezieht es sich, wenn es im Komment"
+    },
+    {
+      "hex": 22,
+      "field": "commentary_decision",
+      "jpgPages": "410-413",
+      "snippet": "„Anmut hat Gelingen.\" Das Weiche kommt und formt das\nFeste, darum: Gelingen. Ein abgelöstes Festes steigt empor\nund form"
+    },
+    {
+      "hex": 22,
+      "field": "image_oraculo",
+      "jpgPages": "410-413",
+      "snippet": "Unten am Berg ist das Feuer: das Bild der Anmut.\nSo verfährt der Edle bei der Klarstellung\nder laufenden Angelegenheiten"
+    },
+    {
+      "hex": 22,
+      "field": "commentary_image",
+      "jpgPages": "410-413",
+      "snippet": "Das Zeichen ist das vorige in seiner umgekehrten Gestalt. Dort war Helligkeit und Bewegung. Die deuteten auf rasche Erle"
+    },
+    {
+      "hex": 22,
+      "field": "L3_a_oraculo",
+      "jpgPages": "410-413",
+      "snippet": "Anmutig und feucht. Dauernde Beharrlichkeit bringt Heil."
+    },
+    {
+      "hex": 23,
+      "field": "ruler_note",
+      "jpgPages": "414-416",
+      "snippet": "Der Herr des Zeichens ist die obere Neun. Obwohl das Schattige das Licht zersplittert, läßt sich das Lichte doch nicht v"
+    },
+    {
+      "hex": 23,
+      "field": "image_oraculo",
+      "jpgPages": "414-416",
+      "snippet": "Der Berg ruht auf der Erde: das Bild der Zersplitterung.\nSo können die Oberen nur durch reiches Spenden an die\nUnteren i"
+    },
+    {
+      "hex": 23,
+      "field": "commentary_image",
+      "jpgPages": "414-416",
+      "snippet": "Der Berg ist um so weniger der Zersplitterung ausgesetzt, je breiter er auf\nder Erde ruht. Es wird hier nicht sowohl der"
+    },
+    {
+      "hex": 23,
+      "field": "L5_b_comentario",
+      "jpgPages": "414-416",
+      "snippet": "Durch die Palastdamen kommt Gunst.\"\nDas ist endgültig kein Fehler.\nWenn der Strich sich wandelt, so erscheint oben das Z"
+    },
+    {
+      "hex": 23,
+      "field": "L6_b_comentario",
+      "jpgPages": "414-416",
+      "snippet": "Der Edle erhält einen Wagen.\"\nEr wird vom Volk getragen.\n„Dem Gemeinen zersplittert sein Haus\";\ner ist endgültig unbrauc"
+    },
+    {
+      "hex": 24,
+      "field": "ruler_note",
+      "jpgPages": "417-420",
+      "snippet": "Der Herr des Zeichens ist die Anfangsneun. Auf sie bezieht es sich, wenn\nes im Kommentar zur Entscheidung heißt: „Das Fe"
+    },
+    {
+      "hex": 24,
+      "field": "commentary_decision",
+      "jpgPages": "417-420",
+      "snippet": "\"\"\n„Wiederkehr hat Gelingen.'\nDas Feste kehrt zurück.\nBewegung und Wirkung durch Hingebung. Darum ist \"Ausgang und Einga"
+    },
+    {
+      "hex": 24,
+      "field": "image_oraculo",
+      "jpgPages": "417-420",
+      "snippet": "Der Donner inmitten der Erde: das Bild der Wendezeit.\nSo schlössen die alten Könige zur Sonnwendzeit die Pässe.\nHändler "
+    },
+    {
+      "hex": 24,
+      "field": "commentary_image",
+      "jpgPages": "417-420",
+      "snippet": "Händler und Fremdlinge wanderten nicht, und der Herrscher\nbereiste nicht die Gegenden.\nDas Zeichen ist dem Monat der Win"
+    },
+    {
+      "hex": 24,
+      "field": "L6_b_comentario",
+      "jpgPages": "417-420",
+      "snippet": "Das Unheil der verfehlten Wiederkehr liegt darin, daß man\ndem Weg des Edlen widerspricht.\nDie Linie ist am Ende der Yinl"
+    },
+    {
+      "hex": 25,
+      "field": "ruler_note",
+      "jpgPages": "421-424",
+      "snippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem Platz. Die Anfangsneun ist der Anfang der Bewegung"
+    },
+    {
+      "hex": 25,
+      "field": "commentary_decision",
+      "jpgPages": "421-424",
+      "snippet": "Die Unschuld. Das Feste kommt von außen und wird zum\nHerrn im Innern. Bewegung und Stärke. Das Feste ist in\nder Mitte un"
+    },
+    {
+      "hex": 25,
+      "field": "image_oraculo",
+      "jpgPages": "421-424",
+      "snippet": "Unter dem Himmel geht der Donner:\nAlle Dinge erlangen den Naturzustand der Unschuld.\nSo pflegten und nährten die alten K"
+    },
+    {
+      "hex": 25,
+      "field": "commentary_image",
+      "jpgPages": "421-424",
+      "snippet": "„Unter dem Himmel geht der Donner: alle Dinge erlangen den Naturzustand der Unschuld.\" Das erklärt sich aus dem Satz aus"
+    },
+    {
+      "hex": 26,
+      "field": "ruler_note",
+      "jpgPages": "425-428",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere Neun. Auf sie bezieht es sich, wenn es im Komment"
+    },
+    {
+      "hex": 26,
+      "field": "commentary_decision",
+      "jpgPages": "425-428",
+      "snippet": "Des Großen Zähmungskraft. Festigkeit und Stärke. Echtheit\nund Wahrheit. Glanz und Licht. Täglich erneuert er seine\nTugen"
+    },
+    {
+      "hex": 26,
+      "field": "image_oraculo",
+      "jpgPages": "425-428",
+      "snippet": "Der Himmel inmitten des Berges: Das Bild von des Großen\nZähmungskraft.\nSo lernt der Edle viele Worte der Vorzeit und Tat"
+    },
+    {
+      "hex": 26,
+      "field": "commentary_image",
+      "jpgPages": "425-428",
+      "snippet": "Der Himmel deutet auf den Charakter, die Tugend. Die Festigung wird angedeutet durch den Berg. Die Mittel hierzu sind in"
+    },
+    {
+      "hex": 26,
+      "field": "L2_b_comentario",
+      "jpgPages": "425-428",
+      "snippet": "Dem Wagen werden die Achsenlager abgenommen.\"\nIn der Mitte ist kein Makel.\nKiän ist rund, daher das Bild des Rades. Dui,"
+    },
+    {
+      "hex": 26,
+      "field": "L5_b_comentario",
+      "jpgPages": "425-428",
+      "snippet": "Das Heil der Sechs auf fünftem Platz besteht darin, daß sie\nSegen hat.\nNach einer andern Deutung heißt es: eines jungen "
+    },
+    {
+      "hex": 27,
+      "field": "ruler_note",
+      "jpgPages": "429-432",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Auf sie bezieht es sich, wenn es im Komment"
+    },
+    {
+      "hex": 27,
+      "field": "commentary_decision",
+      "jpgPages": "429-432",
+      "snippet": "\"Die Mundwinkel. Beharrlichkeit bringt Heil.\"\nWenn man das Rechte ernährt, so bringt das Heil.\n„Sieh auf die Ernährung\","
+    },
+    {
+      "hex": 27,
+      "field": "image_oraculo",
+      "jpgPages": "429-432",
+      "snippet": "Unten am Berg ist der Donner: das Bild der Ernährung.\nSo hat der Edle acht auf seine Worte\nund ist mäßig im Essen und Tr"
+    },
+    {
+      "hex": 27,
+      "field": "commentary_image",
+      "jpgPages": "429-432",
+      "snippet": "Der Donner ist das Zeichen, in dem Gott hervortritt, der Berg ist das Zeichen,\nin dem alle Dinge vollendet werden. Das i"
+    },
+    {
+      "hex": 27,
+      "field": "L4_b_comentario",
+      "jpgPages": "429-432",
+      "snippet": "Das Heil des sich nach dem Gipfel Wendens um Ernährung\nberuht darauf, daß der Obere Licht verbreitet.\nDer Strich wendet "
+    },
+    {
+      "hex": 28,
+      "field": "ruler_note",
+      "jpgPages": "433-436",
+      "snippet": "Die Herren des Zeichens sind die Neun auf zweitem Platz und die Neun\nauf viertem Platz. Die Neun auf zweitem Platz ist f"
+    },
+    {
+      "hex": 28,
+      "field": "image_oraculo",
+      "jpgPages": "433-436",
+      "snippet": "Der See geht über die Bäume weg: das Bild des Übergewichts\nim Großen.\nSo ist der Edle, wenn er allein steht, unbesorgt u"
+    },
+    {
+      "hex": 28,
+      "field": "commentary_image",
+      "jpgPages": "433-436",
+      "snippet": "Das Alleinstehen und der Verzicht auf die Welt ist durch die Situation des\nGesamtzeichens gegeben. Das unbesorgte Allein"
+    },
+    {
+      "hex": 28,
+      "field": "L6_b_comentario",
+      "jpgPages": "433-436",
+      "snippet": "Das Unheil des Durchschreitens des Wassers darf man nicht\ntadeln.\nDas obere Zeichen Dui ist ein See, daher das Wasser. D"
+    },
+    {
+      "hex": 29,
+      "field": "ruler_note",
+      "jpgPages": "437-440",
+      "snippet": "Die Herren des Zeichens sind die beiden Yangstriche auf zweitem und fünftem Platz. Auf sie bezieht es sich, wenn es im K"
+    },
+    {
+      "hex": 29,
+      "field": "commentary_decision",
+      "jpgPages": "437-440",
+      "snippet": "Das wiederholte Abgründige ist die verdoppelte Gefahr. Das\nWasser fließt und häuft sich nirgends an, es geht durch gefäh"
+    },
+    {
+      "hex": 29,
+      "field": "commentary_image",
+      "jpgPages": "437-440",
+      "snippet": "Das Wasser ist dauernd in seinem Fließen; so ist der Edle dauernd in seiner\nTugend wie der feste Strich inmitten des Abg"
+    },
+    {
+      "hex": 29,
+      "field": "L3_b_comentario",
+      "jpgPages": "437-440",
+      "snippet": "„Vorwärts und rückwärts Abgrund über Abgrund\":\nda ist endgültig kein Werk möglich.\nDer Strich ist schwach, nicht auf sei"
+    },
+    {
+      "hex": 30,
+      "field": "ruler_note",
+      "jpgPages": "441-444",
+      "snippet": "Die Herren des Zeichens sind die beiden Yinstriche auf dem zweiten und fünften Platz, und zwar ist der zweite in besonde"
+    },
+    {
+      "hex": 30,
+      "field": "image_oraculo",
+      "jpgPages": "441-444",
+      "snippet": "Die Helle erhebt sich zweimal: das Bild des Feuers.\nSo erleuchtet der große Mann durch Fortsetzung dieser\nHelle die vier"
+    },
+    {
+      "hex": 30,
+      "field": "commentary_image",
+      "jpgPages": "441-444",
+      "snippet": "Das Feuer flammt nach oben, daher der Ausdruck: das Helle erhebt sich.\nDas zweimalige ist durch die Verdoppelung des Zei"
+    },
+    {
+      "hex": 30,
+      "field": "L6_b_comentario",
+      "jpgPages": "441-444",
+      "snippet": "\"Der König gebraucht ihn, auszuziehen und zu züchtigen\":\num das Land in Zucht zu bringen.\nDer König ist der Herr des Zei"
+    },
+    {
+      "hex": 31,
+      "field": "ruler_note",
+      "jpgPages": "445-448",
+      "snippet": "Die Neun auf viertem Platz ist an der Stelle des Herzens. Das Herz ist\nder Herr der Einwirkung, darum ist der vierte Str"
+    },
+    {
+      "hex": 31,
+      "field": "image_oraculo",
+      "jpgPages": "445-448",
+      "snippet": "Auf dem Berge ist ein See: das Bild der Einwirkung.\nSo läßt der Edle durch Aufnahmebereitschaft die\nMenschen an sich her"
+    },
+    {
+      "hex": 31,
+      "field": "commentary_image",
+      "jpgPages": "445-448",
+      "snippet": "(Wörtl. So nimmt der Edle durch Leere die Menschen auf.)\nDer See auf dem Berg gibt dem Berg von seiner Feuchtigkeit ab. "
+    },
+    {
+      "hex": 31,
+      "field": "L4_b_comentario",
+      "jpgPages": "445-448",
+      "snippet": "Beharrlichkeit bringt Heil. Die Reue schwindet.\"\nDenn man regt auf diese Weise nichts Schädliches an.\n„Aufgeregtes Hin- "
+    },
+    {
+      "hex": 31,
+      "field": "L6_b_comentario",
+      "jpgPages": "445-448",
+      "snippet": "\"Die Einwirkung äußert sich in Kinnladen, Wangen und\nZunge.\"\nEr macht den Mund auf und schwätzt.\nEine schwache Linie, di"
+    },
+    {
+      "hex": 32,
+      "field": "ruler_note",
+      "jpgPages": "449-451",
+      "snippet": "Dauer bedeutet das, was immer ist. Was in der Mitte ist, das bleibt\nimmer. In dem Zeichen ist der zweite und der fünfte "
+    },
+    {
+      "hex": 32,
+      "field": "commentary_decision",
+      "jpgPages": "449-451",
+      "snippet": "Dauer bedeutet das Langewährende. Das Starke ist oben,\ndas Schwache unten; Donner und Wind wirken zusammen.\nSanft und be"
+    }
+  ]
+}

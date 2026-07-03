@@ -1,0 +1,421 @@
+{
+  "updatedAt": "2026-06-30T23:25:11.932Z",
+  "hex": 17,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-17-pilot-au.tsv",
+  "ok": true,
+  "closed": 37,
+  "pending": 0,
+  "fieldsTotal": 37,
+  "disputedClosed": 10,
+  "disputedTotal": 10,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "17"
+      }
+    },
+    {
+      "field": "nombre",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "隨"
+      }
+    },
+    {
+      "field": "chinese_roman",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 1,
+        "pdfSnippet": "Sui",
+        "otherSnippet": "SUI"
+      }
+    },
+    {
+      "field": "hex_font",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "ruler_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem Platz. Der Grund, weshalb das Zeichen die Nachfolg",
+        "otherSnippet": "Sun und\nie Herren des Zeichens sind die Anfangsneun und die Neun auf fünfist, daß der Starke es über sich bringt, sich u"
+      }
+    },
+    {
+      "field": "sequence",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Wo Begeisterung ist, da gibt es sicher Nachfolge. Darum\nfolgt darauf das Zeichen: die Nachfolge.",
+        "otherSnippet": "Gen\nWo Begeisterung ist, da gibt es sicher Nachfolge. Darum\nfolgt darauf das Zeichen: die Nachfolge."
+      }
+    },
+    {
+      "field": "misc_notes",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 696,
+        "pdfSnippet": "uktur des Zeichens, — die Beförderung\nschwerer Lasten wird nahegelegt durch das untere Kernzeichen Gen, Berg.\nDas Rind, ",
+        "otherSnippet": "uktur des Zeichens, die Beförderung\nschwerer Lasten wird nahegelegt durch das untere Kernzeichen Gen, Berg.\nDas Rind, da"
+      }
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Die Nachfolge hat erhabenes Gelingen.\nFördernd ist Beharrlichkeit. Kein Makel.",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "commentary_decision",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 532,
+        "pdfSnippet": "em ersten und fünftem Platz, die sich beide unter die weichen Striche stellen.\nDschen hat als Eigenschaft die Bewegung, ",
+        "otherSnippet": "em ersten und fünften Platz, die sich beide unter die weichen Striche stellen.\nDschen hat als Eigenschaft die Bewegung, "
+      }
+    },
+    {
+      "field": "image_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 127,
+        "pdfSnippet": "holung und\nRuhe ein.",
+        "otherSnippet": "holung und\nRuhe ein.\nDas Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebenso ist im "
+      }
+    },
+    {
+      "field": "commentary_image",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Das Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebenso ist im Jahr die Zeit gezeich",
+        "otherSnippet": "Inmitten des Sees ist der Donner: Das Bild der Nachfolge. So\nkehrt der Edle zur Zeit des Abenddunkels zu Erholung und\nRu"
+      }
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 280,
+        "pdfSnippet": "r Sechs auf zweitem\nPlatz; da diese Linie zentral und korrekt ist, bringt diese Ausnahme Heil.\n\"Zur Tür hinausgehen\" wei",
+        "otherSnippet": "r Sechs auf zweitem\nH\nPlatz; da diese Linie zentral und korrekt ist, bringt diese Ausnahme Heil.\n,,Zur Tür hinausgehen\" "
+      }
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 71,
+        "pdfSnippet": "an den\nstarken Mann.",
+        "otherSnippet": "an den\nstarken Mann.\n-"
+      }
+    },
+    {
+      "field": "L2_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 244,
+        "pdfSnippet": "n den Starken vor sich halten und den Schwachen unter sich fahren\nlassen. Der Starke ist auf dem Platz des Ministers. Da",
+        "otherSnippet": "n den Starken vor sidi halten und den Schwachen unter sich fahren\nlassen. Der Starke ist auf dem Platz des Ministers. Da"
+      }
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 67,
+        "pdfSnippet": "ilvoller Bedeutung.\n\"Mit Wahrhaftigkeit auf dem Weg wandeln\":\ndas bringt klare Werke.\nDer Strich ist der Minister, der d",
+        "otherSnippet": "ilvoller Bedeutung.\n,,Mit Wahrhaftigkeit auf dem Weg wandeln\":\ndas bringt klare Werke.\nDer Strich ist der Minister, der "
+      }
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 401,
+        "pdfSnippet": "tung der Westen ist.",
+        "otherSnippet": "tung der Westen ist.\n蠱"
+      }
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen_note",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    }
+  ]
+}

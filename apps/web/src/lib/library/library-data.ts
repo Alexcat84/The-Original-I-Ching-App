@@ -64,22 +64,24 @@ export interface LibraryDetail {
 }
 
 /**
- * Wilhelm is the canonical structural source. All three bundles share the
- * same number/binary/Chinese-name layout, so we build summaries from the
- * Wilhelm bundle only (and read the English `name` from there too).
+ * Wilhelm is the canonical structural source for binary/trigram layout.
+ * We use Legge for englishName since Wilhelm names are German (1924 edition).
  */
 export function getLibrarySummaries(): ReadonlyArray<LibrarySummary> {
   const records = getAllHexagramRecords();
-  return records.map((r) => ({
-    number: r.number,
-    glyph: glyphForNumber(r.number),
-    chineseName: r.chineseName,
-    pinyin: r.pinyin,
-    englishName: r.name,
-    upperTrigram: trigramIdFromWilhelmLabel(r.upperTrigram),
-    lowerTrigram: trigramIdFromWilhelmLabel(r.lowerTrigram),
-    binaryTopFirst: r.binaryTopFirst,
-  }));
+  return records.map((r) => {
+    const legge = getHexagramRecordByNumber(r.number, { translator: "legge" });
+    return {
+      number: r.number,
+      glyph: glyphForNumber(r.number),
+      chineseName: r.chineseName,
+      pinyin: r.pinyin,
+      englishName: legge.name,
+      upperTrigram: trigramIdFromWilhelmLabel(r.upperTrigram),
+      lowerTrigram: trigramIdFromWilhelmLabel(r.lowerTrigram),
+      binaryTopFirst: r.binaryTopFirst,
+    };
+  });
 }
 
 /**
@@ -97,6 +99,7 @@ function buildMutations(binaryTopFirst: string, fromNumber: number): LibraryDeta
       (binaryTopFirst[idx] === "1" ? "0" : "1") +
       binaryTopFirst.slice(idx + 1);
     const target = getHexagramRecordByBinaryTopFirst(flipped);
+    const targetLegge = getHexagramRecordByNumber(target.number, { translator: "legge" });
     out.push({
       position,
       fromNumber,
@@ -104,7 +107,7 @@ function buildMutations(binaryTopFirst: string, fromNumber: number): LibraryDeta
       toGlyph: glyphForNumber(target.number),
       toChineseName: target.chineseName,
       toPinyin: target.pinyin,
-      toEnglishName: target.name,
+      toEnglishName: targetLegge.name,
     });
   }
   return out;
@@ -123,7 +126,7 @@ export function getLibraryDetail(num: number): LibraryDetail | null {
     glyph: glyphForNumber(wilhelm.number),
     chineseName: wilhelm.chineseName,
     pinyin: wilhelm.pinyin,
-    englishName: wilhelm.name,
+    englishName: legge.name,
     upperTrigram: trigramIdFromWilhelmLabel(wilhelm.upperTrigram),
     lowerTrigram: trigramIdFromWilhelmLabel(wilhelm.lowerTrigram),
     binaryTopFirst: wilhelm.binaryTopFirst,

@@ -1,0 +1,386 @@
+{
+  "updatedAt": "2026-06-30T16:24:45.027Z",
+  "hex": 58,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-58-pilot-au.tsv",
+  "ok": true,
+  "closed": 37,
+  "pending": 0,
+  "fieldsTotal": 37,
+  "disputedClosed": 7,
+  "disputedTotal": 7,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "nombre",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese_roman",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "hex_font",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "ruler_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 11,
+        "pdfSnippet": "Sun und\nLi\nie beiden Yinstriche sind die konstituierenden Herren des Zeichens, aber\nDie beherrschenden Herren sind der z",
+        "otherSnippet": "Sun und\nLi\nD\nie beiden Yinstriche sind die konstituierenden Herren des Zeichens, aber\nsie vermögen nicht die beherrschen"
+      }
+    },
+    {
+      "field": "sequence",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "misc_notes",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Das Heitere. Gelingen. Günstig ist Beharrlichkeit.",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "commentary_decision",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "image_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 116,
+        "pdfSnippet": "mmen zur Besprechung",
+        "otherSnippet": "mmen zur Besprechung\nund Einübung.\nDui bedeutet See und Mund. Die Wiederholung des Mundes bedeutet die\ngemeinsame Bespre"
+      }
+    },
+    {
+      "field": "commentary_image",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "und Einübung.\nDui bedeutet See und Mund. Die Wiederholung des Mundes bedeutet die\ngemeinsame Besprechung, die Wiederholu",
+        "otherSnippet": "Aufeinander beruhende Seen: das Bild des Heiteren. So tut\nsich der Edle mit seinen Freunden zusammen zur Besprechung\nund"
+      }
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 147,
+        "pdfSnippet": "en, schattigen Strich, daher\nkönnte Zweifel und Reue sich einstellen. Allein da er zentral und stark ist,\nist die Wahrha",
+        "otherSnippet": "en, schattigen Strici, daher\nkönnte Zweifel und Reue sich einstellen. Allein da er zentral und stark ist,\nist die Wahrha"
+      }
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 78,
+        "pdfSnippet": "hler\nhat man Freude.\n·",
+        "otherSnippet": "hler\nhat man Freude."
+      }
+    },
+    {
+      "field": "L4_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 39,
+        "pdfSnippet": "n das Zersetzende\":\n\"\nDer Platz ist korrekt und gebührend.\nDas Zersetzende ist die obere Sechs. Die Neun auf fünftem Pla",
+        "otherSnippet": "n das Zersetzende\":\nDer Platz ist korrekt und gebührend.\nDas Zersetzende ist die obere Sechs. Die Neun auf fünftem Platz"
+      }
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 373,
+        "pdfSnippet": "s Orakel Befragenden,\nsondern zeigt eine vor ihm liegende Situation. Ob er sich verführen läßt,\ndas liegt bei ihm. Es is",
+        "otherSnippet": "s Orakel Befragenden\nsondern zeigt eine vor ihm liegende Situation. Ob er sich verführen läßt,\ndas liegt bei ihm. Es ist"
+      }
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    }
+  ]
+}

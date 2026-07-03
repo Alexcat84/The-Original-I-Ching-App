@@ -1,0 +1,396 @@
+{
+  "updatedAt": "2026-06-30T23:21:45.250Z",
+  "hex": 31,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-31-pilot-au.tsv",
+  "ok": true,
+  "closed": 37,
+  "pending": 0,
+  "fieldsTotal": 37,
+  "disputedClosed": 6,
+  "disputedTotal": 6,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "31"
+      }
+    },
+    {
+      "field": "nombre",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "",
+        "otherSnippet": "咸"
+      }
+    },
+    {
+      "field": "chinese_roman",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 1,
+        "pdfSnippet": "Hiën",
+        "otherSnippet": "HIAN"
+      }
+    },
+    {
+      "field": "hex_font",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "ruler_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Die Neun auf viertem Platz ist an der Stelle des Herzens. Das Herz ist\nder Herr der Einwirkung, darum ist der vierte Str",
+        "otherSnippet": "Kiän und\nie Neun auf viertem Platz ist an der Stelle des Herzens. Das Herz ist\nder Herr des\nSun\nZeichens. Aber die Neun "
+      }
+    },
+    {
+      "field": "sequence",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "misc_notes",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Die Einwirkung. Gelingen.\nFördernd ist Beharrlichkeit.\nEin Mädchen nehmen bringt Heil.",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "commentary_decision",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 280,
+        "pdfSnippet": "nd, warum es heißt:\n\"Gelingen. Fördernd ist Beharrlichkeit. Ein Mädchen nehmen\nbringt Heil.\"\nHimmel und Erde beeinflusse",
+        "otherSnippet": "nd, warum es heißt:\n,,Gelingen. Fördernd ist Beharrlichkeit. Ein Mädchen nehmen\nbringt Heil.\"\nHimmel und Erde beeinfluss"
+      }
+    },
+    {
+      "field": "image_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 51,
+        "pdfSnippet": "Bild der Einwirkung.\nSo läßt der Edle durch Aufnahmebereitschaft die\nMenschen an sich herankommen.",
+        "otherSnippet": "Bild der Einwirkung. So läßt\nder Edle durch Aufnahmebereitschaft die Menschen an sich\nherankommen.\n(Wörtl. So nimmt der "
+      }
+    },
+    {
+      "field": "commentary_image",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "(Wörtl. So nimmt der Edle durch Leere die Menschen auf.)\nDer See auf dem Berg gibt dem Berg von seiner Feuchtigkeit ab. ",
+        "otherSnippet": "Auf dem Berge ist ein See: das Bild der Einwirkung. So läßt\nder Edle durch Aufnahmebereitschaft die Menschen an sich\nher"
+      }
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass04",
+      "vs_pass02": "diff",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 102,
+        "pdfSnippet": "hts Schädliches an.\n\"Aufgeregtes Hin- und Herdenken\":\nDadurch zeigt man, daß man noch kein helles Licht hat.\nDer Strich ",
+        "otherSnippet": "hts Schädliches an.\n,,Aufgeregtes Hin- und Herdenken\":\nDadurch zeigt man, daß man noch kein helles Licht hat.\nDer Strich"
+      }
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 248,
+        "pdfSnippet": " Öffnung des Mundes.",
+        "otherSnippet": " Öffnung des Mundes.\n恒"
+      }
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "wen_yen_note",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    }
+  ]
+}

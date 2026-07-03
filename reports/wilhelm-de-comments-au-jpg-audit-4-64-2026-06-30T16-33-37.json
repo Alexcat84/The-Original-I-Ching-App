@@ -1,0 +1,1454 @@
+{
+  "updatedAt": "2026-06-30T16:33:37.010Z",
+  "from": 4,
+  "to": 64,
+  "mismatches": [],
+  "ninguno": [
+    {
+      "hex": 4,
+      "field": "ruler_note",
+      "jpgPages": "343-346",
+      "snippet": "Die Neun auf zweitem Platz und die Sechs auf fünftem Platz sind die Herren des Zeichens. Die Neun auf zweitem Platz hat "
+    },
+    {
+      "hex": 4,
+      "field": "commentary_decision",
+      "jpgPages": "343-346",
+      "snippet": "Die Jugendtorheit zeigt unterhalb eines Berges eine Gefahr.\nGefahr und Stillstand: das ist Torheit.\nDas Bild des Zeichen"
+    },
+    {
+      "hex": 4,
+      "field": "image_oraculo",
+      "jpgPages": "343-346",
+      "snippet": "Unten am Berg kommt ein Quell hervor: das Bild der Jugend.\nSo nährt der Edle durch gründliches Handeln seinen Charakter."
+    },
+    {
+      "hex": 4,
+      "field": "commentary_image",
+      "jpgPages": "343-346",
+      "snippet": "Der Quell unten am Berg ist noch klein und jugendlich. Die richtige Handlung entnimmt der Edle den geteilten Bildern. Er"
+    },
+    {
+      "hex": 5,
+      "field": "image_oraculo",
+      "jpgPages": "347-350",
+      "snippet": "Wolken steigen am Himmel auf: Das Bild des Wartens.\nSo iẞt und trinkt der Edle und ist heiter und guter Dinge."
+    },
+    {
+      "hex": 5,
+      "field": "commentary_image",
+      "jpgPages": "347-350",
+      "snippet": "Das Wasser oben am Himmel sind Wolken. Wenn sie erst aufgestiegen\nsind, wird es nicht mehr lange dauern, bis der Regen f"
+    },
+    {
+      "hex": 5,
+      "field": "L5_b_comentario",
+      "jpgPages": "347-350",
+      "snippet": "Wein und Speise, Beharrlichkeit bringt Heil\"\ninfolge der zentralen und korrekten Art.\nDer Strich ist der Herr des Zeiche"
+    },
+    {
+      "hex": 6,
+      "field": "ruler_note",
+      "jpgPages": "351-353",
+      "snippet": "Der Herr des Zeichens ist die Neun auf fünftem Platz. Alle andern\nLinien stellen Streitende dar, die Neun auf fünftem Pl"
+    },
+    {
+      "hex": 6,
+      "field": "commentary_decision",
+      "jpgPages": "351-353",
+      "snippet": "Der Streit: Oben ist Stärke, unten Gefahr. Gefahr und Stärke\ngibt Streit.\n„Der Streitende ist wahrhaftig und wird gehemm"
+    },
+    {
+      "hex": 6,
+      "field": "image_oraculo",
+      "jpgPages": "351-353",
+      "snippet": "Himmel und Wasser gehen einander entgegengesetzt: das\nBild des Streites. So überlegt der Edle bei allen Geschäften,"
+    },
+    {
+      "hex": 6,
+      "field": "commentary_image",
+      "jpgPages": "351-353",
+      "snippet": "die er tut, den Anfang.\nDie Bewegung des oberen Zeichens, Himmel, geht nach oben, die des unteren\nZeichens, Wasser, geht"
+    },
+    {
+      "hex": 7,
+      "field": "ruler_note",
+      "jpgPages": "354-357",
+      "snippet": "Die Herren des Zeichens sind die Neun auf zweitem und die Sechs auf\nMann. Die Sechs auf fünftem Platz ist oben, sie ist "
+    },
+    {
+      "hex": 7,
+      "field": "image_oraculo",
+      "jpgPages": "354-357",
+      "snippet": "Inmitten der Erde ist Wasser: Das Bild des Heeres.\nSo mehrt der Edle durch Weitherzigkeit gegen das Volk seine"
+    },
+    {
+      "hex": 7,
+      "field": "commentary_image",
+      "jpgPages": "354-357",
+      "snippet": "Massen.\nDie Soldaten sind bei der im Altertum üblichen allgemeinen Wehrpflicht\nunter dem Volke vorhanden wie das Wasser "
+    },
+    {
+      "hex": 7,
+      "field": "L5_b_comentario",
+      "jpgPages": "354-357",
+      "snippet": "Der Alteste führe das Heer\",\nweil er zentral und korrekt ist.\n\"Der Jüngere fährt Leichen.\"\nSo betraut man nicht den rech"
+    },
+    {
+      "hex": 7,
+      "field": "L6_b_comentario",
+      "jpgPages": "354-357",
+      "snippet": "Der große Fürst erläßt Befehle\",\num das Verdienst gebührend zu belohnen.\n„Gemeine Menschen soll man nicht benützen\",\nden"
+    },
+    {
+      "hex": 8,
+      "field": "ruler_note",
+      "jpgPages": "358-361",
+      "snippet": "Der Herr des Ziert, dab nur ein Yangstrich darin ist und zwar auf geer Herr des Zeichens ist die Neun auf fünftem Platz;"
+    },
+    {
+      "hex": 8,
+      "field": "commentary_decision",
+      "jpgPages": "358-361",
+      "snippet": "„Das Zusammenhalten bringt Heil.\"\nZusammenhalten bedeutet gegenseitige Hilfe.\nDie Unteren sind hingebend und folgsam.\nDa"
+    },
+    {
+      "hex": 8,
+      "field": "image_oraculo",
+      "jpgPages": "358-361",
+      "snippet": "Auf der Erde ist Wasser: das Bild des Zusammenhaltens. So\nhaben die Könige der Vorzeit die einzelnen Staaten als Lehen"
+    },
+    {
+      "hex": 8,
+      "field": "commentary_image",
+      "jpgPages": "358-361",
+      "snippet": "vergeben und mit den Lehnsfürsten freundlichen Verkehr gepflegt.\nDas Wasser auf der Erde hält mit ihr zusammen. Davon is"
+    },
+    {
+      "hex": 8,
+      "field": "L1_b_comentario",
+      "jpgPages": "358-361",
+      "snippet": "Die Anfangssechs des Zusammenhaltens trifft auf Heil von\nanderer Seite.\nDie Linie ist ganz unten und schwach und in kein"
+    },
+    {
+      "hex": 9,
+      "field": "ruler_note",
+      "jpgPages": "362-364",
+      "snippet": "ie Sechs auf viertem Platz ist der konstituierende Herr des Zeichens,\nDie Sechs auf viertem Platz bezähmt als einzelne Y"
+    },
+    {
+      "hex": 9,
+      "field": "commentary_decision",
+      "jpgPages": "362-364",
+      "snippet": "Des Kleinen Zähmungskraft: Das Weiche erhält den entscheidenden Platz, und Obere und Untere entsprechen ihm:\ndas heißt d"
+    },
+    {
+      "hex": 9,
+      "field": "image_oraculo",
+      "jpgPages": "362-364",
+      "snippet": "Der Wind fährt über den Himmel hin: Das Bild der Zähmungskraft des Kleinen. So verfeinert der Edle die äußere\nForm seine"
+    },
+    {
+      "hex": 9,
+      "field": "commentary_image",
+      "jpgPages": "362-364",
+      "snippet": "Der Wind dringt überall ein, das bedeutet die Verfeinerung. Das untere\nZeichen ist der Himmel, das bedeutet das Wesen de"
+    },
+    {
+      "hex": 9,
+      "field": "L3_b_comentario",
+      "jpgPages": "362-364",
+      "snippet": "Wenn \"Mann und Frau die Augen verdrehen\", so ist das ein\nZeichen, daß sie ihr Haus nicht in Ordnung halten können.\n\"Dem "
+    },
+    {
+      "hex": 9,
+      "field": "L6_b_comentario",
+      "jpgPages": "362-364",
+      "snippet": "\"Es kommt zum Regen, es kommt zur Ruhe.\"\nDas ist,,die dauernd häufende Wirkung des Charakters\".\n„Macht der Edle fort, so"
+    },
+    {
+      "hex": 10,
+      "field": "ruler_note",
+      "jpgPages": "365-368",
+      "snippet": "er Herr, der das Zeichen konstituiert, ist die Sechs auf drittem Platz;\nLi\nDie Sechs auf drittem Platz tritt als einzig "
+    },
+    {
+      "hex": 10,
+      "field": "commentary_decision",
+      "jpgPages": "365-368",
+      "snippet": "Das Auftreten: das Weiche tritt auf das Feste. Heiter und in\nVerbindung des Entsprechens mit dem Schöpferischen; darum:\n"
+    },
+    {
+      "hex": 10,
+      "field": "image_oraculo",
+      "jpgPages": "365-368",
+      "snippet": "Oben der Himmel, unten der See: Das Bild des Auftretens.\nSo unterscheidet der Edle hoch und niedrig und festigt dadurch "
+    },
+    {
+      "hex": 10,
+      "field": "commentary_image",
+      "jpgPages": "365-368",
+      "snippet": "Der Himmel ist das Höchste, der See das Niedrigste: diese Höhenunterschiede geben die Regel für das Auftreten und die Si"
+    },
+    {
+      "hex": 10,
+      "field": "L3_b_comentario",
+      "jpgPages": "365-368",
+      "snippet": "\"Ein Einäugiger kann sehen\",\naber es reicht ihm nicht zur Klarheit.\n„Ein Lahmer kann gehen\",\naber es reicht ihm nicht da"
+    },
+    {
+      "hex": 11,
+      "field": "ruler_note",
+      "jpgPages": "369-373",
+      "snippet": "Die Herren des Zeichens sind die Neun auf zweitem Platz und die Sechs\nauf fünftem Platz. Der Sinn des Zeichens ist, daß "
+    },
+    {
+      "hex": 11,
+      "field": "misc_notes",
+      "jpgPages": "369-373",
+      "snippet": "Die Zeichen„Stockung\" und \"Frieden\" sind ihrer Art nach\nentgegengesetzt."
+    },
+    {
+      "hex": 11,
+      "field": "image_oraculo",
+      "jpgPages": "369-373",
+      "snippet": "Himmel und Erde vereinigen sich: das Bild des Friedens. So\nteilt und vollendet der Herrscher den Lauf von Himmel und"
+    },
+    {
+      "hex": 11,
+      "field": "commentary_image",
+      "jpgPages": "369-373",
+      "snippet": "Erde, verwaltet und ordnet die Gaben von Himmel und Erde\nund steht so dem Volke bei.\nDie menschliche Tätigkeit muß in Ze"
+    },
+    {
+      "hex": 11,
+      "field": "L1_b_comentario",
+      "jpgPages": "369-373",
+      "snippet": "Zieht man Bandgras aus... Unternehmungen bringen Heil.\"\nDer Wille ist nach außen gerichtet.\nDie drei Striche des unteren"
+    },
+    {
+      "hex": 11,
+      "field": "L2_b_comentario",
+      "jpgPages": "369-373",
+      "snippet": "Die Ungebildeten in Milde tragen...\nSo mag man es fertig bringen, in der Mitte zu wandeln\",\nweil das Licht groß ist.\nDas"
+    },
+    {
+      "hex": 11,
+      "field": "L4_b_comentario",
+      "jpgPages": "369-373",
+      "snippet": "\"Er flattert hernieder, nicht pochend auf Reichtum\",\nalle haben sie das Wirkliche verloren.\n„Arglos und wahrhaftig\",\nim "
+    },
+    {
+      "hex": 11,
+      "field": "L5_b_comentario",
+      "jpgPages": "369-373",
+      "snippet": "Das bringt Segen und erhabenes Heil\",\nweil er zentral ist in der Ausführung dessen, was er wünscht.\nDas Kernzeichen Dsch"
+    },
+    {
+      "hex": 12,
+      "field": "ruler_note",
+      "jpgPages": "374-376",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf zweitem Platz und die Neun\nund Untere\naußer Vereinigung. Die Sechs auf zweite"
+    },
+    {
+      "hex": 12,
+      "field": "commentary_decision",
+      "jpgPages": "374-376",
+      "snippet": "\"Schlechte Menschen der Stockungszeit sind nicht fördernd\nfür die Beharrlichkeit des Edlen. Das Große geht hin, das\nKlei"
+    },
+    {
+      "hex": 12,
+      "field": "image_oraculo",
+      "jpgPages": "374-376",
+      "snippet": "Himmel und Erde vereinigen sich nicht: das Bild der Stockung.\nSo zieht sich der Edle auf seinen inneren Wert zurück, um"
+    },
+    {
+      "hex": 12,
+      "field": "commentary_image",
+      "jpgPages": "374-376",
+      "snippet": "den Schwierigkeiten zu entgehen. Er läßt sich nicht durch Einkünfte ehren.\nDie Überwindung der Schwierigkeiten der Stock"
+    },
+    {
+      "hex": 13,
+      "field": "ruler_note",
+      "jpgPages": "377-381",
+      "snippet": "D\nie Herren des Zeichens sind die Sechs auf zweitem und die Neun auf\nfünftem Platz. Die Sechs auf zweitem Platz vermag a"
+    },
+    {
+      "hex": 13,
+      "field": "commentary_decision",
+      "jpgPages": "377-381",
+      "snippet": "Gemeinschaft mit Menschen. Das Weiche findet seinen Platz,\nfindet die Mitte, und es entspricht ihm das Schöpferische: da"
+    },
+    {
+      "hex": 13,
+      "field": "image_oraculo",
+      "jpgPages": "377-381",
+      "snippet": "Der Himmel zusammen mit Feuer: das Bild der Gemeinschaft\nmit Menschen. So gliedert der Edle die Stämme und unterscheidet"
+    },
+    {
+      "hex": 13,
+      "field": "commentary_image",
+      "jpgPages": "377-381",
+      "snippet": "Das Feuer hat dieselbe Art wie der Himmel, zu dem es emporflammt. Es\nwird in dieser Richtung noch bestärkt durch das Ker"
+    },
+    {
+      "hex": 13,
+      "field": "L3_b_comentario",
+      "jpgPages": "377-381",
+      "snippet": "Versteckt Waffen im Dickicht\",\ndenn er hatte einen Harten zum Gegner.\n„Drei Jahre lang erhebt er sich nicht.\"\nWie sollte"
+    },
+    {
+      "hex": 14,
+      "field": "ruler_note",
+      "jpgPages": "382-384",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Diese Linie ist\nDer geser\nlichen Yangstriche zu besitzen; darum h"
+    },
+    {
+      "hex": 14,
+      "field": "image_oraculo",
+      "jpgPages": "382-384",
+      "snippet": "Das Feuer am Himmel oben: Das Bild des Besitzes von GroBem. So hemmt der Edle das Böse und fördert das Gute und\ngehorcht"
+    },
+    {
+      "hex": 14,
+      "field": "commentary_image",
+      "jpgPages": "382-384",
+      "snippet": "Die Sonne am Himmel, die alles Irdische bescheint, ist das Bild des großen\nBesitzes. Die Unterdrückung des Bösen wird an"
+    },
+    {
+      "hex": 15,
+      "field": "ruler_note",
+      "jpgPages": "385-388",
+      "snippet": "Der Herr des Zeichens ist die Neun auf drittem Platz. In dem Zeichen\nist sie der einzige lichte Strich, der auf seinem P"
+    },
+    {
+      "hex": 15,
+      "field": "commentary_decision",
+      "jpgPages": "385-388",
+      "snippet": "Bescheidenheit schafft Gelingen; denn der Weg des Himmels\nist es, nach unten zu wirken und Licht und Helle zu schaffen.\n"
+    },
+    {
+      "hex": 15,
+      "field": "image_oraculo",
+      "jpgPages": "385-388",
+      "snippet": "Inmitten der Erde ist ein Berg: das Bild der Bescheidenheit.\nSo verringert der Edle, was zu viel ist, und vermehrt, was"
+    },
+    {
+      "hex": 15,
+      "field": "commentary_image",
+      "jpgPages": "385-388",
+      "snippet": "zu wenig ist. Er wägt die Dinge und macht sie gleich.\nDie Aktion des Edlen zur Herstellung der durch das Zeichen gegeben"
+    },
+    {
+      "hex": 15,
+      "field": "L1_b_comentario",
+      "jpgPages": "385-388",
+      "snippet": "Ein bescheiden-bescheidener Edler ist niedrig, um sich sehr\nzu hüten.\nDie doppelte Bescheidenheit ist durch die doppelte"
+    },
+    {
+      "hex": 16,
+      "field": "ruler_note",
+      "jpgPages": "389-392",
+      "snippet": "der auf dem Platz des Ministers steht;\ner Herr des Zeichens ist die Neun auf viertem Platz. Im Zeichen gibt\ndavon hat da"
+    },
+    {
+      "hex": 16,
+      "field": "commentary_image",
+      "jpgPages": "389-392",
+      "snippet": "Verdienste zu ehren und brachten sie herrlich dem höchsten\nGott dar, indem sie ihre Ahnen dazu einluden."
+    },
+    {
+      "hex": 17,
+      "field": "ruler_note",
+      "jpgPages": "393-395",
+      "snippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünfist, daß der Starke es über sich bringt, sich unter da"
+    },
+    {
+      "hex": 17,
+      "field": "image_oraculo",
+      "jpgPages": "393-395",
+      "snippet": "Inmitten des Sees ist der Donner: Das Bild der Nachfolge. So\nkehrt der Edle zur Zeit des Abenddunkels zu Erholung und"
+    },
+    {
+      "hex": 17,
+      "field": "commentary_image",
+      "jpgPages": "393-395",
+      "snippet": "Ruhe ein.\nDas Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebenso ist im Jahr die Ze"
+    },
+    {
+      "hex": 17,
+      "field": "L1_b_comentario",
+      "jpgPages": "393-395",
+      "snippet": "Das Maßgebende ändert sich.\"\nDem Korrekten folgen bringt Heil.\n\"Zur Tür hinausgehen im Verkehr schafft Werke.\"\nMan verli"
+    },
+    {
+      "hex": 17,
+      "field": "L4_b_comentario",
+      "jpgPages": "393-395",
+      "snippet": "Die Nachfolge schafft Erfolg\":\nDas ist von unheilvoller Bedeutung.\n„Mit Wahrhaftigkeit auf dem Weg wandeln\":\ndas bringt "
+    },
+    {
+      "hex": 18,
+      "field": "commentary_decision",
+      "jpgPages": "396-399",
+      "snippet": "Die Arbeit am Verdorbenen: Das Feste ist oben und das\nWeiche unten, sanft und stillestehend: das Verdorbene.\n\"Die Arbeit"
+    },
+    {
+      "hex": 18,
+      "field": "image_oraculo",
+      "jpgPages": "396-399",
+      "snippet": "Unten am Berg weht der Wind: das Bild des Verderbens.\nSo rüttelt der Edle die Leute auf und stärkt ihren Geist."
+    },
+    {
+      "hex": 18,
+      "field": "commentary_image",
+      "jpgPages": "396-399",
+      "snippet": "Der Wind, der am Berg herabfällt, bewirkt das Verderben. Aber andererseits wird durch die umgekehrte Bewegung erst der W"
+    },
+    {
+      "hex": 19,
+      "field": "ruler_note",
+      "jpgPages": "400-402",
+      "snippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf zweitem Platz, von denen es im Kommentar zur Entscheidung "
+    },
+    {
+      "hex": 19,
+      "field": "commentary_image",
+      "jpgPages": "400-402",
+      "snippet": "im Ertragen und Schützen des Volkes ohne Grenzen."
+    },
+    {
+      "hex": 19,
+      "field": "L3_b_comentario",
+      "jpgPages": "400-402",
+      "snippet": "Behagliche Annäherung.\"\nDer Platz ist nicht der gebührende.\nEin Makel, worüber Trauer erreicht ist, dauert nicht länger."
+    },
+    {
+      "hex": 20,
+      "field": "commentary_decision",
+      "jpgPages": "403-405",
+      "snippet": "Ein großer Anblick ist oben. Hingebend und sanft. Zentral\nund korrekt ist er ein Anblick für die Welt.\n„Die Betrachtung."
+    },
+    {
+      "hex": 20,
+      "field": "image_oraculo",
+      "jpgPages": "403-405",
+      "snippet": "Der Wind geht über die Erde hin: das Bild der Betrachtung.\nSo besuchten die alten Könige die Weltgegenden, betrachteten "
+    },
+    {
+      "hex": 20,
+      "field": "commentary_image",
+      "jpgPages": "403-405",
+      "snippet": "Der Wind kommt überall hin auf Erden und zeigt alles. So wird durch das\nZeichen Sun, Wind, das Reisen der alten Könige s"
+    },
+    {
+      "hex": 21,
+      "field": "ruler_note",
+      "jpgPages": "406-409",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz, von der es im\nDer\nplatz und geht nach oben."
+    },
+    {
+      "hex": 21,
+      "field": "image_oraculo",
+      "jpgPages": "406-409",
+      "snippet": "Donner und Blitz: das Bild des Durchbeißens.\nSo festigten die früheren Könige die Gesetze durch klarbestimmte Strafen."
+    },
+    {
+      "hex": 21,
+      "field": "commentary_image",
+      "jpgPages": "406-409",
+      "snippet": "Donner und Blitz folgen unfehlbar aufeinander. Es heißt Donner und Blitz,\nnicht Blitz und Donner, weil die Bewegung von "
+    },
+    {
+      "hex": 22,
+      "field": "ruler_note",
+      "jpgPages": "410-413",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf zweitem Platz und die obere\nKan\nheißt: \"Das Weiche kommt und formt das Feste,"
+    },
+    {
+      "hex": 22,
+      "field": "commentary_decision",
+      "jpgPages": "410-413",
+      "snippet": "„Anmut hat Gelingen.\" Das Weiche kommt und formt das\nFeste, darum: Gelingen. Ein abgelöstes Festes steigt empor\nund form"
+    },
+    {
+      "hex": 22,
+      "field": "image_oraculo",
+      "jpgPages": "410-413",
+      "snippet": "Unten am Berg ist das Feuer: Das Bild der Anmut.\nSo verfährt der Edle bei der Klarstellung der laufenden Angelegenheiten"
+    },
+    {
+      "hex": 22,
+      "field": "commentary_image",
+      "jpgPages": "410-413",
+      "snippet": "Das Zeichen ist das vorige in seiner umgekehrten Gestalt. Dort war Helligkeit und Bewegung. Die deuteten auf rasche Erle"
+    },
+    {
+      "hex": 23,
+      "field": "image_oraculo",
+      "jpgPages": "414-416",
+      "snippet": "Der Berg ruht auf der Erde: das Bild der Zersplitterung.\nSo können die Oberen nur durch reiches Spenden an die Unteren i"
+    },
+    {
+      "hex": 23,
+      "field": "commentary_image",
+      "jpgPages": "414-416",
+      "snippet": "Der Berg ist um so weniger der Zersplitterung ausgesetzt, je breiter er auf\nder Erde ruht. Es wird hier nicht sowohl der"
+    },
+    {
+      "hex": 23,
+      "field": "L5_b_comentario",
+      "jpgPages": "414-416",
+      "snippet": "Durch die Palastdamen kommt Gunst.\"\nDas ist endgültig kein Fehler.\nWenn der Strich sich wandelt, so erscheint oben das Z"
+    },
+    {
+      "hex": 23,
+      "field": "L6_b_comentario",
+      "jpgPages": "414-416",
+      "snippet": "Der Edle erhält einen Wagen.\"\nEr wird vom Volk getragen.\n„Dem Gemeinen zersplittert sein Haus\";\ner ist endgültig unbrauc"
+    },
+    {
+      "hex": 24,
+      "field": "ruler_note",
+      "jpgPages": "417-420",
+      "snippet": "Der Herr des Zeichens ist die Anfangsneun. Auf sie bezieht es sich, wenn"
+    },
+    {
+      "hex": 24,
+      "field": "commentary_decision",
+      "jpgPages": "417-420",
+      "snippet": "\"\"\n„Wiederkehr hat Gelingen.'\nDas Feste kehrt zurück.\nBewegung und Wirkung durch Hingebung. Darum ist \"Ausgang und Einga"
+    },
+    {
+      "hex": 24,
+      "field": "image_oraculo",
+      "jpgPages": "417-420",
+      "snippet": "Der Donner inmitten der Erde: das Bild der Wendezeit.\nSo schlossen die alten Könige zur Sonnwendzeit die Pässe."
+    },
+    {
+      "hex": 24,
+      "field": "commentary_image",
+      "jpgPages": "417-420",
+      "snippet": "Händler und Fremdlinge wanderten nicht, und der Herrscher\nbereiste nicht die Gegenden.\nDas Zeichen ist dem Monat der Win"
+    },
+    {
+      "hex": 24,
+      "field": "L6_b_comentario",
+      "jpgPages": "417-420",
+      "snippet": "Das Unheil der verfehlten Wiederkehr liegt darin, daß man\ndem Weg des Edlen widerspricht.\nDie Linie ist am Ende der Yinl"
+    },
+    {
+      "hex": 25,
+      "field": "commentary_decision",
+      "jpgPages": "421-424",
+      "snippet": "Die Unschuld. Das Feste kommt von außen und wird zum\nHerrn im Innern. Bewegung und Stärke. Das Feste ist in\nder Mitte un"
+    },
+    {
+      "hex": 25,
+      "field": "image_oraculo",
+      "jpgPages": "421-424",
+      "snippet": "Unter dem Himmel geht der Donner: alle Dinge erlangen den\nNaturzustand der Unschuld. So pflegten und nährten die"
+    },
+    {
+      "hex": 25,
+      "field": "commentary_image",
+      "jpgPages": "421-424",
+      "snippet": "alten Könige, reich an Tugend und entsprechend der Zeit,\nalle Wesen.\n„Unter dem Himmel geht der Donner: alle Dinge erlan"
+    },
+    {
+      "hex": 26,
+      "field": "ruler_note",
+      "jpgPages": "425-428",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nes im Kommentar zur Entscheidung\n•\nheißt: Das Fes"
+    },
+    {
+      "hex": 26,
+      "field": "commentary_decision",
+      "jpgPages": "425-428",
+      "snippet": "Des Großen Zähmungskraft. Festigkeit und Stärke. Echtheit\nund Wahrheit. Glanz und Licht. Täglich erneuert er seine\nTugen"
+    },
+    {
+      "hex": 26,
+      "field": "image_oraculo",
+      "jpgPages": "425-428",
+      "snippet": "Der Himmel inmitten des Berges: Das Bild von des Großen\nZähmungskraft. So lernt der Edle viele Worte der Vorzeit"
+    },
+    {
+      "hex": 26,
+      "field": "commentary_image",
+      "jpgPages": "425-428",
+      "snippet": "und Taten der Vergangenheit kennen, um dadurch seinen Charakter zu festigen.\nDer Himmel deutet auf den Charakter, die Tu"
+    },
+    {
+      "hex": 27,
+      "field": "ruler_note",
+      "jpgPages": "429-432",
+      "snippet": "Die H\nie Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Auf sie bezieht es sich, wenn es im Ko"
+    },
+    {
+      "hex": 27,
+      "field": "commentary_decision",
+      "jpgPages": "429-432",
+      "snippet": "\"Die Mundwinkel. Beharrlichkeit bringt Heil.\"\nWenn man das Rechte ernährt, so bringt das Heil.\n„Sieh auf die Ernährung\","
+    },
+    {
+      "hex": 27,
+      "field": "image_oraculo",
+      "jpgPages": "429-432",
+      "snippet": "Unten am Berg ist der Donner: das Bild der Ernährung.\nSo hat der Edle acht auf seine Worte und ist mäßig im Essen"
+    },
+    {
+      "hex": 27,
+      "field": "commentary_image",
+      "jpgPages": "429-432",
+      "snippet": "und Trinken.\nDer Donner ist das Zeichen, in dem Gott hervortritt, der Berg ist das Zeichen,\nin dem alle Dinge vollendet "
+    },
+    {
+      "hex": 27,
+      "field": "L4_b_comentario",
+      "jpgPages": "429-432",
+      "snippet": "Das Heil des sich nach dem Gipfel Wendens um Ernährung\nberuht darauf, daß der Obere Licht verbreitet.\nDer Strich wendet "
+    },
+    {
+      "hex": 28,
+      "field": "image_oraculo",
+      "jpgPages": "433-436",
+      "snippet": "Der See geht über die Bäume weg: das Bild des Übergewichts\nim Großen. So ist der Edle, wenn er allein steht, unbesorgt"
+    },
+    {
+      "hex": 28,
+      "field": "commentary_image",
+      "jpgPages": "433-436",
+      "snippet": "und, wenn er auf die Welt verzichten muß, unverzagt.\nDas Alleinstehen und der Verzicht auf die Welt ist durch die Situat"
+    },
+    {
+      "hex": 29,
+      "field": "ruler_note",
+      "jpgPages": "437-440",
+      "snippet": "Die Herren des Zeichens sind die beiden Yangstriche auf zweitem und\n\"\ndas Wasser läuft weiter, wenn es seinen Raum ausge"
+    },
+    {
+      "hex": 29,
+      "field": "commentary_decision",
+      "jpgPages": "437-440",
+      "snippet": "Das wiederholte Abgründige ist die verdoppelte Gefahr. Das\nWasser fließt und häuft sich nirgends an, es geht durch gefäh"
+    },
+    {
+      "hex": 29,
+      "field": "commentary_image",
+      "jpgPages": "437-440",
+      "snippet": "dauernder Tugend und übt das Geschäft des Lehrens."
+    },
+    {
+      "hex": 29,
+      "field": "L3_b_comentario",
+      "jpgPages": "437-440",
+      "snippet": "„Vorwärts und rückwärts Abgrund über Abgrund\":\nda ist endgültig kein Werk möglich.\nDer Strich ist schwach, nicht auf sei"
+    },
+    {
+      "hex": 30,
+      "field": "ruler_note",
+      "jpgPages": "441-444",
+      "snippet": "Die Herren des Zeichens sind die beiden Yinstriche auf dem zweiten und\ndas Feuer ist am hellsten, wenn es eben angefacht"
+    },
+    {
+      "hex": 30,
+      "field": "image_oraculo",
+      "jpgPages": "441-444",
+      "snippet": "Das Helle erhebt sich zweimal: das Bild des Feuers. So erleuchtet der große Mann durch Fortsetzung dieser Helle die\nvier"
+    },
+    {
+      "hex": 30,
+      "field": "commentary_image",
+      "jpgPages": "441-444",
+      "snippet": "Das Feuer flammt nach oben, daher der Ausdruck: das Helle erhebt sich.\nDas zweimalige ist durch die Verdoppelung des Zei"
+    },
+    {
+      "hex": 31,
+      "field": "ruler_note",
+      "jpgPages": "445-448",
+      "snippet": "Die Neun auf viertem Platz ist an der Stelle des Herzens. Das Herz ist\nder Herr des\nSun\nZeichens. Aber die Neun auf fünf"
+    },
+    {
+      "hex": 31,
+      "field": "image_oraculo",
+      "jpgPages": "445-448",
+      "snippet": "Auf dem Berge ist ein See: das Bild der Einwirkung. So läßt\nder Edle durch Aufnahmebereitschaft die Menschen an sich"
+    },
+    {
+      "hex": 31,
+      "field": "commentary_image",
+      "jpgPages": "445-448",
+      "snippet": "herankommen.\n(Wörtl. So nimmt der Edle durch Leere die Menschen auf.)\nDer See auf dem Berg gibt dem Berg von seiner Feuc"
+    },
+    {
+      "hex": 31,
+      "field": "L4_b_comentario",
+      "jpgPages": "445-448",
+      "snippet": "Beharrlichkeit bringt Heil. Die Reue schwindet.\"\nDenn man regt auf diese Weise nichts Schädliches an.\n„Aufgeregtes Hin- "
+    },
+    {
+      "hex": 32,
+      "field": "ruler_note",
+      "jpgPages": "449-451",
+      "snippet": "Da\nauer bedeutet das, was immer ist. Was in der Mitte ist, das bleibt\nimmer. In dem Zeichen ist der zweite und der fünft"
+    },
+    {
+      "hex": 32,
+      "field": "commentary_decision",
+      "jpgPages": "449-451",
+      "snippet": "Dauer bedeutet das Langewährende. Das Starke ist oben,\ndas Schwache unten; Donner und Wind wirken zusammen.\nSanft und be"
+    },
+    {
+      "hex": 32,
+      "field": "commentary_image",
+      "jpgPages": "449-451",
+      "snippet": "Donner und Wind: das Bild der Dauer. So steht der Edle\nfest und wandelt seine Richtung nicht."
+    },
+    {
+      "hex": 32,
+      "field": "L4_b_comentario",
+      "jpgPages": "449-451",
+      "snippet": "Wenn man dauernd nicht auf seinem Platz ist, wie kann man\nda Wild finden!\nDschen hat als Attribut das Pferd, das sich üb"
+    },
+    {
+      "hex": 33,
+      "field": "ruler_note",
+      "jpgPages": "452-455",
+      "snippet": "Die Herren des Zeichens, die die Lage konstituieren, sind die beiden\nund zweiten Platz. Sie zeigen das Schattige\nX\nwow~~"
+    },
+    {
+      "hex": 33,
+      "field": "image_oraculo",
+      "jpgPages": "452-455",
+      "snippet": "Unter dem Himmel ist der Berg: das Bild des Rückzugs. So\nhält der Edle den Gemeinen fern: nicht zornig, sondern gemessen"
+    },
+    {
+      "hex": 33,
+      "field": "commentary_image",
+      "jpgPages": "452-455",
+      "snippet": "Es ist die Frage, inwiefern der Berg unter dem Himmel das Bild des Rückzugs nahelegt. Die eine Auffassung ist, daß der B"
+    },
+    {
+      "hex": 33,
+      "field": "L4_b_comentario",
+      "jpgPages": "452-455",
+      "snippet": "Der Edle zieht sich freiwillig zurück, das bringt dem Gemeinen Niedergang.\nHier ist der Eintritt in das obere Halbzeiche"
+    },
+    {
+      "hex": 34,
+      "field": "ruler_note",
+      "jpgPages": "456-458",
+      "snippet": "Der Herr des Zeichens ist der Yangstrich auf dem vierten Platz; denn\ndie vier Yangstriche begründen die Macht des Zeiche"
+    },
+    {
+      "hex": 34,
+      "field": "misc_notes",
+      "jpgPages": "456-458",
+      "snippet": "Des Großen Macht zeigt sich darin, daß man innehält.\nBeigefügte Urteile\nIm höchsten Altertum wohnten die Menschen in Höh"
+    },
+    {
+      "hex": 34,
+      "field": "image_oraculo",
+      "jpgPages": "456-458",
+      "snippet": "Der Donner ist am Himmel oben: das Bild der Macht des\nGroßen. So tritt der Edle nicht auf Wege, die nicht der Ordnung en"
+    },
+    {
+      "hex": 34,
+      "field": "commentary_image",
+      "jpgPages": "456-458",
+      "snippet": "Das obere Halbzeichen ist Dschen, der Donner, das untere Kiän, der Himmel.\nDer Donner oben am Himmel zeigt die Macht des"
+    },
+    {
+      "hex": 34,
+      "field": "L6_b_comentario",
+      "jpgPages": "456-458",
+      "snippet": "Er kann nicht zurück. Er kann nicht voran.\"\nn\nDas ist nicht glückbringend.\n„Merkt man die Schwierigkeit, so bringt das H"
+    },
+    {
+      "hex": 35,
+      "field": "commentary_image",
+      "jpgPages": "459-462",
+      "snippet": "Die Sonne steigt über die Erde empor: das Bild des Fortschritts. So macht der Edle selbst seine klaren Anlagen hell.\n10 "
+    },
+    {
+      "hex": 36,
+      "field": "ruler_note",
+      "jpgPages": "463-466",
+      "snippet": "Das\nas Zeichen hat als Charakteristikum die Sonne, die unter die Erde gesomit der Strich, der das Licht der andern verle"
+    },
+    {
+      "hex": 36,
+      "field": "commentary_decision",
+      "jpgPages": "463-466",
+      "snippet": "Das Licht ist in die Erde hineingesunken: Verfinsterung des\nLichts. Innen schön und klar, außen weich und hingebend\nund "
+    },
+    {
+      "hex": 36,
+      "field": "image_oraculo",
+      "jpgPages": "463-466",
+      "snippet": "Das Licht ist in die Erde hineingesunken: das Bild der Verfinsterung des Lichts. So lebt der Edle mit der großen Menge:\n"
+    },
+    {
+      "hex": 36,
+      "field": "commentary_image",
+      "jpgPages": "463-466",
+      "snippet": "Das obere Zeichen Kun bedeutet die Menge. Unter dieser Menge befinden\nsich die beiden beherrschenden Herren des Zeichens"
+    },
+    {
+      "hex": 36,
+      "field": "L6_b_comentario",
+      "jpgPages": "463-466",
+      "snippet": "Erst stieg er zum Himmel empor\":\nDa hätte er die Länder aller vier Himmelsgegenden erleuchten können.\n„Dann stürzte er i"
+    },
+    {
+      "hex": 37,
+      "field": "ruler_note",
+      "jpgPages": "467-469",
+      "snippet": "Die Herren des Zeichens sind die Neun auf fünftem und die Sechs auf\nes im Kommentar zur Entscheidung: \"Der\nkorrekte Plat"
+    },
+    {
+      "hex": 37,
+      "field": "image_oraculo",
+      "jpgPages": "467-469",
+      "snippet": "Der Wind kommt aus dem Feuer hervor: das Bild der Sippe.\nSo hat der Edle in seinen Worten die Sache und in seinem"
+    },
+    {
+      "hex": 37,
+      "field": "commentary_image",
+      "jpgPages": "467-469",
+      "snippet": "Wandel die Dauer.\nDer Wind ist die Wirkung des Feuers. So ist der ordnende Einfluß auf die\nWelt die Wirkung der Ordnung "
+    },
+    {
+      "hex": 38,
+      "field": "ruler_note",
+      "jpgPages": "470-473",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die Neun\nzur Entscheidung:\n\"Das Weiche schreitet fort und g"
+    },
+    {
+      "hex": 38,
+      "field": "image_oraculo",
+      "jpgPages": "470-473",
+      "snippet": "―\nOben das Feuer, unten der See: das Bild des Gegensatzes."
+    },
+    {
+      "hex": 38,
+      "field": "commentary_image",
+      "jpgPages": "470-473",
+      "snippet": "So behält der Edle bei aller Gemeinschaft seine Besonderheit."
+    },
+    {
+      "hex": 38,
+      "field": "L3_b_comentario",
+      "jpgPages": "470-473",
+      "snippet": "Man sieht den Wagen nach hinten gezerrt\":\ndas kommt, weil der Platz nicht der rechte ist.\nwww.\n„Kein guter Anfang, aber "
+    },
+    {
+      "hex": 39,
+      "field": "commentary_decision",
+      "jpgPages": "474-477",
+      "snippet": "Hemmnis bedeutet Schwierigkeit. Die Gefahr ist vor einem.\nDie Gefahr sehen und stehen zu bleiben verstehen, das ist\nWeis"
+    },
+    {
+      "hex": 39,
+      "field": "image_oraculo",
+      "jpgPages": "474-477",
+      "snippet": "Auf dem Berge ist das Wasser: das Bild des Hemmnisses.\nSo wendet sich der Edle seiner eigenen Person zu und bildet"
+    },
+    {
+      "hex": 39,
+      "field": "commentary_image",
+      "jpgPages": "474-477",
+      "snippet": "seinen Charakter.\nDas Wasser auf der Spitze des Berges kann nicht seiner Natur entsprechend\nnach unten fließen, weil es "
+    },
+    {
+      "hex": 39,
+      "field": "L6_b_comentario",
+      "jpgPages": "474-477",
+      "snippet": "Gehen führt in Hemmnisse, Kommen führt zu großem Heil\":\nDenn der Wille ist aufs Innere gerichtet.\n„Fördernd ist es, den "
+    },
+    {
+      "hex": 40,
+      "field": "commentary_decision",
+      "jpgPages": "478-481",
+      "snippet": "Die Befreiung. Die Gefahr bewirkt Bewegung. Durch die\nBewegung entgeht man der Gefahr: das ist die Befreiung.\n„Während d"
+    },
+    {
+      "hex": 40,
+      "field": "image_oraculo",
+      "jpgPages": "478-481",
+      "snippet": "Donner und Regen erheben sich: das Bild der Befreiung.\nSo verzeiht der Edle Fehler und vergibt die Schuld."
+    },
+    {
+      "hex": 40,
+      "field": "commentary_image",
+      "jpgPages": "478-481",
+      "snippet": "Kan bedeutet Prozesse und Sünden. Dschen bewegt sich nach oben und\nläßt die Fehler hinter sich zurücksinken. Dadurch wir"
+    },
+    {
+      "hex": 40,
+      "field": "L5_b_comentario",
+      "jpgPages": "478-481",
+      "snippet": "Der Edle befreit sich\",\nweil dann die Gemeinen sich zurückziehen.\nDer fünfte Platz ist der Platz des Herrschers. In Zeit"
+    },
+    {
+      "hex": 41,
+      "field": "ruler_note",
+      "jpgPages": "482-485",
+      "snippet": "em Zeichen Sun liegt der Gedanke zugrunde, daß der oberste Strich des\nZeichens zu vermehren; daher sind die Sechs auf dr"
+    },
+    {
+      "hex": 41,
+      "field": "image_oraculo",
+      "jpgPages": "482-485",
+      "snippet": "Unten am Berg ist der See: das Bild der Minderung. So\nbändigt der Edle seinen Zorn und hemmt seine Triebe."
+    },
+    {
+      "hex": 41,
+      "field": "commentary_image",
+      "jpgPages": "482-485",
+      "snippet": "Der See verdunstet, sein Wasser wird gemindert und kommt der Vegetation des Berges zugut, die dadurch im Wachstum geförd"
+    },
+    {
+      "hex": 41,
+      "field": "L6_b_comentario",
+      "jpgPages": "482-485",
+      "snippet": "Ohne zu mindern wird er gemehrt, d. h. daß er in hohem\nMaße seinen Willen erreicht.\nDer obere Strich wird bereichert von"
+    },
+    {
+      "hex": 42,
+      "field": "ruler_note",
+      "jpgPages": "486-490",
+      "snippet": "D\ner Gedanke der Mehrung kommt zum Ausdruck durch die Minderung\ndes unteren Strichs des oberen Zeichens, wodurch der unt"
+    },
+    {
+      "hex": 42,
+      "field": "misc_notes",
+      "jpgPages": "486-490",
+      "snippet": "Die Zeichen Minderung und Mehrung sind der Anfang von\nBlüte und Untergang.\nDie beiden Zeichen, die am Anfang des zweiten"
+    },
+    {
+      "hex": 42,
+      "field": "commentary_image",
+      "jpgPages": "486-490",
+      "snippet": "er sie ab."
+    },
+    {
+      "hex": 42,
+      "field": "L1_b_comentario",
+      "jpgPages": "486-490",
+      "snippet": "Erhabenes Heil! Kein Makel.\"\nDie Unteren benützen es nicht zu ihrer eigenen Bequemlichkeit.\nDie untere Neun bedeutet das"
+    },
+    {
+      "hex": 42,
+      "field": "L6_b_comentario",
+      "jpgPages": "486-490",
+      "snippet": "Er gereicht niemand zur Mehrung\":\nDas ist ein Wort, das die Einseitigkeit bezeichnet.\n„Es schlägt ihn gar jemand\":\nDas k"
+    },
+    {
+      "hex": 43,
+      "field": "ruler_note",
+      "jpgPages": "491-495",
+      "snippet": "Der ist obere Sedis koner Sinn des Zeichens geht daraus hervor, daß ein dunkler Strich am\nstituierende Herr des Zeichens"
+    },
+    {
+      "hex": 43,
+      "field": "commentary_decision",
+      "jpgPages": "491-495",
+      "snippet": "Durchbruch ist soviel wie Entschlossenheit.\nDas Feste verdrängt entschlossen das Weiche. Stark und heiter, das ist\nentsc"
+    },
+    {
+      "hex": 43,
+      "field": "image_oraculo",
+      "jpgPages": "491-495",
+      "snippet": "Der See ist an den Himmel emporgestiegen: das Bild des\nDurchbruchs. So spendet der Edle Reichtum nach unten hin"
+    },
+    {
+      "hex": 43,
+      "field": "commentary_image",
+      "jpgPages": "491-495",
+      "snippet": "und scheut es, bei seiner Tugend zu verweilen.\nDer See ist verdunstet und sammelt sich oberhalb des Himmels als Dünste\nu"
+    },
+    {
+      "hex": 44,
+      "field": "ruler_note",
+      "jpgPages": "496-499",
+      "snippet": "Das\nas Zeichen Entgegenkommen\" hat seine Bedeutung von der einen\nstituierende Herr des Zeichens. Aber die fünf Yangstric"
+    },
+    {
+      "hex": 44,
+      "field": "commentary_decision",
+      "jpgPages": "496-499",
+      "snippet": "Entgegenkommen bedeutet Antreffen. Das Schwache tritt\ndem Festen entgegen.\n„Man soll ein solches Mädchen nicht heiraten."
+    },
+    {
+      "hex": 44,
+      "field": "image_oraculo",
+      "jpgPages": "496-499",
+      "snippet": "Unter dem Himmel ist der Wind: Das Bild des Entgegenkommens. So macht es der Fürst beim Verbreiten seiner\nBefehle und ih"
+    },
+    {
+      "hex": 44,
+      "field": "commentary_image",
+      "jpgPages": "496-499",
+      "snippet": "Der Fürst wird symbolisiert durch das obere Zeichen Kiän, Himmel. Seine\nBefehle werden symbolisiert durch das untere Zei"
+    },
+    {
+      "hex": 44,
+      "field": "L5_b_comentario",
+      "jpgPages": "496-499",
+      "snippet": "Die Neun auf fünftem Platz verbirgt ihre Linien, weil sie in\nder Mitte und korrekt ist.\n„Da fällt es einem vom Himmel he"
+    },
+    {
+      "hex": 45,
+      "field": "commentary_decision",
+      "jpgPages": "500-503",
+      "snippet": "Sammlung bedeutet Anhäufung. Hingebend und dabei heiter.\nDer Starke steht in der Mitte und findet Entsprechung. Darum hä"
+    },
+    {
+      "hex": 45,
+      "field": "image_oraculo",
+      "jpgPages": "500-503",
+      "snippet": "Der See ist oberhalb der Erde: das Bild der Sammlung. So\nerneuert der Edle seine Waffen, um Unvorhergesehenem zu"
+    },
+    {
+      "hex": 45,
+      "field": "commentary_image",
+      "jpgPages": "500-503",
+      "snippet": "begegnen.\nDie beiden Zeichen in ihrem Zusammensein geben das Bild der Sammlung.\nIndem der See oberhalb der Erde ist, als"
+    },
+    {
+      "hex": 46,
+      "field": "ruler_note",
+      "jpgPages": "504-506",
+      "snippet": "Der\ner Herr des Zeichens ist die Sechs auf fünftem Platz. Auf sie bezieht\nes sich, wenn es im Kommentar zur Entscheidung"
+    },
+    {
+      "hex": 46,
+      "field": "image_oraculo",
+      "jpgPages": "504-506",
+      "snippet": "Inmitten der Erde wächst das Holz: das Bild des Empordringens. So häuft der Edle hingebenden Wesens Kleines,\num es zu Ho"
+    },
+    {
+      "hex": 46,
+      "field": "commentary_image",
+      "jpgPages": "504-506",
+      "snippet": "Die Anhäufung des Kleinen, der stetige, unmerkliche Fortschritt, wird angedeutet durch die Art, wie das Holz unter der E"
+    },
+    {
+      "hex": 47,
+      "field": "ruler_note",
+      "jpgPages": "507-510",
+      "snippet": "Die Herren des Zeichens sind die Neun auf zweitem und die Neun auf\nDi\nfünftem Platz. Der Gedanke des Zeichens beruht auf"
+    },
+    {
+      "hex": 47,
+      "field": "commentary_image",
+      "jpgPages": "507-510",
+      "snippet": "13 Das Buch der Wandlungen II"
+    },
+    {
+      "hex": 48,
+      "field": "ruler_note",
+      "jpgPages": "511-515",
+      "snippet": "Der\ner Herr des Zeichens ist die Neun auf fünftem Platz. Die Wirkung des\nder Herr des Halbzeichens Kan (Wasser). Der Sin"
+    },
+    {
+      "hex": 48,
+      "field": "image_oraculo",
+      "jpgPages": "511-515",
+      "snippet": "Über dem Holz ist Wasser: das Bild des Brunnens.\nSo ermuntert der Edle das Volk bei der Arbeit und ermahnt es,"
+    },
+    {
+      "hex": 48,
+      "field": "commentary_image",
+      "jpgPages": "511-515",
+      "snippet": "einander zu helfen.\nDas Bild des Brunnens wird auch hier auf die Regierung angewandt. Der\nBrunnen kommt dabei in Betrach"
+    },
+    {
+      "hex": 48,
+      "field": "L6_b_comentario",
+      "jpgPages": "511-515",
+      "snippet": "Erhabenes Heil\"\nauf dem oberen Platz, das bedeutet große Vollendung.\nDer Strich ist ganz oben, also da, wo das Wasser de"
+    },
+    {
+      "hex": 49,
+      "field": "commentary_decision",
+      "jpgPages": "516-519",
+      "snippet": "Die Umwälzung: Wasser und Feuer dämpfen einander. Zwei\n¹ Weil der Gedanke des Brunnens darauf beruht, daß das Wasser nac"
+    },
+    {
+      "hex": 49,
+      "field": "image_oraculo",
+      "jpgPages": "516-519",
+      "snippet": "Im See ist Feuer: Das Bild der Umwälzung. So ordnet der\nEdle die Zeitrechnung und macht die Zeiten klar."
+    },
+    {
+      "hex": 49,
+      "field": "commentary_image",
+      "jpgPages": "516-519",
+      "snippet": "Das Feuer im See bewirkt eine Umwälzung. Das Wasser löscht das Feuer,\ndas Feuer verdunstet das Wasser. Die Ordnung der Z"
+    },
+    {
+      "hex": 50,
+      "field": "ruler_note",
+      "jpgPages": "520-523",
+      "snippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Die dem Zeichen \"Tiegel\" zugrunde liegende "
+    },
+    {
+      "hex": 50,
+      "field": "commentary_image",
+      "jpgPages": "520-523",
+      "snippet": "[\nS"
+    },
+    {
+      "hex": 51,
+      "field": "commentary_decision",
+      "jpgPages": "524-527",
+      "snippet": "„Das Erschüttern bringt Gelingen.\nDas Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Worte: Ha, Ha!\"\nNachher"
+    },
+    {
+      "hex": 51,
+      "field": "image_oraculo",
+      "jpgPages": "524-527",
+      "snippet": "Fortgesetzter Donner: das Bild des Erschütterns. So macht\nder Edle unter Furcht und Zittern sein Leben recht und erforsc"
+    },
+    {
+      "hex": 51,
+      "field": "commentary_image",
+      "jpgPages": "524-527",
+      "snippet": "Fortgesetzter Donner heißt es, weil das Zeichen Dschen verdoppelt übereinander steht. Furcht und Zittern ist der erste D"
+    },
+    {
+      "hex": 51,
+      "field": "L1_b_comentario",
+      "jpgPages": "524-527",
+      "snippet": "Das Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Worte: Ha, Ha!\"\nNachher hat man eine Regel.\nEs ist hier w"
+    },
+    {
+      "hex": 51,
+      "field": "L6_b_comentario",
+      "jpgPages": "524-527",
+      "snippet": "\"Die Erschütterung bringt Verfall.\"\nEr hat die Mitte nicht erreicht.\nObwohl Unheil, kein Makel.\nMan läßt sich durch die "
+    },
+    {
+      "hex": 52,
+      "field": "ruler_note",
+      "jpgPages": "528-531",
+      "snippet": "\"\nigentlich sind auch beim Zeichen Gen die beiden lichten Striche die Herren des Zeichens. Aber die Bedeutung des Zeiche"
+    },
+    {
+      "hex": 52,
+      "field": "image_oraculo",
+      "jpgPages": "528-531",
+      "snippet": "Zusammenstehende Berge: das Bild des Stillehaltens. So geht\nder Edle mit seinen Gedanken nicht über seine Lage hinaus."
+    },
+    {
+      "hex": 52,
+      "field": "commentary_image",
+      "jpgPages": "528-531",
+      "snippet": "Bei allen Doppelzeichen stehen die entsprechenden Linien des oberen und\nunteren Halbzeichens nicht in Beziehung des Ents"
+    },
+    {
+      "hex": 52,
+      "field": "L2_b_comentario",
+      "jpgPages": "528-531",
+      "snippet": "Er kann den nicht retten, dem er folgt\":\nDenn er kehrt sich nicht nach ihm, daß er auf ihn hört.\nDer Strich, dem die Sec"
+    },
+    {
+      "hex": 53,
+      "field": "commentary_image",
+      "jpgPages": "532-535",
+      "snippet": "dem\ntä\nEin\nArtere\nT\nZet\nste\nDr.\n÷\n21-\n-20\n7d\nd"
+    },
+    {
+      "hex": 54,
+      "field": "ruler_note",
+      "jpgPages": "536-540",
+      "snippet": "Das\nas Zeichen,,das heiratende Mädchen\" beruht auf der Idee, daß das\nheißt es im Kommentar zur Entscheidung:„Nichts, das"
+    },
+    {
+      "hex": 54,
+      "field": "commentary_decision",
+      "jpgPages": "536-540",
+      "snippet": "Das heiratende Mädchen bezeichnet den großen Sinn von\nHimmel und Erde. Wenn Himmel und Erde sich nicht vereinigen, so ge"
+    },
+    {
+      "hex": 54,
+      "field": "image_oraculo",
+      "jpgPages": "536-540",
+      "snippet": ".\nOberhalb des Sees ist der Donner: das Bild des heiratenden"
+    },
+    {
+      "hex": 54,
+      "field": "commentary_image",
+      "jpgPages": "536-540",
+      "snippet": "Mädchens. So erkennt der Edle durch die Ewigkeit des\nEndes das Vergängliche.\nIm Herbst kommt alles zu seinem Ende. Wenn "
+    },
+    {
+      "hex": 54,
+      "field": "L1_b_comentario",
+      "jpgPages": "536-540",
+      "snippet": "Das heiratende Mädchen als Nebenfrau\",\nweil das Dauer gibt.\n„Ein Lahmer, der auftreten kann. Heil\",\nweil sie einander em"
+    },
+    {
+      "hex": 54,
+      "field": "L6_b_comentario",
+      "jpgPages": "536-540",
+      "snippet": "Daß die obere Sechs keine Früchte hat, kommt daher, daß sie\neinen leeren Korb hält.\nDie obere schwache Sechs auf dem Gip"
+    },
+    {
+      "hex": 55,
+      "field": "ruler_note",
+      "jpgPages": "541-544",
+      "snippet": "Der\ner Herr des Zeichens ist die Sechs auf fünftem Platz. Wenn es im Urteil heißt:„Der König erreicht es. Sei nicht trau"
+    },
+    {
+      "hex": 55,
+      "field": "commentary_decision",
+      "jpgPages": "541-544",
+      "snippet": "Die Fülle bedeutet Größe. Klarheit bei der Bewegung, darum\nFülle.\n„Der König erreicht sie.\"\nDadurch wird die Größe beton"
+    },
+    {
+      "hex": 55,
+      "field": "image_oraculo",
+      "jpgPages": "541-544",
+      "snippet": "Donner und Blitz kommen beide: das Bild der Fülle. So entscheidet der Edle die Prozesse und führt die Strafen aus.\nDas B"
+    },
+    {
+      "hex": 55,
+      "field": "commentary_image",
+      "jpgPages": "541-544",
+      "snippet": "luftreinigende Gewitter des Strafprozesses."
+    },
+    {
+      "hex": 55,
+      "field": "L1_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "Man mag zehn Tage beisammen sein, und es ist kein Fehler.\" Mehr als zehn Tage ist vom Übel.\nDer Strich ist stark und kla"
+    },
+    {
+      "hex": 55,
+      "field": "L3_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "\"Das Gestrüpp ist von solcher Fülle\",\ndaß man keine großen Geschäfte tun kann.\n„Er bricht seinen rechten Arm\":\nEndgültig"
+    },
+    {
+      "hex": 55,
+      "field": "L4_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "\"Der Vorhang ist von solcher Fülle.\"\nDer Platz ist nicht der gebührende.\n„Am Mittag sieht man die Polsterne.\"\nEr ist dun"
+    },
+    {
+      "hex": 56,
+      "field": "ruler_note",
+      "jpgPages": "545-547",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz; darum heißt es\nDer\nה\nSun\nAußeren\" und ferner: \"Stillehalten und H"
+    },
+    {
+      "hex": 56,
+      "field": "image_oraculo",
+      "jpgPages": "545-547",
+      "snippet": "Auf dem Berg ist Feuer: das Bild des Wanderers. So ist\nder Edle klar und vorsichtig in der Anwendung von Strafen"
+    },
+    {
+      "hex": 56,
+      "field": "commentary_image",
+      "jpgPages": "545-547",
+      "snippet": "und verschleppt keine Streitigkeiten.\nSonst ist immer dann von Strafsachen die Rede, wenn Klarheit und Bewegung zusammen"
+    },
+    {
+      "hex": 56,
+      "field": "L4_b_comentario",
+      "jpgPages": "545-547",
+      "snippet": "Der Wanderer ruht an einem Unterkunftsort.\"\nEr hat noch nicht seinen Platz erlangt.\n\"Er erlangt seinen Besitz und eine A"
+    },
+    {
+      "hex": 57,
+      "field": "ruler_note",
+      "jpgPages": "548-551",
+      "snippet": "Dul\nOb\nbwohl das Zeichen durch die beiden Yinstriche bestimmt wird, so ist\nunter den weiblichen Zeichen nur das eine Zei"
+    },
+    {
+      "hex": 57,
+      "field": "image_oraculo",
+      "jpgPages": "548-551",
+      "snippet": "Einander folgende Winde: das Bild des sanft Eindringenden.\nSo verbreitet der Edle seine Gebote und wirkt seine Geschäfte"
+    },
+    {
+      "hex": 57,
+      "field": "commentary_image",
+      "jpgPages": "548-551",
+      "snippet": "Von den beiden Winden vertreibt der erste die Widerstände:,,verbreitet\ndie Gebote\". Der zweite wirkt das Werk:,,wirkt se"
+    },
+    {
+      "hex": 57,
+      "field": "L1_b_comentario",
+      "jpgPages": "548-551",
+      "snippet": "Vorgehen und Rückweichen\": der Wille ist im Zweifel.\n„Fördernd ist die Beharrlichkeit eines Kriegers.\"\nDer Wille ist beh"
+    },
+    {
+      "hex": 57,
+      "field": "L5_b_comentario",
+      "jpgPages": "548-551",
+      "snippet": "Das Heil der Neun auf fünftem Platz beruht darauf, daß der\nPlatz korrekt und zentral ist.\nDer Strich ist im Zentrum als "
+    },
+    {
+      "hex": 58,
+      "field": "ruler_note",
+      "jpgPages": "552-554",
+      "snippet": "D\nie beiden Yinstriche sind die konstituierenden Herren des Zeichens, aber\nsie vermögen nicht die beherrschenden Herren "
+    },
+    {
+      "hex": 58,
+      "field": "image_oraculo",
+      "jpgPages": "552-554",
+      "snippet": "Aufeinander beruhende Seen: das Bild des Heiteren. So tut\nsich der Edle mit seinen Freunden zusammen zur Besprechung"
+    },
+    {
+      "hex": 58,
+      "field": "commentary_image",
+      "jpgPages": "552-554",
+      "snippet": "und Einübung.\nDui bedeutet See und Mund. Die Wiederholung des Mundes bedeutet die\ngemeinsame Besprechung, die Wiederholu"
+    },
+    {
+      "hex": 59,
+      "field": "ruler_note",
+      "jpgPages": "555-558",
+      "snippet": "Der\ner Herr des Zeichens ist die Neun auf fünftem Platz; denn die Auflösung\nsteht. Doch steht die Neun auf zweitem Platz"
+    },
+    {
+      "hex": 59,
+      "field": "commentary_decision",
+      "jpgPages": "555-558",
+      "snippet": "Die Auflösung: Gelingen. Das Feste kommt und erschöpft sich\nnicht. Das Weiche bekommt einen Platz im Außeren, und der\nOb"
+    },
+    {
+      "hex": 59,
+      "field": "L5_b_comentario",
+      "jpgPages": "555-558",
+      "snippet": "„Ein König weilt ohne Makel.\"\nEr ist an seinem rechten Platz.\nDas Zusammentreffen des Windes mit dem Wasser löst dieses "
+    },
+    {
+      "hex": 60,
+      "field": "ruler_note",
+      "jpgPages": "559-561",
+      "snippet": "Der Herr des Zeichens ist die Neun auf fünftem Platz; denn Maß und\nvermag nur jemand, der geehrt ist und die Geisteskraf"
+    },
+    {
+      "hex": 60,
+      "field": "commentary_decision",
+      "jpgPages": "559-561",
+      "snippet": "„Beschränkung: Gelingen.\"\nDie Festen und Weichen sind gleich verteilt, und die Festen\nhaben die Mitte erlangt.\n„Bittere "
+    },
+    {
+      "hex": 60,
+      "field": "image_oraculo",
+      "jpgPages": "559-561",
+      "snippet": "Oberhalb des Sees ist Wasser: das Bild der Beschränkung.\nSo schafft der Edle Zahl und Maß und untersucht, was Tugend"
+    },
+    {
+      "hex": 60,
+      "field": "commentary_image",
+      "jpgPages": "559-561",
+      "snippet": "und rechter Wandel ist.\nZahl und Maß ist angedeutet durch das gegenseitige Verhältnis von Wasser\nund See. Dem Zeichen Ka"
+    },
+    {
+      "hex": 61,
+      "field": "ruler_note",
+      "jpgPages": "562-565",
+      "snippet": "D\nas konstituierende Merkmal des Zeichens ist, daß es in der Mitte leer\nist; darum sind die Sechs auf drittem Platz und "
+    },
+    {
+      "hex": 61,
+      "field": "image_oraculo",
+      "jpgPages": "562-565",
+      "snippet": "Über dem See ist der Wind: das Bild der inneren Wahrheit.\nSo bespricht der Edle die Strafsachen, um Hinrichtungen"
+    },
+    {
+      "hex": 61,
+      "field": "commentary_image",
+      "jpgPages": "562-565",
+      "snippet": "aufzuhalten.\nDui ist das Bild des Mundes, daher das Besprechen. Sun ist das Sanfte,\nZögernde, daher das Aufhalten der Hi"
+    },
+    {
+      "hex": 61,
+      "field": "L3_b_comentario",
+      "jpgPages": "562-565",
+      "snippet": "Bald trommelt er, bald hört er auf.\"\nDer Platz ist nicht der gebührende.\nEine weiche Linie auf festem Platz auf dem Gipf"
+    },
+    {
+      "hex": 62,
+      "field": "commentary_image",
+      "jpgPages": "566-569",
+      "snippet": "Auf dem Berg ist der Donner: das Bild von des Kleinen Über-"
+    },
+    {
+      "hex": 62,
+      "field": "L1_b_comentario",
+      "jpgPages": "566-569",
+      "snippet": "Der Vogel kommt durch Fliegen ins Unheil.\"\nDa läßt sich nichts machen.\nDie Linie befindet sich unten am Zeichen des Berg"
+    },
+    {
+      "hex": 62,
+      "field": "L5_b_comentario",
+      "jpgPages": "566-569",
+      "snippet": "Dichte Wolken, kein Regen\":\nEr ist schon oben.\nDas Orakel:„Dichte Wolken, kein Regen\" steht auch bei dem Zeichen„Des\nKle"
+    },
+    {
+      "hex": 63,
+      "field": "ruler_note",
+      "jpgPages": "570-573",
+      "snippet": "er Herr der Zeichens ist die Sechs auf zweitem Platz. Die Bedeutung\nist, daß anfangs Heil herrscht und\n\"\nam Ende Wirren."
+    },
+    {
+      "hex": 63,
+      "field": "commentary_decision",
+      "jpgPages": "570-573",
+      "snippet": "Nach der Vollendung. Gelingen: Im Kleinen ist Gelingen.\n\"Fördernd ist Beharrlichkeit.\"\nDie Festen und Weichen sind korre"
+    },
+    {
+      "hex": 63,
+      "field": "image_oraculo",
+      "jpgPages": "570-573",
+      "snippet": "Das Wasser ist oberhalb des Feuers: Das Bild des Zustands\nnach der Vollendung. So bedenkt der Edle das Unglück und"
+    },
+    {
+      "hex": 63,
+      "field": "commentary_image",
+      "jpgPages": "570-573",
+      "snippet": "rüstet sich im voraus dagegen.\nIndem Feuer und Wasser ihre Wirkungen ausgleichen und so ein Gleichgewichtszustand gescha"
+    },
+    {
+      "hex": 64,
+      "field": "ruler_note",
+      "jpgPages": "574-585",
+      "snippet": "Der anfangs Wirren und am Ende Order Herr des Zeichens ist die Sechs auf fünftem Platz; denn die Zeit vor\nnung herrschen"
+    },
+    {
+      "hex": 64,
+      "field": "commentary_decision",
+      "jpgPages": "574-585",
+      "snippet": "„Vor der Vollendung. Gelingen\":\nDenn das Weiche erlangt die Mitte.\n\"Der kleine Fuchs hat beinahe den Übergang vollendet\""
+    },
+    {
+      "hex": 64,
+      "field": "image_oraculo",
+      "jpgPages": "574-585",
+      "snippet": "Das Feuer ist oberhalb des Wassers: das Bild des Zustands\nvor dem Übergang. So ist der Edle vorsichtig in der Unterschei"
+    },
+    {
+      "hex": 64,
+      "field": "commentary_image",
+      "jpgPages": "574-585",
+      "snippet": "Das Feuer schlägt nach oben, das Wasser dringt nach unten, daher keine\nVollendung. Wollte man sie gewaltsam durchführen,"
+    },
+    {
+      "hex": 64,
+      "field": "L6_b_comentario",
+      "jpgPages": "574-585",
+      "snippet": "Wenn man beim Weintrinken sein Haupt naß macht, so kennt\nman eben keine Mäßigkeit.\nDer obere Strich ist stark und an sic"
+    }
+  ]
+}

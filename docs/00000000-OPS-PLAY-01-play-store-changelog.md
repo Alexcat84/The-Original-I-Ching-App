@@ -13,9 +13,94 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
+| 4.2.1 | 61 | 2026-07-02 | Production |
 | 4.2.0 | 60 | 2026-06-25 | Production |
 | 4.1.9 | 59 | 2026-06-24 | Production |
 | 4.1.8 | 58 | 2026-06-22 | Production |
+
+---
+
+## 4.2.1 (versionCode 61) — 2026-07-02
+
+Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
+order — copy the whole block below in one paste.
+
+<en-US>
+Version 4.2.1: richer readings, verified texts.
+- Wilhelm 1924 German: read the I Ching in its original language -- a fourth translator option.
+- Mutation Explorer: cross-check any hexagram cast against source texts and the classical mutation rules in effect.
+- Exhaustive text audit: 73 verified corrections across Wilhelm oracle readings, judgments, and Ten Wings commentaries.
+</en-US>
+
+<ar>
+الإصدار 4.2.1: قراءات أعمق، نصوص محقَّقة.
+- فيلهلم 1924 الألماني: استشر الآي تشينغ بلغته الأصلية -- خيار رابع للمترجم.
+- مستكشف التحولات: تحقق من أي ضربة هيكساغرام مقابل النصوص الأصلية وقواعد التحول الكلاسيكية.
+- تدقيق نصي شامل: 73 تصحيحًا موثَّقًا في قراءات فيلهلم الأوراكلية والأحكام وتعليقات العشرة أجنحة.
+</ar>
+
+<de-DE>
+Version 4.2.1: tiefere Lektüre, verifizierten Texte.
+- Wilhelm 1924 Deutsch: das I Ging in seiner Originalsprache lesen -- eine vierte Übersetzerquelle.
+- Mutations-Explorer: jede Hexagramm-Werfung mit Quelltexten und klassischen Mutationsregeln abgleichen.
+- Vollständige Textprüfung: 73 verifizierte Korrekturen in Orakelsprüchen, Urteilen und Zehn-Flügel-Kommentaren.
+</de-DE>
+
+<es-419>
+Version 4.2.1: lecturas más ricas, textos verificados.
+- Wilhelm 1924 alemán: consulta el I Ching en su idioma original -- una cuarta opcion de traductor.
+- Explorador de mutaciones: contrasta cualquier tirada con los textos fuente y las reglas clasicas de mutacion.
+- Auditoria exhaustiva: 73 correcciones verificadas en textos oraculares, juicios y comentarios de las Diez Alas de Wilhelm.
+</es-419>
+
+<fr-FR>
+Version 4.2.1 : lectures plus riches, textes verifies.
+- Wilhelm 1924 allemand : consultez le Yi King dans sa langue d'origine -- une quatrieme source.
+- Explorateur de mutations : comparez chaque tirage avec les textes sources et les regles classiques.
+- Audit exhaustif : 73 corrections verifiees dans les textes oraculaires, jugements et Dix Ailes de Wilhelm.
+</fr-FR>
+
+<hi-IN>
+संस्करण 4.2.1: समृद्ध पाठ, सत्यापित ग्रंथ।
+- Wilhelm 1924 जर्मन: मूल भाषा में I Ching -- चौथा अनुवादक विकल्प।
+- Mutation Explorer: किसी भी हेक्साग्राम कास्ट को स्रोत ग्रंथों और शास्त्रीय नियमों से जांचें।
+- व्यापक पाठ ऑडिट: Wilhelm के दैववाणी पाठों, निर्णयों और दस पंखों में 73 सत्यापित सुधार।
+</hi-IN>
+
+<it-IT>
+Versione 4.2.1: letture piu ricche, testi verificati.
+- Wilhelm 1924 tedesco: consulta l'I Ching nella sua lingua originale -- una quarta fonte.
+- Mutation Explorer: confronta qualsiasi lancio con i testi sorgente e le regole classiche di mutazione.
+- Audit esaustivo: 73 correzioni verificate nei testi oracolari, giudizi e Dieci Ali di Wilhelm.
+</it-IT>
+
+<ja-JP>
+バージョン 4.2.1：豊かな解釈、検証済みテキスト。
+- ヴィルヘルム 1924 年ドイツ語：原語で易経を読む -- 第4の翻訳者オプション。
+- 変爻エクスプローラー：どの卦も原典テキストと古典的な変爻ルールで確認。
+- 徹底的なテキスト監査：ヴィルヘルムの卦辞・爻辞・十翼に 73 件の検証済み修正。
+</ja-JP>
+
+<ko-KR>
+버전 4.2.1: 풍부한 해석, 검증된 텍스트.
+- 빌헬름 1924년 독일어: 원어로 읽는 역경 -- 네 번째 번역자 옵션.
+- 변효 탐색기: 모든 괘를 원전 텍스트 및 고전적인 변효 규칙으로 대조 확인.
+- 철저한 텍스트 감사: 빌헬름의 괘사, 효사, 십익에 73건의 검증된 수정.
+</ko-KR>
+
+<pt-BR>
+Versao 4.2.1: leituras mais ricas, textos verificados.
+- Wilhelm 1924 alemao: consulte o I Ching no idioma original -- uma quarta fonte de traducao.
+- Explorador de mutacoes: compare qualquer lancamento com os textos fonte e as regras classicas.
+- Auditoria exaustiva: 73 correcoes verificadas nos textos oraculares, julgamentos e Dez Asas de Wilhelm.
+</pt-BR>
+
+<zh-CN>
+版本 4.2.1：更丰富的解读，经验证的文本。
+- 卫礼贤 1924 年德文：以原始语言阅读《易经》-- 第四个译者选项。
+- 变爻探索器：将任意卦象与原典文本及古典变爻规则对照核查。
+- 全面文本审计：对卫礼贤的卦辞、爻辞及十翼注释进行 73 项经验证的修正。
+</zh-CN>
 
 ---
 

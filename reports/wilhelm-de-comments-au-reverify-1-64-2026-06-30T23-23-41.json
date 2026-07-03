@@ -1,0 +1,278 @@
+{
+  "updatedAt": "2026-06-30T23:23:41.213Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "from": 1,
+  "to": 64,
+  "ok": false,
+  "summary": {
+    "pilotClosed": 2368,
+    "pilotPending": 0,
+    "pilotVsMerged": 140,
+    "pilotVsGold": 5,
+    "goldVsMerged": 135,
+    "ledgerIssues": 64,
+    "findingsTotal": 344,
+    "ledgerAttestation": {
+      "hexComplete": 64,
+      "hexTotal": 64,
+      "fieldsTotal": 2304,
+      "fieldsVerified": 1992,
+      "fieldsCorrected": 0,
+      "fieldsVacio": 312,
+      "fieldsPending": 0
+    }
+  },
+  "findings": [
+    {
+      "hex": 1,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 1,
+      "field": "chinese_roman",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 1,
+      "field": "chinese_roman",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 2,
+      "field": "chinese_roman",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "chinese_roman",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "commentary_decision",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "commentary_decision",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 3,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 4,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 4,
+      "field": "hex",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "hex",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "ruler_note",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "ruler_note",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_decision",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_decision",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "image_oraculo",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "image_oraculo",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_image",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_image",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "L3_b_comentario",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "L3_b_comentario",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 5,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 5,
+      "field": "hex",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 5,
+      "field": "hex",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 5,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 6,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 6,
+      "field": "hex",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 6,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 7,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 7,
+      "field": "hex",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 7,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 8,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 9,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 10,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 11,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 12,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 13,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 14,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 15,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 16,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 17,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 18,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 19,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 20,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 21,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 22,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 23,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 24,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    },
+    {
+      "hex": 25,
+      "field": "hex",
+      "kind": "ledger_missing_field"
+    }
+  ],
+  "findingsTruncated": true
+}

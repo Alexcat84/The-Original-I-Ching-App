@@ -61,7 +61,7 @@ export default async function GuiaRapidaPage() {
         <h3 id="traductor">{g.translatorsHeading}</h3>
         <ul>
           <li>
-            <strong>Wilhelm/Baynes</strong>: {g.translatorsWilhelm}
+            <strong>Wilhelm (1924)</strong>: {g.translatorsWilhelm}
           </li>
           <li>
             <strong>James Legge</strong>: {g.translatorsLegge}
@@ -135,6 +135,10 @@ export default async function GuiaRapidaPage() {
             <strong>{g.s6DocsTitle}</strong>: {g.s6Docs}
           </li>
         </ul>
+
+        {/* Verificación de lectura */}
+        <h2 id="verificacion">{g.verifyHeading}</h2>
+        <p>{g.verifyBody}</p>
 
         {/* Exportar y guardar */}
         <h2 id="exportar">{g.exportHeading}</h2>

@@ -1634,7 +1634,7 @@ export default function HomePage() {
         { year: "numeric", month: "short", day: "numeric" },
       );
       const pdfTranslatorName: Record<string, string> = {
-        wilhelm: "Wilhelm / Baynes",
+        wilhelm: "Wilhelm (1924)",
         legge: "James Legge",
         zhouyi: "Zhou Yi",
         master_combined: "Wilhelm · Legge · Zhou Yi",
@@ -4922,7 +4922,7 @@ export default function HomePage() {
                   {oracleMode === "iching"
                     ? `${
                         translatorId === "wilhelm"
-                          ? "Wilhelm/Baynes"
+                          ? "Wilhelm (1924)"
                           : translatorId === "legge"
                             ? "James Legge"
                             : translatorId === "zhouyi"
@@ -6020,6 +6020,7 @@ export default function HomePage() {
                     </div>
                     <hr className="composer-panel-divider" aria-hidden />
                     <div
+                      id="tour-library-btn"
                       className="session-progress"
                       role="group"
                       aria-label={chrome.libraryGroupAria}
@@ -6030,7 +6031,6 @@ export default function HomePage() {
                       </p>
                       <div className="composer-panel-actions composer-panel-actions--pair">
                         <button
-                          id="tour-library-btn"
                           type="button"
                           className="composer-reading-pill is-active"
                           onClick={() => router.push("/library")}
@@ -7133,7 +7133,7 @@ export default function HomePage() {
         </p>
         <p>
           Divination methods: three-coin I Ching (Zhu Xi tradition,
-          Wilhelm/Baynes), Oracle Bones (Shang-era crack reading), AI
+          Wilhelm (1924)), Oracle Bones (Shang-era crack reading), AI
           interpretation via Claude.
         </p>
         <p>

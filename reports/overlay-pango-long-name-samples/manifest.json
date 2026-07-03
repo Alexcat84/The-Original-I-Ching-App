@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-06-28T15:23:09.156Z",
+  "note": "Wilhelm only — Legge mutation titles fit on one line at current OVERLAY_EN_MAX_WIDTH.",
+  "samples": [
+    {
+      "id": "wilhelm-53to18",
+      "lines": [
+        "#53 Development (Gradual Progress)",
+        "→ #18 Work on What Has Been Spoiled [Decay]"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-26to18",
+      "lines": [
+        "#26 The Taming Power of the Great",
+        "→ #18 Work on What Has Been Spoiled [Decay]"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-28to18",
+      "lines": [
+        "#28 Preponderance of the Great",
+        "→ #18 Work on What Has Been Spoiled [Decay]"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-18to53",
+      "lines": [
+        "#18 Work on What Has Been Spoiled [Decay]",
+        "→ #53 Development (Gradual Progress)"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-26to53",
+      "lines": [
+        "#26 The Taming Power of the Great",
+        "→ #53 Development (Gradual Progress)"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-45to53",
+      "lines": [
+        "#45 Gathering Together [Massing]",
+        "→ #53 Development (Gradual Progress)"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-62to53",
+      "lines": [
+        "#62 Preponderance of the Small",
+        "→ #53 Development (Gradual Progress)"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-9to57",
+      "lines": [
+        "#9 The Taming Power of the Small",
+        "→ #57 The Gentle (Penetrating, Wind)"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-3to18",
+      "lines": [
+        "#3 Difficulty at the Beginning",
+        "→ #18 Work on What Has Been Spoiled [Decay]"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    },
+    {
+      "id": "wilhelm-14to53",
+      "lines": [
+        "#14 Posession in Great Measure",
+        "→ #53 Development (Gradual Progress)"
+      ],
+      "fontSize": 27,
+      "ys": [
+        180.2,
+        212.06
+      ]
+    }
+  ]
+}

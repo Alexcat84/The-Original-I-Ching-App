@@ -1,0 +1,13 @@
+{
+  "promotedAt": "2026-06-30T13:02:38.389Z",
+  "source": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\book-one\\wilhelm-de-64hex-zeno-extract-latest.json",
+  "fillStats": {
+    "oracle": "514/576",
+    "commentaryInline": "514/576"
+  },
+  "structureCheck": {
+    "pass": true,
+    "errors": []
+  },
+  "archivePath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\output\\archive\\wilhelm-de-64hex-merged-ocr-2026-06-30T13-02-38-393Z.json"
+}

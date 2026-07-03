@@ -76,7 +76,7 @@ export function ConsultationRecordCard({
       : "";
 
   const translatorDisplayName: Record<string, string> = {
-    wilhelm: "Wilhelm / Baynes",
+    wilhelm: "Wilhelm (1924)",
     legge: "James Legge",
     zhouyi: "Zhou Yi",
     master_combined: "Wilhelm · Legge · Zhou Yi",

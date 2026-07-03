@@ -1,0 +1,456 @@
+{
+  "updatedAt": "2026-06-30T16:51:46.010Z",
+  "hex": 1,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-1-pilot-au.tsv",
+  "ok": true,
+  "closed": 37,
+  "pending": 0,
+  "fieldsTotal": 37,
+  "disputedClosed": 9,
+  "disputedTotal": 9,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "nombre",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese_roman",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "hex_font",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "ruler_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Herr des Zeichens ist die Neun auf fünftem Platz. Das Schöpferische bezeichnet den Weg des Himmels, und der fünfte Platz",
+        "otherSnippet": "Kiän und = Kiän\nerr des Zeichens ist die Neun auf fünftem Platz. Das Schöpferische beHimmels. Andererseits bezeichnet da"
+      }
+    },
+    {
+      "field": "sequence",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "misc_notes",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Das Schöpferische ist stark\"\nDer Charakter des Zeichens ist die Kraft und Festigkeit.\nDas Bild des Zeichens ist der Him",
+        "otherSnippet": ",,Das Schöpferische ist stark\"\nDer Charakter des Zeichens ist die Kraft und Festigkeit.\nDas Bild des Zeichens ist der Hi"
+      }
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Das Schöpferische wirkt erhabenes Gelingen, fördernd durch Beharrlichkeit.",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "commentary_decision",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 526,
+        "pdfSnippet": "on der\nSituation des\"Herrn des Zeichens\" ausgeht oder endlich von der Veränderung der Gestalt, aus der das Zeichen hervo",
+        "otherSnippet": "on der\nSituation des,,Herrn des Zeichens\" ausgeht oder endlich von der Veränderung der Gestalt, aus der das Zeichen herv"
+      }
+    },
+    {
+      "field": "image_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 81,
+        "pdfSnippet": "ark und unermüdlich.",
+        "otherSnippet": "ark und unermüdlich.\nDie Verdoppelung des Zeichens \"das Schöpferische\" ist das Bild der kraftvollen, dauernd wiederholte"
+      }
+    },
+    {
+      "field": "commentary_image",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 356,
+        "pdfSnippet": "rk und unermüdlich.\n\nDie Verdoppelung des Zeichens \"das Schöpferische\" ist das Bild der kraftvollen, dauernd wiederholte",
+        "otherSnippet": "rk und unermüdlich.\nDie Verdoppelung des Zeichens \"das Schöpferische\" ist das Bild der kraftvollen, dauernd wiederholten"
+      }
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Verdeckter Drache. Handle nicht.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L1_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Verdeckter Drache. Handle nicht.\"\nDas Lichte ist nämlich noch unten.\nDer unterste Platz ist sozusagen noch ganz unterha",
+        "otherSnippet": "Verdeckter Drache. Handle nicht.\"\nDas Lichte ist nämlich noch unten.\nDer unterste Platz ist sozusagen noch ganz unterhal"
+      }
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Erscheinender Drache auf dem Feld.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L2_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Erscheinender Drache auf dem Feld.\"\nDer Charakter wirkt schon ins Weite.\nDer zweite Platz ist die Oberfläche der Erde, ",
+        "otherSnippet": ",Erscheinender Drache auf dem Feld.\"\n\"\"\nDer Charakter wirkt schon ins Weite.\nDer zweite Platz ist die Oberfläche der Erd"
+      }
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Der Edle ist den ganzen Tag schöpferisch tätig.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L3_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Der Edle ist den ganzen Tag schöpferisch tätig.\"\nMan geht hin und her auf dem rechten Weg.\nDer dritte Platz als Platz d",
+        "otherSnippet": ",,Der Edle ist den ganzen Tag schöpferisch tätig.\"\nMan geht hin und her auf dem rechten Weg.\nDer dritte Platz als Platz "
+      }
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Schwankender Aufschwung über die Tiefe.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L4_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Schwankender Aufschwung über die Tiefe.\"\nDer Fortschritt bedeutet keinen Fehler.\nHier ist die obere Grenze des Bereichs",
+        "otherSnippet": ",,Schwankender Aufschwung über die Tiefe.\"\nDer Fortschritt bedeutet keinen Fehler.\nHier ist die obere Grenze des Bereich"
+      }
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Fliegender Drache am Himmel.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L5_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Fliegender Drache am Himmel.\"\nDas zeigt den großen Mann bei der Arbeit.\nHier ist der Herr des Zeichens auf ausgezeichne",
+        "otherSnippet": ",,Fliegender Drache am Himmel.\"\nDas zeigt den großen Mann bei der Arbeit.\nHier ist der Herr des Zeichens auf ausgezeichn"
+      }
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Hochmütiger Drache wird zu bereuen haben.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L6_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Hochmütiger Drache wird zu bereuen haben.\"\nDenn was voll ist, kann nicht dauern.\nAlles, was die äußerste Stufe erreicht",
+        "otherSnippet": ",,Hochmütiger Drache wird zu bereuen haben.\"\nDenn was voll ist, kann nicht dauern.\nAlles, was die äußerste Stufe erreich"
+      }
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Die Art des Himmels ist es, nicht als Haupt hervorzutreten.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "yong_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Die Art des Himmels ist es,\nnicht als Haupt hervorzutreten.\"\nDas Schöpferische leitet zwar alles Geschehen, aber es tri",
+        "otherSnippet": ",,Die Art des Himmels ist es,\nnicht als Haupt hervorzutreten.\"\nDas Schöpferische leitet zwar alles Geschehen, aber es tr"
+      }
+    },
+    {
+      "field": "wen_yen",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 3188,
+        "pdfSnippet": "er Wesen.\nWährend im\"Kommentar zur Entscheidung\" die Natur auf ihre Wurzel in\nder göttlichen Bestimmung zurückgeführt wi",
+        "otherSnippet": "er Wesen.\nWährend im \"Kommentar zur Entscheidung\" die Natur auf ihre Wurzel in\nder göttlichen Bestimmung zurückgeführt w"
+      }
+    },
+    {
+      "field": "wen_yen_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 596,
+        "pdfSnippet": "merkung: Das Zeichen \"Das Schöpferische\" nimmt auch insofern eine\nganz eigene Stellung ein, als es ganz einheitlich aus ",
+        "otherSnippet": "merkung: Das Zeichen,,Das Schöpferische\" nimmt auch insofern eine\nganz eigene Stellung ein, als es ganz einheitlich aus "
+      }
+    }
+  ]
+}

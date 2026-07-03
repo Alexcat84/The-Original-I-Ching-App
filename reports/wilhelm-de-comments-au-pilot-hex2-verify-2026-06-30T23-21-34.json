@@ -1,0 +1,451 @@
+{
+  "updatedAt": "2026-06-30T23:21:34.949Z",
+  "hex": 2,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-2-pilot-au.tsv",
+  "ok": true,
+  "closed": 37,
+  "pending": 0,
+  "fieldsTotal": 37,
+  "disputedClosed": 10,
+  "disputedTotal": 10,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "nombre",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "chinese_roman",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "hex_font",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "ruler_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 1,
+        "pdfSnippet": "Kernzeichen: Kun und Kun\nHe\nerr des Zeichens ist die Sechs auf zweitem Platz. Das Zeichen Kun, das\nEmpfangende, stellt d",
+        "otherSnippet": "Kun und\nKun\nerr des Zeichens ist die Sechs auf zweitem Platz. Das Zeichen Kun, das\nDas Empfangende zeigt ferner die Art "
+      }
+    },
+    {
+      "field": "sequence",
+      "status": "CLOSED",
+      "au_estado": "vacio_en_libro",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "misc_notes",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Das Empfangende ist weich.\"",
+        "otherSnippet": ",,Das Empfangende ist weich.\""
+      }
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "Das Empfangende wirkt erhabenes Gelingen,\nfördernd durch die Beharrlichkeit einer Stute.\nHat der Edle etwas zu unternehm",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "commentary_decision",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 168,
+        "pdfSnippet": " Erklärung des Worts\"erhaben\" im Urteil.\nDie Größe des Empfangenden wird als vollkommen bezeichnet. Vollkommen\nist, was ",
+        "otherSnippet": " Erklärung des Worts \"erhaben\" im Urteil.\nDie Größe des Empfangenden wird als vollkommen bezeichnet. Vollkommen\nist, was"
+      }
+    },
+    {
+      "field": "image_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 2,
+        "pdfSnippet": "Des Erde Natur ist empfänglich und dienend.\nSo trägt der Edle die Welt mit seiner umfassenden Fruchtbarkeit.",
+        "otherSnippet": "Der Zustand der Erde ist die empfangende Hingebung.\nSo trägt der Edle weiträumigen Wesens die Außenwelt.\nDer Himmel bewe"
+      }
+    },
+    {
+      "field": "commentary_image",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 449,
+        "pdfSnippet": " auf drittem Platz:\n\"Verborgene Linien; man vermag beharrlich zu bleiben.\"\nMan muß zur Zeit sie leuchten lassen.\n\"Folgst",
+        "otherSnippet": " auf drittem Platz:\n,,Verborgene Linien; man vermag beharrlich zu bleiben.\"\nMan muß zur Zeit sie leuchten lassen.\n,,Folg"
+      }
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L1_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Tritt man auf Reif, so naht das feste Eis\":",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L1_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Tritt man auf Reif, so naht das feste Eis\":\nWenn das Dunkle erst anfängt zu erstarren und auf diesem\nWeg fortmacht, so ",
+        "otherSnippet": ",,Tritt man auf Reif, so naht das feste Eis\":\nWenn das Dunkle erst anfängt zu erstarren und auf diesem\nWeg fortmacht, so"
+      }
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L2_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Ohne Absicht bleibt nichts ungefördert\";",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L2_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 80,
+        "pdfSnippet": "durch rechtwinklig.\n\"Ohne Absicht bleibt nichts ungefördert\";\ndenn in der Art der Erde liegt das Licht.\nDadurch daß das ",
+        "otherSnippet": "durch rechtwinklig.\n,,Ohne Absicht bleibt nichts ungefördert\";\ndenn in der Art der Erde liegt das Licht.\nDadurch daß das"
+      }
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L3_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Verborgene Linien; man vermag beharrlich zu bleiben.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L3_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Verborgene Linien; man vermag beharrlich zu bleiben.\"\nMan muß zur Zeit sie leuchten lassen.\n\"Folgst du etwa eines König",
+        "otherSnippet": ",,Verborgene Linien; man vermag beharrlich zu bleiben.\"\nMan muß zur Zeit sie leuchten lassen.\n,,Folgst du etwa eines Kön"
+      }
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L4_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Zugebundener Sack. Kein Makel.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L4_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Zugebundener Sack. Kein Makel.\"\nDurch Vorsicht bleibt man frei von Schaden.\nEs ist hier eine Yin-Linie auf Yin-Platz, a",
+        "otherSnippet": ",,Zugebundener Sack. Kein Makel.\"\nDurch Vorsicht bleibt man frei von Schaden.\nEs ist hier eine Yin-Linie auf Yin-Platz, "
+      }
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L5_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Gelbes Untergewand bringt erhabenes Heil.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L5_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"\"\n,Gelbes Untergewand bringt erhabenes Heil.\"\nDie Schönheit ist inwendig.\nDie Sechs auf fünftem Platz hat eine ähnliche",
+        "otherSnippet": ",,Gelbes Untergewand bringt erhabenes Heil.\"\nDie Schönheit ist inwendig.\nDie Sechs auf fünftem Platz hat eine ähnliche S"
+      }
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "L6_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Drachen kämpfen auf dem Anger.\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "L6_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass04",
+      "vs_pass02": "diff",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "match",
+      "vs_pass04": "match",
+      "vs_reconciled": "match"
+    },
+    {
+      "field": "yong_a_oraculo",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Ewige Beständigkeit\"",
+        "otherSnippet": ""
+      }
+    },
+    {
+      "field": "yong_b_comentario",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "na",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 0,
+        "pdfSnippet": "\"Ewige Beständigkeit\":\nes endet im Großen.\nIndem die Sechsen umschlagen, werden sie zu lichten, d. h. großen Strichen.",
+        "otherSnippet": ",,Ewige Beständigkeit\":\nes endet im Großen.\nIndem die Sechsen umschlagen, werden sie zu lichten, d. h. großen Strichen."
+      }
+    },
+    {
+      "field": "wen_yen",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_ninguno",
+      "vs_pass02": "diff",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 61,
+        "pdfSnippet": "chen hat das Zeichen\"das Empfangende\" nur einen einzigen Kommentar.\nZum ganzen Zeichen\nDas Empfangende ist vollkommen we",
+        "otherSnippet": "chen hat das Zeichen \"das Empfangende\" nur einen einzigen Kommentar.\nZum ganzen Zeichen\nDas Empfangende ist vollkommen w"
+      }
+    },
+    {
+      "field": "wen_yen_note",
+      "status": "CLOSED",
+      "au_estado": "cerrado",
+      "resolucion_disputa": "coincide_pass02",
+      "vs_pass02": "match",
+      "vs_pass04": "diff",
+      "vs_reconciled": "diff",
+      "diff_reconciled": {
+        "index": 1983,
+        "pdfSnippet": " dritte Strich von Kiän für sich selbst sorgt, ist der dritte Strich\nvon Kun selbstverleugnend nur auf den Dienst an and",
+        "otherSnippet": " dritte Strich von Klän für sich selbst sorgt, ist der dritte Strich\nvon Kun selbstverleugnend nur auf den Dienst an and"
+      }
+    }
+  ]
+}

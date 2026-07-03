@@ -1,0 +1,80 @@
+{
+  "probedAt": "2026-06-30T13:46:23.265Z",
+  "zenoAvailability": {
+    "erstesBuch64Hex": {
+      "available": true,
+      "hexCount": 64
+    },
+    "zweitesBuchMaterial": {
+      "available": true,
+      "sectionCount": 25,
+      "sections": [
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Einleitung",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Schuo+Gua+-+Besprechung+der+Zeichen",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Schuo+Gua+-+Besprechung+der+Zeichen/Kapitel+I",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Schuo+Gua+-+Besprechung+der+Zeichen/Kapitel+II",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Schuo+Gua+-+Besprechung+der+Zeichen/Kapitel+III",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Da+Dschuan+-+Die+Gro%C3%9Fe+Abhandlung",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Da+Dschuan+-+Die+Gro%C3%9Fe+Abhandlung/1.+Abteilung",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Da+Dschuan+-+Die+Gro%C3%9Fe+Abhandlung/2.+Abteilung",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen/1.+Allgemeines",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen/2.+Die+acht+Grundzeichen+und+ihre+Verwendung",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen/3.+Die+Zeit",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen/4.+Die+Pl%C3%A4tze",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen/5.+Der+Charakter+der+Striche",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen/6.+Die+Beziehungen+der+Striche+untereinander",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Die+Struktur+der+Zeichen/7.+Die+Herren+des+Zeichens",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/%C3%9Cber+das+Orakelnehmen",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/%C3%9Cber+das+Orakelnehmen/a.+Das+Schafgarbenorakel",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/%C3%9Cber+das+Orakelnehmen/b.+M%C3%BCnzenorakel",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Schema+zum+Auffinden+der+gezogenen+I+Ging-Zeichen",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Verzeichnis+der+Bildzeichen",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Verzeichnis+der+Zeichen+nach+H%C3%A4usern+geordnet",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Verzeichnis+der+Zeichen+nach+H%C3%A4usern+geordnet/A.+Die+acht+Urzeichen+nach+ihrer+Form",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Verzeichnis+der+Zeichen+nach+H%C3%A4usern+geordnet/B.+Die+acht+H%C3%A4user",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Zweites+Buch%3A+Das+Material/Transkriptionstabelle"
+      ]
+    },
+    "drittesBuchTenWings": {
+      "available": false,
+      "rootLinks": [],
+      "hexSubpages": [
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/1.+Ki%C3%ABn+-+Das+Sch%C3%B6pferische/Das+Urteil",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/1.+Ki%C3%ABn+-+Das+Sch%C3%B6pferische/Das+Bild",
+        "/Philosophie/M/Anonym/I+Ging+-+Buch+der+Wandlungen/Erstes+Buch%3A+Der+Text/Erste+Abteilung/1.+Ki%C3%ABn+-+Das+Sch%C3%B6pferische/Die+einzelnen+Linien"
+      ],
+      "note": "zeno.org does not publish Drittes Buch / Die Kommentare (37-field Ten Wings layer)"
+    }
+  },
+  "extractionPlan": [
+    {
+      "phase": 1,
+      "layer": "book-one",
+      "source": "zeno.org Erstes Buch",
+      "status": "done",
+      "command": "npm run extract:wilhelm-de-from-zeno:all && npm run promote:wilhelm-de-zeno-to-merged"
+    },
+    {
+      "phase": 2,
+      "layer": "comments-ten-wings",
+      "source": "Diederichs 1924 PDF Drittes Buch (print primary — not on Zeno)",
+      "status": "blocked-on-zeno",
+      "nextSteps": [
+        "Build PDF text extract → wilhelm-de-64hex-comments-zeno-extract-latest.json (misnamed until Zeno adds Drittes Buch)",
+        "Field split with DE markers (Kommentar zur Entscheidung, Kommentar zu den Bildern, Wen Yen)",
+        "promote-wilhelm-de-comments-to-merged (mirror book-one promote)",
+        "AU 64×37 vs physical book before runtimeIngest"
+      ],
+      "blockedReason": "No Drittes Buch URLs on zeno.org"
+    },
+    {
+      "phase": 3,
+      "layer": "zweites-buch-material",
+      "source": "zeno.org Zweites Buch",
+      "status": "partial",
+      "artifact": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\zeno\\wilhelm-de-zeno-material-latest.json",
+      "command": "npm run extract:wilhelm-de-from-zeno:all (includes --material crawl)"
+    }
+  ]
+}

@@ -1,0 +1,846 @@
+{
+  "summary": {
+    "generatedAt": "2026-06-25T03:35:43.516Z",
+    "pass": true,
+    "overlayRows": 128,
+    "overlayRowsPass": 128,
+    "uniqueHanzi": 71,
+    "leggeDiacritics": {
+      "ă": [
+        2,
+        4,
+        13,
+        32,
+        37,
+        46,
+        47,
+        51,
+        52,
+        55
+      ],
+      "â": [
+        9,
+        11,
+        14,
+        20,
+        26,
+        28,
+        34,
+        37,
+        43,
+        44,
+        59,
+        62
+      ],
+      "î": [
+        8,
+        10,
+        12,
+        22,
+        30,
+        42,
+        63,
+        64
+      ],
+      "û": [
+        9,
+        14,
+        18,
+        24,
+        25,
+        26,
+        61
+      ],
+      "ü": [
+        5,
+        16,
+        56
+      ],
+      "Ž": [
+        35,
+        45,
+        48,
+        63,
+        64
+      ],
+      "Î": [
+        36
+      ]
+    },
+    "missingDiacritics": [],
+    "criticalSamples": {
+      "legge32": "Hăng",
+      "legge35": "Žin"
+    }
+  },
+  "rows": [
+    {
+      "translator": "wilhelm",
+      "number": 1,
+      "name": "The Creative",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 2,
+      "name": "The Receptive",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 3,
+      "name": "Difficulty at the Beginning",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 4,
+      "name": "Youthful Folly",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 5,
+      "name": "Waiting (Nourishment)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 6,
+      "name": "Conflict",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 7,
+      "name": "The Army",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 8,
+      "name": "Holding Together [Union]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 9,
+      "name": "The Taming Power of the Small",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 10,
+      "name": "Treading [Conduct]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 11,
+      "name": "Peace",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 12,
+      "name": "Standstill [Stagnation]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 13,
+      "name": "Fellowship with Men",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 14,
+      "name": "Posession in Great Measure",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 15,
+      "name": "Modesty",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 16,
+      "name": "Enthusiasm",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 17,
+      "name": "Following",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 18,
+      "name": "Work on What Has Been Spoiled [Decay]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 19,
+      "name": "Approach",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 20,
+      "name": "Contemplation (View)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 21,
+      "name": "Biting Through",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 22,
+      "name": "Grace",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 23,
+      "name": "Splitting Apart",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 24,
+      "name": "Return (The Turning Point)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 25,
+      "name": "Innocence (The Unexpected)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 26,
+      "name": "The Taming Power of the Great",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 27,
+      "name": "The Corners of the Mouth",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 28,
+      "name": "Preponderance of the Great",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 29,
+      "name": "The Abysmal (Water)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 30,
+      "name": "The Clinging, Fire",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 31,
+      "name": "Influence (Wooing)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 32,
+      "name": "Duration",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 33,
+      "name": "Retreat",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 34,
+      "name": "The Power of the Great",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 35,
+      "name": "Progress",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 36,
+      "name": "Darkening of the Light",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 37,
+      "name": "The Family [The Clan]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 38,
+      "name": "Opposition",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 39,
+      "name": "Obstruction",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 40,
+      "name": "Deliverance",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 41,
+      "name": "Decrease",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 42,
+      "name": "Increase",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 43,
+      "name": "Break-through (Resoluteness)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 44,
+      "name": "Coming to Meet",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 45,
+      "name": "Gathering Together [Massing]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 46,
+      "name": "Pushing Upward",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 47,
+      "name": "Oppression (Exhaustion)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 48,
+      "name": "The Well",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 49,
+      "name": "Revolution (Molting)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 50,
+      "name": "The Caldron",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 51,
+      "name": "The Arousing (Shock, Thunder)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 52,
+      "name": "Keeping Still, Mountain",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 53,
+      "name": "Development (Gradual Progress)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 54,
+      "name": "The Marrying Maiden",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 55,
+      "name": "Abundance [Fullness]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 56,
+      "name": "The Wanderer",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 57,
+      "name": "The Gentle (Penetrating, Wind)",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 58,
+      "name": "The Joyous, Lake",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 59,
+      "name": "Dispersion [Dissolution]",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 60,
+      "name": "Limitation",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 61,
+      "name": "Inner Truth",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 62,
+      "name": "Preponderance of the Small",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 63,
+      "name": "After Completion",
+      "pass": true
+    },
+    {
+      "translator": "wilhelm",
+      "number": 64,
+      "name": "Before Completion",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 1,
+      "name": "Khien",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 2,
+      "name": "Khwăn",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 3,
+      "name": "Kun",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 4,
+      "name": "Măng",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 5,
+      "name": "Hsü",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 6,
+      "name": "Sung",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 7,
+      "name": "Sze",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 8,
+      "name": "Pî",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 9,
+      "name": "Hsiâo Khû",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 10,
+      "name": "Lî",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 11,
+      "name": "Thâi",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 12,
+      "name": "Phî",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 13,
+      "name": "Thung Zăn",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 14,
+      "name": "Tâ Yû",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 15,
+      "name": "Khien",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 16,
+      "name": "Yü",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 17,
+      "name": "Sui",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 18,
+      "name": "Kû",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 19,
+      "name": "Lin",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 20,
+      "name": "Kwân",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 21,
+      "name": "Shih Ho",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 22,
+      "name": "Pî",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 23,
+      "name": "Po",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 24,
+      "name": "Fû",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 25,
+      "name": "Wû Wang",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 26,
+      "name": "Tâ Khû",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 27,
+      "name": "I",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 28,
+      "name": "Tâ Kwo",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 29,
+      "name": "Khan",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 30,
+      "name": "Lî",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 31,
+      "name": "Hsien",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 32,
+      "name": "Hăng",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 33,
+      "name": "Thun",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 34,
+      "name": "Tâ Kwang",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 35,
+      "name": "Žin",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 36,
+      "name": "Ming Î",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 37,
+      "name": "Kiâ Zăn",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 38,
+      "name": "Khwei",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 39,
+      "name": "Kien",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 40,
+      "name": "Kieh",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 41,
+      "name": "Sun",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 42,
+      "name": "Yî",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 43,
+      "name": "Kwâi",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 44,
+      "name": "Kâu",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 45,
+      "name": "Žhui",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 46,
+      "name": "Shăng",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 47,
+      "name": "Khwăn",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 48,
+      "name": "Žing",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 49,
+      "name": "Ko",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 50,
+      "name": "Ting",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 51,
+      "name": "Kăn",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 52,
+      "name": "Kăn",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 53,
+      "name": "Kien",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 54,
+      "name": "Kwei Mei",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 55,
+      "name": "Făng",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 56,
+      "name": "Lü",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 57,
+      "name": "Sun",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 58,
+      "name": "Tui",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 59,
+      "name": "Hwân",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 60,
+      "name": "Kieh",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 61,
+      "name": "Kung Fû",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 62,
+      "name": "Hsiâo Kwo",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 63,
+      "name": "Kî Žî",
+      "pass": true
+    },
+    {
+      "translator": "legge",
+      "number": 64,
+      "name": "Wei Žî",
+      "pass": true
+    }
+  ]
+}

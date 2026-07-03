@@ -1,0 +1,223 @@
+{
+  "updatedAt": "2026-06-30T21:30:56.178Z",
+  "from": 14,
+  "to": 18,
+  "mismatches": [
+    {
+      "hex": 14,
+      "field": "ruler_note",
+      "jpgPages": "382-384",
+      "au_estado": "cerrado",
+      "pilotLen": 316,
+      "expectedLen": 256,
+      "pilotSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Diese Linie ist leer und zentral und weilt au",
+      "expectedSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Diese Linie ist\nDer geser\nlichen Yangstriche "
+    },
+    {
+      "hex": 15,
+      "field": "ruler_note",
+      "jpgPages": "385-388",
+      "au_estado": "cerrado",
+      "pilotLen": 382,
+      "expectedLen": 396,
+      "pilotSnippet": "Der Herr des Zeichens ist die Neun auf drittem Platz. In dem Zeichen\nist sie der einzige lichte Stri",
+      "expectedSnippet": "Dschen und\nKan\ner Herr des Zeichens ist die Neun auf drittem Platz. In dem Zeichen\nist sie der einzi"
+    },
+    {
+      "hex": 16,
+      "field": "ruler_note",
+      "jpgPages": "389-392",
+      "au_estado": "cerrado",
+      "pilotLen": 300,
+      "expectedLen": 271,
+      "pilotSnippet": "Der Herr des Zeichens ist die Neun auf viertem Platz. Im Zeichen gibt es nur diesen einen lichten St",
+      "expectedSnippet": "Kan und\nder auf dem Platz des Ministers steht;\ner Herr des Zeichens ist die Neun auf viertem Platz. "
+    },
+    {
+      "hex": 17,
+      "field": "ruler_note",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 334,
+      "expectedLen": 275,
+      "pilotSnippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem Platz. Der Grund, weshalb das ",
+      "expectedSnippet": "Sun und\nie Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem, daß der Starke es über"
+    },
+    {
+      "hex": 17,
+      "field": "sequence",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 96,
+      "expectedLen": 100,
+      "pilotSnippet": "Wo Begeisterung ist, da gibt es sicher Nachfolge. Darum\nfolgt darauf das Zeichen: die Nachfolge.",
+      "expectedSnippet": "Gen\nWo Begeisterung ist, da gibt es sicher Nachfolge. Darum\nfolgt darauf das Zeichen: die Nachfolge."
+    },
+    {
+      "hex": 17,
+      "field": "image_oraculo",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 127,
+      "expectedLen": 129,
+      "pilotSnippet": "Inmitten des Sees ist der Donner: Das Bild der Nachfolge. So\nkehrt der Edle zur Zeit des Abenddunkel",
+      "expectedSnippet": "Inmitten des Sees ist der Donner: das Bild der Nachfolge.\\nSo kehrt der Edle zur Zeit des Abenddunke"
+    },
+    {
+      "hex": 17,
+      "field": "commentary_image",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 500,
+      "expectedLen": 510,
+      "pilotSnippet": "Das Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebenso ist im J",
+      "expectedSnippet": "Ruhe ein.\nDas Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebens"
+    },
+    {
+      "hex": 17,
+      "field": "L1_b_comentario",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 489,
+      "expectedLen": 491,
+      "pilotSnippet": "Das Maßgebende ändert sich.\"\nDem Korrekten folgen bringt Heil.\n„Zur Tür hinausgehen im Verkehr schaf",
+      "expectedSnippet": "Das Maßgebende ändert sich.\"\nDem Korrekten folgen bringt Heil.\n\"Zur Tür hinausgehen im Verkehr schaf"
+    },
+    {
+      "hex": 17,
+      "field": "L3_b_comentario",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 464,
+      "expectedLen": 464,
+      "pilotSnippet": "Hängt man dem starken Mann an\",\nso läßt der Wille den Unteren fahren.\nHier ist der kleine Knabe die ",
+      "expectedSnippet": "Hängt man dem starken Mann an\",\nso läßt der Wille den Unteren fahren.\nHier ist der kleine Knabe die "
+    },
+    {
+      "hex": 17,
+      "field": "L4_b_comentario",
+      "jpgPages": "393-395",
+      "au_estado": "cerrado",
+      "pilotLen": 583,
+      "expectedLen": 585,
+      "pilotSnippet": "Die Nachfolge schafft Erfolg\":\nDas ist von unheilvoller Bedeutung.\n„Mit Wahrhaftigkeit auf dem Weg w",
+      "expectedSnippet": "Die Nachfolge schafft Erfolg\":\nDas ist von unheilvoller Bedeutung.\n„Mit Wahrhaftigkeit auf dem Weg w"
+    }
+  ],
+  "ninguno": [
+    {
+      "hex": 14,
+      "field": "ruler_note",
+      "jpgPages": "382-384",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Diese Linie ist leer und zentral und weilt auf geehrter Stelle un"
+    },
+    {
+      "hex": 14,
+      "field": "image_oraculo",
+      "jpgPages": "382-384",
+      "snippet": "Das Feuer am Himmel oben:\ndas Bild des Besitzes von Großem.\nSo hemmt der Edle das Böse und fördert das Gute\nund gehorcht"
+    },
+    {
+      "hex": 14,
+      "field": "commentary_image",
+      "jpgPages": "382-384",
+      "snippet": "Die Sonne am Himmel, die alles Irdische bescheint, ist das Bild des großen\nBesitzes. Die Unterdrückung des Bösen wird an"
+    },
+    {
+      "hex": 15,
+      "field": "ruler_note",
+      "jpgPages": "385-388",
+      "snippet": "Der Herr des Zeichens ist die Neun auf drittem Platz. In dem Zeichen\nist sie der einzige lichte Strich, der auf seinem P"
+    },
+    {
+      "hex": 15,
+      "field": "commentary_decision",
+      "jpgPages": "385-388",
+      "snippet": "Bescheidenheit schafft Gelingen; denn der Weg des Himmels\nist es, nach unten zu wirken und Licht und Helle zu schaffen.\n"
+    },
+    {
+      "hex": 15,
+      "field": "image_oraculo",
+      "jpgPages": "385-388",
+      "snippet": "Inmitten der Erde ist ein Berg:\ndas Bild der Bescheidenheit.\nSo verringert der Edle, was zu viel ist,\nund vermehrt, was "
+    },
+    {
+      "hex": 15,
+      "field": "commentary_image",
+      "jpgPages": "385-388",
+      "snippet": "zu wenig ist. Er wägt die Dinge und macht sie gleich.\nDie Aktion des Edlen zur Herstellung der durch das Zeichen gegeben"
+    },
+    {
+      "hex": 15,
+      "field": "L1_b_comentario",
+      "jpgPages": "385-388",
+      "snippet": "Ein bescheiden-bescheidener Edler ist niedrig, um sich sehr\nzu hüten.\nDie doppelte Bescheidenheit ist durch die doppelte"
+    },
+    {
+      "hex": 16,
+      "field": "ruler_note",
+      "jpgPages": "389-392",
+      "snippet": "Der Herr des Zeichens ist die Neun auf viertem Platz. Im Zeichen gibt es nur diesen einen lichten Strich, der auf dem Pl"
+    },
+    {
+      "hex": 16,
+      "field": "commentary_image",
+      "jpgPages": "389-392",
+      "snippet": "Verdienste zu ehren und brachten sie herrlich dem höchsten\nGott dar, indem sie ihre Ahnen dazu einluden."
+    },
+    {
+      "hex": 17,
+      "field": "ruler_note",
+      "jpgPages": "393-395",
+      "snippet": "Die Herren des Zeichens sind die Anfangsneun und die Neun auf fünftem Platz. Der Grund, weshalb das Zeichen die Nachfolg"
+    },
+    {
+      "hex": 17,
+      "field": "misc_notes",
+      "jpgPages": "393-395",
+      "snippet": "Nachfolge duldet keine alten Vorurteile.\nBeigefügte Urteile\nDie Heroen zähmten das Rind und spannten das Pferd an.\nSo ko"
+    },
+    {
+      "hex": 17,
+      "field": "image_oraculo",
+      "jpgPages": "393-395",
+      "snippet": "Inmitten des Sees ist der Donner: Das Bild der Nachfolge. So\nkehrt der Edle zur Zeit des Abenddunkels zu Erholung und\nRu"
+    },
+    {
+      "hex": 17,
+      "field": "commentary_image",
+      "jpgPages": "393-395",
+      "snippet": "Das Zeichen Dschen steht im Osten, Dui im Westen. Die Zeit dazwischen\nist die Nacht. Ebenso ist im Jahr die Zeit gezeich"
+    },
+    {
+      "hex": 17,
+      "field": "L1_b_comentario",
+      "jpgPages": "393-395",
+      "snippet": "Das Maßgebende ändert sich.\"\nDem Korrekten folgen bringt Heil.\n„Zur Tür hinausgehen im Verkehr schafft Werke.\"\nMan verli"
+    },
+    {
+      "hex": 17,
+      "field": "L4_b_comentario",
+      "jpgPages": "393-395",
+      "snippet": "Die Nachfolge schafft Erfolg\":\nDas ist von unheilvoller Bedeutung.\n„Mit Wahrhaftigkeit auf dem Weg wandeln\":\ndas bringt "
+    },
+    {
+      "hex": 18,
+      "field": "commentary_decision",
+      "jpgPages": "396-399",
+      "snippet": "Die Arbeit am Verdorbenen: Das Feste ist oben und das\nWeiche unten, sanft und stillestehend: das Verdorbene.\n\"Die Arbeit"
+    },
+    {
+      "hex": 18,
+      "field": "image_oraculo",
+      "jpgPages": "396-399",
+      "snippet": "Unten am Berg weht der Wind: das Bild des Verderbens.\nSo rüttelt der Edle die Leute auf und stärkt ihren Geist."
+    },
+    {
+      "hex": 18,
+      "field": "commentary_image",
+      "jpgPages": "396-399",
+      "snippet": "Der Wind, der am Berg herabfällt, bewirkt das Verderben. Aber andererseits wird durch die umgekehrte Bewegung erst der W"
+    }
+  ]
+}

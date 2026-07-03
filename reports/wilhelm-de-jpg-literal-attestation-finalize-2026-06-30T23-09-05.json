@@ -1,0 +1,118 @@
+{
+  "updatedAt": "2026-06-30T23:09:05.723Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "promotedCount": 422,
+  "attestationReady": true,
+  "attestationIssued": true,
+  "ledgerSummary": {
+    "hexComplete": 64,
+    "hexTotal": 64,
+    "fieldsTotal": 2304,
+    "fieldsVerified": 1992,
+    "fieldsCorrected": 0,
+    "fieldsVacio": 312,
+    "fieldsPending": 0
+  },
+  "samplePromoted": [
+    {
+      "hex": 1,
+      "field": "chinese_roman",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "ruler_note",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "commentary_decision",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "image_oraculo",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "commentary_image",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L1_a_oraculo",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L2_a_oraculo",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L3_a_oraculo",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L3_b_comentario",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L4_a_oraculo",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L4_b_comentario",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L5_a_oraculo",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L5_b_comentario",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "L6_a_oraculo",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "yong_b_comentario",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 1,
+      "field": "wen_yen_note",
+      "priorNote": "JPG pp.316-327 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 2,
+      "field": "chinese_roman",
+      "priorNote": "JPG pp.328-336 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 2,
+      "field": "ruler_note",
+      "priorNote": "JPG pp.328-336 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 2,
+      "field": "commentary_decision",
+      "priorNote": "JPG pp.328-336 — AUD-DAT-W-07 literal batch 1-2"
+    },
+    {
+      "hex": 2,
+      "field": "image_oraculo",
+      "priorNote": "JPG pp.328-336 — AUD-DAT-W-07 literal batch 1-2"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 # Mapa de Mutaciones (Mutation Explorer) — Plan de implementación
-**Código:** `20260628-PLAN-MUT-06 mutation-explorer` · **Familia:** MUT · **Estado:** open
+**Código:** `20260628-PLAN-MUT-06 mutation-explorer` · **Familia:** MUT · **Estado:** closed (implementado 2026-07-01)
 
 - **Fecha:** 2026-06-28
 - **Rama:** `feature/mutation-explorer`

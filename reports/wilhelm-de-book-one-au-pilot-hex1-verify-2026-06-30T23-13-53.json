@@ -1,0 +1,210 @@
+{
+  "updatedAt": "2026-06-30T23:13:53.214Z",
+  "auditCode": "20260629-PLAN-DAT-W-03",
+  "hex": 1,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-book-one-au\\wilhelm-de-book-one-hex-1-pilot-au.tsv",
+  "ok": false,
+  "closed": 0,
+  "pending": 33,
+  "fieldsTotal": 33,
+  "rows": [
+    {
+      "field": "hex",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "nombre",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "chinese",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "chinese_roman",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "hex_font",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "trigrama_arriba",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "trigrama_abajo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "intro",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "judgment_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "judgment_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "image_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "image_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "L1_etiqueta",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L1_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L1_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "L2_etiqueta",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L2_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L2_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "L3_etiqueta",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L3_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L3_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "L4_etiqueta",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L4_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L4_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "L5_etiqueta",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "L5_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L5_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "L6_etiqueta",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L6_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "L6_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    },
+    {
+      "field": "yong_etiqueta",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "yong_oraculo",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "coincide_zeno"
+    },
+    {
+      "field": "yong_comentario",
+      "status": "PENDING_AU",
+      "au_estado": "pendiente",
+      "resolucion_disputa": "diff_zeno"
+    }
+  ]
+}

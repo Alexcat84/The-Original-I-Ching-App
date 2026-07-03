@@ -74,7 +74,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   es: {
     configErrorTitle: "Acceso no disponible",
     configErrorBody: "Faltan {{urlKey}} o {{anonKey}} en el cliente.",
-    brandSubtitle: "Lectura clásica con Zhu Xi y Wilhelm/Baynes.",
+    brandSubtitle: "Lectura clásica con Zhu Xi y Wilhelm (1924).",
     tablistAria: "Acceso",
     signInTab: "Iniciar sesión",
     signUpTab: "Crear cuenta",
@@ -158,7 +158,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   en: {
     configErrorTitle: "Sign-in unavailable",
     configErrorBody: "Missing {{urlKey}} or {{anonKey}} in the client.",
-    brandSubtitle: "Classical reading with Zhu Xi and Wilhelm/Baynes.",
+    brandSubtitle: "Classical reading with Zhu Xi and Wilhelm (1924).",
     tablistAria: "Sign in",
     signInTab: "Sign in",
     signUpTab: "Create account",
@@ -239,7 +239,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   pt: {
     configErrorTitle: "Acesso indisponível",
     configErrorBody: "Faltam {{urlKey}} ou {{anonKey}} no cliente.",
-    brandSubtitle: "Leitura clássica com Zhu Xi e Wilhelm/Baynes.",
+    brandSubtitle: "Leitura clássica com Zhu Xi e Wilhelm (1924).",
     tablistAria: "Acesso",
     signInTab: "Iniciar sessão",
     signUpTab: "Criar conta",
@@ -319,7 +319,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   fr: {
     configErrorTitle: "Connexion indisponible",
     configErrorBody: "Il manque {{urlKey}} ou {{anonKey}} côté client.",
-    brandSubtitle: "Lecture classique avec Zhu Xi et Wilhelm/Baynes.",
+    brandSubtitle: "Lecture classique avec Zhu Xi et Wilhelm (1924).",
     tablistAria: "Connexion",
     signInTab: "Se connecter",
     signUpTab: "Créer un compte",
@@ -401,7 +401,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   de: {
     configErrorTitle: "Anmeldung nicht verfügbar",
     configErrorBody: "{{urlKey}} oder {{anonKey}} fehlen im Client.",
-    brandSubtitle: "Klassische Lesung mit Zhu Xi und Wilhelm/Baynes.",
+    brandSubtitle: "Klassische Lesung mit Zhu Xi und Wilhelm (1924).",
     tablistAria: "Anmeldung",
     signInTab: "Anmelden",
     signUpTab: "Konto erstellen",
@@ -482,7 +482,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   it: {
     configErrorTitle: "Accesso non disponibile",
     configErrorBody: "Mancano {{urlKey}} o {{anonKey}} nel client.",
-    brandSubtitle: "Lettura classica con Zhu Xi e Wilhelm/Baynes.",
+    brandSubtitle: "Lettura classica con Zhu Xi e Wilhelm (1924).",
     tablistAria: "Accesso",
     signInTab: "Accedi",
     signUpTab: "Crea account",
@@ -565,7 +565,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
     configErrorTitle: "サインインできません",
     configErrorBody:
       "クライアントに {{urlKey}} または {{anonKey}} がありません。",
-    brandSubtitle: "朱熹とウィルヘルム／ベインズによる古典的読み。",
+    brandSubtitle: "朱熹とウィルヘルム（1924）による古典的読み。",
     tablistAria: "サインイン",
     signInTab: "ログイン",
     signUpTab: "アカウント作成",
@@ -650,7 +650,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   zh: {
     configErrorTitle: "无法登录",
     configErrorBody: "客户端缺少 {{urlKey}} 或 {{anonKey}}。",
-    brandSubtitle: "朱熹变爻与卫礼贤/贝恩斯体系的经典解读。",
+    brandSubtitle: "朱熹变爻与卫礼贤（1924）体系的经典解读。",
     tablistAria: "登录",
     signInTab: "登录",
     signUpTab: "创建账户",
@@ -720,7 +720,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   ko: {
     configErrorTitle: "로그인을 사용할 수 없음",
     configErrorBody: "클라이언트에 {{urlKey}} 또는 {{anonKey}}가 없습니다.",
-    brandSubtitle: "주희와 윌헬름/베인스를 바탕으로 한 고전 해석.",
+    brandSubtitle: "주희와 윌헬름 (1924)를 바탕으로 한 고전 해석.",
     tablistAria: "로그인",
     signInTab: "로그인",
     signUpTab: "계정 만들기",
@@ -798,7 +798,7 @@ const LOGIN_PAGE_UI: Record<AppLocale, LoginPageUiMessages> = {
   ar: {
     configErrorTitle: "تسجيل الدخول غير متاح",
     configErrorBody: "{{urlKey}} أو {{anonKey}} مفقودان في العميل.",
-    brandSubtitle: "قراءة كلاسيكية وفق Zhu Xi وWilhelm/Baynes.",
+    brandSubtitle: "قراءة كلاسيكية وفق Zhu Xi وWilhelm (1924).",
     tablistAria: "تسجيل الدخول",
     signInTab: "تسجيل الدخول",
     signUpTab: "إنشاء حساب",

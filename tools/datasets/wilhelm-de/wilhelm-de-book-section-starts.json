@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": "585 JPG scan vision + pass03 OCR (2026-06-30)",
+  "totalBookPages": 585,
+  "noteEs": "Wilhelm no imprime las 10 alas en un solo bloque: alas 5–6 y 8 van completas en ZWEITES BUCH; alas 1–4, 7, 9–10 van repartidas por hex en DRITTES BUCH bajo los marcadores alemanes listados.",
+  "sections": [
+    {
+      "id": "erstes_buch",
+      "labelDe": "ERSTES BUCH",
+      "labelEs": "Texto oracular de los 64 hexagramas",
+      "wingRole": "oracle_text",
+      "startBookPage": 23,
+      "endBookPage": 212,
+      "markers": [
+        "DAS URTEIL",
+        "DAS BILD",
+        "Die einzelnen Linien"
+      ],
+      "start": {
+        "segment": "1-100",
+        "page": 23
+      },
+      "end": {
+        "segment": "201-300",
+        "page": 12
+      }
+    },
+    {
+      "id": "zweites_buch",
+      "labelDe": "ZWEITES BUCH — DAS MATERIAL",
+      "labelEs": "Material y alas completas (bloques)",
+      "wingRole": "ten_wings_monolith",
+      "startBookPage": 213,
+      "endBookPage": 314,
+      "markers": [
+        "ZWEITES BUCH",
+        "DAS MATERIAL"
+      ],
+      "start": {
+        "segment": "201-300",
+        "page": 13
+      },
+      "end": {
+        "segment": "301-400",
+        "page": 14
+      }
+    },
+    {
+      "id": "zweites_einleitung",
+      "labelDe": "Einleitung zu den zehn Flügeln",
+      "labelEs": "Ensayo: cómo Wilhelm reparte las 10 alas",
+      "parent": "zweites_buch",
+      "startBookPage": 216,
+      "endBookPage": 218,
+      "markers": [
+        "zehn Flügel",
+        "Tuan Dschuan",
+        "Siang Dschuan",
+        "Wen Yän",
+        "Schuo Gua"
+      ],
+      "start": {
+        "segment": "201-300",
+        "page": 16
+      },
+      "end": {
+        "segment": "201-300",
+        "page": 18
+      }
+    },
+    {
+      "id": "schuo_gua",
+      "labelDe": "I. SCHUO GUA / Besprechung der Zeichen",
+      "labelEs": "Ala 8 — Discusión de los trigramas (texto continuo)",
+      "parent": "zweites_buch",
+      "wingNumbers": [
+        8
+      ],
+      "startBookPage": 219,
+      "endBookPage": 232,
+      "markers": [
+        "I. SCHUO GUA",
+        "KAPITEL I",
+        "KAPITEL II",
+        "KAPITEL III"
+      ],
+      "start": {
+        "segment": "201-300",
+        "page": 19
+      },
+      "end": {
+        "segment": "201-300",
+        "page": 32
+      }
+    },
+    {
+      "id": "da_dschuan",
+      "labelDe": "II. DA DSCHUAN / Die große Abhandlung",
+      "labelEs": "Alas 5–6 — Gran Tratado / Xi Ci (texto continuo)",
+      "parent": "zweites_buch",
+      "wingNumbers": [
+        5,
+        6
+      ],
+      "startBookPage": 233,
+      "endBookPage": 310,
+      "markers": [
+        "II. DA DSCHUAN",
+        "Hi Tsï Dschuan",
+        "I. ABTEILUNG",
+        "II. ABTEILUNG"
+      ],
+      "start": {
+        "segment": "201-300",
+        "page": 33
+      },
+      "end": {
+        "segment": "301-400",
+        "page": 10
+      }
+    },
+    {
+      "id": "drittes_buch",
+      "labelDe": "DRITTES BUCH — DIE KOMMENTARE",
+      "labelEs": "Comentarios clásicos repartidos hex por hex",
+      "wingRole": "ten_wings_per_hex",
+      "startBookPage": 315,
+      "endBookPage": 585,
+      "markers": [
+        "DRITTES BUCH",
+        "DIE KOMMENTARE"
+      ],
+      "start": {
+        "segment": "301-400",
+        "page": 15
+      },
+      "end": {
+        "segment": "501-585",
+        "page": 85
+      }
+    }
+  ],
+  "drittesWingFields": [
+    {
+      "wing": [
+        1,
+        2
+      ],
+      "field": "commentary_decision",
+      "markerDe": "Kommentar zur Entscheidung"
+    },
+    {
+      "wing": [
+        3,
+        4
+      ],
+      "field": "commentary_image",
+      "markerDe": "Kommentar zu den Bildern"
+    },
+    {
+      "wing": [
+        3,
+        4
+      ],
+      "field": "L1_b_comentario",
+      "markerDe": "Zu den einzelnen Linien / Kleine Bilder"
+    },
+    {
+      "wing": [
+        7
+      ],
+      "field": "wen_yen",
+      "markerDe": "Kommentar zu den Textworten (Wen Yän)",
+      "hexOnly": [
+        1,
+        2
+      ]
+    },
+    {
+      "wing": [
+        9
+      ],
+      "field": "sequence",
+      "markerDe": "Die Reihenfolge"
+    },
+    {
+      "wing": [
+        10
+      ],
+      "field": "misc_notes",
+      "markerDe": "Vermischte Zeichen"
+    },
+    {
+      "wing": [],
+      "field": "ruler_note",
+      "markerDe": "Kernzeichen",
+      "note": "Nota técnica Wilhelm, no es ala clásica"
+    }
+  ]
+}

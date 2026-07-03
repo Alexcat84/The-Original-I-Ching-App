@@ -1,0 +1,153 @@
+{
+  "updatedAt": "2026-06-30T23:26:41.741Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "from": 1,
+  "to": 64,
+  "ok": false,
+  "summary": {
+    "pilotClosed": 2304,
+    "pilotPending": 0,
+    "pilotVsMerged": 79,
+    "pilotVsGold": 5,
+    "goldVsMerged": 74,
+    "ledgerIssues": 0,
+    "findingsTotal": 158,
+    "ledgerAttestation": {
+      "hexComplete": 64,
+      "hexTotal": 64,
+      "fieldsTotal": 2304,
+      "fieldsVerified": 1992,
+      "fieldsCorrected": 0,
+      "fieldsVacio": 312,
+      "fieldsPending": 0
+    }
+  },
+  "findings": [
+    {
+      "hex": 1,
+      "field": "chinese_roman",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 1,
+      "field": "chinese_roman",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "chinese_roman",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "chinese_roman",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "commentary_decision",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "commentary_decision",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "ruler_note",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "ruler_note",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_decision",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_decision",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "image_oraculo",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "image_oraculo",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_image",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "commentary_image",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 4,
+      "field": "L3_b_comentario",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 4,
+      "field": "L3_b_comentario",
+      "kind": "pilot_ne_gold"
+    },
+    {
+      "hex": 5,
+      "field": "chinese",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 5,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 6,
+      "field": "chinese",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 6,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 7,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 8,
+      "field": "chinese_roman",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 9,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 10,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    },
+    {
+      "hex": 11,
+      "field": "chinese",
+      "kind": "gold_ne_merged"
+    }
+  ],
+  "findingsTruncated": false
+}

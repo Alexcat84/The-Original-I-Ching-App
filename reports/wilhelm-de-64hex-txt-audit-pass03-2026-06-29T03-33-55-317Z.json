@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-06-29T03:33:55.317Z",
+  "pass": "03",
+  "g0": {
+    "pass": true,
+    "errors": [],
+    "warnings": [],
+    "fieldCount": 33
+  },
+  "outputPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\book-one\\wilhelm-de-64hex-parsed.json"
+}

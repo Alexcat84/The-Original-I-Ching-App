@@ -1,0 +1,1383 @@
+{
+  "updatedAt": "2026-06-30T23:22:11.937Z",
+  "from": 49,
+  "to": 64,
+  "mismatches": [
+    {
+      "hex": 49,
+      "field": "ruler_note",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "pilotLen": 281,
+      "expectedLen": 255,
+      "pilotSnippet": "Der Herr des Zeichens ist die Neun auf fünftem Platz, denn man muß um die Autorität für eine Umwälzu",
+      "expectedSnippet": "Kiän und Sun\nDer Herr des Zeichens ist die Neun auf fünftem Platz, denn man muß\nhaben. Wer zentral u"
+    },
+    {
+      "hex": 49,
+      "field": "commentary_decision",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "pilotLen": 2863,
+      "expectedLen": 2864,
+      "pilotSnippet": "Die Umwälzung: Wasser und Feuer dämpfen einander. Zwei\n1 Weil der Gedanke des Brunnens darauf beruht",
+      "expectedSnippet": "Die Umwälzung: Wasser und Feuer dämpfen einander. Zwei\n1 Weil der Gedanke des Brunnens darauf beruht"
+    },
+    {
+      "hex": 49,
+      "field": "L1_b_comentario",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "pilotLen": 617,
+      "expectedLen": 616,
+      "pilotSnippet": "„Man wird eingewickelt in das Fell einer gelben Kuh.\"\nMan soll so nicht handeln.\nDas Zeichen Li hat ",
+      "expectedSnippet": "Man wird eingewickelt in das Fell einer gelben Kuh.\"\nMan soll so nicht handeln.\nDas Zeichen Li hat d"
+    },
+    {
+      "hex": 49,
+      "field": "L2_b_comentario",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "pilotLen": 677,
+      "expectedLen": 676,
+      "pilotSnippet": "„Am eignen Tag, da mag man umwälzen.\"\nDas Handeln bringt schönen Erfolg.\nDer Strich ist korrekt, zen",
+      "expectedSnippet": "Am eignen Tag, da mag man umwälzen.\"\nDas Handeln bringt schönen Erfolg.\nDer Strich ist korrekt, zent"
+    },
+    {
+      "hex": 50,
+      "field": "ruler_note",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "pilotLen": 346,
+      "expectedLen": 333,
+      "pilotSnippet": "Dui und\nKiän\nDie Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Die dem Ze",
+      "expectedSnippet": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Die dem Zeichen \"Tiegel"
+    },
+    {
+      "hex": 50,
+      "field": "commentary_decision",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "pilotLen": 1847,
+      "expectedLen": 1847,
+      "pilotSnippet": "Der Tiegel ist das Bild eines Gegenstandes. Indem man mit\nHolz ins Feuer dringt, werden die Speisen ",
+      "expectedSnippet": "Der Tiegel ist das Bild eines Gegenstandes. Indem man mit\nHolz ins Feuer dringt, werden die Speisen "
+    },
+    {
+      "hex": 50,
+      "field": "L2_b_comentario",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "pilotLen": 915,
+      "expectedLen": 915,
+      "pilotSnippet": "Im Tiegel ist Nahrung\":\nSei vorsichtig, wohin du gehst.\n\"Meine Genossen haben Neid\":\nDas ist endgült",
+      "expectedSnippet": "Im Tiegel ist Nahrung\":\nSei vorsichtig, wohin du gehst.\n\"Meine Genossen haben Neid\":\nDas ist endgült"
+    },
+    {
+      "hex": 50,
+      "field": "L4_b_comentario",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "pilotLen": 802,
+      "expectedLen": 801,
+      "pilotSnippet": "„Das Mahl des Fürsten wird verschüttet.\"\nWie kann man ihm da noch trauen?\nDer Strich steht in Bezieh",
+      "expectedSnippet": "Das Mahl des Fürsten wird verschüttet.\"\nWie kann man ihm da noch trauen?\nDer Strich steht in Beziehu"
+    },
+    {
+      "hex": 50,
+      "field": "L5_b_comentario",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "pilotLen": 913,
+      "expectedLen": 916,
+      "pilotSnippet": "Die gelben Henkel des Tiegels sind zentral, um das Wirkliche\naufzunehmen.\nDer Strich ist zentral im ",
+      "expectedSnippet": "Die gelben Henkel des Tiegels sind zentral, um das Wirkliche\naufzunehmen.\nDer Strich ist zentral im "
+    },
+    {
+      "hex": 51,
+      "field": "ruler_note",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "pilotLen": 237,
+      "expectedLen": 186,
+      "pilotSnippet": "(DAS ERSCHUTTERN, DER DONNER)\nKernzeichen: Kan und\nGen\nDie Herren des Zeichens Dschen sind die beide",
+      "expectedSnippet": "Die Herren des Zeichens Dschen sind die beiden lichten Striche. Da es aber\nGen\nunten her in Bewegung"
+    },
+    {
+      "hex": 51,
+      "field": "commentary_decision",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "pilotLen": 1519,
+      "expectedLen": 1516,
+      "pilotSnippet": "„Das Erschüttern bringt Gelingen.\nDas Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Wor",
+      "expectedSnippet": "„Das Erschüttern bringt Gelingen.\nDas Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Wor"
+    },
+    {
+      "hex": 51,
+      "field": "L1_b_comentario",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "pilotLen": 353,
+      "expectedLen": 352,
+      "pilotSnippet": "„Das Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Worte: Ha, Ha!\"\nNachher hat man eine",
+      "expectedSnippet": "Das Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Worte: Ha, Ha!\"\nNachher hat man eine "
+    },
+    {
+      "hex": 51,
+      "field": "L5_b_comentario",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "pilotLen": 815,
+      "expectedLen": 818,
+      "pilotSnippet": "„Das Erschüttern geht hin und her: Gefahr.\"\nMan wandelt in Gefahr. Die Geschäfte sind in der Mitte,\n",
+      "expectedSnippet": "Das Erschüttern geht hin und her: Gefahr.\"\nMan wandelt in Gefahr. Die Geschäfte sind in der Mitte,\nd"
+    },
+    {
+      "hex": 51,
+      "field": "L6_b_comentario",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "pilotLen": 978,
+      "expectedLen": 976,
+      "pilotSnippet": "„Die Erschütterung bringt Verfall.\"\nEr hat die Mitte nicht erreicht.\nObwohl Unheil, kein Makel.\nMan ",
+      "expectedSnippet": "\"Die Erschütterung bringt Verfall.\"\nEr hat die Mitte nicht erreicht.\nObwohl Unheil, kein Makel.\nMan "
+    },
+    {
+      "hex": 52,
+      "field": "ruler_note",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "pilotLen": 268,
+      "expectedLen": 272,
+      "pilotSnippet": "Dschen und\nKan\nEigentlich sind auch beim Zeichen Gen die beiden lichten Striche die Herren des Zeich",
+      "expectedSnippet": "Dschen und\nEigen\n\"\nigentlich sind auch beim Zeichen Gen die beiden lichten Striche die Herren des Ze"
+    },
+    {
+      "hex": 52,
+      "field": "sequence",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "pilotLen": 159,
+      "expectedLen": 632,
+      "pilotSnippet": "Die Dinge können sich nicht dauernd bewegen, man muß sie\ninnehalten machen. Darum folgt darauf das Z",
+      "expectedSnippet": "Die Dinge können sich nicht dauernd bewegen, man muß sie\ninnehalten machen. Darum folgt darauf das Z"
+    },
+    {
+      "hex": 52,
+      "field": "L2_b_comentario",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "pilotLen": 878,
+      "expectedLen": 876,
+      "pilotSnippet": "„Er kann den nicht retten, dem er folgt\":\nDenn er kehrt sich nicht nach ihm, daß er auf ihn hört.\nDe",
+      "expectedSnippet": "Er kann den nicht retten, dem er folgt\":\nDenn er kehrt sich nicht nach ihm, daß er auf ihn hört.\nDer"
+    },
+    {
+      "hex": 52,
+      "field": "L3_b_comentario",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "pilotLen": 674,
+      "expectedLen": 674,
+      "pilotSnippet": "Stillehalten seiner Hüften.\"\nEs ist Gefahr, daß das Herz erstickt.\nDer Strich ist in der Mitte des K",
+      "expectedSnippet": "Stillehalten seiner Hüften.\"\nEs ist Gefahr, daß das Herz erstickt.\nDer Strich ist in der Mitte des K"
+    },
+    {
+      "hex": 53,
+      "field": "ruler_note",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "pilotLen": 617,
+      "expectedLen": 577,
+      "pilotSnippet": "(ALLMÄHLICHER FORTSCHRITT)\nKernzeichen: Li und\nKan\nDas Zeichen Entwicklung hat die Verheiratung eine",
+      "expectedSnippet": "Li und Kan\nDas Zeichen Entwicklung hat die Verheiratung eines Mädchens als Grundgedanken. Unter alle"
+    },
+    {
+      "hex": 53,
+      "field": "L3_a_oraculo",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "pilotLen": 191,
+      "expectedLen": 198,
+      "pilotSnippet": "Die Wildgans zieht allmählich der Hochebene zu. Der Mann\n\nzieht aus und kehrt nicht wieder. Die Frau",
+      "expectedSnippet": "Die Wildgans zieht allmählich der Hochebene zu. Der Mann\n*^^^^MA\nzieht aus und kehrt nicht wieder. D"
+    },
+    {
+      "hex": 54,
+      "field": "chinese_roman",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 6,
+      "expectedLen": 6,
+      "pilotSnippet": "GUI ME",
+      "expectedSnippet": "Gui me"
+    },
+    {
+      "hex": 54,
+      "field": "ruler_note",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 583,
+      "expectedLen": 551,
+      "pilotSnippet": "Das Zeichen „das heiratende Mädchen\" beruht auf der Idee, daß das\nMädchen dem Manne folgt. Darum hei",
+      "expectedSnippet": "Das Zeichen „das heiratende Mädchen\" beruht auf der Idee, daß das\nheißt es im Kommentar zur Entschei"
+    },
+    {
+      "hex": 54,
+      "field": "commentary_decision",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 2466,
+      "expectedLen": 544,
+      "pilotSnippet": "Das heiratende Mädchen bezeichnet den großen Sinn von\nHimmel und Erde. Wenn Himmel und Erde sich nic",
+      "expectedSnippet": "Das heiratende Mädchen bezeichnet den großen Sinn von\nHimmel und Erde. Wenn Himmel und Erde sich nic"
+    },
+    {
+      "hex": 54,
+      "field": "image_oraculo",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 135,
+      "expectedLen": 138,
+      "pilotSnippet": "Oberhalb des Sees ist der Donner: das Bild des heiratenden\nMädchens. So erkennt der Edle durch die E",
+      "expectedSnippet": "Oberhalb des Sees ist der Donner:\\ndas Bild des heiratenden Mädchens.\\nSo erkennt der Edle durch die"
+    },
+    {
+      "hex": 54,
+      "field": "commentary_image",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 664,
+      "expectedLen": 589,
+      "pilotSnippet": "Oberhalb des Sees ist der Donner: das Bild des heiratenden\nMädchens. So erkennt der Edle durch die E",
+      "expectedSnippet": "Mädchens. So erkennt der Edle durch die Ewigkeit des\nEndes das Vergängliche.\nIm Herbst kommt alles z"
+    },
+    {
+      "hex": 54,
+      "field": "L2_b_comentario",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 604,
+      "expectedLen": 600,
+      "pilotSnippet": "Fördernd ist die Beharrlichkeit eines einsamen Menschen.\"\nDas dauernde Gesetz ist nicht verändert.\nD",
+      "expectedSnippet": "\"Fördernd ist die Beharrlichkeit eines einsamen Menschen.\"\nDas dauernde Gesetz ist nicht verändert.\n"
+    },
+    {
+      "hex": 54,
+      "field": "L3_b_comentario",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 362,
+      "expectedLen": 364,
+      "pilotSnippet": "Das heiratende Mädchen als Sklavin\":\nSie ist noch nicht in der gebührenden Stellung.\nDie Linie ist s",
+      "expectedSnippet": "Das heiratende Mädchen als Sklavin\":\nSie ist noch nicht in der gebührenden Stellung.\nDie Linie ist s"
+    },
+    {
+      "hex": 54,
+      "field": "L4_b_comentario",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 922,
+      "expectedLen": 917,
+      "pilotSnippet": "Die Gesinnung, die zur Verzögerung der Frist führt, will auf\netwas warten, ehe sie geht.\nVon den Lin",
+      "expectedSnippet": "Die Gesinnung, die zur Verzögerung der Frist führt, will auf\netwas warten, ehe sie geht.\nVon den Lin"
+    },
+    {
+      "hex": 54,
+      "field": "L5_b_comentario",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 562,
+      "expectedLen": 563,
+      "pilotSnippet": "Der Herrscher I verheiratet seine Tochter. Da waren ihre\ngestickten Kleider nicht so prächtig wie di",
+      "expectedSnippet": "\"Der Herrscher I verheiratet seine Tochter. Da waren ihre\ngestickten Kleider nicht so prächtig wie d"
+    },
+    {
+      "hex": 54,
+      "field": "L6_a_oraculo",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "pilotLen": 136,
+      "expectedLen": 165,
+      "pilotSnippet": "Die Frau hält den Korb, aber es sind keine Früchte drin.\nDer Mann sticht das Schaf, aber es fließt k",
+      "expectedSnippet": "Die Frau hält den Korb, aber es sind keine Früchte drin.\nDer Mann sticht das Schaf, aber es fließt k"
+    },
+    {
+      "hex": 55,
+      "field": "chinese_roman",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "pilotLen": 4,
+      "expectedLen": 4,
+      "pilotSnippet": "FONG",
+      "expectedSnippet": "Fong"
+    },
+    {
+      "hex": 55,
+      "field": "ruler_note",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "pilotLen": 337,
+      "expectedLen": 336,
+      "pilotSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Wenn es im Urteil heißt: „Der König erreicht ",
+      "expectedSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Wenn es im Urteil heißt:„Der König erreicht e"
+    },
+    {
+      "hex": 55,
+      "field": "image_oraculo",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "pilotLen": 116,
+      "expectedLen": 115,
+      "pilotSnippet": "Donner und Blitz kommen beide: das Bild der Fülle. So ent-\nscheidet der Edle die Prozesse und führt ",
+      "expectedSnippet": "Donner und Blitz kommen beide: das Bild der Fülle.\\nSo entscheidet der Edle die Prozesse und führt d"
+    },
+    {
+      "hex": 55,
+      "field": "L2_a_oraculo",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "pilotLen": 167,
+      "expectedLen": 167,
+      "pilotSnippet": "Der Vorhang ist von solcher Fülle, daß man am Mittag die\nPolsterne sieht. Durch Hingehen erregt man ",
+      "expectedSnippet": "Der Vorhang ist von solcher Fülle, daß man am Mittag die\nPolsterne sieht. Durch Hingehen erregt man "
+    },
+    {
+      "hex": 55,
+      "field": "L3_b_comentario",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "pilotLen": 894,
+      "expectedLen": 891,
+      "pilotSnippet": "Das Gestrüpp ist von solcher Fülle\",\ndaß man keine großen Geschäfte tun kann.\n„Er bricht seinen rech",
+      "expectedSnippet": "\"Das Gestrüpp ist von solcher Fülle\",\ndaß man keine großen Geschäfte tun kann.\n„Er bricht seinen rec"
+    },
+    {
+      "hex": 55,
+      "field": "L4_b_comentario",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "pilotLen": 726,
+      "expectedLen": 721,
+      "pilotSnippet": "\"Der Vorhang ist von solcher Fülle.\"\nDer Platz ist nicht der gebührende.\n„Am Mittag sieht man die Po",
+      "expectedSnippet": "\"Der Vorhang ist von solcher Fülle.\"\nDer Platz ist nicht der gebührende.\n„Am Mittag sieht man die Po"
+    },
+    {
+      "hex": 55,
+      "field": "L5_b_comentario",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "pilotLen": 347,
+      "expectedLen": 345,
+      "pilotSnippet": "Das Heil der Sechs auf fünftem Platz kommt daher, daß sie\nSegen spendet.\nDie Linie steht in Beziehun",
+      "expectedSnippet": "Das Heil der Sechs auf fünftem Platz kommt daher, daß sie\nSegen spendet.\nDie Linie steht in Beziehun"
+    },
+    {
+      "hex": 56,
+      "field": "chinese_roman",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 2,
+      "expectedLen": 2,
+      "pilotSnippet": "LU",
+      "expectedSnippet": "Lü"
+    },
+    {
+      "hex": 56,
+      "field": "ruler_note",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 403,
+      "expectedLen": 356,
+      "pilotSnippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz; darum heißt es\nim Kommentar zur Entscheidung:",
+      "expectedSnippet": "Dui und\ner Herr des Zeichens ist die Sechs auf fünftem Platz; darum heißt es\nDer\nה\nSun\nAußeren\" und "
+    },
+    {
+      "hex": 56,
+      "field": "image_oraculo",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 150,
+      "expectedLen": 152,
+      "pilotSnippet": "Auf dem Berg ist Feuer: das Bild des Wanderers. So ist\nder Edle klar und vorsichtig in der Anwendung",
+      "expectedSnippet": "Auf dem Berg ist Feuer: das Bild des Wanderers.\\nSo ist der Edle klar und vorsichtig in der Anwendun"
+    },
+    {
+      "hex": 56,
+      "field": "commentary_image",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 619,
+      "expectedLen": 485,
+      "pilotSnippet": "Auf dem Berg ist Feuer: das Bild des Wanderers. So ist\nder Edle klar und vorsichtig in der Anwendung",
+      "expectedSnippet": "und verschleppt keine Streitigkeiten.\nSonst ist immer dann von Strafsachen die Rede, wenn Klarheit u"
+    },
+    {
+      "hex": 56,
+      "field": "L2_b_comentario",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 340,
+      "expectedLen": 339,
+      "pilotSnippet": "Er erlangt eines jungen Dieners Beharrlichkeit.\" Das ist\nendgültig kein Fehler.\nDie Linie ist weich ",
+      "expectedSnippet": "\"Er erlangt eines jungen Dieners Beharrlichkeit.\" Das ist\nendgültig kein Fehler.\nDie Linie ist weich"
+    },
+    {
+      "hex": 56,
+      "field": "L3_b_comentario",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 635,
+      "expectedLen": 634,
+      "pilotSnippet": "Dem Wanderer verbrennt seine Herberge.\"\nDas ist für ihn selbst ein Schade.\nWenn er als Fremder mit s",
+      "expectedSnippet": "\"Dem Wanderer verbrennt seine Herberge.\"\nDas ist für ihn selbst ein Schade.\nWenn er als Fremder mit "
+    },
+    {
+      "hex": 56,
+      "field": "L4_b_comentario",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 560,
+      "expectedLen": 555,
+      "pilotSnippet": "\"Der Wanderer ruht an einem Unterkunftsort.\"\nEr hat noch nicht seinen Platz erlangt.\n\"Er erlangt sei",
+      "expectedSnippet": "Der Wanderer ruht an einem Unterkunftsort.\"\nEr hat noch nicht seinen Platz erlangt.\n\"Er erlangt sein"
+    },
+    {
+      "hex": 56,
+      "field": "L5_a_oraculo",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "pilotLen": 95,
+      "expectedLen": 93,
+      "pilotSnippet": "Er schießt einen Fasan. Auf den ersten Pfeil fällt er. Schließ-\nlich kommt dadurch Lob und Amt.",
+      "expectedSnippet": "Er schießt einen Fasan. Auf den ersten Pfeil-fällt er. Schließlich kommt dadurch Lob und Amt."
+    },
+    {
+      "hex": 57,
+      "field": "chinese_roman",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "pilotLen": 3,
+      "expectedLen": 3,
+      "pilotSnippet": "SUN",
+      "expectedSnippet": "Sun"
+    },
+    {
+      "hex": 57,
+      "field": "ruler_note",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "pilotLen": 715,
+      "expectedLen": 706,
+      "pilotSnippet": "Li und\nDui\nObw\nbwohl das Zeichen durch die beiden Yinstriche bestimmt wird, so ist\nunter den weiblic",
+      "expectedSnippet": "Dul\nOb\nbwohl das Zeichen durch die beiden Yinstriche bestimmt wird, so ist\nunter den weiblichen Zeic"
+    },
+    {
+      "hex": 57,
+      "field": "image_oraculo",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "pilotLen": 121,
+      "expectedLen": 124,
+      "pilotSnippet": "Einander folgende Winde: das Bild des sanft Eindringenden.\nSo verbreitet der Edle seine Gebote und w",
+      "expectedSnippet": "Einander folgende Winde:\\ndas Bild des Sanft-Eindringenden.\\nSo verbreitet der Edle seine Gebote\\nun"
+    },
+    {
+      "hex": 57,
+      "field": "commentary_image",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "pilotLen": 270,
+      "expectedLen": 135,
+      "pilotSnippet": "Einander folgende Winde: das Bild des sanft Eindringenden.\nSo verbreitet der Edle seine Gebote und w",
+      "expectedSnippet": "Von den beiden Winden vertreibt der erste die Widerstände:,,verbreitet\ndie Gebote\". Der zweite wirkt"
+    },
+    {
+      "hex": 57,
+      "field": "L1_b_comentario",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "pilotLen": 325,
+      "expectedLen": 322,
+      "pilotSnippet": "Vorgehen und Rückweichen\": der Wille ist im Zweifel.\n\"Fördernd ist die Beharrlichkeit eines Kriegers",
+      "expectedSnippet": "Vorgehen und Rückweichen\": der Wille ist im Zweifel.\n„Fördernd ist die Beharrlichkeit eines Kriegers"
+    },
+    {
+      "hex": 57,
+      "field": "L5_b_comentario",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "pilotLen": 1391,
+      "expectedLen": 1383,
+      "pilotSnippet": "Das Heil der Neun auf fünftem Platz beruht darauf, daß der\nPlatz korrekt und zentral ist.\nDer Strich",
+      "expectedSnippet": "Das Heil der Neun auf fünftem Platz beruht darauf, daß der\nPlatz korrekt und zentral ist.\nDer Strich"
+    },
+    {
+      "hex": 58,
+      "field": "chinese_roman",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 3,
+      "expectedLen": 3,
+      "pilotSnippet": "DUI",
+      "expectedSnippet": "Dui"
+    },
+    {
+      "hex": 58,
+      "field": "ruler_note",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 360,
+      "expectedLen": 361,
+      "pilotSnippet": "Die beiden Yinstriche sind die konstituierenden Herren des Zeichens, aber\nsie vermögen nicht die beh",
+      "expectedSnippet": "D\nie beiden Yinstriche sind die konstituierenden Herren des Zeichens, aber\nsie vermögen nicht die be"
+    },
+    {
+      "hex": 58,
+      "field": "image_oraculo",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 130,
+      "expectedLen": 132,
+      "pilotSnippet": "Aufeinander beruhende Seen: das Bild des Heiteren. So tut\nsich der Edle mit seinen Freunden zusammen",
+      "expectedSnippet": "Aufeinander beruhende Seen: das Bild des Heiteren.\\nSo tut sich der Edle mit seinen Freunden zusamme"
+    },
+    {
+      "hex": 58,
+      "field": "commentary_image",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 276,
+      "expectedLen": 145,
+      "pilotSnippet": "Aufeinander beruhende Seen: das Bild des Heiteren. So tut\nsich der Edle mit seinen Freunden zusammen",
+      "expectedSnippet": "und Einübung.\nDui bedeutet See und Mund. Die Wiederholung des Mundes bedeutet die\ngemeinsame Besprec"
+    },
+    {
+      "hex": 58,
+      "field": "L2_b_comentario",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 388,
+      "expectedLen": 386,
+      "pilotSnippet": "Das Heil wahrhaftiger Heiterkeit besteht im Vertrauen auf\nden eigenen Willen.\nDieser Strich ist in n",
+      "expectedSnippet": "Das Heil wahrhaftiger Heiterkeit besteht im Vertrauen auf\nden eigenen Willen.\nDieser Strich ist in n"
+    },
+    {
+      "hex": 58,
+      "field": "L3_etiqueta",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 24,
+      "expectedLen": 73,
+      "pilotSnippet": "Sechs auf drittem Platz:",
+      "expectedSnippet": "zur Sechs auf drittem Platz abzutun. Dadurch kommt Heil und Segen für ihn"
+    },
+    {
+      "hex": 58,
+      "field": "L3_b_comentario",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 376,
+      "expectedLen": 11,
+      "pilotSnippet": "Das Unheil der kommenden Heiterkeit kommt davon, daß\nder Platz nicht der gebührende ist.\nEine schwac",
+      "expectedSnippet": "und andere."
+    },
+    {
+      "hex": 58,
+      "field": "L4_b_comentario",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 579,
+      "expectedLen": 493,
+      "pilotSnippet": "Die Freude der Neun auf viertem Platz hat Segen.\nDer Strich ist in der Mitte zwischen dem starken He",
+      "expectedSnippet": "Die Freude der Neun auf viertem Platz hat Segen.\nDer Strich ist in der Mitte zwischen dem starken He"
+    },
+    {
+      "hex": 58,
+      "field": "L5_b_comentario",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 391,
+      "expectedLen": 387,
+      "pilotSnippet": "Wahrhaftigkeit gegen das Zersetzende\":\n\"\nDer Platz ist korrekt und gebührend.\nDas Zersetzende ist di",
+      "expectedSnippet": "Wahrhaftigkeit gegen das Zersetzende\":\nDer Platz ist korrekt und gebührend.\nDas Zersetzende ist die "
+    },
+    {
+      "hex": 58,
+      "field": "L6_b_comentario",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "pilotLen": 667,
+      "expectedLen": 664,
+      "pilotSnippet": "Daß die obere Sechs zur Freude verführt, kommt daher, daß\nsie nicht lichtvoll ist.\nDiese Linie ist ä",
+      "expectedSnippet": "Daß die obere Sechs zur Freude verführt, kommt daher, daß\nsie nicht lichtvoll ist.\nDiese Linie ist ä"
+    },
+    {
+      "hex": 59,
+      "field": "chinese_roman",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "pilotLen": 4,
+      "expectedLen": 4,
+      "pilotSnippet": "HUAN",
+      "expectedSnippet": "Huan"
+    },
+    {
+      "hex": 59,
+      "field": "ruler_note",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "pilotLen": 536,
+      "expectedLen": 551,
+      "pilotSnippet": "Der Herr des Zeichens ist die Neun auf fünftem Platz; denn die Auflösung\nsteht. Doch steht die Neun ",
+      "expectedSnippet": "Gen und\nDschen\nDer Herr des Zeichens ist die Neun auf fünftem Platz; denn die Auflösung\nsteht. Doch "
+    },
+    {
+      "hex": 59,
+      "field": "commentary_decision",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "pilotLen": 1366,
+      "expectedLen": 1356,
+      "pilotSnippet": "Die Auflösung: Gelingen. Das Feste kommt und erschöpft sich\nnicht. Das Weiche bekommt einen Platz im",
+      "expectedSnippet": "Die Auflösung: Gelingen. Das Feste kommt und erschöpft sich\nnicht. Das Weiche bekommt einen Platz im"
+    },
+    {
+      "hex": 59,
+      "field": "commentary_image",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "pilotLen": 532,
+      "expectedLen": 414,
+      "pilotSnippet": "Der Wind fährt über das Wasser: das Bild der Auflösung. So\nopferten die alten Könige dem Herrn und b",
+      "expectedSnippet": "Auch hier ist das innere Streben nach Zusammenhalten des äußerlich Auseinandergehenden durch die Rel"
+    },
+    {
+      "hex": 59,
+      "field": "L2_b_comentario",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "pilotLen": 679,
+      "expectedLen": 683,
+      "pilotSnippet": "Bei der Auflösung läuft er seiner Stütze zu\"\nund erlangt so, was er wünscht.\nDas Kernzeichen Dschen ",
+      "expectedSnippet": "Bei der Auflösung läuft er seiner Stütze zu\"\nund erlangt so, was er wünscht.\nDas Kernzeichen Dschen "
+    },
+    {
+      "hex": 59,
+      "field": "L6_b_comentario",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "pilotLen": 275,
+      "expectedLen": 271,
+      "pilotSnippet": "Er löst sein Blut auf.\"\nDamit entfernt er sich von Schaden.\nKan ist Blut. Der Wind löst auf. So wird",
+      "expectedSnippet": "Er löst sein Blut auf.\"\nDamit entfernt er sich von Schaden.\nKan ist Blut. Der Wind löst auf. So wird"
+    },
+    {
+      "hex": 60,
+      "field": "chinese_roman",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "pilotLen": 4,
+      "expectedLen": 4,
+      "pilotSnippet": "KIEH",
+      "expectedSnippet": "Dsië"
+    },
+    {
+      "hex": 60,
+      "field": "image_oraculo",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "pilotLen": 513,
+      "expectedLen": 143,
+      "pilotSnippet": "Oberhalb des Sees ist Wasser: das Bild der Beschränkung.\nSo schafft der Edle Zahl und Maß und unters",
+      "expectedSnippet": "Oberhalb des Sees ist Wasser:\\ndas Bild der Beschränkung.\\nSo schafft der Edle Zahl und Maß und unte"
+    },
+    {
+      "hex": 60,
+      "field": "commentary_image",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "pilotLen": 513,
+      "expectedLen": 382,
+      "pilotSnippet": "Oberhalb des Sees ist Wasser: das Bild der Beschränkung.\nSo schafft der Edle Zahl und Maß und unters",
+      "expectedSnippet": "und rechter Wandel ist.\nZahl und Maß ist angedeutet durch das gegenseitige Verhältnis von Wasser\nund"
+    },
+    {
+      "hex": 60,
+      "field": "L2_b_comentario",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "pilotLen": 408,
+      "expectedLen": 405,
+      "pilotSnippet": "\"Nicht zu Tor und Hof hinausgehen bringt Unheil.\"\nDenn man versäumt die höchste Zeit.\nHier ist die L",
+      "expectedSnippet": "Nicht zu Tor und Hof hinausgehen bringt Unheil.\"\nDenn man versäumt die höchste Zeit.\nHier ist die La"
+    },
+    {
+      "hex": 60,
+      "field": "L6_b_comentario",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "pilotLen": 404,
+      "expectedLen": 401,
+      "pilotSnippet": "Bittere Beschränkung. Beharrlichkeit bringt Unheil.\"\nIhr Weg erschöpft sich.\nHier am Ende der Zeit d",
+      "expectedSnippet": "Bittere Beschränkung. Beharrlichkeit bringt Unheil.\"\nIhr Weg erschöpft sich.\nHier am Ende der Zeit d"
+    },
+    {
+      "hex": 61,
+      "field": "chinese_roman",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 7,
+      "expectedLen": 10,
+      "pilotSnippet": "KUNG FU",
+      "expectedSnippet": "Dschung Fu"
+    },
+    {
+      "hex": 61,
+      "field": "ruler_note",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 541,
+      "expectedLen": 607,
+      "pilotSnippet": "Gen und\nDschen\nas konstituierende Merkmal des Zeichens ist, daß es in der Mitte leer\nDas\nPlatz die k",
+      "expectedSnippet": "Gen und\nDschen\nas konstituierende Merkmal des Zeichens ist, daß es in der Mitte leer\nist; darum sind"
+    },
+    {
+      "hex": 61,
+      "field": "image_oraculo",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 376,
+      "expectedLen": 129,
+      "pilotSnippet": "Über dem See ist der Wind: das Bild der inneren Wahrheit.\nSo bespricht der Edle die Strafsachen, um ",
+      "expectedSnippet": "Über dem See ist der Wind:\\ndas Bild der inneren Wahrheit.\\nSo bespricht der Edle die Strafsachen,\\n"
+    },
+    {
+      "hex": 61,
+      "field": "L1_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 675,
+      "expectedLen": 672,
+      "pilotSnippet": "Das Bereitsein der Anfangsneun bringt Heil:\nDer Wille hat sich noch nicht verändert.\nDas Zeichen, da",
+      "expectedSnippet": "Das Bereitsein der Anfangsneun bringt Heil:\nDer Wille hat sich noch nicht verändert.\nDas Zeichen, da"
+    },
+    {
+      "hex": 61,
+      "field": "L2_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 741,
+      "expectedLen": 737,
+      "pilotSnippet": "Sein Junges antwortet ihm.\"\nDas ist die Zuneigung des innersten Herzens.\nDer Kranich ist ein Seevoge",
+      "expectedSnippet": "Sein Junges antwortet ihm.\"\nDas ist die Zuneigung des innersten Herzens.\nDer Kranich ist ein Seevoge"
+    },
+    {
+      "hex": 61,
+      "field": "L3_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 815,
+      "expectedLen": 813,
+      "pilotSnippet": "Bald trommelt er, bald hört er auf.\"\nDer Platz ist nicht der gebührende.\nEine weiche Linie auf feste",
+      "expectedSnippet": "Bald trommelt er, bald hört er auf.\"\nDer Platz ist nicht der gebührende.\nEine weiche Linie auf feste"
+    },
+    {
+      "hex": 61,
+      "field": "L4_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 421,
+      "expectedLen": 422,
+      "pilotSnippet": "Das Gespannpferd geht verloren.\"\nEr trennt sich von seiner Art und wendet sich nach oben.\nDas Gespan",
+      "expectedSnippet": "\"Das Gespannpferd geht verloren.\"\nEr trennt sich von seiner Art und wendet sich nach oben.\nDas Gespa"
+    },
+    {
+      "hex": 61,
+      "field": "L5_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 313,
+      "expectedLen": 313,
+      "pilotSnippet": "Er besitzt Wahrheit, die verkettet.\"\nDer Platz ist korrekt und gebührend.\n=\nDas Verketten als Bild k",
+      "expectedSnippet": "\"Er besitzt Wahrheit, die verkettet.\"\nDer Platz ist korrekt und gebührend.\nDas Verketten als Bild ko"
+    },
+    {
+      "hex": 61,
+      "field": "L6_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "pilotLen": 566,
+      "expectedLen": 564,
+      "pilotSnippet": "Hahnenruf, der zum Himmel dringt.\"\nWie könnte der lange dauern!\nSun hat als Tier den Hahn. Der Hahn ",
+      "expectedSnippet": "Hahnenruf, der zum Himmel dringt.\"\n\"\nWie könnte der lange dauern!\nSun hat als Tier den Hahn. Der Hah"
+    },
+    {
+      "hex": 62,
+      "field": "chinese_roman",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 7,
+      "expectedLen": 7,
+      "pilotSnippet": "SIAU GO",
+      "expectedSnippet": "Siau Go"
+    },
+    {
+      "hex": 62,
+      "field": "image_oraculo",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 255,
+      "expectedLen": 259,
+      "pilotSnippet": "Auf dem Berg ist der Donner: das Bild von des Kleinen Über-\ngewicht. So legt der Edle im Wandel das ",
+      "expectedSnippet": "Auf dem Berg ist der Donner:\\ndas Bild von des Kleinen Übergewicht.\\nSo legt der Edle im Wandel\\ndas"
+    },
+    {
+      "hex": 62,
+      "field": "commentary_image",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 945,
+      "expectedLen": 924,
+      "pilotSnippet": "gewicht. So legt der Edle im Wandel das Übergewicht auf\ndie Ehrerbietung, bei Trauerfällen legt er d",
+      "expectedSnippet": "gewicht. So legt der Edle im Wandel das Übergewicht auf\ndie Ehrerbietung, bei Trauerfällen legt er d"
+    },
+    {
+      "hex": 62,
+      "field": "L1_b_comentario",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 538,
+      "expectedLen": 540,
+      "pilotSnippet": "Der Vogel kommt durch Fliegen ins Unheil.\"\nDa läßt sich nichts machen.\n-\nDie Linie befindet sich unt",
+      "expectedSnippet": "Der Vogel kommt durch Fliegen ins Unheil.\"\nDa läßt sich nichts machen.\nDie Linie befindet sich unten"
+    },
+    {
+      "hex": 62,
+      "field": "L2_b_comentario",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 748,
+      "expectedLen": 754,
+      "pilotSnippet": "Er erreicht nicht seinen Fürsten.\"\nDer Beamte darf (den Fürsten) nicht übertreffen wollen.\nDie Neun ",
+      "expectedSnippet": "\"Er erreicht nicht seinen Fürsten.\"\nDer Beamte darf (den Fürsten) nicht übertreffen wollen.\nDie Neun"
+    },
+    {
+      "hex": 62,
+      "field": "L4_b_comentario",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 543,
+      "expectedLen": 545,
+      "pilotSnippet": "Ohne vorbeizugehen, trifft er ihn.\"\nDer Platz ist nicht der gebührende.\n„Hingehen bringt Gefahr. Man",
+      "expectedSnippet": "Ohne vorbeizugehen, trifft er ihn.\"\nDer Platz ist nicht der gebührende.\n,Hingehen bringt Gefahr. Man"
+    },
+    {
+      "hex": 62,
+      "field": "L5_b_comentario",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 938,
+      "expectedLen": 936,
+      "pilotSnippet": "Dichte Wolken, kein Regen\":\nEr ist schon oben,\nDas Orakel:„Dichte Wolken, kein Regen\" steht auch bei",
+      "expectedSnippet": "Dichte Wolken, kein Regen\":\nEr ist schon oben.\nDas Orakel:„Dichte Wolken, kein Regen\" steht auch bei"
+    },
+    {
+      "hex": 62,
+      "field": "L6_b_comentario",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "pilotLen": 624,
+      "expectedLen": 623,
+      "pilotSnippet": "\"Ohne ihn zu treffen, geht er an ihm vorbei.\"\nEr ist schon hochmütig.\nDie obere Sechs steht eigentli",
+      "expectedSnippet": "Ohne ihn zu treffen, geht er an ihm vorbei.\"\nEr ist schon hochmütig.\nDie obere Sechs steht eigentlic"
+    },
+    {
+      "hex": 63,
+      "field": "chinese_roman",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "pilotLen": 6,
+      "expectedLen": 6,
+      "pilotSnippet": "KI DSI",
+      "expectedSnippet": "Gi Dsi"
+    },
+    {
+      "hex": 63,
+      "field": "misc_notes",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "pilotLen": 487,
+      "expectedLen": 495,
+      "pilotSnippet": "Nach der Vollendung bedeutet Festigung.\nDas Zeichen ist das einzige, in dem sämtliche Striche auf ih",
+      "expectedSnippet": "Nach der Vollendung bedeutet Festigung.\n♥.♥~~~~\nDas Zeichen ist das einzige, in dem sämtliche Strich"
+    },
+    {
+      "hex": 63,
+      "field": "image_oraculo",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "pilotLen": 573,
+      "expectedLen": 148,
+      "pilotSnippet": "Das Wasser ist oberhalb des Feuers: Das Bild des Zustands\nnach der Vollendung. So bedenkt der Edle d",
+      "expectedSnippet": "Das Wasser ist oberhalb des Feuers:\\ndas Bild des Zustands nach der Vollendung.\\nSo bedenkt der Edle"
+    },
+    {
+      "hex": 63,
+      "field": "L3_b_comentario",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "pilotLen": 551,
+      "expectedLen": 558,
+      "pilotSnippet": "Nach drei Jahren überwindet er es.\"\nDas ist erschöpfend.\nLi bedeutet Waffen. Das Teufelsland ist das",
+      "expectedSnippet": "\"Nach drei Jahren überwindet er es.\"\nDas ist erschöpfend.\nLi bedeutet Waffen. Das Teufelsland ist da"
+    },
+    {
+      "hex": 63,
+      "field": "L4_b_comentario",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "pilotLen": 407,
+      "expectedLen": 407,
+      "pilotSnippet": "Den ganzen Tag sei vorsichtig.\"\nEs ist Grund zu Bedenken da.\nDer Strich ist weich auf weichem Platz ",
+      "expectedSnippet": "Den ganzen Tag sei vorsichtig.\"\nEs ist Grund zu Bedenken da.\nDer Strich ist weich auf weichem Platz "
+    },
+    {
+      "hex": 64,
+      "field": "chinese_roman",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "pilotLen": 7,
+      "expectedLen": 6,
+      "pilotSnippet": "WEI DSI",
+      "expectedSnippet": "We Dsi"
+    },
+    {
+      "hex": 64,
+      "field": "image_oraculo",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "pilotLen": 481,
+      "expectedLen": 174,
+      "pilotSnippet": "Das Feuer ist oberhalb des Wassers: das Bild des Zustands\nvor dem Übergang. So ist der Edle vorsicht",
+      "expectedSnippet": "Das Feuer ist oberhalb des Wassers:\\ndas Bild des Zustands vor dem Übergang.\\nSo ist der Edle vorsic"
+    },
+    {
+      "hex": 64,
+      "field": "L2_b_comentario",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "pilotLen": 315,
+      "expectedLen": 315,
+      "pilotSnippet": "Die Neun auf zweitem Platz hat bei Beharrlichkeit Heil, sie\nist zentral und handelt so korrekt.\nHier",
+      "expectedSnippet": "Die Neun auf zweitem Platz hat bei Beharrlichkeit Heil, sie\nist zentral und handelt so korrekt,\nHier"
+    },
+    {
+      "hex": 64,
+      "field": "L3_b_comentario",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "pilotLen": 713,
+      "expectedLen": 706,
+      "pilotSnippet": "Vor der Vollendung bringt Angriff Unheil.\"\nDer Platz ist nicht der gebührende.\nDer Platz ist am Ende",
+      "expectedSnippet": "Vor der Vollendung bringt Angriff Unheil.\"\nDer Platz ist nicht der gebührende.\nDer Platz ist am Ende"
+    },
+    {
+      "hex": 64,
+      "field": "L6_b_comentario",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "pilotLen": 7801,
+      "expectedLen": 860,
+      "pilotSnippet": "Wenn man beim Weintrinken sein Haupt naß macht, so kennt\nman eben keine Mäßigkeit.\nDer obere Strich ",
+      "expectedSnippet": "Wenn man beim Weintrinken sein Haupt naß macht, so kennt\nman eben keine Mäßigkeit.\nDer obere Strich "
+    }
+  ],
+  "ninguno": [
+    {
+      "hex": 49,
+      "field": "ruler_note",
+      "jpgPages": "516-519",
+      "snippet": "Der Herr des Zeichens ist die Neun auf fünftem Platz, denn man muß um die Autorität für eine Umwälzung zu haben. Wer zen"
+    },
+    {
+      "hex": 49,
+      "field": "commentary_decision",
+      "jpgPages": "516-519",
+      "snippet": "Die Umwälzung: Wasser und Feuer dämpfen einander. Zwei\n1 Weil der Gedanke des Brunnens darauf beruht, daß das Wasser nac"
+    },
+    {
+      "hex": 49,
+      "field": "image_oraculo",
+      "jpgPages": "516-519",
+      "snippet": "Im See ist Feuer: das Bild der Umwälzung.\nSo ordnet der Edle die Zeitrechnung\nund macht die Zeiten klar."
+    },
+    {
+      "hex": 49,
+      "field": "commentary_image",
+      "jpgPages": "516-519",
+      "snippet": "Das Feuer im See bewirkt eine Umwälzung. Das Wasser löscht das Feuer,\ndas Feuer verdunstet das Wasser. Die Ordnung der Z"
+    },
+    {
+      "hex": 49,
+      "field": "L2_b_comentario",
+      "jpgPages": "516-519",
+      "snippet": "„Am eignen Tag, da mag man umwälzen.\"\nDas Handeln bringt schönen Erfolg.\nDer Strich ist korrekt, zentral und klar. Der P"
+    },
+    {
+      "hex": 50,
+      "field": "ruler_note",
+      "jpgPages": "520-523",
+      "snippet": "Dui und\nKiän\nDie Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Die dem Zeichen „Tiegel\" zugru"
+    },
+    {
+      "hex": 50,
+      "field": "image_oraculo",
+      "jpgPages": "520-523",
+      "snippet": "Über dem Holz ist Feuer: das Bild des Tiegels.\nSo festigt der Edle\ndurch Richtigmachung der Stellung das Schicksal."
+    },
+    {
+      "hex": 50,
+      "field": "commentary_image",
+      "jpgPages": "520-523",
+      "snippet": "Feuer über Holz ist nicht das Bild des Tiegels, sondern das Bild seines Gebrauchs. Das Feuer brennt dauernd, wenn darunt"
+    },
+    {
+      "hex": 50,
+      "field": "L2_b_comentario",
+      "jpgPages": "520-523",
+      "snippet": "Im Tiegel ist Nahrung\":\nSei vorsichtig, wohin du gehst.\n\"Meine Genossen haben Neid\":\nDas ist endgültig kein Makel.\nDer S"
+    },
+    {
+      "hex": 50,
+      "field": "L5_b_comentario",
+      "jpgPages": "520-523",
+      "snippet": "Die gelben Henkel des Tiegels sind zentral, um das Wirkliche\naufzunehmen.\nDer Strich ist zentral im oberen Zeichen Li, u"
+    },
+    {
+      "hex": 50,
+      "field": "L6_b_comentario",
+      "jpgPages": "520-523",
+      "snippet": "Die Nephritringe auf oberstem Platz zeigen fest und weich\nin richtiger Ergänzung.\nEs ist hier dieselbe Situation wie bei"
+    },
+    {
+      "hex": 51,
+      "field": "ruler_note",
+      "jpgPages": "524-527",
+      "snippet": "(DAS ERSCHUTTERN, DER DONNER)\nKernzeichen: Kan und\nGen\nDie Herren des Zeichens Dschen sind die beiden lichten Striche. D"
+    },
+    {
+      "hex": 51,
+      "field": "commentary_decision",
+      "jpgPages": "524-527",
+      "snippet": "„Das Erschüttern bringt Gelingen.\nDas Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Worte: Ha, Ha!\"\nNachher"
+    },
+    {
+      "hex": 51,
+      "field": "image_oraculo",
+      "jpgPages": "524-527",
+      "snippet": "Fortgesetzter Donner: das Bild des Erschütterns.\nSo macht der Edle unter Furcht und Zittern sein Leben recht\nund erforsc"
+    },
+    {
+      "hex": 51,
+      "field": "commentary_image",
+      "jpgPages": "524-527",
+      "snippet": "Fortgesetzter Donner heißt es, weil das Zeichen Dschen verdoppelt übereinander steht. Furcht und Zittern ist der erste D"
+    },
+    {
+      "hex": 51,
+      "field": "L1_b_comentario",
+      "jpgPages": "524-527",
+      "snippet": "„Das Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n„Lachende Worte: Ha, Ha!\"\nNachher hat man eine Regel.\nEs ist hier "
+    },
+    {
+      "hex": 51,
+      "field": "L5_b_comentario",
+      "jpgPages": "524-527",
+      "snippet": "„Das Erschüttern geht hin und her: Gefahr.\"\nMan wandelt in Gefahr. Die Geschäfte sind in der Mitte,\ndarum verliert man d"
+    },
+    {
+      "hex": 51,
+      "field": "L6_b_comentario",
+      "jpgPages": "524-527",
+      "snippet": "„Die Erschütterung bringt Verfall.\"\nEr hat die Mitte nicht erreicht.\nObwohl Unheil, kein Makel.\nMan läßt sich durch die "
+    },
+    {
+      "hex": 52,
+      "field": "ruler_note",
+      "jpgPages": "528-531",
+      "snippet": "Dschen und\nKan\nEigentlich sind auch beim Zeichen Gen die beiden lichten Striche die Herren des Zeichens. Aber die Bedeut"
+    },
+    {
+      "hex": 52,
+      "field": "image_oraculo",
+      "jpgPages": "528-531",
+      "snippet": "Zusammenstehende Berge: das Bild des Stillehaltens.\nSo geht der Edle mit seinen Gedanken nicht über seine\nLage hinaus."
+    },
+    {
+      "hex": 52,
+      "field": "commentary_image",
+      "jpgPages": "528-531",
+      "snippet": "Bei allen Doppelzeichen stehen die entsprechenden Linien des oberen und\nunteren Halbzeichens nicht in Beziehung des Ents"
+    },
+    {
+      "hex": 52,
+      "field": "L2_b_comentario",
+      "jpgPages": "528-531",
+      "snippet": "„Er kann den nicht retten, dem er folgt\":\nDenn er kehrt sich nicht nach ihm, daß er auf ihn hört.\nDer Strich, dem die Se"
+    },
+    {
+      "hex": 53,
+      "field": "ruler_note",
+      "jpgPages": "532-535",
+      "snippet": "(ALLMÄHLICHER FORTSCHRITT)\nKernzeichen: Li und\nKan\nDas Zeichen Entwicklung hat die Verheiratung eines Mädchens als Grund"
+    },
+    {
+      "hex": 53,
+      "field": "image_oraculo",
+      "jpgPages": "532-535",
+      "snippet": "Auf dem Berge ist ein Baum: das Bild der Entwicklung.\nSo weilt der Edle in würdiger Tugend,\num die Sitten zu bessern."
+    },
+    {
+      "hex": 53,
+      "field": "commentary_image",
+      "jpgPages": "532-535",
+      "snippet": "Der Baum auf dem Berg vergrößert sich langsam und unmerklich. Er geht\nin die Breite, spendet Schatten und beeinflußt so "
+    },
+    {
+      "hex": 53,
+      "field": "L3_a_oraculo",
+      "jpgPages": "532-535",
+      "snippet": "Die Wildgans zieht allmählich der Hochebene zu. Der Mann\n\nzieht aus und kehrt nicht wieder. Die Frau trägt ein Kind, abe"
+    },
+    {
+      "hex": 54,
+      "field": "ruler_note",
+      "jpgPages": "536-540",
+      "snippet": "Das Zeichen „das heiratende Mädchen\" beruht auf der Idee, daß das\nMädchen dem Manne folgt. Darum heißt es im Kommentar z"
+    },
+    {
+      "hex": 54,
+      "field": "commentary_decision",
+      "jpgPages": "536-540",
+      "snippet": "Das heiratende Mädchen bezeichnet den großen Sinn von\nHimmel und Erde. Wenn Himmel und Erde sich nicht ver-\neinigen, so "
+    },
+    {
+      "hex": 54,
+      "field": "image_oraculo",
+      "jpgPages": "536-540",
+      "snippet": "Oberhalb des Sees ist der Donner: das Bild des heiratenden\nMädchens. So erkennt der Edle durch die Ewigkeit des\nEndes da"
+    },
+    {
+      "hex": 54,
+      "field": "L1_b_comentario",
+      "jpgPages": "536-540",
+      "snippet": "Das heiratende Mädchen als Nebenfrau\",\nweil das Dauer gibt.\n„Ein Lahmer, der auftreten kann. Heil\",\nweil sie einander em"
+    },
+    {
+      "hex": 54,
+      "field": "L6_a_oraculo",
+      "jpgPages": "536-540",
+      "snippet": "Die Frau hält den Korb, aber es sind keine Früchte drin.\nDer Mann sticht das Schaf, aber es fließt kein Blut. Nichts,\nda"
+    },
+    {
+      "hex": 54,
+      "field": "L6_b_comentario",
+      "jpgPages": "536-540",
+      "snippet": "Daß die obere Sechs keine Früchte hat, kommt daher, daß sie\neinen leeren Korb hält.\nDie obere schwache Sechs auf dem Gip"
+    },
+    {
+      "hex": 55,
+      "field": "ruler_note",
+      "jpgPages": "541-544",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Wenn es im Urteil heißt: „Der König erreicht es. Sei nicht trauri"
+    },
+    {
+      "hex": 55,
+      "field": "commentary_decision",
+      "jpgPages": "541-544",
+      "snippet": "Die Fülle bedeutet Größe. Klarheit bei der Bewegung, darum\nFülle.\n„Der König erreicht sie.\"\nDadurch wird die Größe beton"
+    },
+    {
+      "hex": 55,
+      "field": "image_oraculo",
+      "jpgPages": "541-544",
+      "snippet": "Donner und Blitz kommen beide: das Bild der Fülle. So ent-\nscheidet der Edle die Prozesse und führt die Strafen aus."
+    },
+    {
+      "hex": 55,
+      "field": "commentary_image",
+      "jpgPages": "541-544",
+      "snippet": "Donner und Blitz kommen beide: das Bild der Fülle. So entscheidet der Edle die Prozesse und führt die Strafen aus.\nDas B"
+    },
+    {
+      "hex": 55,
+      "field": "L1_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "Man mag zehn Tage beisammen sein, und es ist kein Feh-\nler.\" Mehr als zehn Tage ist vom Übel.\nDer Strich ist stark und k"
+    },
+    {
+      "hex": 55,
+      "field": "L3_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "Das Gestrüpp ist von solcher Fülle\",\ndaß man keine großen Geschäfte tun kann.\n„Er bricht seinen rechten Arm\":\nEndgültig "
+    },
+    {
+      "hex": 55,
+      "field": "L4_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "\"Der Vorhang ist von solcher Fülle.\"\nDer Platz ist nicht der gebührende.\n„Am Mittag sieht man die Polsterne.\"\nEr ist dun"
+    },
+    {
+      "hex": 55,
+      "field": "L5_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "Das Heil der Sechs auf fünftem Platz kommt daher, daß sie\nSegen spendet.\nDie Linie steht in Beziehung zur Sechs auf zwei"
+    },
+    {
+      "hex": 55,
+      "field": "L6_b_comentario",
+      "jpgPages": "541-544",
+      "snippet": "Sein Haus ist in Fülle.\"\nEr treibt sich an der Grenze des Himmels umher.\n~~\n\"Er späht durch das Tor und merkt niemand me"
+    },
+    {
+      "hex": 56,
+      "field": "ruler_note",
+      "jpgPages": "545-547",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz; darum heißt es\nim Kommentar zur Entscheidung: „Das Weiche erlangt"
+    },
+    {
+      "hex": 56,
+      "field": "image_oraculo",
+      "jpgPages": "545-547",
+      "snippet": "Auf dem Berg ist Feuer: das Bild des Wanderers. So ist\nder Edle klar und vorsichtig in der Anwendung von Strafen\nund ver"
+    },
+    {
+      "hex": 57,
+      "field": "ruler_note",
+      "jpgPages": "548-551",
+      "snippet": "Li und\nDui\nObw\nbwohl das Zeichen durch die beiden Yinstriche bestimmt wird, so ist\nunter den weiblichen Zeichen nur das "
+    },
+    {
+      "hex": 57,
+      "field": "image_oraculo",
+      "jpgPages": "548-551",
+      "snippet": "Einander folgende Winde: das Bild des sanft Eindringenden.\nSo verbreitet der Edle seine Gebote und wirkt seine Geschäfte"
+    },
+    {
+      "hex": 57,
+      "field": "commentary_image",
+      "jpgPages": "548-551",
+      "snippet": "Einander folgende Winde: das Bild des sanft Eindringenden.\nSo verbreitet der Edle seine Gebote und wirkt seine Geschäfte"
+    },
+    {
+      "hex": 57,
+      "field": "L5_b_comentario",
+      "jpgPages": "548-551",
+      "snippet": "Das Heil der Neun auf fünftem Platz beruht darauf, daß der\nPlatz korrekt und zentral ist.\nDer Strich ist im Zentrum als "
+    },
+    {
+      "hex": 57,
+      "field": "L6_b_comentario",
+      "jpgPages": "548-551",
+      "snippet": "Eindringen unter das Bett.\"\nOben ist es zu Ende.\n\"Er verliert seinen Besitz und seine Axt.\"\nIst das recht?\nEs ist von Un"
+    },
+    {
+      "hex": 58,
+      "field": "ruler_note",
+      "jpgPages": "552-554",
+      "snippet": "Die beiden Yinstriche sind die konstituierenden Herren des Zeichens, aber\nsie vermögen nicht die beherrschenden Herren d"
+    },
+    {
+      "hex": 58,
+      "field": "image_oraculo",
+      "jpgPages": "552-554",
+      "snippet": "Aufeinander beruhende Seen: das Bild des Heiteren. So tut\nsich der Edle mit seinen Freunden zusammen zur Besprechung\nund"
+    },
+    {
+      "hex": 59,
+      "field": "ruler_note",
+      "jpgPages": "555-558",
+      "snippet": "Der Herr des Zeichens ist die Neun auf fünftem Platz; denn die Auflösung\nsteht. Doch steht die Neun auf zweitem Platz im"
+    },
+    {
+      "hex": 59,
+      "field": "commentary_decision",
+      "jpgPages": "555-558",
+      "snippet": "Die Auflösung: Gelingen. Das Feste kommt und erschöpft sich\nnicht. Das Weiche bekommt einen Platz im Außeren, und der\nOb"
+    },
+    {
+      "hex": 59,
+      "field": "L5_b_comentario",
+      "jpgPages": "555-558",
+      "snippet": "„Ein König weilt ohne Makel.\"\nEr ist an seinem rechten Platz.\nDas Zusammentreffen des Windes mit dem Wasser löst dieses "
+    },
+    {
+      "hex": 60,
+      "field": "ruler_note",
+      "jpgPages": "559-561",
+      "snippet": "Der Herr des Zeichens ist die Neun auf fünftem Platz; denn Maß und\nvermag nur jemand, der geehrt ist und die Geisteskraf"
+    },
+    {
+      "hex": 60,
+      "field": "commentary_decision",
+      "jpgPages": "559-561",
+      "snippet": "„Beschränkung: Gelingen.\"\nDie Festen und Weichen sind gleich verteilt, und die Festen\nhaben die Mitte erlangt.\n„Bittere "
+    },
+    {
+      "hex": 61,
+      "field": "commentary_image",
+      "jpgPages": "562-565",
+      "snippet": "aufzuhalten.\nDui ist das Bild des Mundes, daher das Besprechen. Sun ist das Sanfte,\nZögernde, daher das Aufhalten der Hi"
+    },
+    {
+      "hex": 62,
+      "field": "L4_b_comentario",
+      "jpgPages": "566-569",
+      "snippet": "Ohne vorbeizugehen, trifft er ihn.\"\nDer Platz ist nicht der gebührende.\n„Hingehen bringt Gefahr. Man muß sich hüten.\"\nMa"
+    },
+    {
+      "hex": 62,
+      "field": "L5_b_comentario",
+      "jpgPages": "566-569",
+      "snippet": "Dichte Wolken, kein Regen\":\nEr ist schon oben,\nDas Orakel:„Dichte Wolken, kein Regen\" steht auch bei dem Zeichen„Des\nKle"
+    },
+    {
+      "hex": 63,
+      "field": "ruler_note",
+      "jpgPages": "570-573",
+      "snippet": "Der Herr der Zeichens ist die Sechs auf zweitem Platz. Die Bedeutung\nist, daß anfangs Heil herrscht und\n\"\nam Ende Wirren"
+    },
+    {
+      "hex": 63,
+      "field": "commentary_decision",
+      "jpgPages": "570-573",
+      "snippet": "Nach der Vollendung. Gelingen: Im Kleinen ist Gelingen.\n\"Fördernd ist Beharrlichkeit.\"\nDie Festen und Weichen sind korre"
+    },
+    {
+      "hex": 63,
+      "field": "commentary_image",
+      "jpgPages": "570-573",
+      "snippet": "rüstet sich im voraus dagegen.\nIndem Feuer und Wasser ihre Wirkungen ausgleichen und so ein Gleichgewichtszustand gescha"
+    },
+    {
+      "hex": 64,
+      "field": "ruler_note",
+      "jpgPages": "574-585",
+      "snippet": "Der Herr des Zeichens ist die Sechs auf fünftem Platz; denn die Zeit vor der Vollendung ist eine Zeit, da anfangs Wirren"
+    },
+    {
+      "hex": 64,
+      "field": "commentary_decision",
+      "jpgPages": "574-585",
+      "snippet": "„Vor der Vollendung. Gelingen\":\nDenn das Weiche erlangt die Mitte.\n\"Der kleine Fuchs hat beinahe den Übergang vollendet\""
+    },
+    {
+      "hex": 64,
+      "field": "commentary_image",
+      "jpgPages": "574-585",
+      "snippet": "Das Feuer schlägt nach oben, das Wasser dringt nach unten, daher keine\nVollendung. Wollte man sie gewaltsam durchführen,"
+    }
+  ]
+}

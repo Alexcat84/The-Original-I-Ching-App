@@ -1,0 +1,32 @@
+{
+  "updatedAt": "2026-06-30T23:39:09.987Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "from": 1,
+  "to": 64,
+  "ok": true,
+  "summary": {
+    "pilotClosed": 2304,
+    "pilotPending": 0,
+    "pilotVsGold": 0,
+    "pilotVsMergedContent": 0,
+    "goldVsMergedContent": 0,
+    "ledgerIssues": 0,
+    "findingsTotal": 0,
+    "ledgerAttestation": {
+      "hexComplete": 64,
+      "hexTotal": 64,
+      "fieldsTotal": 2304,
+      "fieldsVerified": 1992,
+      "fieldsCorrected": 0,
+      "fieldsVacio": 312,
+      "fieldsPending": 0
+    },
+    "mergedMetaOverlayExcluded": [
+      "chinese",
+      "hex_font",
+      "chinese_roman"
+    ]
+  },
+  "findings": [],
+  "findingsTruncated": false
+}

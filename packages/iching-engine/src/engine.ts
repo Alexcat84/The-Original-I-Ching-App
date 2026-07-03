@@ -1,4 +1,4 @@
-import { getHexagramRecordByBinaryTopFirst, getMutationRuleBookText, type HexagramRecord } from "@iching-oracle/iching-data";
+import { getHexagramRecordByBinaryTopFirst, getHexagramRecordByNumber, getMutationRuleBookText, type HexagramRecord } from "@iching-oracle/iching-data";
 import {
   type AnyMutationRule,
   type CastingMethod,
@@ -333,6 +333,16 @@ function buildCastResultFromLines(
   const primary = getHexagram(lines, translator);
   const transformedLines = changing.length > 0 ? applyMutations(lines) : null;
   const transformed = transformedLines ? getHexagram(transformedLines, translator) : null;
+  // For master_combined, the image overlay shows the hexagram name; Wilhelm 1924 is German,
+  // so Legge's English transliteration is used for display. Oracle texts are unchanged.
+  const primaryForResult = translator === "master_combined"
+    ? { ...primary, name: getHexagramRecordByNumber(primary.number, { translator: "legge" }).name }
+    : primary;
+  const transformedForResult = transformed
+    ? translator === "master_combined"
+      ? { ...transformed, name: getHexagramRecordByNumber(transformed.number, { translator: "legge" }).name }
+      : transformed
+    : null;
   const huangRule = determineMutationRule(primary, lines, changing);
   const zxRule = system === "zhuxi" ? determineMutationRuleZhuXi(primary, changing) : null;
   // The persisted rule reflects the active system (distinct ZX_* names; no collision).
@@ -354,8 +364,8 @@ function buildCastResultFromLines(
     interpretationMode: translator,
     lineReadingSystem: system,
     lines,
-    primaryHexagram: primary,
-    transformedHexagram: transformed,
+    primaryHexagram: primaryForResult,
+    transformedHexagram: transformedForResult,
     changingLines: changing,
     mutationRule: rule,
     textsForClaude: texts,

@@ -1,0 +1,21 @@
+{
+  "cleanedAt": "2026-06-30T13:46:17.560Z",
+  "bookOne": {
+    "merged": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\book-one\\wilhelm-de-64hex-merged.json",
+    "blank": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\book-one\\wilhelm-de-64hex-blank.json",
+    "source": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\book-one\\wilhelm-de-64hex-zeno-extract-latest.json",
+    "archivedPrior": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\output\\archive\\wilhelm-de-64hex-merged-pre-zeno-clean-2026-06-30T13-46-15-300Z.json"
+  },
+  "comments": {
+    "merged": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\comments\\wilhelm-de-64hex-comments-merged.json",
+    "blank": "init-wilhelm-de-blank-comments-maestro",
+    "fillStats": {
+      "content": "0/1920"
+    },
+    "archivedPriorOcr": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\output\\archive\\wilhelm-de-64hex-comments-merged-pre-zeno-clean-2026-06-30T13-46-15-307Z.json"
+  },
+  "structure": {
+    "bookOne": true,
+    "comments": true
+  }
+}

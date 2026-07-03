@@ -1,0 +1,23 @@
+{
+  "updatedAt": "2026-06-30T14:43:41.166Z",
+  "disputeRowCount": 551,
+  "hexesWithDisputes": 64,
+  "flatLatest": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-anna-disputes-flat-latest.tsv",
+  "flatDated": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-anna-disputes-flat-2026-06-30T14-43-41.tsv",
+  "byHexDir": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\by-hex",
+  "pilotHexes": [
+    1,
+    2,
+    8
+  ],
+  "pilotPaths": [
+    "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-1-pilot-au.tsv",
+    "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-2-pilot-au.tsv",
+    "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-8-pilot-au.tsv"
+  ],
+  "statusBreakdown": {
+    "disputed": 535,
+    "pass02_only": 12,
+    "pass04_only": 4
+  }
+}

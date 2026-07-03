@@ -1,0 +1,4636 @@
+{
+  "updatedAt": "2026-06-30T21:13:29.180Z",
+  "range": {
+    "from": 33,
+    "to": 64
+  },
+  "flaggedFields": 267,
+  "hexesWithFlags": 32,
+  "byHex": {
+    "33": 11,
+    "34": 9,
+    "35": 7,
+    "36": 10,
+    "37": 6,
+    "38": 8,
+    "39": 8,
+    "40": 10,
+    "41": 8,
+    "42": 8,
+    "43": 6,
+    "44": 11,
+    "45": 10,
+    "46": 8,
+    "47": 6,
+    "48": 7,
+    "49": 7,
+    "50": 8,
+    "51": 11,
+    "52": 8,
+    "53": 7,
+    "54": 10,
+    "55": 11,
+    "56": 7,
+    "57": 10,
+    "58": 6,
+    "59": 9,
+    "60": 8,
+    "61": 8,
+    "62": 8,
+    "63": 8,
+    "64": 8
+  },
+  "flags": [
+    {
+      "hex": 33,
+      "field": "hex",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "33"
+    },
+    {
+      "hex": 33,
+      "field": "chinese",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "遯"
+    },
+    {
+      "hex": 33,
+      "field": "chinese_roman",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Dun",
+      "snippetP4": "DUN"
+    },
+    {
+      "hex": 33,
+      "field": "ruler_note",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 789,
+      "pass02Len": 733,
+      "pass04Len": 787,
+      "snippetPdf": "Die Herren des Zeichens, die die Lage konstituieren, sind die beiden Yinstriche ",
+      "snippetP4": "Kiän und\nSun\nie Herren des Zeichens, die die Lage konstituieren, sind die beiden"
+    },
+    {
+      "hex": 33,
+      "field": "commentary_decision",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1101,
+      "pass02Len": 1107,
+      "pass04Len": 1114,
+      "snippetPdf": "\"Der Rückzug. Gelingen\": das heißt eben, im Rückzug liegt\ndas Gelingen. Das Fest",
+      "snippetP4": "\"Der Rückzug. Gelingen\": das heißt eben, im Rückzug liegt\ndas Gelingen. Das Fest"
+    },
+    {
+      "hex": 33,
+      "field": "image_oraculo",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 121,
+      "pass02Len": 1025,
+      "pass04Len": 1010,
+      "snippetPdf": "Unter dem Himmel ist der Berg: das Bild des Rückzugs. So\nhält der Edle den Gemei",
+      "snippetP4": "Unter dem Himmel ist der Berg: das Bild des Rückzugs. So\nhält der Edle den Gemei"
+    },
+    {
+      "hex": 33,
+      "field": "commentary_image",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 874,
+      "pass02Len": 1025,
+      "pass04Len": 1010,
+      "snippetPdf": "Es ist die Frage, inwiefern der Berg unter dem Himmel das Bild des Rückzugs nahe",
+      "snippetP4": "Unter dem Himmel ist der Berg: das Bild des Rückzugs. So\nhält der Edle den Gemei"
+    },
+    {
+      "hex": 33,
+      "field": "L3_b_comentario",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 770,
+      "pass02Len": 774,
+      "pass04Len": 775,
+      "snippetPdf": "Daß die Gefahr des aufgehaltenen Rückzugs peinlich ist, wirkt\nermüdend.\n\"Die Men",
+      "snippetP4": "Daß die Gefahr des aufgehaltenen Rückzugs peinlich ist, wirkt\nermüdend.\n,,Die Me"
+    },
+    {
+      "hex": 33,
+      "field": "L4_b_comentario",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 410,
+      "pass02Len": 412,
+      "pass04Len": 412,
+      "snippetPdf": "Der Edle zieht sich freiwillig zurück, das bringt dem Gemeinen Niedergang.\nHier ",
+      "snippetP4": "Der Edle zieht sich freiwillig zurück, das bringt dem Gemeinen Niedergang.\nHier "
+    },
+    {
+      "hex": 33,
+      "field": "L5_b_comentario",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 565,
+      "pass02Len": 564,
+      "pass04Len": 566,
+      "snippetPdf": "\"Freundlicher Rückzug. Beharrlichkeit bringt Heil\";\nweil dadurch der Wille eine ",
+      "snippetP4": "Freundlicher Rückzug. Beharrlichkeit bringt Heil\";\nweil dadurch der Wille eine r"
+    },
+    {
+      "hex": 33,
+      "field": "L6_b_comentario",
+      "jpgPages": "452-455",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 200,
+      "pass02Len": 204,
+      "pass04Len": 203,
+      "snippetPdf": "\"Heiterer Rückzug. Alles ist fördernd\";\nweil nämlich kein Zweifel mehr möglich i",
+      "snippetP4": "Heiterer Rückzug. Alles ist fördernd\";\nweil nämlich kein Zweifel mehr möglich is"
+    },
+    {
+      "hex": 34,
+      "field": "hex",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "34"
+    },
+    {
+      "hex": 34,
+      "field": "chinese",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "大壯"
+    },
+    {
+      "hex": 34,
+      "field": "chinese_roman",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 11,
+      "pass02Len": 11,
+      "pass04Len": 11,
+      "snippetPdf": "Da Dschuang",
+      "snippetP4": "DA DSCHUANG"
+    },
+    {
+      "hex": 34,
+      "field": "ruler_note",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 161,
+      "pass02Len": 107,
+      "pass04Len": 176,
+      "snippetPdf": "Der Herr des Zeichens ist der Yangstrich auf dem vierten Platz; denn\ndie vier Ya",
+      "snippetP4": "Dui und\nKiän\ner Herr des Zeichens ist der Yangstrich auf dem vierten Platz; denn"
+    },
+    {
+      "hex": 34,
+      "field": "sequence",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 87,
+      "pass02Len": 88,
+      "pass04Len": 88,
+      "snippetPdf": "Die Dinge können sich nicht dauernd zurückziehen, darum\nfolgt darauf\"Des Großen ",
+      "snippetP4": "Die Dinge können sich nicht dauernd zurückziehen, darum\nfolgt darauf,,Des Großen"
+    },
+    {
+      "hex": 34,
+      "field": "misc_notes",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 852,
+      "pass02Len": 853,
+      "pass04Len": 853,
+      "snippetPdf": "Des Großen Macht zeigt sich darin, daß man innehält.\nBeigefügte Urteile\nIm höchs",
+      "snippetP4": "Des Großen Macht zeigt sich darin, daß man innehält.\nBeigefügte Urteile\nIm höchs"
+    },
+    {
+      "hex": 34,
+      "field": "image_oraculo",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 132,
+      "pass02Len": 275,
+      "pass04Len": 279,
+      "snippetPdf": "Der Donner ist am Himmel droben:\ndas Bild der Macht des Großen.\nSo tritt der Edl",
+      "snippetP4": "Der Donner ist am Himmel oben: das Bild der Macht des\nGroßen. So tritt der Edle "
+    },
+    {
+      "hex": 34,
+      "field": "commentary_image",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 144,
+      "pass02Len": 325,
+      "pass04Len": 311,
+      "snippetPdf": "Das obere Halbzeichen ist Dschen, der Donner, das untere Kiän, der Himmel.\nDer D",
+      "snippetP4": "faltung. Das Zeichen Dschen hat als Bild auch den Fuß, das Zeichen Kiän\nals Eige"
+    },
+    {
+      "hex": 34,
+      "field": "L6_b_comentario",
+      "jpgPages": "456-458",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 603,
+      "pass02Len": 597,
+      "pass04Len": 604,
+      "snippetPdf": "Er kann nicht zurück. Er kann nicht voran.\"\nn\nDas ist nicht glückbringend.\n\"Merk",
+      "snippetP4": "Er kann nicht zurück. Er kann nicht voran.\"\nn\nDas ist nicht glückbringend.\n,,Mer"
+    },
+    {
+      "hex": 35,
+      "field": "hex",
+      "jpgPages": "459-462",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "35"
+    },
+    {
+      "hex": 35,
+      "field": "chinese",
+      "jpgPages": "459-462",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "晉"
+    },
+    {
+      "hex": 35,
+      "field": "chinese_roman",
+      "jpgPages": "459-462",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "Dsin",
+      "snippetP4": "DSIN"
+    },
+    {
+      "hex": 35,
+      "field": "ruler_note",
+      "jpgPages": "459-462",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 367,
+      "pass02Len": 357,
+      "pass04Len": 373,
+      "snippetPdf": "Gen\nKernzeichen: Kan und\n=\nas Zeichen hat als Charakteristikum das Licht, das au",
+      "snippetP4": "Gen\nKernzeichen: Kan und\n=\nD\nas Zeichen hat als Charakteristikum das Licht, das "
+    },
+    {
+      "hex": 35,
+      "field": "commentary_decision",
+      "jpgPages": "459-462",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 876,
+      "pass02Len": 879,
+      "pass04Len": 879,
+      "snippetPdf": "Fortschritt bedeutet Vorankommen. Die Klarheit steigt über\ndie Erde empor. Hinge",
+      "snippetP4": "Fortschritt bedeutet Vorankommen. Die Klarheit steigt über\ndie Erde empor. Hinge"
+    },
+    {
+      "hex": 35,
+      "field": "image_oraculo",
+      "jpgPages": "459-462",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 116,
+      "pass02Len": 148,
+      "pass04Len": 148,
+      "snippetPdf": "Die Sonne steigt über die Erde empor:\ndas Bild des Fortschritts.\nSo macht der Ed",
+      "snippetP4": "Die Sonne steigt über die Erde empor: das Bild des Fortschritts. So macht der Ed"
+    },
+    {
+      "hex": 35,
+      "field": "L6_b_comentario",
+      "jpgPages": "459-462",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 491,
+      "pass02Len": 481,
+      "pass04Len": 497,
+      "snippetPdf": "Man darf es nur, um sein eigenes Gebiet zu strafen.\"\nDer Weg ist noch nicht im H",
+      "snippetP4": "Man darf es nur, um sein eigenes Gebiet zu strafen.\"\nDer Weg ist noch nicht im H"
+    },
+    {
+      "hex": 36,
+      "field": "hex",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "36"
+    },
+    {
+      "hex": 36,
+      "field": "chinese",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "明夷"
+    },
+    {
+      "hex": 36,
+      "field": "chinese_roman",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 6,
+      "pass02Len": 6,
+      "pass04Len": 6,
+      "snippetPdf": "Ming I",
+      "snippetP4": "MING I"
+    },
+    {
+      "hex": 36,
+      "field": "ruler_note",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 522,
+      "pass02Len": 529,
+      "pass04Len": 527,
+      "snippetPdf": "Dschen und\nKan\nDas Zeichen hat als Charakteristikum die Sonne, die unter die Erd",
+      "snippetP4": "Dschen und\nKan\nDas\nas Zeichen hat als Charakteristikum die Sonne, die unter die "
+    },
+    {
+      "hex": 36,
+      "field": "sequence",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 168,
+      "pass02Len": 169,
+      "pass04Len": 169,
+      "snippetPdf": "Expansion wird sicher auf Widerstand und Beschädigung\nstoßen. Darum folgt darauf",
+      "snippetP4": "Expansion wird sicher auf Widerstand und Beschädigung\nstoßen. Darum folgt darauf"
+    },
+    {
+      "hex": 36,
+      "field": "commentary_decision",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1322,
+      "pass02Len": 1331,
+      "pass04Len": 1331,
+      "snippetPdf": "Das Licht ist in die Erde hineingesunken: Verfinsterung des\nLichts. Innen schön ",
+      "snippetP4": "Das Licht ist in die Erde hineingesunken: Verfinsterung des\nLichts. Innen schön "
+    },
+    {
+      "hex": 36,
+      "field": "image_oraculo",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 167,
+      "pass02Len": 618,
+      "pass04Len": 604,
+      "snippetPdf": "Das Licht ist in die Erde hineingesunken:\ndas Bild der Verfinsterung des Lichts.",
+      "snippetP4": "Das Licht ist in die Erde hineingesunken: das Bild der Verfinsterung des Lichts."
+    },
+    {
+      "hex": 36,
+      "field": "commentary_image",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 432,
+      "pass02Len": 618,
+      "pass04Len": 604,
+      "snippetPdf": "Das obere Zeichen Kun bedeutet die Menge. Unter dieser Menge befinden\nsich die b",
+      "snippetP4": "Das Licht ist in die Erde hineingesunken: das Bild der Verfinsterung des Lichts."
+    },
+    {
+      "hex": 36,
+      "field": "L1_a_oraculo",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 172,
+      "pass02Len": 172,
+      "pass04Len": 172,
+      "snippetPdf": "Verfinsterung des Lichts im Fluge. Er senkt seine Flügel. Der\nEdle auf seiner Wa",
+      "snippetP4": "Verfinsterung des Lichts im Fluge. Er senkt seine Flügel. Der\nEdle auf seiner Wa"
+    },
+    {
+      "hex": 36,
+      "field": "L6_b_comentario",
+      "jpgPages": "463-466",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 609,
+      "pass02Len": 615,
+      "pass04Len": 619,
+      "snippetPdf": "Erst stieg er zum Himmel empor\":\nDa hätte er die Länder aller vier Himmelsgegend",
+      "snippetP4": "Erst stieg er zum Himmel empor\":\nDa hätte er die Länder aller vier Himmelsgegend"
+    },
+    {
+      "hex": 37,
+      "field": "hex",
+      "jpgPages": "467-469",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "37"
+    },
+    {
+      "hex": 37,
+      "field": "chinese",
+      "jpgPages": "467-469",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "家人"
+    },
+    {
+      "hex": 37,
+      "field": "chinese_roman",
+      "jpgPages": "467-469",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 7,
+      "pass02Len": 7,
+      "pass04Len": 7,
+      "snippetPdf": "Gia Jen",
+      "snippetP4": "GIA JEN"
+    },
+    {
+      "hex": 37,
+      "field": "ruler_note",
+      "jpgPages": "467-469",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 197,
+      "pass02Len": 198,
+      "pass04Len": 203,
+      "snippetPdf": "Li und\nie Herren des Zeichens sind die Neun auf fünftem und die Sechs auf\nes im ",
+      "snippetP4": "Li und\nie Herren des Zeichens sind die Neun auf fünftem und die Sechs auf\nes im "
+    },
+    {
+      "hex": 37,
+      "field": "image_oraculo",
+      "jpgPages": "467-469",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 131,
+      "pass02Len": 466,
+      "pass04Len": 458,
+      "snippetPdf": "Der Wind kommt aus dem Feuer hervor:\ndas Bild der Sippe.\nSo hat der Edle in sein",
+      "snippetP4": "Der Wind kommt aus dem Feuer hervor: das Bild der Sippe.\nSo hat der Edle in sein"
+    },
+    {
+      "hex": 37,
+      "field": "commentary_image",
+      "jpgPages": "467-469",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 338,
+      "pass02Len": 466,
+      "pass04Len": 458,
+      "snippetPdf": "Wandel die Dauer.\nDer Wind ist die Wirkung des Feuers. So ist der ordnende Einfl",
+      "snippetP4": "Der Wind kommt aus dem Feuer hervor: das Bild der Sippe.\nSo hat der Edle in sein"
+    },
+    {
+      "hex": 38,
+      "field": "hex",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "38"
+    },
+    {
+      "hex": 38,
+      "field": "chinese",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "睽"
+    },
+    {
+      "hex": 38,
+      "field": "chinese_roman",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Kui",
+      "snippetP4": "KUI"
+    },
+    {
+      "hex": 38,
+      "field": "ruler_note",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 189,
+      "pass02Len": 249,
+      "pass04Len": 212,
+      "snippetPdf": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die Neun\nzur Entsch",
+      "snippetP4": "Kernzeichen: Kan und\nLi\nie Herren des Zeichens sind die Sechs auf fünftem Platz "
+    },
+    {
+      "hex": 38,
+      "field": "image_oraculo",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 118,
+      "pass02Len": 120,
+      "pass04Len": 120,
+      "snippetPdf": "Oben das Feuer, unten der See:\ndas Bild des Gegensatzes.\nSo behält der Edle bei ",
+      "snippetP4": "―\nOben das Feuer, unten der See: das Bild des Gegensatzes.\nSo behält der Edle be"
+    },
+    {
+      "hex": 38,
+      "field": "L3_b_comentario",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 686,
+      "pass02Len": 688,
+      "pass04Len": 693,
+      "snippetPdf": "Man sieht den Wagen nach hinten gezerrt\":\ndas kommt, weil der Platz nicht der re",
+      "snippetP4": "Man sieht den Wagen nach hinten gezerrt\":\ndas kommt, weil der Platz nicht der re"
+    },
+    {
+      "hex": 38,
+      "field": "L5_b_comentario",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 678,
+      "pass02Len": 681,
+      "pass04Len": 681,
+      "snippetPdf": "Der Gefährte beißt sich durch die Hülle.\"\nWenn man hingeht, bringt das Segen.\nDe",
+      "snippetP4": "Der Gefährte beißt sich durch die Hülle.\"\nWenn man hingeht, bringt das Segen.\nDe"
+    },
+    {
+      "hex": 38,
+      "field": "L6_b_comentario",
+      "jpgPages": "470-473",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 565,
+      "pass02Len": 571,
+      "pass04Len": 571,
+      "snippetPdf": "Das Heil des Regenfalles bedeutet, daß die Schar der Zweifel schwindet.\nDas Kern",
+      "snippetP4": "Das Heil des Regenfalles bedeutet, daß die Schar der Zweifel schwindet.\nDas Kern"
+    },
+    {
+      "hex": 39,
+      "field": "hex",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "39"
+    },
+    {
+      "hex": 39,
+      "field": "chinese",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "蹇"
+    },
+    {
+      "hex": 39,
+      "field": "chinese_roman",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "Giën",
+      "snippetP4": "GIAN"
+    },
+    {
+      "hex": 39,
+      "field": "ruler_note",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 226,
+      "pass02Len": 226,
+      "pass04Len": 177,
+      "snippetPdf": "Li und Kan\ner Herr des Zeichens ist die Neun auf fünftem Platz. Darum heißt es\nD",
+      "snippetP4": "Li und Kan\ner Herr des Zeichens ist die Neun auf fünftem Platz. Darum heißt es\nD"
+    },
+    {
+      "hex": 39,
+      "field": "commentary_decision",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1906,
+      "pass02Len": 1902,
+      "pass04Len": 1917,
+      "snippetPdf": "Hemmnis bedeutet Schwierigkeit. Die Gefahr ist vor einem.\nDie Gefahr sehen und s",
+      "snippetP4": "Hemmnis bedeutet Schwierigkeit. Die Gefahr ist vor einem.\nDie Gefahr sehen und s"
+    },
+    {
+      "hex": 39,
+      "field": "image_oraculo",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 131,
+      "pass02Len": 498,
+      "pass04Len": 483,
+      "snippetPdf": "Auf dem Berg ist das Wasser: das Bild des Hemmnisses.\nSo wendet sich der Edle se",
+      "snippetP4": "Auf dem Berge ist das Wasser: das Bild des Hemmnisses.\nSo wendet sich der Edle s"
+    },
+    {
+      "hex": 39,
+      "field": "commentary_image",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 368,
+      "pass02Len": 498,
+      "pass04Len": 483,
+      "snippetPdf": "seinen Charakter.\nDas Wasser auf der Spitze des Berges kann nicht seiner Natur e",
+      "snippetP4": "Auf dem Berge ist das Wasser: das Bild des Hemmnisses.\nSo wendet sich der Edle s"
+    },
+    {
+      "hex": 39,
+      "field": "L6_b_comentario",
+      "jpgPages": "474-477",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 756,
+      "pass02Len": 759,
+      "pass04Len": 767,
+      "snippetPdf": "Gehen führt in Hemmnisse, Kommen führt zu großem Heil\":\nDenn der Wille ist aufs ",
+      "snippetP4": "Gehen führt in Hemmnisse, Kommen führt zu großem Heil\":\nDenn der Wille ist aufs "
+    },
+    {
+      "hex": 40,
+      "field": "hex",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "40"
+    },
+    {
+      "hex": 40,
+      "field": "chinese",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "解"
+    },
+    {
+      "hex": 40,
+      "field": "chinese_roman",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Hië",
+      "snippetP4": "HIA"
+    },
+    {
+      "hex": 40,
+      "field": "ruler_note",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 304,
+      "pass02Len": 275,
+      "pass04Len": 306,
+      "snippetPdf": "―\nDie Herren des Zeichens sind die Neun auf zweitem und die Sechs auf\nfünftem Pl",
+      "snippetP4": "―\nDi\nie Herren des Zeichens sind die Neun auf zweitem und die Sechs auf\nfünftem "
+    },
+    {
+      "hex": 40,
+      "field": "misc_notes",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 700,
+      "pass02Len": 704,
+      "pass04Len": 2,
+      "snippetPdf": "Befreiung bedeutet Entspannung.\nDer Gedanke der Lösung und Befreiung kommt dadur",
+      "snippetP4": "Li"
+    },
+    {
+      "hex": 40,
+      "field": "commentary_decision",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1686,
+      "pass02Len": 1698,
+      "pass04Len": 1697,
+      "snippetPdf": "Die Befreiung. Die Gefahr bewirkt Bewegung. Durch die\nBewegung entgeht man der G",
+      "snippetP4": "Die Befreiung. Die Gefahr bewirkt Bewegung. Durch die\nBewegung entgeht man der G"
+    },
+    {
+      "hex": 40,
+      "field": "image_oraculo",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 106,
+      "pass02Len": 357,
+      "pass04Len": 342,
+      "snippetPdf": "Donner und Regen erheben sich:\ndas Bild der Befreiung.\nSo verzeiht der Edle Fehl",
+      "snippetP4": "Donner und Regen erheben sich: das Bild der Befreiung.\nSo verzeiht der Edle Fehl"
+    },
+    {
+      "hex": 40,
+      "field": "commentary_image",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 218,
+      "pass02Len": 357,
+      "pass04Len": 342,
+      "snippetPdf": "Kan bedeutet Prozesse und Sünden. Dschen bewegt sich nach oben und\nläßt die Fehl",
+      "snippetP4": "Donner und Regen erheben sich: das Bild der Befreiung.\nSo verzeiht der Edle Fehl"
+    },
+    {
+      "hex": 40,
+      "field": "L5_b_comentario",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 527,
+      "pass02Len": 531,
+      "pass04Len": 535,
+      "snippetPdf": "Der Edle befreit sich\",\nweil dann die Gemeinen sich zurückziehen.\nDer fünfte Pla",
+      "snippetP4": "Der Edle befreit sich\",\nweil dann die Gemeinen sich zurückziehen.\nDer fünfte Pla"
+    },
+    {
+      "hex": 40,
+      "field": "L6_b_comentario",
+      "jpgPages": "478-481",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 669,
+      "pass02Len": 678,
+      "pass04Len": 683,
+      "snippetPdf": "Der Fürst schießt einen Habicht\":\ndadurch befreit er sich von den Widerstrebende",
+      "snippetP4": "Der Fürst schießt einen Habicht\":\ndadurch befreit er sich von den Widerstrebende"
+    },
+    {
+      "hex": 41,
+      "field": "hex",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "41"
+    },
+    {
+      "hex": 41,
+      "field": "chinese",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "損"
+    },
+    {
+      "hex": 41,
+      "field": "chinese_roman",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 17,
+      "snippetPdf": "Sun",
+      "snippetP4": "SUN DIE MINDERUNG"
+    },
+    {
+      "hex": 41,
+      "field": "ruler_note",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 381,
+      "pass02Len": 393,
+      "pass04Len": 409,
+      "snippetPdf": "em Zeichen Sun liegt der Gedanke zugrunde, daß der oberste Strich des\nZeichens z",
+      "snippetP4": "Kernzeichen: == Kun und\nem Zeichen Sun liegt der Gedanke zugrunde, daß der obers"
+    },
+    {
+      "hex": 41,
+      "field": "image_oraculo",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 106,
+      "pass02Len": 728,
+      "pass04Len": 714,
+      "snippetPdf": "Unten am Berg ist der See: das Bild der Minderung.\nSo bändigt der Edle seinen Zo",
+      "snippetP4": "Unten am Berg ist der See: das Bild der Minderung. So\nbändigt der Edle seinen Zo"
+    },
+    {
+      "hex": 41,
+      "field": "commentary_image",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 605,
+      "pass02Len": 728,
+      "pass04Len": 714,
+      "snippetPdf": "Der See verdunstet, sein Wasser wird gemindert und kommt der Vegetation des Berg",
+      "snippetP4": "Unten am Berg ist der See: das Bild der Minderung. So\nbändigt der Edle seinen Zo"
+    },
+    {
+      "hex": 41,
+      "field": "L6_a_oraculo",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 194,
+      "pass02Len": 194,
+      "pass04Len": 196,
+      "snippetPdf": "Wenn man ohne Minderung der andern gemehrt wird, so ist\ndas kein Makel. Beharrli",
+      "snippetP4": "Wenn man ohne Minderung der andern gemehrt wird, so ist\ndas kein Makel. Beharrli"
+    },
+    {
+      "hex": 41,
+      "field": "L6_b_comentario",
+      "jpgPages": "482-485",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 682,
+      "pass02Len": 688,
+      "pass04Len": 692,
+      "snippetPdf": "Ohne zu mindern wird er gemehrt, d. h. daß er in hohem\nMaße seinen Willen erreic",
+      "snippetP4": "Ohne zu mindern wird er gemehrt, d. h. daß er in hohem\nMaße seinen Willen erreic"
+    },
+    {
+      "hex": 42,
+      "field": "hex",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "42"
+    },
+    {
+      "hex": 42,
+      "field": "chinese",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "益"
+    },
+    {
+      "hex": 42,
+      "field": "ruler_note",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 494,
+      "pass02Len": 427,
+      "pass04Len": 498,
+      "snippetPdf": "Gen und\nKun\ner Gedanke der Mehrung kommt zum Ausdruck durch die Minderung\ndes un",
+      "snippetP4": "Gen und\nKun\nD\ner Gedanke der Mehrung kommt zum Ausdruck durch die Minderung\ndes "
+    },
+    {
+      "hex": 42,
+      "field": "sequence",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 110,
+      "pass02Len": 110,
+      "pass04Len": 114,
+      "snippetPdf": "Wenn die Minderung dauernd fortgeht, so wirkt sie sicher\nMehrung. Darum folgt da",
+      "snippetP4": "Wenn die Minderung dauernd fortgeht, so wirkt sie sicher\nMehrung. Darum folgt da"
+    },
+    {
+      "hex": 42,
+      "field": "misc_notes",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1982,
+      "pass02Len": 1996,
+      "pass04Len": 1997,
+      "snippetPdf": "Die Zeichen Minderung und Mehrung sind der Anfang von\nBlüte und Untergang.\nDie b",
+      "snippetP4": "Die Zeichen Minderung und Mehrung sind der Anfang von\nBlüte und Untergang.\nDie b"
+    },
+    {
+      "hex": 42,
+      "field": "image_oraculo",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 121,
+      "pass02Len": 121,
+      "pass04Len": 121,
+      "snippetPdf": "Wind und Donner: das Bild der Mehrung.\nSo der Edle: Sieht er Gutes, so ahmt er e",
+      "snippetP4": "Wind und Donner: Das Bild der Mehrung. So der Edle:\nsieht er Gutes, so ahmt er e"
+    },
+    {
+      "hex": 42,
+      "field": "L1_b_comentario",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 505,
+      "pass02Len": 513,
+      "pass04Len": 513,
+      "snippetPdf": "Erhabenes Heil! Kein Makel.\"\nDie Unteren benützen es nicht zu ihrer eigenen Bequ",
+      "snippetP4": "Erhabenes Heil! Kein Makel.\"\nDie Unteren benützen es nicht zu ihrer eigenen Bequ"
+    },
+    {
+      "hex": 42,
+      "field": "L6_b_comentario",
+      "jpgPages": "486-490",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 549,
+      "pass02Len": 549,
+      "pass04Len": 550,
+      "snippetPdf": "Er gereicht niemand zur Mehrung\":\nDas ist ein Wort, das die Einseitigkeit bezeic",
+      "snippetP4": "Er gereicht niemand zur Mehrung\":\nDas ist ein Wort, das die Einseitigkeit bezeic"
+    },
+    {
+      "hex": 43,
+      "field": "hex",
+      "jpgPages": "491-495",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "43"
+    },
+    {
+      "hex": 43,
+      "field": "chinese",
+      "jpgPages": "491-495",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "夬"
+    },
+    {
+      "hex": 43,
+      "field": "chinese_roman",
+      "jpgPages": "491-495",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "Guai",
+      "snippetP4": "GUAI"
+    },
+    {
+      "hex": 43,
+      "field": "ruler_note",
+      "jpgPages": "491-495",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 376,
+      "pass02Len": 331,
+      "pass04Len": 358,
+      "snippetPdf": "Der Sinn des Zeichens geht daraus hervor, daß ein dunkler Strich am äußersten Pl",
+      "snippetP4": "Kiän und\nKiän\nDer ist obere Sedis koner Sinn des Zeichens geht daraus hervor, da"
+    },
+    {
+      "hex": 43,
+      "field": "commentary_decision",
+      "jpgPages": "491-495",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1515,
+      "pass02Len": 1514,
+      "pass04Len": 1526,
+      "snippetPdf": "Durchbruch ist soviel wie Entschlossenheit.\nDas Feste verdrängt entschlossen das",
+      "snippetP4": "Durchbruch ist soviel wie Entschlossenheit.\nDas Feste verdrängt entschlossen das"
+    },
+    {
+      "hex": 43,
+      "field": "image_oraculo",
+      "jpgPages": "491-495",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 158,
+      "pass02Len": 1203,
+      "pass04Len": 1195,
+      "snippetPdf": "Der See ist an den Himmel emporgestiegen:\ndas Bild des Durchbruchs.\nSo spendet d",
+      "snippetP4": "Der See ist an den Himmel emporgestiegen: das Bild des\nDurchbruchs. So spendet d"
+    },
+    {
+      "hex": 44,
+      "field": "hex",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "44"
+    },
+    {
+      "hex": 44,
+      "field": "chinese",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "姤"
+    },
+    {
+      "hex": 44,
+      "field": "chinese_roman",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Gou",
+      "snippetP4": "GOU"
+    },
+    {
+      "hex": 44,
+      "field": "ruler_note",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 456,
+      "pass02Len": 476,
+      "pass04Len": 475,
+      "snippetPdf": "Das Zeichen Entgegenkommen\" hat seine Bedeutung von der einen\nstituierende Herr ",
+      "snippetP4": "Kiän und\nKiän\nDas\nas Zeichen Entgegenkommen\" hat seine Bedeutung von der einen\ns"
+    },
+    {
+      "hex": 44,
+      "field": "misc_notes",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 463,
+      "pass02Len": 463,
+      "pass04Len": 34,
+      "snippetPdf": "Entgegenkommen bedeutet Antreffen.\nDas Entgegenkommen bedeutet Antreffen. Das un",
+      "snippetP4": "Entgegenkommen bedeutet Antreffen."
+    },
+    {
+      "hex": 44,
+      "field": "commentary_decision",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 2262,
+      "pass02Len": 2272,
+      "pass04Len": 2274,
+      "snippetPdf": "Entgegenkommen bedeutet Antreffen. Das Schwache tritt\ndem Festen entgegen.\n\"Man ",
+      "snippetP4": "Entgegenkommen bedeutet Antreffen. Das Schwache tritt\ndem Festen entgegen.\n,,Man"
+    },
+    {
+      "hex": 44,
+      "field": "image_oraculo",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 165,
+      "pass02Len": 474,
+      "pass04Len": 462,
+      "snippetPdf": "Unter dem Himmel ist der Wind:\ndas Bild des Entgegenkommens.\nSo macht es der Für",
+      "snippetP4": "Unter dem Himmel ist der Wind: Das Bild des Entgegenkommens. So macht es der Für"
+    },
+    {
+      "hex": 44,
+      "field": "commentary_image",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 285,
+      "pass02Len": 474,
+      "pass04Len": 462,
+      "snippetPdf": "Der Fürst wird symbolisiert durch das obere Zeichen Kiän, Himmel. Seine\nBefehle ",
+      "snippetP4": "Unter dem Himmel ist der Wind: Das Bild des Entgegenkommens. So macht es der Für"
+    },
+    {
+      "hex": 44,
+      "field": "L3_a_oraculo",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 131,
+      "pass02Len": 131,
+      "pass04Len": 135,
+      "snippetPdf": "An den Oberschenkeln ist keine Haut, und das Gehen fällt\nschwer. Wenn man der Ge",
+      "snippetP4": "An den Oberschenkeln ist keine Haut, und das Gehen fällt\nschwer. Wenn man der Ge"
+    },
+    {
+      "hex": 44,
+      "field": "L5_b_comentario",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 963,
+      "pass02Len": 975,
+      "pass04Len": 970,
+      "snippetPdf": "Die Neun auf fünftem Platz verbirgt ihre Linien, weil sie in\nder Mitte und korre",
+      "snippetP4": "Die Neun auf fünftem Platz verbirgt ihre Linien, weil sie in\nder Mitte und korre"
+    },
+    {
+      "hex": 44,
+      "field": "L6_b_comentario",
+      "jpgPages": "496-499",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 430,
+      "pass02Len": 432,
+      "pass04Len": 438,
+      "snippetPdf": "Er kommt mit seinen Hörnern entgegen.\"\nOben ist es zu Ende, daher Beschämung.\nKi",
+      "snippetP4": "Er kommt mit seinen Hörnern entgegen.\"\nOben ist es zu Ende, daher Beschämung.\nKi"
+    },
+    {
+      "hex": 45,
+      "field": "hex",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "45"
+    },
+    {
+      "hex": 45,
+      "field": "chinese",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "萃"
+    },
+    {
+      "hex": 45,
+      "field": "chinese_roman",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "TSui",
+      "snippetP4": "TSUI"
+    },
+    {
+      "hex": 45,
+      "field": "sequence",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 663,
+      "pass02Len": 134,
+      "pass04Len": 674,
+      "snippetPdf": "Wenn die Wesen einander antreffen, dann häufen sie sich an.\nDarum folgt darauf d",
+      "snippetP4": "Wenn die Wesen einander antreffen, dann häufen sie sich an.\nDarum folgt darauf d"
+    },
+    {
+      "hex": 45,
+      "field": "misc_notes",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 528,
+      "pass02Len": 530,
+      "pass04Len": 190,
+      "snippetPdf": "Sammlung bedeutet Anhäufung.\nDas Zeichen hat in den beiden lichten Strichen, von",
+      "snippetP4": "Gen\nie Herren des Zeichens sind die Neun auf fünftem Platz und in zweiter\nPlatz."
+    },
+    {
+      "hex": 45,
+      "field": "commentary_decision",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1798,
+      "pass02Len": 1815,
+      "pass04Len": 1815,
+      "snippetPdf": "Sammlung bedeutet Anhäufung. Hingebend und dabei heiter.\nDer Starke steht in der",
+      "snippetP4": "Sammlung bedeutet Anhäufung. Hingebend und dabei heiter.\nDer Starke steht in der"
+    },
+    {
+      "hex": 45,
+      "field": "image_oraculo",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 122,
+      "pass02Len": 657,
+      "pass04Len": 642,
+      "snippetPdf": "Der See ist oberhalb der Erde:\ndas Bild der Sammlung.\nSo erneuert der Edle seine",
+      "snippetP4": "Der See ist oberhalb der Erde: das Bild der Sammlung. So\nerneuert der Edle seine"
+    },
+    {
+      "hex": 45,
+      "field": "commentary_image",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 525,
+      "pass02Len": 657,
+      "pass04Len": 642,
+      "snippetPdf": "begegnen.\nDie beiden Zeichen in ihrem Zusammensein geben das Bild der Sammlung.\n",
+      "snippetP4": "Der See ist oberhalb der Erde: das Bild der Sammlung. So\nerneuert der Edle seine"
+    },
+    {
+      "hex": 45,
+      "field": "L5_b_comentario",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 573,
+      "pass02Len": 581,
+      "pass04Len": 583,
+      "snippetPdf": "Wenn man beim Sammeln nur die Stellung hat\",\nso ist der Wille noch nicht leuchte",
+      "snippetP4": "Wenn man beim Sammeln nur die Stellung hat\",\nso ist der Wille noch nicht leuchte"
+    },
+    {
+      "hex": 45,
+      "field": "L6_b_comentario",
+      "jpgPages": "500-503",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 538,
+      "pass02Len": 540,
+      "pass04Len": 540,
+      "snippetPdf": "Klagen und Seufzen, Tränen in Strömen!\"\nEr beruhigt sich nicht oben.\nDer obere S",
+      "snippetP4": "Klagen und Seufzen, Tränen in Strömen!\"\nEr beruhigt sich nicht oben.\nDer obere S"
+    },
+    {
+      "hex": 46,
+      "field": "hex",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "46"
+    },
+    {
+      "hex": 46,
+      "field": "chinese",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "升"
+    },
+    {
+      "hex": 46,
+      "field": "chinese_roman",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 6,
+      "pass02Len": 6,
+      "pass04Len": 6,
+      "snippetPdf": "Schong",
+      "snippetP4": "SCHONG"
+    },
+    {
+      "hex": 46,
+      "field": "ruler_note",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 533,
+      "pass02Len": 497,
+      "pass04Len": 538,
+      "snippetPdf": "Dschen und\nDui\nDer Herr des Zeichens ist die Sechs auf fünftem Platz. Auf sie be",
+      "snippetP4": "Dschen und\nDui\nDer\ner Herr des Zeichens ist die Sechs auf fünftem Platz. Auf sie"
+    },
+    {
+      "hex": 46,
+      "field": "image_oraculo",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 146,
+      "pass02Len": 436,
+      "pass04Len": 421,
+      "snippetPdf": "Inmitten der Erde wächst das Holz:\ndas Bild des Empordringens.\nSo häuft der Edle",
+      "snippetP4": "Inmitten der Erde wächst das Holz: das Bild des Empordringens. So häuft der Edle"
+    },
+    {
+      "hex": 46,
+      "field": "commentary_image",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 268,
+      "pass02Len": 436,
+      "pass04Len": 421,
+      "snippetPdf": "Die Anhäufung des Kleinen, der stetige, unmerkliche Fortschritt, wird angedeutet",
+      "snippetP4": "Inmitten der Erde wächst das Holz: das Bild des Empordringens. So häuft der Edle"
+    },
+    {
+      "hex": 46,
+      "field": "L1_a_oraculo",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 63,
+      "pass02Len": 63,
+      "pass04Len": 54,
+      "snippetPdf": "Empordringen, das Zutrauen findet, bringt großes Heil.\nj\nP\nEx\nמ",
+      "snippetP4": "Empordringen, das Zutrauen findet, bringt großes Heil."
+    },
+    {
+      "hex": 46,
+      "field": "L6_b_comentario",
+      "jpgPages": "504-506",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 339,
+      "pass02Len": 345,
+      "pass04Len": 345,
+      "snippetPdf": "Empordringen im Dunklen.\"\nn\nOben ist Abnahme und nicht Reichtum.\nDie Linie ist a",
+      "snippetP4": "Empordringen im Dunklen.\"\nn\nOben ist Abnahme und nicht Reichtum.\nDie Linie ist a"
+    },
+    {
+      "hex": 47,
+      "field": "hex",
+      "jpgPages": "507-510",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "47"
+    },
+    {
+      "hex": 47,
+      "field": "chinese",
+      "jpgPages": "507-510",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "困"
+    },
+    {
+      "hex": 47,
+      "field": "chinese_roman",
+      "jpgPages": "507-510",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Kun",
+      "snippetP4": "KUN"
+    },
+    {
+      "hex": 47,
+      "field": "ruler_note",
+      "jpgPages": "507-510",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 359,
+      "pass02Len": 369,
+      "pass04Len": 314,
+      "snippetPdf": "Die Herren des Zeichens sind die Neun auf zweitem und die Neun auf\nDi\nfünftem Pl",
+      "snippetP4": "ie Herren des Zeichens sind die Neun auf zweitem und die Neun auf\nauf der Einsti"
+    },
+    {
+      "hex": 47,
+      "field": "image_oraculo",
+      "jpgPages": "507-510",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 113,
+      "pass02Len": 143,
+      "pass04Len": 143,
+      "snippetPdf": "Im See ist kein Wasser: das Bild der Erschöpfung.\nSo setzt der Edle sein Leben d",
+      "snippetP4": "Im See ist kein Wasser: das Bild der Erschöpfung. So setzt\nder Edle sein Leben d"
+    },
+    {
+      "hex": 47,
+      "field": "L6_b_comentario",
+      "jpgPages": "507-510",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 472,
+      "pass02Len": 479,
+      "pass04Len": 479,
+      "snippetPdf": "\"Er ist bedrängt von Ranken\":\ndas heißt, er ist noch nicht entsprechend.\n\"Bewegu",
+      "snippetP4": "\"Er ist bedrängt von Ranken\":\ndas heißt, er ist noch nicht entsprechend.\n,,Beweg"
+    },
+    {
+      "hex": 48,
+      "field": "hex",
+      "jpgPages": "511-515",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "48"
+    },
+    {
+      "hex": 48,
+      "field": "chinese",
+      "jpgPages": "511-515",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "井"
+    },
+    {
+      "hex": 48,
+      "field": "chinese_roman",
+      "jpgPages": "511-515",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 5,
+      "pass02Len": 5,
+      "pass04Len": 5,
+      "snippetPdf": "Dsing",
+      "snippetP4": "DSING"
+    },
+    {
+      "hex": 48,
+      "field": "ruler_note",
+      "jpgPages": "511-515",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 236,
+      "pass02Len": 315,
+      "pass04Len": 250,
+      "snippetPdf": "Der Herr des Zeichens ist die Neun auf fünftem Platz. Die Wirkung des\nder Herr d",
+      "snippetP4": "Li und\nDui\nDer\ner Herr des Zeichens ist die Neun auf fünftem Platz. Die Wirkung "
+    },
+    {
+      "hex": 48,
+      "field": "image_oraculo",
+      "jpgPages": "511-515",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 130,
+      "pass02Len": 723,
+      "pass04Len": 680,
+      "snippetPdf": "Über dem Holz ist Wasser: das Bild des Brunnens.\nSo ermuntert der Edle das Volk ",
+      "snippetP4": "Über dem Holz ist Wasser: das Bild des Brunnens. So ermuntert der Edle das Volk "
+    },
+    {
+      "hex": 48,
+      "field": "commentary_image",
+      "jpgPages": "511-515",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 606,
+      "pass02Len": 478,
+      "pass04Len": 536,
+      "snippetPdf": "einander zu helfen.\nDas Bild des Brunnens wird auch hier auf die Regierung angew",
+      "snippetP4": "Die Felder verteilten sich folgendermaßen: 297. 1-8 waren\nfür den Familiengebrau"
+    },
+    {
+      "hex": 48,
+      "field": "L6_b_comentario",
+      "jpgPages": "511-515",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 373,
+      "pass02Len": 368,
+      "pass04Len": 379,
+      "snippetPdf": "Erhabenes Heil\"\nauf dem oberen Platz, das bedeutet große Vollendung.\nDer Strich ",
+      "snippetP4": "Erhabenes Heil\"\nauf dem oberen Platz, das bedeutet große Vollendung.\nDer Strich "
+    },
+    {
+      "hex": 49,
+      "field": "hex",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "49"
+    },
+    {
+      "hex": 49,
+      "field": "chinese",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "革"
+    },
+    {
+      "hex": 49,
+      "field": "chinese_roman",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 2,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "Go",
+      "snippetP4": "GO"
+    },
+    {
+      "hex": 49,
+      "field": "ruler_note",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 255,
+      "pass02Len": 301,
+      "pass04Len": 260,
+      "snippetPdf": "Kiän und Sun\nDer Herr des Zeichens ist die Neun auf fünftem Platz, denn man muß\n",
+      "snippetP4": "Kiän und Sun\nDer\ner Herr des Zeichens ist die Neun auf fünftem Platz, denn man m"
+    },
+    {
+      "hex": 49,
+      "field": "commentary_decision",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 2864,
+      "pass02Len": 2889,
+      "pass04Len": 2906,
+      "snippetPdf": "Die Umwälzung: Wasser und Feuer dämpfen einander. Zwei\n1 Weil der Gedanke des Br",
+      "snippetP4": "Die Umwälzung: Wasser und Feuer dämpfen einander. Zwei\n¹ Weil der Gedanke des Br"
+    },
+    {
+      "hex": 49,
+      "field": "image_oraculo",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 104,
+      "pass02Len": 443,
+      "pass04Len": 429,
+      "snippetPdf": "Im See ist Feuer: das Bild der Umwälzung.\nSo ordnet der Edle die Zeitrechnung\nun",
+      "snippetP4": "Im See ist Feuer: Das Bild der Umwälzung. So ordnet der\nEdle die Zeitrechnung un"
+    },
+    {
+      "hex": 49,
+      "field": "commentary_image",
+      "jpgPages": "516-519",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 322,
+      "pass02Len": 443,
+      "pass04Len": 429,
+      "snippetPdf": "Das Feuer im See bewirkt eine Umwälzung. Das Wasser löscht das Feuer,\ndas Feuer ",
+      "snippetP4": "Im See ist Feuer: Das Bild der Umwälzung. So ordnet der\nEdle die Zeitrechnung un"
+    },
+    {
+      "hex": 50,
+      "field": "hex",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "50"
+    },
+    {
+      "hex": 50,
+      "field": "chinese",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "鼎"
+    },
+    {
+      "hex": 50,
+      "field": "chinese_roman",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "Ding",
+      "snippetP4": "DING"
+    },
+    {
+      "hex": 50,
+      "field": "ruler_note",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 333,
+      "pass02Len": 283,
+      "pass04Len": 350,
+      "snippetPdf": "Die Herren des Zeichens sind die Sechs auf fünftem Platz und die obere\nNeun. Die",
+      "snippetP4": "Dui und\nKiän\nDi\nie Herren des Zeichens sind die Sechs auf fünftem Platz und die "
+    },
+    {
+      "hex": 50,
+      "field": "commentary_decision",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1847,
+      "pass02Len": 1859,
+      "pass04Len": 1861,
+      "snippetPdf": "Der Tiegel ist das Bild eines Gegenstandes. Indem man mit\nHolz ins Feuer dringt,",
+      "snippetP4": "Der Tiegel ist das Bild eines Gegenstandes. Indem man mit\nHolz ins Feuer dringt,"
+    },
+    {
+      "hex": 50,
+      "field": "image_oraculo",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 115,
+      "pass02Len": 115,
+      "pass04Len": 119,
+      "snippetPdf": "Über dem Holz ist Feuer: das Bild des Tiegels.\nSo festigt der Edle\ndurch Richtig",
+      "snippetP4": "Über dem Holz ist Feuer: das Bild des Tiegels. So festigt\nder Edle durch Richtig"
+    },
+    {
+      "hex": 50,
+      "field": "commentary_image",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 555,
+      "pass02Len": 576,
+      "pass04Len": 565,
+      "snippetPdf": "Feuer über Holz ist nicht das Bild des Tiegels, sondern das Bild seines Gebrauch",
+      "snippetP4": "?\nL\nt\nFeuer über Holz ist nicht das Bild des Tiegels, sondern das Bild seines Ge"
+    },
+    {
+      "hex": 50,
+      "field": "L6_b_comentario",
+      "jpgPages": "520-523",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 475,
+      "pass02Len": 483,
+      "pass04Len": 483,
+      "snippetPdf": "Die Nephritringe auf oberstem Platz zeigen fest und weich\nin richtiger Ergänzung",
+      "snippetP4": "Die Nephritringe auf oberstem Platz zeigen fest und weich\nin richtiger Ergänzung"
+    },
+    {
+      "hex": 51,
+      "field": "hex",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "51"
+    },
+    {
+      "hex": 51,
+      "field": "chinese",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "震"
+    },
+    {
+      "hex": 51,
+      "field": "chinese_roman",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 6,
+      "pass02Len": 6,
+      "pass04Len": 6,
+      "snippetPdf": "Dschen",
+      "snippetP4": "DSCHEN"
+    },
+    {
+      "hex": 51,
+      "field": "ruler_note",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 186,
+      "pass02Len": 199,
+      "pass04Len": 239,
+      "snippetPdf": "Die Herren des Zeichens Dschen sind die beiden lichten Striche. Da es aber\nGen\nu",
+      "snippetP4": "(DAS ERSCHUTTERN, DER DONNER)\nKernzeichen: == Kan und\nie Herren des Zeichens Dsc"
+    },
+    {
+      "hex": 51,
+      "field": "sequence",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 154,
+      "pass02Len": 186,
+      "pass04Len": 186,
+      "snippetPdf": "Unter den Verwaltern der heiligen Geräte steht der älteste\nSohn in erster Linie.",
+      "snippetP4": "Unter den Verwaltern der heiligen Geräte steht der älteste\nSohn in erster Linie."
+    },
+    {
+      "hex": 51,
+      "field": "commentary_decision",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1516,
+      "pass02Len": 1528,
+      "pass04Len": 1527,
+      "snippetPdf": "\"Das Erschüttern bringt Gelingen.\nDas Erschüttern kommt: Hu, Hu!\"\nFurcht bringt ",
+      "snippetP4": ",,Das Erschüttern bringt Gelingen.\nDas Erschüttern kommt: Hu, Hu!\"\nFurcht bringt"
+    },
+    {
+      "hex": 51,
+      "field": "image_oraculo",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 135,
+      "pass02Len": 325,
+      "pass04Len": 309,
+      "snippetPdf": "Fortgesetzter Donner: das Bild des Erschütterns.\nSo macht der Edle unter Furcht ",
+      "snippetP4": "Fortgesetzter Donner: das Bild des Erschütterns. So macht\nder Edle unter Furcht "
+    },
+    {
+      "hex": 51,
+      "field": "commentary_image",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 169,
+      "pass02Len": 325,
+      "pass04Len": 309,
+      "snippetPdf": "Fortgesetzter Donner heißt es, weil das Zeichen Dschen verdoppelt übereinander s",
+      "snippetP4": "Fortgesetzter Donner: das Bild des Erschütterns. So macht\nder Edle unter Furcht "
+    },
+    {
+      "hex": 51,
+      "field": "L1_b_comentario",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 352,
+      "pass02Len": 356,
+      "pass04Len": 355,
+      "snippetPdf": "Das Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n\"Lachende Worte: Ha, Ha!\"\nN",
+      "snippetP4": "Das Erschüttern kommt: Hu, Hu!\"\nFurcht bringt Glück.\n,,Lachende Worte: Ha, Ha!\"\n"
+    },
+    {
+      "hex": 51,
+      "field": "L5_b_comentario",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 818,
+      "pass02Len": 822,
+      "pass04Len": 824,
+      "snippetPdf": "Das Erschüttern geht hin und her: Gefahr.\"\nMan wandelt in Gefahr. Die Geschäfte ",
+      "snippetP4": "Das Erschüttern geht hin und her: Gefahr.\"\nMan wandelt in Gefahr. Die Geschäfte "
+    },
+    {
+      "hex": 51,
+      "field": "L6_b_comentario",
+      "jpgPages": "524-527",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 976,
+      "pass02Len": 981,
+      "pass04Len": 984,
+      "snippetPdf": "\"Die Erschütterung bringt Verfall.\"\nEr hat die Mitte nicht erreicht.\nObwohl Unhe",
+      "snippetP4": "\"Die Erschütterung bringt Verfall.\"\nEr hat die Mitte nicht erreicht.\nObwohl Unhe"
+    },
+    {
+      "hex": 52,
+      "field": "hex",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "52"
+    },
+    {
+      "hex": 52,
+      "field": "chinese",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "艮"
+    },
+    {
+      "hex": 52,
+      "field": "chinese_roman",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Gen",
+      "snippetP4": "GEN"
+    },
+    {
+      "hex": 52,
+      "field": "misc_notes",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 472,
+      "pass02Len": 474,
+      "pass04Len": 3,
+      "snippetPdf": "Stillehalten bedeutet innehalten.\nDas Zeichen ist die Umkehrung des vorigen. Es ",
+      "snippetP4": "Kan"
+    },
+    {
+      "hex": 52,
+      "field": "image_oraculo",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 118,
+      "pass02Len": 684,
+      "pass04Len": 669,
+      "snippetPdf": "Zusammenstehende Berge: das Bild des Stillehaltens.\nSo geht der Edle mit seinen ",
+      "snippetP4": "Zusammenstehende Berge: das Bild des Stillehaltens. So geht\nder Edle mit seinen "
+    },
+    {
+      "hex": 52,
+      "field": "commentary_image",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 550,
+      "pass02Len": 684,
+      "pass04Len": 669,
+      "snippetPdf": "Bei allen Doppelzeichen stehen die entsprechenden Linien des oberen und\nunteren ",
+      "snippetP4": "Zusammenstehende Berge: das Bild des Stillehaltens. So geht\nder Edle mit seinen "
+    },
+    {
+      "hex": 52,
+      "field": "L2_b_comentario",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 876,
+      "pass02Len": 886,
+      "pass04Len": 882,
+      "snippetPdf": "Er kann den nicht retten, dem er folgt\":\nDenn er kehrt sich nicht nach ihm, daß ",
+      "snippetP4": "Er kann den nicht retten, dem er folgt\":\nDenn er kehrt sich nicht nach ihm, daß "
+    },
+    {
+      "hex": 52,
+      "field": "L6_b_comentario",
+      "jpgPages": "528-531",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 609,
+      "pass02Len": 617,
+      "pass04Len": 617,
+      "snippetPdf": "Das Heil des großzügigen Stillehaltens kommt davon her, daß\nein reichlicher Absc",
+      "snippetP4": "Das Heil des großzügigen Stillehaltens kommt davon her, daß\nein reichlicher Absc"
+    },
+    {
+      "hex": 53,
+      "field": "hex",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "53"
+    },
+    {
+      "hex": 53,
+      "field": "chinese",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "漸"
+    },
+    {
+      "hex": 53,
+      "field": "chinese_roman",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 5,
+      "pass02Len": 5,
+      "pass04Len": 5,
+      "snippetPdf": "Dsien",
+      "snippetP4": "DSIAN"
+    },
+    {
+      "hex": 53,
+      "field": "ruler_note",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 577,
+      "pass02Len": 628,
+      "pass04Len": 590,
+      "snippetPdf": "Li und Kan\nDas Zeichen Entwicklung hat die Verheiratung eines Mädchens als Grund",
+      "snippetP4": "Li und Kan\nDas\nas Zeichen Entwicklung hat die Verheiratung eines Mädchens als Gr"
+    },
+    {
+      "hex": 53,
+      "field": "image_oraculo",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 117,
+      "pass02Len": 117,
+      "pass04Len": 168,
+      "snippetPdf": "Auf dem Berge ist ein Baum: das Bild der Entwicklung.\nSo weilt der Edle in würdi",
+      "snippetP4": "Auf dem Berge ist ein Baum: das Bild der Entwicklung. So\nweilt der Edle in würdi"
+    },
+    {
+      "hex": 53,
+      "field": "commentary_image",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 585,
+      "pass02Len": 591,
+      "pass04Len": 620,
+      "snippetPdf": "Der Baum auf dem Berg vergrößert sich langsam und unmerklich. Er geht\nin die Bre",
+      "snippetP4": "T\nZet\nste\nDr.\n÷\n21-\n-20\n7d\nd\nDer Baum auf dem Berg vergrößert sich langsam und u"
+    },
+    {
+      "hex": 53,
+      "field": "L6_b_comentario",
+      "jpgPages": "532-535",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 927,
+      "pass02Len": 933,
+      "pass04Len": 933,
+      "snippetPdf": "Ihre Federn können zum heiligen Tanz verwendet werden.\nHeil!\"\nMan kann ihn nicht",
+      "snippetP4": "Ihre Federn können zum heiligen Tanz verwendet werden.\nHeil!\"\nMan kann ihn nicht"
+    },
+    {
+      "hex": 54,
+      "field": "hex",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "54"
+    },
+    {
+      "hex": 54,
+      "field": "chinese",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "歸妹"
+    },
+    {
+      "hex": 54,
+      "field": "chinese_roman",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 6,
+      "pass02Len": 6,
+      "pass04Len": 6,
+      "snippetPdf": "Gui me",
+      "snippetP4": "GUI ME"
+    },
+    {
+      "hex": 54,
+      "field": "ruler_note",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 551,
+      "pass02Len": 564,
+      "pass04Len": 568,
+      "snippetPdf": "Das Zeichen \"das heiratende Mädchen\" beruht auf der Idee, daß das\nheißt es im Ko",
+      "snippetP4": "Kan und\nLi\nDas\nas Zeichen,,das heiratende Mädchen\" beruht auf der Idee, daß das\n"
+    },
+    {
+      "hex": 54,
+      "field": "commentary_decision",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 544,
+      "pass02Len": 2470,
+      "pass04Len": 2485,
+      "snippetPdf": "Das heiratende Mädchen bezeichnet den großen Sinn von\nHimmel und Erde. Wenn Himm",
+      "snippetP4": "Das heiratende Mädchen bezeichnet den großen Sinn von\nHimmel und Erde. Wenn Himm"
+    },
+    {
+      "hex": 54,
+      "field": "image_oraculo",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 135,
+      "pass02Len": 664,
+      "pass04Len": 652,
+      "snippetPdf": "Oberhalb des Sees ist der Donner:\ndas Bild des heiratenden Mädchens.\nSo erkennt ",
+      "snippetP4": ".\nOberhalb des Sees ist der Donner: das Bild des heiratenden\nMädchens. So erkenn"
+    },
+    {
+      "hex": 54,
+      "field": "commentary_image",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 589,
+      "pass02Len": 664,
+      "pass04Len": 652,
+      "snippetPdf": "Mädchens. So erkennt der Edle durch die Ewigkeit des\nEndes das Vergängliche.\nIm ",
+      "snippetP4": ".\nOberhalb des Sees ist der Donner: das Bild des heiratenden\nMädchens. So erkenn"
+    },
+    {
+      "hex": 54,
+      "field": "L1_b_comentario",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 787,
+      "pass02Len": 795,
+      "pass04Len": 794,
+      "snippetPdf": "Das heiratende Mädchen als Nebenfrau\",\nweil das Dauer gibt.\n\"Ein Lahmer, der auf",
+      "snippetP4": "Das heiratende Mädchen als Nebenfrau\",\nweil das Dauer gibt.\n,,Ein Lahmer, der au"
+    },
+    {
+      "hex": 54,
+      "field": "L3_b_comentario",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 364,
+      "pass02Len": 362,
+      "pass04Len": 366,
+      "snippetPdf": "Das heiratende Mädchen als Sklavin\":\nSie ist noch nicht in der gebührenden Stell",
+      "snippetP4": "Das heiratende Mädchen als Sklavin\":\nSie ist noch nicht in der gebührenden Stell"
+    },
+    {
+      "hex": 54,
+      "field": "L6_b_comentario",
+      "jpgPages": "536-540",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 370,
+      "pass02Len": 376,
+      "pass04Len": 381,
+      "snippetPdf": "Daß die obere Sechs keine Früchte hat, kommt daher, daß sie\neinen leeren Korb hä",
+      "snippetP4": "Daß die obere Sechs keine Früchte hat, kommt daher, daß sie\neinen leeren Korb hä"
+    },
+    {
+      "hex": 55,
+      "field": "hex",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "55"
+    },
+    {
+      "hex": 55,
+      "field": "chinese",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "豐"
+    },
+    {
+      "hex": 55,
+      "field": "chinese_roman",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "Fong",
+      "snippetP4": "FONG"
+    },
+    {
+      "hex": 55,
+      "field": "ruler_note",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 336,
+      "pass02Len": 353,
+      "pass04Len": 354,
+      "snippetPdf": "Der Herr des Zeichens ist die Sechs auf fünftem Platz. Wenn es im Urteil heißt:\"",
+      "snippetP4": "Dui und\nSun\nDer\ner Herr des Zeichens ist die Sechs auf fünftem Platz. Wenn es im"
+    },
+    {
+      "hex": 55,
+      "field": "commentary_decision",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1359,
+      "pass02Len": 1364,
+      "pass04Len": 1365,
+      "snippetPdf": "Die Fülle bedeutet Größe. Klarheit bei der Bewegung, darum\nFülle.\n\"Der König err",
+      "snippetP4": "Die Fülle bedeutet Größe. Klarheit bei der Bewegung, darum\nFülle.\n,,Der König er"
+    },
+    {
+      "hex": 55,
+      "field": "image_oraculo",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 114,
+      "pass02Len": 396,
+      "pass04Len": 379,
+      "snippetPdf": "Donner und Blitz kommen beide: das Bild der Fülle.\nSo entscheidet der Edle die P",
+      "snippetP4": "Donner und Blitz kommen beide: das Bild der Fülle. So entscheidet der Edle die P"
+    },
+    {
+      "hex": 55,
+      "field": "commentary_image",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 372,
+      "pass02Len": 396,
+      "pass04Len": 379,
+      "snippetPdf": "Donner und Blitz kommen beide: das Bild der Fülle. So entscheidet der Edle die P",
+      "snippetP4": "Donner und Blitz kommen beide: das Bild der Fülle. So entscheidet der Edle die P"
+    },
+    {
+      "hex": 55,
+      "field": "L1_b_comentario",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 861,
+      "pass02Len": 866,
+      "pass04Len": 867,
+      "snippetPdf": "Man mag zehn Tage beisammen sein, und es ist kein Fehler.\" Mehr als zehn Tage is",
+      "snippetP4": "Man mag zehn Tage beisammen sein, und es ist kein Fehler.\" Mehr als zehn Tage is"
+    },
+    {
+      "hex": 55,
+      "field": "L3_b_comentario",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 891,
+      "pass02Len": 900,
+      "pass04Len": 899,
+      "snippetPdf": "\"Das Gestrüpp ist von solcher Fülle\",\ndaß man keine großen Geschäfte tun kann.\n\"",
+      "snippetP4": "\"Das Gestrüpp ist von solcher Fülle\",\ndaß man keine großen Geschäfte tun kann.\n,"
+    },
+    {
+      "hex": 55,
+      "field": "L4_b_comentario",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 721,
+      "pass02Len": 728,
+      "pass04Len": 727,
+      "snippetPdf": "\"Der Vorhang ist von solcher Fülle.\"\nDer Platz ist nicht der gebührende.\n\"Am Mit",
+      "snippetP4": "\"Der Vorhang ist von solcher Fülle.\"\nDer Platz ist nicht der gebührende.\n,,Am Mi"
+    },
+    {
+      "hex": 55,
+      "field": "L6_b_comentario",
+      "jpgPages": "541-544",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 495,
+      "pass02Len": 495,
+      "pass04Len": 497,
+      "snippetPdf": "Sein Haus ist in Fülle.\"\nEr treibt sich an der Grenze des Himmels umher.\n~~\n\"Er ",
+      "snippetP4": "Sein Haus ist in Fülle.\"\nEr treibt sich an der Grenze des Himmels umher.\n~~\n\"Er "
+    },
+    {
+      "hex": 56,
+      "field": "hex",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "56"
+    },
+    {
+      "hex": 56,
+      "field": "chinese",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "旅"
+    },
+    {
+      "hex": 56,
+      "field": "chinese_roman",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 2,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "Lü",
+      "snippetP4": "LU"
+    },
+    {
+      "hex": 56,
+      "field": "image_oraculo",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 150,
+      "pass02Len": 619,
+      "pass04Len": 604,
+      "snippetPdf": "Auf dem Berg ist Feuer: das Bild des Wanderers.\nSo ist der Edle klar und vorsich",
+      "snippetP4": "Auf dem Berg ist Feuer: das Bild des Wanderers. So ist\nder Edle klar und vorsich"
+    },
+    {
+      "hex": 56,
+      "field": "commentary_image",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 485,
+      "pass02Len": 619,
+      "pass04Len": 604,
+      "snippetPdf": "und verschleppt keine Streitigkeiten.\nSonst ist immer dann von Strafsachen die R",
+      "snippetP4": "Auf dem Berg ist Feuer: das Bild des Wanderers. So ist\nder Edle klar und vorsich"
+    },
+    {
+      "hex": 56,
+      "field": "L4_b_comentario",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 555,
+      "pass02Len": 560,
+      "pass04Len": 559,
+      "snippetPdf": "Der Wanderer ruht an einem Unterkunftsort.\"\nEr hat noch nicht seinen Platz erlan",
+      "snippetP4": "Der Wanderer ruht an einem Unterkunftsort.\"\nEr hat noch nicht seinen Platz erlan"
+    },
+    {
+      "hex": 56,
+      "field": "L6_b_comentario",
+      "jpgPages": "545-547",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 854,
+      "pass02Len": 866,
+      "pass04Len": 866,
+      "snippetPdf": "Als Wanderer oben zu sein, das führt mit Recht zum Verbrennen.\n\"Er verliert die ",
+      "snippetP4": "Als Wanderer oben zu sein, das führt mit Recht zum Verbrennen.\n\"Er verliert die "
+    },
+    {
+      "hex": 57,
+      "field": "hex",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "57"
+    },
+    {
+      "hex": 57,
+      "field": "chinese",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "巽"
+    },
+    {
+      "hex": 57,
+      "field": "chinese_roman",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Sun",
+      "snippetP4": "SUN"
+    },
+    {
+      "hex": 57,
+      "field": "ruler_note",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 706,
+      "pass02Len": 718,
+      "pass04Len": 710,
+      "snippetPdf": "Dul\nOb\nbwohl das Zeichen durch die beiden Yinstriche bestimmt wird, so ist\nunter",
+      "snippetP4": "Dul\nOb\nbwohl das Zeichen durch die beiden Yinstriche bestimmt wird, so ist\nunter"
+    },
+    {
+      "hex": 57,
+      "field": "commentary_decision",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 1452,
+      "pass02Len": 1457,
+      "pass04Len": 1457,
+      "snippetPdf": "Wiederholtes Eindringen, um Gebote zu verbreiten.\nDas Feste dringt ein in die Mi",
+      "snippetP4": "Wiederholtes Eindringen, um Gebote zu verbreiten.\nDas Feste dringt ein in die Mi"
+    },
+    {
+      "hex": 57,
+      "field": "image_oraculo",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 121,
+      "pass02Len": 272,
+      "pass04Len": 258,
+      "snippetPdf": "Einander folgende Winde:\ndas Bild des Sanft-Eindringenden.\nSo verbreitet der Edl",
+      "snippetP4": "Einander folgende Winde: das Bild des sanft Eindringenden.\nSo verbreitet der Edl"
+    },
+    {
+      "hex": 57,
+      "field": "commentary_image",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 135,
+      "pass02Len": 272,
+      "pass04Len": 258,
+      "snippetPdf": "Von den beiden Winden vertreibt der erste die Widerstände:,,verbreitet\ndie Gebot",
+      "snippetP4": "Einander folgende Winde: das Bild des sanft Eindringenden.\nSo verbreitet der Edl"
+    },
+    {
+      "hex": 57,
+      "field": "L1_b_comentario",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 322,
+      "pass02Len": 325,
+      "pass04Len": 325,
+      "snippetPdf": "Vorgehen und Rückweichen\": der Wille ist im Zweifel.\n\"Fördernd ist die Beharrlic",
+      "snippetP4": "Vorgehen und Rückweichen\": der Wille ist im Zweifel.\n,,Fördernd ist die Beharrli"
+    },
+    {
+      "hex": 57,
+      "field": "L5_b_comentario",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1383,
+      "pass02Len": 1394,
+      "pass04Len": 1395,
+      "snippetPdf": "Das Heil der Neun auf fünftem Platz beruht darauf, daß der\nPlatz korrekt und zen",
+      "snippetP4": "Das Heil der Neun auf fünftem Platz beruht darauf, daß der\nPlatz korrekt und zen"
+    },
+    {
+      "hex": 57,
+      "field": "L6_b_comentario",
+      "jpgPages": "548-551",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 654,
+      "pass02Len": 665,
+      "pass04Len": 664,
+      "snippetPdf": "Eindringen unter das Bett.\"\nOben ist es zu Ende.\n\"Er verliert seinen Besitz und ",
+      "snippetP4": "Eindringen unter das Bett.\"\nOben ist es zu Ende.\n\"Er verliert seinen Besitz und "
+    },
+    {
+      "hex": 58,
+      "field": "hex",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "58"
+    },
+    {
+      "hex": 58,
+      "field": "chinese",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "兌"
+    },
+    {
+      "hex": 58,
+      "field": "chinese_roman",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 3,
+      "pass02Len": 3,
+      "pass04Len": 3,
+      "snippetPdf": "Dui",
+      "snippetP4": "DUI"
+    },
+    {
+      "hex": 58,
+      "field": "ruler_note",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 361,
+      "pass02Len": 301,
+      "pass04Len": 372,
+      "snippetPdf": "D\nie beiden Yinstriche sind die konstituierenden Herren des Zeichens, aber\nsie v",
+      "snippetP4": "Sun und\nLi\nD\nie beiden Yinstriche sind die konstituierenden Herren des Zeichens,"
+    },
+    {
+      "hex": 58,
+      "field": "image_oraculo",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 130,
+      "pass02Len": 276,
+      "pass04Len": 268,
+      "snippetPdf": "Aufeinander beruhende Seen: das Bild des Heiteren.\nSo tut sich der Edle mit sein",
+      "snippetP4": "Aufeinander beruhende Seen: das Bild des Heiteren. So tut\nsich der Edle mit sein"
+    },
+    {
+      "hex": 58,
+      "field": "commentary_image",
+      "jpgPages": "552-554",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 145,
+      "pass02Len": 276,
+      "pass04Len": 268,
+      "snippetPdf": "und Einübung.\nDui bedeutet See und Mund. Die Wiederholung des Mundes bedeutet di",
+      "snippetP4": "Aufeinander beruhende Seen: das Bild des Heiteren. So tut\nsich der Edle mit sein"
+    },
+    {
+      "hex": 59,
+      "field": "hex",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "59"
+    },
+    {
+      "hex": 59,
+      "field": "chinese",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "渙"
+    },
+    {
+      "hex": 59,
+      "field": "chinese_roman",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "Huan",
+      "snippetP4": "HUAN"
+    },
+    {
+      "hex": 59,
+      "field": "ruler_note",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 551,
+      "pass02Len": 558,
+      "pass04Len": 558,
+      "snippetPdf": "Gen und\nDschen\nDer Herr des Zeichens ist die Neun auf fünftem Platz; denn die Au",
+      "snippetP4": "Gen und\nDschen\nDer\ner Herr des Zeichens ist die Neun auf fünftem Platz; denn die"
+    },
+    {
+      "hex": 59,
+      "field": "commentary_decision",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1356,
+      "pass02Len": 1369,
+      "pass04Len": 1366,
+      "snippetPdf": "Die Auflösung: Gelingen. Das Feste kommt und erschöpft sich\nnicht. Das Weiche be",
+      "snippetP4": "Die Auflösung: Gelingen. Das Feste kommt und erschöpft sich\nnicht. Das Weiche be"
+    },
+    {
+      "hex": 59,
+      "field": "image_oraculo",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 113,
+      "pass02Len": 532,
+      "pass04Len": 532,
+      "snippetPdf": "Der Wind fährt über das Wasser: das Bild der Auflösung.\nSo opferten die alten Kö",
+      "snippetP4": "Der Wind fährt über das Wasser: das Bild der Auflösung. So\nopferten die alten Kö"
+    },
+    {
+      "hex": 59,
+      "field": "commentary_image",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 414,
+      "pass02Len": 532,
+      "pass04Len": 532,
+      "snippetPdf": "Auch hier ist das innere Streben nach Zusammenhalten des äußerlich Auseinanderge",
+      "snippetP4": "Der Wind fährt über das Wasser: das Bild der Auflösung. So\nopferten die alten Kö"
+    },
+    {
+      "hex": 59,
+      "field": "L5_b_comentario",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "pass04_only",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 264,
+      "pass02Len": 0,
+      "pass04Len": 263,
+      "snippetPdf": "\"Ein König weilt ohne Makel.\"\nEr ist an seinem rechten Platz.\nDas Zusammentreffe",
+      "snippetP4": "Ein König weilt ohne Makel.\"\nEr ist an seinem rechten Platz.\nDas Zusammentreffen"
+    },
+    {
+      "hex": 59,
+      "field": "L6_b_comentario",
+      "jpgPages": "555-558",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 271,
+      "pass02Len": 275,
+      "pass04Len": 275,
+      "snippetPdf": "Er löst sein Blut auf.\"\nDamit entfernt er sich von Schaden.\nKan ist Blut. Der Wi",
+      "snippetP4": "Er löst sein Blut auf.\"\nDamit entfernt er sich von Schaden.\nKan ist Blut. Der Wi"
+    },
+    {
+      "hex": 60,
+      "field": "hex",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "60"
+    },
+    {
+      "hex": 60,
+      "field": "chinese",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 1,
+      "pass04Len": 1,
+      "snippetPdf": "",
+      "snippetP4": "節"
+    },
+    {
+      "hex": 60,
+      "field": "chinese_roman",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 4,
+      "pass02Len": 4,
+      "pass04Len": 4,
+      "snippetPdf": "Dsië",
+      "snippetP4": "DSIA"
+    },
+    {
+      "hex": 60,
+      "field": "ruler_note",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 263,
+      "pass02Len": 282,
+      "pass04Len": 295,
+      "snippetPdf": "Der Herr des Zeichens ist die Neun auf fünftem Platz; denn Maß und\nvermag nur je",
+      "snippetP4": "Kernzeichen: Gen und Dschen\nDer\ner Herr des Zeichens ist die Neun auf fünftem Pl"
+    },
+    {
+      "hex": 60,
+      "field": "commentary_decision",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1708,
+      "pass02Len": 1716,
+      "pass04Len": 1720,
+      "snippetPdf": "\"Beschränkung: Gelingen.\"\nDie Festen und Weichen sind gleich verteilt, und die F",
+      "snippetP4": ",,Beschränkung: Gelingen.\"\nDie Festen und Weichen sind gleich verteilt, und die "
+    },
+    {
+      "hex": 60,
+      "field": "image_oraculo",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 140,
+      "pass02Len": 513,
+      "pass04Len": 501,
+      "snippetPdf": "Oberhalb des Sees ist Wasser:\ndas Bild der Beschränkung.\nSo schafft der Edle Zah",
+      "snippetP4": "Oberhalb des Sees ist Wasser: das Bild der Beschränkung.\nSo schafft der Edle Zah"
+    },
+    {
+      "hex": 60,
+      "field": "commentary_image",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 382,
+      "pass02Len": 513,
+      "pass04Len": 501,
+      "snippetPdf": "und rechter Wandel ist.\nZahl und Maß ist angedeutet durch das gegenseitige Verhä",
+      "snippetP4": "Oberhalb des Sees ist Wasser: das Bild der Beschränkung.\nSo schafft der Edle Zah"
+    },
+    {
+      "hex": 60,
+      "field": "L6_b_comentario",
+      "jpgPages": "559-561",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 401,
+      "pass02Len": 404,
+      "pass04Len": 404,
+      "snippetPdf": "Bittere Beschränkung. Beharrlichkeit bringt Unheil.\"\nIhr Weg erschöpft sich.\nHie",
+      "snippetP4": "Bittere Beschränkung. Beharrlichkeit bringt Unheil.\"\nIhr Weg erschöpft sich.\nHie"
+    },
+    {
+      "hex": 61,
+      "field": "hex",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "61"
+    },
+    {
+      "hex": 61,
+      "field": "chinese",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "中孚"
+    },
+    {
+      "hex": 61,
+      "field": "chinese_roman",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 10,
+      "pass02Len": 10,
+      "pass04Len": 10,
+      "snippetPdf": "Dschung Fu",
+      "snippetP4": "DSCHUNG FU"
+    },
+    {
+      "hex": 61,
+      "field": "ruler_note",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 607,
+      "pass02Len": 541,
+      "pass04Len": 609,
+      "snippetPdf": "Gen und\nDschen\nas konstituierende Merkmal des Zeichens ist, daß es in der Mitte ",
+      "snippetP4": "Gen und\nDschen\nD\nas konstituierende Merkmal des Zeichens ist, daß es in der Mitt"
+    },
+    {
+      "hex": 61,
+      "field": "image_oraculo",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 126,
+      "pass02Len": 376,
+      "pass04Len": 362,
+      "snippetPdf": "Über dem See ist der Wind:\ndas Bild der inneren Wahrheit.\nSo bespricht der Edle ",
+      "snippetP4": "Über dem See ist der Wind: das Bild der inneren Wahrheit.\nSo bespricht der Edle "
+    },
+    {
+      "hex": 61,
+      "field": "commentary_image",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 248,
+      "pass02Len": 376,
+      "pass04Len": 362,
+      "snippetPdf": "aufzuhalten.\nDui ist das Bild des Mundes, daher das Besprechen. Sun ist das Sanf",
+      "snippetP4": "Über dem See ist der Wind: das Bild der inneren Wahrheit.\nSo bespricht der Edle "
+    },
+    {
+      "hex": 61,
+      "field": "L3_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 813,
+      "pass02Len": 815,
+      "pass04Len": 819,
+      "snippetPdf": "Bald trommelt er, bald hört er auf.\"\nDer Platz ist nicht der gebührende.\nEine we",
+      "snippetP4": "Bald trommelt er, bald hört er auf.\"\nDer Platz ist nicht der gebührende.\nEine we"
+    },
+    {
+      "hex": 61,
+      "field": "L6_b_comentario",
+      "jpgPages": "562-565",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 564,
+      "pass02Len": 566,
+      "pass04Len": 568,
+      "snippetPdf": "Hahnenruf, der zum Himmel dringt.\"\n\"\nWie könnte der lange dauern!\nSun hat als Ti",
+      "snippetP4": "Hahnenruf, der zum Himmel dringt.\"\n\"\nWie könnte der lange dauern!\nSun hat als Ti"
+    },
+    {
+      "hex": 62,
+      "field": "hex",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "62"
+    },
+    {
+      "hex": 62,
+      "field": "chinese",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "小過"
+    },
+    {
+      "hex": 62,
+      "field": "chinese_roman",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 7,
+      "pass02Len": 7,
+      "pass04Len": 7,
+      "snippetPdf": "Siau Go",
+      "snippetP4": "SIAU GO"
+    },
+    {
+      "hex": 62,
+      "field": "ruler_note",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 123,
+      "pass02Len": 134,
+      "pass04Len": 134,
+      "snippetPdf": "Die Herren des Zeichens sind die zweite und fünfte Linie, deshalb, weil\nda ein Ü",
+      "snippetP4": "Dui und\nSun\nie Herren des Zeichens sind die zweite und fünfte Linie, deshalb, we"
+    },
+    {
+      "hex": 62,
+      "field": "commentary_decision",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 1465,
+      "pass02Len": 1468,
+      "pass04Len": 1468,
+      "snippetPdf": "Des Kleinen Übergewicht. Die Kleinen sind im Übergewicht\nund haben Gelingen. Bei",
+      "snippetP4": "Des Kleinen Übergewicht. Die Kleinen sind im Übergewicht\nund haben Gelingen. Bei"
+    },
+    {
+      "hex": 62,
+      "field": "image_oraculo",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 253,
+      "pass02Len": 59,
+      "pass04Len": 59,
+      "snippetPdf": "Auf dem Berg ist der Donner:\ndas Bild von des Kleinen Übergewicht.\nSo legt der E",
+      "snippetP4": "Auf dem Berg ist der Donner: das Bild von des Kleinen Über-"
+    },
+    {
+      "hex": 62,
+      "field": "L1_b_comentario",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 540,
+      "pass02Len": 538,
+      "pass04Len": 544,
+      "snippetPdf": "Der Vogel kommt durch Fliegen ins Unheil.\"\nDa läßt sich nichts machen.\nDie Linie",
+      "snippetP4": "Der Vogel kommt durch Fliegen ins Unheil.\"\nDa läßt sich nichts machen.\nDie Linie"
+    },
+    {
+      "hex": 62,
+      "field": "L5_b_comentario",
+      "jpgPages": "566-569",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 936,
+      "pass02Len": 940,
+      "pass04Len": 940,
+      "snippetPdf": "Dichte Wolken, kein Regen\":\nEr ist schon oben.\nDas Orakel:\"Dichte Wolken, kein R",
+      "snippetP4": "Dichte Wolken, kein Regen\":\nEr ist schon oben.\nDas Orakel:,,Dichte Wolken, kein "
+    },
+    {
+      "hex": 63,
+      "field": "hex",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "63"
+    },
+    {
+      "hex": 63,
+      "field": "chinese",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "既濟"
+    },
+    {
+      "hex": 63,
+      "field": "chinese_roman",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 6,
+      "pass02Len": 6,
+      "pass04Len": 6,
+      "snippetPdf": "Gi Dsi",
+      "snippetP4": "GI DSI"
+    },
+    {
+      "hex": 63,
+      "field": "ruler_note",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 307,
+      "pass02Len": 293,
+      "pass04Len": 319,
+      "snippetPdf": "Der Herr der Zeichens ist die Sechs auf zweitem Platz. Die Bedeutung\nist, daß an",
+      "snippetP4": "Li und\nKan\ner Herr der Zeichens ist die Sechs auf zweitem Platz. Die Bedeutung\ni"
+    },
+    {
+      "hex": 63,
+      "field": "commentary_decision",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 890,
+      "pass02Len": 894,
+      "pass04Len": 893,
+      "snippetPdf": "Nach der Vollendung. Gelingen: Im Kleinen ist Gelingen.\n\"Fördernd ist Beharrlich",
+      "snippetP4": "Nach der Vollendung. Gelingen: Im Kleinen ist Gelingen.\n\"Fördernd ist Beharrlich"
+    },
+    {
+      "hex": 63,
+      "field": "image_oraculo",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 145,
+      "pass02Len": 573,
+      "pass04Len": 770,
+      "snippetPdf": "Das Wasser ist oberhalb des Feuers:\ndas Bild des Zustands nach der Vollendung.\nS",
+      "snippetP4": "Das Wasser ist oberhalb des Feuers: Das Bild des Zustands\nnach der Vollendung. S"
+    },
+    {
+      "hex": 63,
+      "field": "commentary_image",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 649,
+      "pass02Len": 210,
+      "pass04Len": 770,
+      "snippetPdf": "rüstet sich im voraus dagegen.\nIndem Feuer und Wasser ihre Wirkungen ausgleichen",
+      "snippetP4": "Das Wasser ist oberhalb des Feuers: Das Bild des Zustands\nnach der Vollendung. S"
+    },
+    {
+      "hex": 63,
+      "field": "L6_b_comentario",
+      "jpgPages": "570-573",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_pass02",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "diff_pass04"
+      ],
+      "pdfLen": 432,
+      "pass02Len": 436,
+      "pass04Len": 443,
+      "snippetPdf": "Er kommt mit dem Haupt ins Wasser.\"\nWie kann man das lange aushalten!\nWährend di",
+      "snippetP4": "Er kommt mit dem Haupt ins Wasser.\"\nWie kann man das lange aushalten!\nWährend di"
+    },
+    {
+      "hex": 64,
+      "field": "hex",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "64"
+    },
+    {
+      "hex": 64,
+      "field": "chinese",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes",
+        "cerrado_vacio"
+      ],
+      "pdfLen": 0,
+      "pass02Len": 2,
+      "pass04Len": 2,
+      "snippetPdf": "",
+      "snippetP4": "未濟"
+    },
+    {
+      "hex": 64,
+      "field": "chinese_roman",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "na",
+      "disputeStatus": "identical",
+      "reasons": [
+        "diff_pass04",
+        "diff_both_passes"
+      ],
+      "pdfLen": 6,
+      "pass02Len": 6,
+      "pass04Len": 6,
+      "snippetPdf": "We Dsi",
+      "snippetP4": "WE DSI"
+    },
+    {
+      "hex": 64,
+      "field": "ruler_note",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 357,
+      "pass02Len": 308,
+      "pass04Len": 353,
+      "snippetPdf": "Der Herr des Zeichens ist die Sechs auf fünftem Platz; denn die Zeit vor der Vol",
+      "snippetP4": "Kernzeichen: Kan und Li\nDer anfangs Wirren und am Ende Order Herr des Zeichens i"
+    },
+    {
+      "hex": 64,
+      "field": "commentary_decision",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 1025,
+      "pass02Len": 1033,
+      "pass04Len": 1038,
+      "snippetPdf": "\"Vor der Vollendung. Gelingen\":\nDenn das Weiche erlangt die Mitte.\n\"Der kleine F",
+      "snippetP4": ",,Vor der Vollendung. Gelingen\":\nDenn das Weiche erlangt die Mitte.\n\"Der kleine "
+    },
+    {
+      "hex": 64,
+      "field": "image_oraculo",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 171,
+      "pass02Len": 481,
+      "pass04Len": 466,
+      "snippetPdf": "Das Feuer ist oberhalb des Wassers:\ndas Bild des Zustands vor dem Übergang.\nSo i",
+      "snippetP4": "Das Feuer ist oberhalb des Wassers: das Bild des Zustands\nvor dem Übergang. So i"
+    },
+    {
+      "hex": 64,
+      "field": "commentary_image",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 290,
+      "pass02Len": 481,
+      "pass04Len": 466,
+      "snippetPdf": "Das Feuer schlägt nach oben, das Wasser dringt nach unten, daher keine\nVollendun",
+      "snippetP4": "Das Feuer ist oberhalb des Wassers: das Bild des Zustands\nvor dem Übergang. So i"
+    },
+    {
+      "hex": 64,
+      "field": "L6_b_comentario",
+      "jpgPages": "574-585",
+      "au_estado": "cerrado",
+      "resolucion": "coincide_ninguno",
+      "disputeStatus": "disputed",
+      "reasons": [
+        "coincide_ninguno",
+        "diff_pass04"
+      ],
+      "pdfLen": 868,
+      "pass02Len": 7801,
+      "pass04Len": 10298,
+      "snippetPdf": "Wenn man beim Weintrinken sein Haupt naß macht, so kennt\nman eben keine Mäßigkei",
+      "snippetP4": "Wenn man beim Weintrinken sein Haupt naß macht, so kennt\nman eben keine Mäßigkei"
+    }
+  ]
+}

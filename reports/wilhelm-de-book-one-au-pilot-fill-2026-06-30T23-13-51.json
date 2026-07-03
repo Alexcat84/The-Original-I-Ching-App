@@ -1,0 +1,39 @@
+{
+  "updatedAt": "2026-06-30T23:13:51.999Z",
+  "auditCode": "20260629-PLAN-DAT-W-03",
+  "hexList": [
+    1,
+    2,
+    8
+  ],
+  "note": "Bootstrap pass03 — all non-vacio fields pendiente until JPG literal AU",
+  "results": [
+    {
+      "hex": 1,
+      "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-book-one-au\\wilhelm-de-book-one-hex-1-pilot-au.tsv",
+      "pageRange": "23-27",
+      "pendiente": 33,
+      "vacio": 0,
+      "diffZeno": 14,
+      "coincideZeno": 19
+    },
+    {
+      "hex": 2,
+      "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-book-one-au\\wilhelm-de-book-one-hex-2-pilot-au.tsv",
+      "pageRange": "28-31",
+      "pendiente": 33,
+      "vacio": 0,
+      "diffZeno": 17,
+      "coincideZeno": 16
+    },
+    {
+      "hex": 8,
+      "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-book-one-au\\wilhelm-de-book-one-hex-8-pilot-au.tsv",
+      "pageRange": "48-50",
+      "pendiente": 30,
+      "vacio": 3,
+      "diffZeno": 18,
+      "coincideZeno": 12
+    }
+  ]
+}

@@ -1,0 +1,5147 @@
+{
+  "generatedAt": "2026-06-29T03:34:10.222Z",
+  "mode": "cache-first",
+  "translators": [
+    {
+      "translator": "wilhelm",
+      "diffs": [
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 1,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 2,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 3,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "judgment",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Jugendtorheit hat Gelingen.\nNicht ich suche den jungen Toren,\nder junge Tor sucht mich.\nBeim ersten Orakel gebe ich Auskunft.\nFragt er zwei-, dreimal, so ist das Belästigung.\nWenn er belästigt, so gebe ich keine Auskunft.\nFördernd ist Beharrlichkeit.\nIn der Jugend ist Torheit nichts Schlimmes. Es kann ihr doch gelingen. Nur\nmuß man einen erfahrenen Lehrer finden und ihm auf die rechte Weise\ngegenübertreten. Dazu gehört erstens, daß man die eigene Unerfahrenheit\nselbst empfindet und einen Lehrer aufsucht. Nur diese Bescheidenheit und\ndieses Interesse verbürgt die nötige Aufnahmebereitschaft, die sich in ehr-\nfurchtsvoller Anerkennung des Lehrers äußern wird.\nDarum muß der Lehrer ruhig warten, bis er aufgesucht wird. Er soll sich\nnicht von sich aus anbieten: nur so kann die Belehrung zur rechten Zeit und\nauf die rechte Weise erfolgen.\nDie Antwort, die der Lehrer auf die Fragen des Schülers gibt, soll klar und\nbestimmt sein wie die Antwort, die ein Orakelsucher zu erhalten wünscht.\nC-moll-Symphonie: dauernd darf dieser Zustand nicht sein. Man muß die Pferde der\nwillensstarken Gedanken wieder anspannen und den Kampf zu Ende führen.\n\"Wer niemals ruht,\nWer mit Herz und Blut\nAuf Unmögliches sinnt,\nDer gewinnt.\"",
+          "actual": "Jugendtorheit hat Gelingen.\nNicht ich suche den jungen Toren,\nder junge Tor sucht mich.\nBeim ersten Orakel gebe ich Auskunft.\nFragt er zwei-, dreimal, so ist das Belästigung.\nWenn er belästigt, so gebe ich keine Auskunft.\nFördernd ist Beharrlichkeit.\nIn der Jugend ist Torheit nichts Schlimmes. Es kann ihr doch gelingen. Nur\nmuß man einen erfahrenen Lehrer finden und ihm auf die rechte Weise\ngegenübertreten. Dazu gehört erstens, daß man die eigene Unerfahrenheit\nselbst empfindet und einen Lehrer aufsucht. Nur diese Bescheidenheit und\ndieses Interesse verbürgt die nötige Aufnahmebereitschaft, die sich in ehr-\nfurchtsvoller Anerkennung des Lehrers äußern wird.\nDarum muß der Lehrer ruhig warten, bis er aufgesucht wird. Er soll sich\nnicht von sich aus anbieten: nur so kann die Belehrung zur rechten Zeit und\nauf die rechte Weise erfolgen.\nDie Antwort, die der Lehrer auf die Fragen des Schülers gibt, soll klar und\nbestimmt sein wie die Antwort, die ein Orakelsucher zu erhalten wünscht.\nC-moll-Symphonie: dauernd darf dieser Zustand nicht sein. Man muß die Pferde der\nwillensstarken Gedanken wieder anspannen und den Kampf zu Ende führen.\n\"Wer niemals ruht,\nWer mit Herz und Blut\nAuf Unmögliches sinnt,\nDer gewinnt.\""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "image",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Unten am Berg kommt ein Quell hervor, das Bild der Jugend.\nSo nährt der Edle durch gründliches Handeln seinen Charakter.\nDie Quelle kommt dadurch ins Fließen und zur Überwindung des Stillstandes,\ndaß sie alle hohlen Stellen auf ihrem Weg ausfüllt. Ebenso ist der Weg zur\nBildung des Charakters die Gründlichkeit, die nichts überspringt, sondern\nallmählich und stetig wie das Wasser alle Lücken ausfüllt und so voran-\nkommt.",
+          "actual": "Unten am Berg kommt ein Quell hervor, das Bild der Jugend.\nSo nährt der Edle durch gründliches Handeln seinen Charakter.\nDie Quelle kommt dadurch ins Fließen und zur Überwindung des Stillstandes,\ndaß sie alle hohlen Stellen auf ihrem Weg ausfüllt. Ebenso ist der Weg zur\nBildung des Charakters die Gründlichkeit, die nichts überspringt, sondern\nallmählich und stetig wie das Wasser alle Lücken ausfüllt und so voran-\nkommt."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "line",
+          "linePos": 1,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Um den Toren zu entwickeln,\nIst es fördernd, den Menschen in Zucht zu nehmen.\nMan soll die Fesseln abnehmen.\nSo weitermachen bringt Beschämung.\nAm Anfang der Erziehung steht das Gesetz. Die Unerfahrenheit der Jugend\nist geneigt, zunächst alles lässig und spielerisch zu nehmen. Da muß ihr der\nErnst des Lebens gezeigt werden. Ein gewisses Sichzusammennehmen, wo\nes durch stramme Zucht erzwungen wird, ist gut. Wer mit dem Leben spielt,\nkommt nie zurecht. Aber die Zucht darf nicht in Drill ausarten. Fortgesetzter\nDrill wirkt beschämend und lähmt die Kraft.",
+          "actual": "Um den Toren zu entwickeln,\nIst es fördernd, den Menschen in Zucht zu nehmen.\nMan soll die Fesseln abnehmen.\nSo weitermachen bringt Beschämung.\nAm Anfang der Erziehung steht das Gesetz. Die Unerfahrenheit der Jugend\nist geneigt, zunächst alles lässig und spielerisch zu nehmen. Da muß ihr der\nErnst des Lebens gezeigt werden. Ein gewisses Sichzusammennehmen, wo\nes durch stramme Zucht erzwungen wird, ist gut. Wer mit dem Leben spielt,\nkommt nie zurecht. Aber die Zucht darf nicht in Drill ausarten. Fortgesetzter\nDrill wirkt beschämend und lähmt die Kraft."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "line",
+          "linePos": 2,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die Toren ertragen in Milde, bringt Heil!\nDie Frauen zu nehmen wissen, bringt Heil!\nDer Sohn ist dem Hauswesen gewachsen.\nHier ist ein Mann gezeichnet, der keine äußere Macht hat, aber die nötige\nGeisteskraft, um die auf ihm lastende Verantwortung zu tragen. Er besitzt\ndie innere Überlegenheit und Stärke, die die Unzulänglichkeiten der mensch-\nlichen Torheit in Milde zu tragen versteht. Dieselbe Gesinnung gilt den\nFrauen als dem schwächeren Geschlecht gegenüber. Man muß sie zu nehmen\nwissen und anzuerkennen in einer gewissen ritterlichen Nachsicht. Nur durch\n1444\ndiese Vereinigung von innerer Kraft und äußerer Zurückhaltung wird man\ndie Verantwortung der Leitung eines größeren gesellschaftlichen Organis-\nmus übernehmen können und dabei wirklich Erfolg haben.",
+          "actual": "Die Toren ertragen in Milde, bringt Heil!\nDie Frauen zu nehmen wissen, bringt Heil!\nDer Sohn ist dem Hauswesen gewachsen.\nHier ist ein Mann gezeichnet, der keine äußere Macht hat, aber die nötige\nGeisteskraft, um die auf ihm lastende Verantwortung zu tragen. Er besitzt\ndie innere Überlegenheit und Stärke, die die Unzulänglichkeiten der mensch-\nlichen Torheit in Milde zu tragen versteht. Dieselbe Gesinnung gilt den\nFrauen als dem schwächeren Geschlecht gegenüber. Man muß sie zu nehmen\nwissen und anzuerkennen in einer gewissen ritterlichen Nachsicht. Nur durch\n1444\ndiese Vereinigung von innerer Kraft und äußerer Zurückhaltung wird man\ndie Verantwortung der Leitung eines größeren gesellschaftlichen Organis-\nmus übernehmen können und dabei wirklich Erfolg haben."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "line",
+          "linePos": 3,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Nicht sollst du ein Mädchen nehmen,\nDas einen ehernen Mann sieht\nUnd sich nicht im Besitz behält.\nNichts ist fördernd.\nEin schwacher, unerfahrener Mensch, der nach oben strebt, verliert leicht\nseine persönliche Eigenart, wenn er an hoher Stelle eine starke Persönlich-\nkeit sieht, die er sklavisch nachahmt. Er gleicht einem Mädchen, das sich\npreisgibt, wenn sie einem starken Mann begegnet. Einer solchen unfreien\nAnnäherung gegenüber darf man nicht entgegenkommend sein. Entgegen-\nkommen wäre weder für den Jüngling noch für den Erzieher gut.\nEin Mädchen ist es ihrer Würde schuldig, daß sie auf Werbung wartet. In\nbeiden Fällen ist es unwürdig, sich selbst anzubieten, und es ist nicht gut,\nein solches Angebot anzunehmen.",
+          "actual": "Nicht sollst du ein Mädchen nehmen,\nDas einen ehernen Mann sieht\nUnd sich nicht im Besitz behält.\nNichts ist fördernd.\nEin schwacher, unerfahrener Mensch, der nach oben strebt, verliert leicht\nseine persönliche Eigenart, wenn er an hoher Stelle eine starke Persönlich-\nkeit sieht, die er sklavisch nachahmt. Er gleicht einem Mädchen, das sich\npreisgibt, wenn sie einem starken Mann begegnet. Einer solchen unfreien\nAnnäherung gegenüber darf man nicht entgegenkommend sein. Entgegen-\nkommen wäre weder für den Jüngling noch für den Erzieher gut.\nEin Mädchen ist es ihrer Würde schuldig, daß sie auf Werbung wartet. In\nbeiden Fällen ist es unwürdig, sich selbst anzubieten, und es ist nicht gut,\nein solches Angebot anzunehmen."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "line",
+          "linePos": 4,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Beschränkte Torheit bringt Beschämung.\nFür die Jugendtorheit ist es das Hoffnungsloseste, sich in leere Einbildungen\nzu verstricken. Je eigensinniger sie auf solchen wirklichkeitsfremden Ein-\nbildungen beharrt, desto gewisser zieht sie sich Beschämungen zu.\nFür den Erzieher wird beschränkter Torheit gegenüber oft nichts übrigbleiben,\nals sie eine Zeitlang sich selbst zu überlassen und die ihr aus ihrem Gebahren\nentspringende Beschämung nicht zu ersparen. Das ist oft der einzige Weg\nzur Rettung.",
+          "actual": "Beschränkte Torheit bringt Beschämung.\nFür die Jugendtorheit ist es das Hoffnungsloseste, sich in leere Einbildungen\nzu verstricken. Je eigensinniger sie auf solchen wirklichkeitsfremden Ein-\nbildungen beharrt, desto gewisser zieht sie sich Beschämungen zu.\nFür den Erzieher wird beschränkter Torheit gegenüber oft nichts übrigbleiben,\nals sie eine Zeitlang sich selbst zu überlassen und die ihr aus ihrem Gebahren\nentspringende Beschämung nicht zu ersparen. Das ist oft der einzige Weg\nzur Rettung."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "line",
+          "linePos": 5,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Kindliche Torheit bringt Heil.\nEin unerfahrener Mensch, der kindlich und anspruchslos Belehrung sucht,\nist gut daran. Denn wer vom Hochmut frei sich dem Lehrer unterstellt, der\nwird sicher gefördert.",
+          "actual": "Kindliche Torheit bringt Heil.\nEin unerfahrener Mensch, der kindlich und anspruchslos Belehrung sucht,\nist gut daran. Denn wer vom Hochmut frei sich dem Lehrer unterstellt, der\nwird sicher gefördert."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 4,
+          "field": "line",
+          "linePos": 6,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Beim Bestrafen der Torheit ist es nicht fördernd,\nÜbergriffe zu begehen.\nFördernd ist nur, Übergriffe abzuwehren.\nUnter Umständen muß ein unverbesserlicher Tor bestraft werden. Wer nicht\nhören will, muß fühlen. Diese Strafe ist von der Aufrüttlung zu Beginn\nverschieden. Aber die Verhängung der Strafe darf nicht im Zorn geschehen,\nsondern muß sich auf eine sachliche Abwehr unberechtigter Übergriffe be-\nschränken. Sie ist nie Selbstzweck, sondern hat nur der Herstellung geord-\nneter Verhältnisse zu dienen.\nDas gilt sowohl von der Erziehung als auch von den Maßregeln einer\nRegierung gegen eine Bevölkerung, die sich Ausschreitungen zuschulden\nkommen läßt. Das Einschreiten der Regierung muß immer nur abwehrend\nsein und hat als einziges Ziel die Herstellung der öffentlichen Sicherheit\nund Ruhe.",
+          "actual": "Beim Bestrafen der Torheit ist es nicht fördernd,\nÜbergriffe zu begehen.\nFördernd ist nur, Übergriffe abzuwehren.\nUnter Umständen muß ein unverbesserlicher Tor bestraft werden. Wer nicht\nhören will, muß fühlen. Diese Strafe ist von der Aufrüttlung zu Beginn\nverschieden. Aber die Verhängung der Strafe darf nicht im Zorn geschehen,\nsondern muß sich auf eine sachliche Abwehr unberechtigter Übergriffe be-\nschränken. Sie ist nie Selbstzweck, sondern hat nur der Herstellung geord-\nneter Verhältnisse zu dienen.\nDas gilt sowohl von der Erziehung als auch von den Maßregeln einer\nRegierung gegen eine Bevölkerung, die sich Ausschreitungen zuschulden\nkommen läßt. Das Einschreiten der Regierung muß immer nur abwehrend\nsein und hat als einziges Ziel die Herstellung der öffentlichen Sicherheit\nund Ruhe."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 5,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 6,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 7,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 8,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 9,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 10,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 11,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 12,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "judgment",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Gemeinschaft mit Menschen im Freien: Gelingen.\nFördernd ist es, das große Wasser zu durchqueren.\nFördernd ist des Edlen Beharrlichkeit.\nDie wirkliche Gemeinschaft der Menschen muß auf Grund einer kosmischen\nAnteilnahme zustande kommen. Nicht Sonderzwecke des Ichs, sondern\nMenschheitsziele bringen dauernde Gemeinschaft unter Menschen hervor;\ndarum heißt es: Gemeinschaft mit Menschen im Freien hat Gelingen. Wenn\nsolche Einigkeit herrscht, dann lassen sich auch schwierige und gefährliche\nAufgaben wie das Durchqueren des großen Wassers vollbringen. Um aber\nsolche Gemeinschaft zuwege bringen zu können, bedarf es eines beharr-\nlichen und aufgeklärten Führers, der klare, einleuchtende und begeisternde\nZiele hat und sie mit Kraft durchzuführen weiß. (Das innere Zeichen bedeutet\nKlarheit, das äußere Stärke.)",
+          "actual": "Gemeinschaft mit Menschen im Freien: Gelingen.\nFördernd ist es, das große Wasser zu durchqueren.\nFördernd ist des Edlen Beharrlichkeit.\nDie wirkliche Gemeinschaft der Menschen muß auf Grund einer kosmischen\nAnteilnahme zustande kommen. Nicht Sonderzwecke des Ichs, sondern\nMenschheitsziele bringen dauernde Gemeinschaft unter Menschen hervor;\ndarum heißt es: Gemeinschaft mit Menschen im Freien hat Gelingen. Wenn\nsolche Einigkeit herrscht, dann lassen sich auch schwierige und gefährliche\nAufgaben wie das Durchqueren des großen Wassers vollbringen. Um aber\nsolche Gemeinschaft zuwege bringen zu können, bedarf es eines beharr-\nlichen und aufgeklärten Führers, der klare, einleuchtende und begeisternde\nZiele hat und sie mit Kraft durchzuführen weiß. (Das innere Zeichen bedeutet\nKlarheit, das äußere Stärke.)"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "image",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Himmel zusammen mit Feuer:\nDas Bild der Gemeinschaft mit Menschen.\nSo gliedert der Edle die Stämme und unterscheidet die Dinge.\nDer Himmel hat dieselbe Bewegungsrichtung wie das Feuer und ist doch\nvon ihm unterschieden. Wie die leuchtenden Körper am Himmel zur Gliede-\nrung und Einteilung der Zeit dienen, so muß auch die menschliche Gesell-\nschaft und alle wirklich zusammengehörigen Dinge organisch gegliedert sein.\nDie Gemeinschaft soll nicht Vermischung der Einzelnen und Vermischung\nder Dinge sein - das wäre Chaos, nicht Gemeinschaft, sondern sie bedarf\nder gegliederten Mannigfaltigkeit, um zur Ordnung zu führen.\n――――――――",
+          "actual": "Himmel zusammen mit Feuer:\nDas Bild der Gemeinschaft mit Menschen.\nSo gliedert der Edle die Stämme und unterscheidet die Dinge.\nDer Himmel hat dieselbe Bewegungsrichtung wie das Feuer und ist doch\nvon ihm unterschieden. Wie die leuchtenden Körper am Himmel zur Gliede-\nrung und Einteilung der Zeit dienen, so muß auch die menschliche Gesell-\nschaft und alle wirklich zusammengehörigen Dinge organisch gegliedert sein.\nDie Gemeinschaft soll nicht Vermischung der Einzelnen und Vermischung\nder Dinge sein - das wäre Chaos, nicht Gemeinschaft, sondern sie bedarf\nder gegliederten Mannigfaltigkeit, um zur Ordnung zu führen.\n――――――――"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "line",
+          "linePos": 1,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Gemeinschaft mit Menschen im Tore. Kein Makel.\nDer Beginn einer Vereinigung von Menschen soll vor der Tür stattfinden.\nAlle stehen einander gleich nahe. Irgendwelche Sonderbestrebungen bestehen\nnoch nicht. So macht man keinen Fehler. Die Grundlagen jeder Vereinigung\nmüssen allen Beteiligten in gleicher Weise zugänglich sein. Geheimab-\nmachungen bringen Unheil.",
+          "actual": "Gemeinschaft mit Menschen im Tore. Kein Makel.\nDer Beginn einer Vereinigung von Menschen soll vor der Tür stattfinden.\nAlle stehen einander gleich nahe. Irgendwelche Sonderbestrebungen bestehen\nnoch nicht. So macht man keinen Fehler. Die Grundlagen jeder Vereinigung\nmüssen allen Beteiligten in gleicher Weise zugänglich sein. Geheimab-\nmachungen bringen Unheil."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "line",
+          "linePos": 2,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Gemeinschaft mit Menschen im Klan: Beschämung.\nHier ist die Gefahr einer Sonderpartei auf Grund von persönlichen und selbst-\nsüchtigen Interessen. Solche Parteiungen, die ausschließend sind und nicht\nfür alle Raum haben, die einen Teil der Menschen verdammen müssen, um\ndie übrigen zusammenzuscharen, entstehen aus niedrigen Motiven und führen\ndaher auf die Dauer zu Beschämung.",
+          "actual": "Gemeinschaft mit Menschen im Klan: Beschämung.\nHier ist die Gefahr einer Sonderpartei auf Grund von persönlichen und selbst-\nsüchtigen Interessen. Solche Parteiungen, die ausschließend sind und nicht\nfür alle Raum haben, die einen Teil der Menschen verdammen müssen, um\ndie übrigen zusammenzuscharen, entstehen aus niedrigen Motiven und führen\ndaher auf die Dauer zu Beschämung."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "line",
+          "linePos": 3,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Versteckt Waffen im Dickicht,\nSteigt auf den hohen Hügel davor.\nDrei Jahre lang erhebt er sich nicht.\nHier ist die Gemeinschaft in Mißtrauen umgeschlagen. Man mißtraut den\nandern, legt geheimen Hinterhalt und sucht von ferne den andern auszu-\nspähen. Man hat es mit einem harten Gegner zu tun, dem auf diese Weise\nnicht beizukommen ist. Es sind hier Hemmungen gezeigt, die der Gemein-\nschaft mit andern im Wege stehen. Man hat selbst Hintergedanken und\nsucht den andern gelegentlich zu überrumpeln. Aber gerade das macht miB-\ntrauisch, man sucht dieselben Hinterlisten auch beim Gegner und sucht sie\nauszuspionieren. Infolge davon entfernt man sich von wahrer Gemeinschaft\nimmer mehr. Je länger es dauert, desto mehr entfremdet man sich.",
+          "actual": "Versteckt Waffen im Dickicht,\nSteigt auf den hohen Hügel davor.\nDrei Jahre lang erhebt er sich nicht.\nHier ist die Gemeinschaft in Mißtrauen umgeschlagen. Man mißtraut den\nandern, legt geheimen Hinterhalt und sucht von ferne den andern auszu-\nspähen. Man hat es mit einem harten Gegner zu tun, dem auf diese Weise\nnicht beizukommen ist. Es sind hier Hemmungen gezeigt, die der Gemein-\nschaft mit andern im Wege stehen. Man hat selbst Hintergedanken und\nsucht den andern gelegentlich zu überrumpeln. Aber gerade das macht miB-\ntrauisch, man sucht dieselben Hinterlisten auch beim Gegner und sucht sie\nauszuspionieren. Infolge davon entfernt man sich von wahrer Gemeinschaft\nimmer mehr. Je länger es dauert, desto mehr entfremdet man sich."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "line",
+          "linePos": 4,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Er steigt auf seine Mauer, er kann nicht angreifen. Heil!\nHier rückt die Versöhnung nach der Entzweiung näher. Zwar sind noch\ntrennende Mauern da, auf denen man sich gegenüber steht. Aber die Schwie-\nrigkeiten sind zu groß. Man kommt in Not, und durch die Not kommt man\nzur Besinnung. Man kann nicht kämpfen, aber gerade darauf beruht das Heil.",
+          "actual": "Er steigt auf seine Mauer, er kann nicht angreifen. Heil!\nHier rückt die Versöhnung nach der Entzweiung näher. Zwar sind noch\ntrennende Mauern da, auf denen man sich gegenüber steht. Aber die Schwie-\nrigkeiten sind zu groß. Man kommt in Not, und durch die Not kommt man\nzur Besinnung. Man kann nicht kämpfen, aber gerade darauf beruht das Heil."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "line",
+          "linePos": 5,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die gemeinsamen Menschen weinen erst und klagen,\nAber nachher lachen sie.\nNach großen Kämpfen gelingt es ihnen, sich zu treffen.\nEs sind zwei Menschen äußerlich getrennt, aber im Herzen vereint. Sie sind\ndurch ihre Stellung im Leben auseinandergehalten. Dazwischen erheben\nsich viele Hindernisse und Hemmungen, die sie trauern machen. Aber sie\nlassen sich durch kein Hindernis scheiden, sondern bleiben einander treu.\nUnd obwohl die Überwindung dieser Hindernisse schwere Kämpfe kostet,\nso werden sie doch siegen, und dann wird ihre Traurigkeit in Freude sich\nverwandeln, wenn sie sich finden.\nKungtse sagt darüber:\n\"Das Leben führt den ernsten Mann auf bunt verschlungnem Pfade.\nOft wird gehemmt des Laufes Kraft, dann wieder geht's gerade.\nHier mag sich ein beredter Sinn in Worten frei ergießen,\nDort muß des Wissens schwere Last in Schweigen sich verschließen.\nDoch wo zwei Menschen einig sind in ihrem innern Herzen,\nDa brechen sie die Stärke selbst von Eisen oder Erzen.\nUnd wo zwei Menschen sich im innern Herzen ganz verstehn,\nSind ihre Worte süß und stark wie Duft von Orchideen.\"",
+          "actual": "Die gemeinsamen Menschen weinen erst und klagen,\nAber nachher lachen sie.\nNach großen Kämpfen gelingt es ihnen, sich zu treffen.\nEs sind zwei Menschen äußerlich getrennt, aber im Herzen vereint. Sie sind\ndurch ihre Stellung im Leben auseinandergehalten. Dazwischen erheben\nsich viele Hindernisse und Hemmungen, die sie trauern machen. Aber sie\nlassen sich durch kein Hindernis scheiden, sondern bleiben einander treu.\nUnd obwohl die Überwindung dieser Hindernisse schwere Kämpfe kostet,\nso werden sie doch siegen, und dann wird ihre Traurigkeit in Freude sich\nverwandeln, wenn sie sich finden.\nKungtse sagt darüber:\n\"Das Leben führt den ernsten Mann auf bunt verschlungnem Pfade.\nOft wird gehemmt des Laufes Kraft, dann wieder geht's gerade.\nHier mag sich ein beredter Sinn in Worten frei ergießen,\nDort muß des Wissens schwere Last in Schweigen sich verschließen.\nDoch wo zwei Menschen einig sind in ihrem innern Herzen,\nDa brechen sie die Stärke selbst von Eisen oder Erzen.\nUnd wo zwei Menschen sich im innern Herzen ganz verstehn,\nSind ihre Worte süß und stark wie Duft von Orchideen.\""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 13,
+          "field": "line",
+          "linePos": 6,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Gemeinschaft mit Menschen auf dem Anger: Keine Reue.\nEs fehlt hier der warme Anschluß des Herzens. Man steht eigentlich schon\naußerhalb der Gemeinschaft mit anderen. Aber man schließt sich an. Die Ge-\nmeinschaft umfaßt nicht alle, sondern nur die äußerlich beisammen Woh-\nnenden. Der Anger ist die Weide vor der Stadt. Das letzte Ziel der Vereini-\ngung der Menschheit ist hier noch nicht erreicht. Doch braucht man sich keine\nVorwürfe zu machen. Man schließt sich der Gesellschaft an, ohne Sonder-\nzwecke.\n大有",
+          "actual": "Gemeinschaft mit Menschen auf dem Anger: Keine Reue.\nEs fehlt hier der warme Anschluß des Herzens. Man steht eigentlich schon\naußerhalb der Gemeinschaft mit anderen. Aber man schließt sich an. Die Ge-\nmeinschaft umfaßt nicht alle, sondern nur die äußerlich beisammen Woh-\nnenden. Der Anger ist die Weide vor der Stadt. Das letzte Ziel der Vereini-\ngung der Menschheit ist hier noch nicht erreicht. Doch braucht man sich keine\nVorwürfe zu machen. Man schließt sich der Gesellschaft an, ohne Sonder-\nzwecke.\n大有"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 14,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 15,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "judgment",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die Begeisterung. Fördernd ist es,\nGehilfen einzusetzen und Heere marschieren zu lassen.\nDie Zeit der Begeisterung beruht darauf, daß ein bedeutender Mann da ist,\nder in Fühlung mit der Volksseele ist und in Übereinstimmung mit ihr handelt.\nDarum findet er allgemeinen, willigen Gehorsam. Um Begeisterung zu\nwecken, ist es daher nötig, daß man sich mit seinen Anordnungen nach der\nNatur der Geführten richtet. Auf dieser Regel der Bewegung auf der Linie\ndes geringsten Widerstandes beruht die Unverbrüchlichkeit der Naturgesetze.\nSie sind nicht etwas außerhalb der Dinge, sondern die den Dingen immanente\nHarmonie der Bewegung. Darum weichen die Himmelskörper nicht ab von\nihren Bahnen, und alles Naturgeschehen vollzieht sich in fester Regelmäßig-\nkeit. In ähnlicher Weise liegen die Dinge auch in der menschlichen Gesell-\n¹ Es gibt wenige Zeichen im Buch der Wandlungen, bei denen alle Linien nur günstig\nsind, wie bei dem Zeichen Bescheidenheit. Daraus geht hervor, wie hoch die chinesische\nWeisheit diese Tugend wertet.\n4 Das Buch der Wandlungen",
+          "actual": "Die Begeisterung. Fördernd ist es,\nGehilfen einzusetzen und Heere marschieren zu lassen.\nDie Zeit der Begeisterung beruht darauf, daß ein bedeutender Mann da ist,\nder in Fühlung mit der Volksseele ist und in Übereinstimmung mit ihr handelt.\nDarum findet er allgemeinen, willigen Gehorsam. Um Begeisterung zu\nwecken, ist es daher nötig, daß man sich mit seinen Anordnungen nach der\nNatur der Geführten richtet. Auf dieser Regel der Bewegung auf der Linie\ndes geringsten Widerstandes beruht die Unverbrüchlichkeit der Naturgesetze.\nSie sind nicht etwas außerhalb der Dinge, sondern die den Dingen immanente\nHarmonie der Bewegung. Darum weichen die Himmelskörper nicht ab von\nihren Bahnen, und alles Naturgeschehen vollzieht sich in fester Regelmäßig-\nkeit. In ähnlicher Weise liegen die Dinge auch in der menschlichen Gesell-\n¹ Es gibt wenige Zeichen im Buch der Wandlungen, bei denen alle Linien nur günstig\nsind, wie bei dem Zeichen Bescheidenheit. Daraus geht hervor, wie hoch die chinesische\nWeisheit diese Tugend wertet.\n4 Das Buch der Wandlungen"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "image",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Der Donner kommt aus der Erde hervorgetönt:\nDas Bild der Begeisterung.\nSo machten die alten Könige Musik,\nUm die Verdienste zu ehren,\nUnd brachten sie herrlich dem höchsten Gotte dar,\nIndem sie ihre Ahnen dazu einluden.\nWenn der Donner, die elektrische Kraft, zu Beginn des Sommers wieder\naus der Erde hervorgerauscht kommt und das erste Gewitter die Natur er-\nfrischt, so löst sich eine lange Spannung. Erleichterung und Freude greifen\nPlatz. Ähnlich besitzt die Musik die Macht, die Spannung im Herzen, der\ndunklen Gefühle Gewalt zu lösen. Die Begeisterung des Herzens äußert\nsich unwillkürlich im Laut des Gesanges, im Tanz und rhythmischer Be-\nwegung des Körpers. Von altersher wurde die begeisternde Wirkung des\nunsichtbaren Klanges, der die Herzen der Menschen bewegt und vereint,\nals Rätsel empfunden. Die Herrscher benützten diese natürliche Neigung\nzur Musik. Sie erhöhten und ordneten sie. Die Musik galt als etwas Ernstes,\nHeiliges, sie sollte die Gefühle der Menschen reinigen. Sie sollte die Tugenden\nder Helden preisen und so die Brücke schlagen zur unsichtbaren Welt. Im\nTempel nahte man Gott mit Musik und Pantomimen (aus denen sich später\ndas Theater entwickelt hat). Die religiösen Gefühle gegen den Schöpfer der\nWelt wurden vereinigt mit den heiligsten menschlichen Gefühlen, den Ge-\nfühlen der Ehrfurcht vor den Ahnen. Sie wurden eingeladen zu diesen\nGottesdiensten als Gäste des Himmelsherrn und Vertreter der Menschheit\nin jenen höheren Regionen. Indem so die eigene Vergangenheit mit der\nGottheit verknüpft wurde in weihevollen Momenten religiöser Begeisterung,\nschloß sich das Band zwischen Gottheit und Menschheit. Der Herrscher, der\nin seinen Ahnen die Gottheit verehrte, war dadurch der Sohn des Himmels,\nin dem die himmlische und die irdische Welt sich mystisch berührten. Diese\nGedanken sind die letzte und höchste Zusammenfassung der chinesischen\nKultur. Meister Kung selbst sagte von dem großen Opfer, bei dem diese\nBräuche vollzogen wurden: \"Wer dieses Opfer ganz verstünde, der könnte\ndie Welt regieren, als drehte sie sich auf seiner Hand.\"",
+          "actual": "Der Donner kommt aus der Erde hervorgetönt:\nDas Bild der Begeisterung.\nSo machten die alten Könige Musik,\nUm die Verdienste zu ehren,\nUnd brachten sie herrlich dem höchsten Gotte dar,\nIndem sie ihre Ahnen dazu einluden.\nWenn der Donner, die elektrische Kraft, zu Beginn des Sommers wieder\naus der Erde hervorgerauscht kommt und das erste Gewitter die Natur er-\nfrischt, so löst sich eine lange Spannung. Erleichterung und Freude greifen\nPlatz. Ähnlich besitzt die Musik die Macht, die Spannung im Herzen, der\ndunklen Gefühle Gewalt zu lösen. Die Begeisterung des Herzens äußert\nsich unwillkürlich im Laut des Gesanges, im Tanz und rhythmischer Be-\nwegung des Körpers. Von altersher wurde die begeisternde Wirkung des\nunsichtbaren Klanges, der die Herzen der Menschen bewegt und vereint,\nals Rätsel empfunden. Die Herrscher benützten diese natürliche Neigung\nzur Musik. Sie erhöhten und ordneten sie. Die Musik galt als etwas Ernstes,\nHeiliges, sie sollte die Gefühle der Menschen reinigen. Sie sollte die Tugenden\nder Helden preisen und so die Brücke schlagen zur unsichtbaren Welt. Im\nTempel nahte man Gott mit Musik und Pantomimen (aus denen sich später\ndas Theater entwickelt hat). Die religiösen Gefühle gegen den Schöpfer der\nWelt wurden vereinigt mit den heiligsten menschlichen Gefühlen, den Ge-\nfühlen der Ehrfurcht vor den Ahnen. Sie wurden eingeladen zu diesen\nGottesdiensten als Gäste des Himmelsherrn und Vertreter der Menschheit\nin jenen höheren Regionen. Indem so die eigene Vergangenheit mit der\nGottheit verknüpft wurde in weihevollen Momenten religiöser Begeisterung,\nschloß sich das Band zwischen Gottheit und Menschheit. Der Herrscher, der\nin seinen Ahnen die Gottheit verehrte, war dadurch der Sohn des Himmels,\nin dem die himmlische und die irdische Welt sich mystisch berührten. Diese\nGedanken sind die letzte und höchste Zusammenfassung der chinesischen\nKultur. Meister Kung selbst sagte von dem großen Opfer, bei dem diese\nBräuche vollzogen wurden: \"Wer dieses Opfer ganz verstünde, der könnte\ndie Welt regieren, als drehte sie sich auf seiner Hand.\""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "line",
+          "linePos": 1,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Begeisterung, die sich äußert, bringt Unheil.\nJemand in untergeordneter Stellung hat vornehme Beziehungen, deren er\nsich begeistert rühmt. Durch diesen Übermut zieht er mit Notwendigkeit\ndas Unheil an. Begeisterung darf nie ein egoistisches Gefühl sein, sondern\nnur als allgemeine Stimmung, die mit andern verbindet, hat sie ihre Be-\nrechtigung.",
+          "actual": "Begeisterung, die sich äußert, bringt Unheil.\nJemand in untergeordneter Stellung hat vornehme Beziehungen, deren er\nsich begeistert rühmt. Durch diesen Übermut zieht er mit Notwendigkeit\ndas Unheil an. Begeisterung darf nie ein egoistisches Gefühl sein, sondern\nnur als allgemeine Stimmung, die mit andern verbindet, hat sie ihre Be-\nrechtigung."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "line",
+          "linePos": 2,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Fest wie ein Stein. Kein ganzer Tag.\nBeharrlichkeit bringt Heil.\nEs wird hier jemand gezeichnet, der sich von keinen Illusionen betören läßt.\nWährend andere durch Begeisterung sich blenden lassen, erkennt er voll-\nkommen klar die ersten Zeichen der Zeit. So ist er nach oben hin nicht\nschmeichlerisch, nach unten hin nicht nachlässig. So ist er fest wie Stein.\nSobald das erste Anzeichen von Mißstimmung sich zeigt, weiß er sich recht-\nzeitig zurückzuziehen, ohne auch nur einen Tag zu versäumen. Beharrlich-\nkeit in solchem Tun bringt Heil.\nKonfuzius sagt darüber: \"Die Keime zu kennen, das ist wohl göttlich. Der\nEdle ist im Verkehr nach oben hin nicht schmeichelnd, im Verkehr nach unten\nhin nicht anmaßend. Er kennt wohl die Keime. Die Keime sind der erste\nunmerkliche Beginn der Bewegung, das, was von Heil (und Unheil) zuerst\nsich zeigt. Der Edle sieht die Keime und handelt sofort. Er wartet nicht\nerst den ganzen Tag. Im Buch der Wandlungen heißt es:\nFest wie ein Stein. Kein ganzer Tag. Beharrlichkeit bringt Heil.\"\nFest wie ein Stein, wozu ein ganzer Tag?\nDas Urteil kann man wissen.\nDer Edle kennt Geheim- und Offenbares.\nEr kennt das Schwache, kennt das Starke auch:\nDrum schauen die Myriaden zu ihm auf.\"",
+          "actual": "Fest wie ein Stein. Kein ganzer Tag.\nBeharrlichkeit bringt Heil.\nEs wird hier jemand gezeichnet, der sich von keinen Illusionen betören läßt.\nWährend andere durch Begeisterung sich blenden lassen, erkennt er voll-\nkommen klar die ersten Zeichen der Zeit. So ist er nach oben hin nicht\nschmeichlerisch, nach unten hin nicht nachlässig. So ist er fest wie Stein.\nSobald das erste Anzeichen von Mißstimmung sich zeigt, weiß er sich recht-\nzeitig zurückzuziehen, ohne auch nur einen Tag zu versäumen. Beharrlich-\nkeit in solchem Tun bringt Heil.\nKonfuzius sagt darüber: \"Die Keime zu kennen, das ist wohl göttlich. Der\nEdle ist im Verkehr nach oben hin nicht schmeichelnd, im Verkehr nach unten\nhin nicht anmaßend. Er kennt wohl die Keime. Die Keime sind der erste\nunmerkliche Beginn der Bewegung, das, was von Heil (und Unheil) zuerst\nsich zeigt. Der Edle sieht die Keime und handelt sofort. Er wartet nicht\nerst den ganzen Tag. Im Buch der Wandlungen heißt es:\nFest wie ein Stein. Kein ganzer Tag. Beharrlichkeit bringt Heil.\"\nFest wie ein Stein, wozu ein ganzer Tag?\nDas Urteil kann man wissen.\nDer Edle kennt Geheim- und Offenbares.\nEr kennt das Schwache, kennt das Starke auch:\nDrum schauen die Myriaden zu ihm auf.\""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "line",
+          "linePos": 3,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Nach oben blickende Begeisterung schafft Reue.\nZögern bringt Reue.\nEs ist hier das Gegenteil der vorigen Linie; dort Selbständigkeit, hier das\nbegeisterte Emporblicken. Zögert man zu lange, so schafft auch das Reue.\nEs gilt in der Annäherung den richtigen Moment zu ergreifen; nur dann\ntrifft man das Rechte.",
+          "actual": "Nach oben blickende Begeisterung schafft Reue.\nZögern bringt Reue.\nEs ist hier das Gegenteil der vorigen Linie; dort Selbständigkeit, hier das\nbegeisterte Emporblicken. Zögert man zu lange, so schafft auch das Reue.\nEs gilt in der Annäherung den richtigen Moment zu ergreifen; nur dann\ntrifft man das Rechte."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "line",
+          "linePos": 4,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Der Ursprung der Begeisterung. Er erreicht Großes.\nZweifle nicht.\nDie Freunde scharen sich um dich wie um eine Haarspange.\nJemand, der Begeisterung zu erwecken vermag durch die eigene Sicherheit\nund Freiheit von Bedenken: dadurch, daß er nicht zweifelt und ganz wahr-\nhaftig ist, zieht er die Menschen an. Indem er ihnen Vertrauen schenkt, ge-\nwinnt er sie zu begeisterter Mitarbeit und hat Erfolg. Wie eine Haarspange\nden Haaren Halt gibt und sie vereinigt, so vereinigt er die Menschen durch\nden Halt, den er ihnen gibt.",
+          "actual": "Der Ursprung der Begeisterung. Er erreicht Großes.\nZweifle nicht.\nDie Freunde scharen sich um dich wie um eine Haarspange.\nJemand, der Begeisterung zu erwecken vermag durch die eigene Sicherheit\nund Freiheit von Bedenken: dadurch, daß er nicht zweifelt und ganz wahr-\nhaftig ist, zieht er die Menschen an. Indem er ihnen Vertrauen schenkt, ge-\nwinnt er sie zu begeisterter Mitarbeit und hat Erfolg. Wie eine Haarspange\nden Haaren Halt gibt und sie vereinigt, so vereinigt er die Menschen durch\nden Halt, den er ihnen gibt."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "line",
+          "linePos": 5,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Beharrlich krank und stirbt doch immer nicht.\nDie Begeisterung wird hier verhindert. Man befindet sich unter dauerndem\nDruck, der nicht zu freiem Aufatmen kommen läßt. Aber dieser Druck hat\nunter Umständen sein Gutes. Man wird dadurch bewahrt, daß man seine\nKräfte in leerer Begeisterung aufzehrt. So kann der dauernde Druck gerade\ndazu dienen, daß man am Leben bleibt.",
+          "actual": "Beharrlich krank und stirbt doch immer nicht.\nDie Begeisterung wird hier verhindert. Man befindet sich unter dauerndem\nDruck, der nicht zu freiem Aufatmen kommen läßt. Aber dieser Druck hat\nunter Umständen sein Gutes. Man wird dadurch bewahrt, daß man seine\nKräfte in leerer Begeisterung aufzehrt. So kann der dauernde Druck gerade\ndazu dienen, daß man am Leben bleibt."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 16,
+          "field": "line",
+          "linePos": 6,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Verblendete Begeisterung.\nAber wenn man nach der Vollendung zur Anderung kommt,\nSo ist das kein Makel.\nWenn man sich von der Begeisterung verblenden läßt, so ist das vom Übel.\nAber wenn diese Verblendung auch schon vollendete Tatsache ist und man\nkann sich noch ändern, so wird man frei von Makel. Ernüchterung aus\nfalscher Begeisterung ist sehr wohl möglich und ist sehr günstig.",
+          "actual": "Verblendete Begeisterung.\nAber wenn man nach der Vollendung zur Anderung kommt,\nSo ist das kein Makel.\nWenn man sich von der Begeisterung verblenden läßt, so ist das vom Übel.\nAber wenn diese Verblendung auch schon vollendete Tatsache ist und man\nkann sich noch ändern, so wird man frei von Makel. Ernüchterung aus\nfalscher Begeisterung ist sehr wohl möglich und ist sehr günstig."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 17,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 18,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 19,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 20,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 21,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 22,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 23,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "judgment",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die Wiederkehr. Gelingen.\nAusgang und Eingang ohne Fehl.\nFreunde kommen ohne Makel.\nHin und her geht der Weg.\nAm siebten Tage kommt die Wiederkehr.\nFördernd ist es, zu haben, wohin man geht.\nNach einer Zeit des Zerfalls kommt die Wendezeit. Das starke Licht, das\nzuvor vertrieben war, tritt wieder ein. Es gibt Bewegung. Diese Bewegung\nist aber nicht erzwungen. Das obere Zeichen Kun hat als Charakter die Hin-\ngebung. Es ist also eine natürliche Bewegung, die sich von selbst ergibt.\nDarum ist die Umgestaltung des Alten auch ganz leicht. Altes wird abge-\nschafft, Neues wird eingeführt, beides entspricht der Zeit und bringt daher\nkeinen Schaden. Vereinigungen von Gleichgesinnten bilden sich. Aber\ndieser Zusammenschluß vollzieht sich in voller Öffentlichkeit, er entspricht\nder Zeit, und darum ist jedes egoistische Sonderbestreben ausgeschlossen,\nund aus diesen Vereinigungen ergibt sich kein Fehler. Die Wiederkehr ist\nim Naturlauf begründet. Die Bewegung ist kreisförmig. Der Weg ist in\nsich geschlossen. Darum braucht man nichts künstlich zu überstürzen. Es\nkommt alles von selber, wie es an der Zeit ist. Das ist der Sinn von Himmel\nund Erde.\nAlle Bewegungen vollziehen sich in sechs Stufen. Die siebente Stufe bringt\ndann die Wiederkehr. So kommt im siebenten Monat nach der Sommer-\nsonnenwende, von der an das Jahr abwärts geht, die Wintersonnenwende,\nebenso kommt in der siebenten Doppelstunde nach Sonnenuntergang der\nSonnenaufgang. Darum ist die Sieben die Zahl des jungen Lichts, die da-\ndurch entsteht, daß die Sechs, die Zahl des großen Dunkels, sich um eins\nsteigert. Damit kommt Bewegung in den Stillstand.",
+          "actual": "Die Wiederkehr. Gelingen.\nAusgang und Eingang ohne Fehl.\nFreunde kommen ohne Makel.\nHin und her geht der Weg.\nAm siebten Tage kommt die Wiederkehr.\nFördernd ist es, zu haben, wohin man geht.\nNach einer Zeit des Zerfalls kommt die Wendezeit. Das starke Licht, das\nzuvor vertrieben war, tritt wieder ein. Es gibt Bewegung. Diese Bewegung\nist aber nicht erzwungen. Das obere Zeichen Kun hat als Charakter die Hin-\ngebung. Es ist also eine natürliche Bewegung, die sich von selbst ergibt.\nDarum ist die Umgestaltung des Alten auch ganz leicht. Altes wird abge-\nschafft, Neues wird eingeführt, beides entspricht der Zeit und bringt daher\nkeinen Schaden. Vereinigungen von Gleichgesinnten bilden sich. Aber\ndieser Zusammenschluß vollzieht sich in voller Öffentlichkeit, er entspricht\nder Zeit, und darum ist jedes egoistische Sonderbestreben ausgeschlossen,\nund aus diesen Vereinigungen ergibt sich kein Fehler. Die Wiederkehr ist\nim Naturlauf begründet. Die Bewegung ist kreisförmig. Der Weg ist in\nsich geschlossen. Darum braucht man nichts künstlich zu überstürzen. Es\nkommt alles von selber, wie es an der Zeit ist. Das ist der Sinn von Himmel\nund Erde.\nAlle Bewegungen vollziehen sich in sechs Stufen. Die siebente Stufe bringt\ndann die Wiederkehr. So kommt im siebenten Monat nach der Sommer-\nsonnenwende, von der an das Jahr abwärts geht, die Wintersonnenwende,\nebenso kommt in der siebenten Doppelstunde nach Sonnenuntergang der\nSonnenaufgang. Darum ist die Sieben die Zahl des jungen Lichts, die da-\ndurch entsteht, daß die Sechs, die Zahl des großen Dunkels, sich um eins\nsteigert. Damit kommt Bewegung in den Stillstand."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "image",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Der Donner inmitten der Erde: Das Bild der Wendezeit.\nSo schlossen die alten Könige zur Sonnwendzeit die Pässe.\nHändler und Fremdlinge wanderten nicht,\nUnd der Herrscher bereiste nicht die Gegenden.\nDie Wintersonnenwende wurde in China von jeher als die Ruhezeit des\nJahres gefeiert ein Brauch, der sich in der Neujahrsruhezeit noch immer\nerhalten hat. Im Winter ist die Lebenskraft\nsymbolisiert durch das Er-\n-\n-",
+          "actual": "Der Donner inmitten der Erde: Das Bild der Wendezeit.\nSo schlossen die alten Könige zur Sonnwendzeit die Pässe.\nHändler und Fremdlinge wanderten nicht,\nUnd der Herrscher bereiste nicht die Gegenden.\nDie Wintersonnenwende wurde in China von jeher als die Ruhezeit des\nJahres gefeiert ein Brauch, der sich in der Neujahrsruhezeit noch immer\nerhalten hat. Im Winter ist die Lebenskraft\nsymbolisiert durch das Er-\n-\n-"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "line",
+          "linePos": 1,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Wiederkehr aus geringer Entfernung.\nEs bedarf keiner Reue.\nGroßes Heil!\nKleine Abweichungen vom Guten sind nicht zu vermeiden. Man muß nur\nrechtzeitig umkehren, ehe man zu weit gegangen. Das ist besonders bei der\nBildung des Charakters von Wichtigkeit. Jeder leise böse Gedanke muB\nsofort beseitigt werden, ehe man darin zu weit geht und sich verfestigt.\nSo hat man keine Reue nötig, und alles geht sehr gut.",
+          "actual": "Wiederkehr aus geringer Entfernung.\nEs bedarf keiner Reue.\nGroßes Heil!\nKleine Abweichungen vom Guten sind nicht zu vermeiden. Man muß nur\nrechtzeitig umkehren, ehe man zu weit gegangen. Das ist besonders bei der\nBildung des Charakters von Wichtigkeit. Jeder leise böse Gedanke muB\nsofort beseitigt werden, ehe man darin zu weit geht und sich verfestigt.\nSo hat man keine Reue nötig, und alles geht sehr gut."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "line",
+          "linePos": 2,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Ruhige Wiederkehr. Heil!\nDie Umkehr bedarf immer eines Entschlusses und ist ein Akt der Selbst-\nbezwingung. Sie wird erleichtert, wenn man in guter Gesellschaft ist. Wenn\nman es über sich gewinnt, sich herunterzugeben und sich nach guten Menschen\nzu richten, so bringt das Heil.",
+          "actual": "Ruhige Wiederkehr. Heil!\nDie Umkehr bedarf immer eines Entschlusses und ist ein Akt der Selbst-\nbezwingung. Sie wird erleichtert, wenn man in guter Gesellschaft ist. Wenn\nman es über sich gewinnt, sich herunterzugeben und sich nach guten Menschen\nzu richten, so bringt das Heil."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "line",
+          "linePos": 3,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Mehrfache Wiederkehr. Gefahr. Kein Makel.\nEs gibt Menschen von einer gewissen inneren Unbeständigkeit. Für sie ist\nfortwährend Umkehr der Willensrichtung nötig. In diesem fortwährenden\nAbwenden vom Guten aus unbeherrschter Neigung und Wiederzuwenden\naus besserem Entschluß liegt eine Gefahr. Aber da auf diese Weise eine Ver-\nfestigung im Bösen doch auch nicht eintritt, ist die allgemeine Richtung auf\nAblegung des Fehlers nicht ausgeschlossen.",
+          "actual": "Mehrfache Wiederkehr. Gefahr. Kein Makel.\nEs gibt Menschen von einer gewissen inneren Unbeständigkeit. Für sie ist\nfortwährend Umkehr der Willensrichtung nötig. In diesem fortwährenden\nAbwenden vom Guten aus unbeherrschter Neigung und Wiederzuwenden\naus besserem Entschluß liegt eine Gefahr. Aber da auf diese Weise eine Ver-\nfestigung im Bösen doch auch nicht eintritt, ist die allgemeine Richtung auf\nAblegung des Fehlers nicht ausgeschlossen."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "line",
+          "linePos": 4,
+          "status": "match",
+          "hint": "exact",
+          "expected": "In der Mitte der andern wandelnd,\nKehrt man allein wieder.\nMan ist mitten in einer Gesellschaft von geringen Menschen, aber man hat\ninnere Beziehungen zu einem starken und guten Freund. Infolge davon\nkehrt man allein um. Obwohl von Lohn und Strafe nicht die Rede ist, so\nist es doch sicher günstig; denn ein solcher Entschluß zum Guten trägt seinen\nLohn in sich.",
+          "actual": "In der Mitte der andern wandelnd,\nKehrt man allein wieder.\nMan ist mitten in einer Gesellschaft von geringen Menschen, aber man hat\ninnere Beziehungen zu einem starken und guten Freund. Infolge davon\nkehrt man allein um. Obwohl von Lohn und Strafe nicht die Rede ist, so\nist es doch sicher günstig; denn ein solcher Entschluß zum Guten trägt seinen\nLohn in sich."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "line",
+          "linePos": 5,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Großzügige Wiederkehr. Keine Reue.\nWenn die Zeit zur Umkehr da ist, dann soll man sich nicht hinter kleinliche\nAusreden verstecken, sondern in sich gehen und sich prüfen. Und wenn\nman etwas falsch gemacht hat, dann soll man in großzügigem Entschluß\nseinen Fehler eingestehen. Das ist ein Weg, der niemand gereuen wird.",
+          "actual": "Großzügige Wiederkehr. Keine Reue.\nWenn die Zeit zur Umkehr da ist, dann soll man sich nicht hinter kleinliche\nAusreden verstecken, sondern in sich gehen und sich prüfen. Und wenn\nman etwas falsch gemacht hat, dann soll man in großzügigem Entschluß\nseinen Fehler eingestehen. Das ist ein Weg, der niemand gereuen wird."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 24,
+          "field": "line",
+          "linePos": 6,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Verfehlung der Wiederkehr. Unheil.\nUnglück von außen und innen.\nWenn man so Heere marschieren läßt,\nWird man schließlich eine große Niederlage erleiden,\nSo daß es für den Landesherren unheilvoll ist.\nZehn Jahre lang ist man nicht mehr imstande anzugreifen.\nWenn man die rechte Zeit zur Umkehr versäumt, so kommt man ins Unheil.\nDas Unglück ist innerlich begründet durch die falsche Stellung zum Welt-\nzusammenhang. Außeres Unglück ist die Folge dieser falschen Stellung. Es\nist die Verstockung und ihr Gericht, das gezeichnet wird.\n无​妄",
+          "actual": "Verfehlung der Wiederkehr. Unheil.\nUnglück von außen und innen.\nWenn man so Heere marschieren läßt,\nWird man schließlich eine große Niederlage erleiden,\nSo daß es für den Landesherren unheilvoll ist.\nZehn Jahre lang ist man nicht mehr imstande anzugreifen.\nWenn man die rechte Zeit zur Umkehr versäumt, so kommt man ins Unheil.\nDas Unglück ist innerlich begründet durch die falsche Stellung zum Welt-\nzusammenhang. Außeres Unglück ist die Folge dieser falschen Stellung. Es\nist die Verstockung und ihr Gericht, das gezeichnet wird.\n无​妄"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 25,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 26,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "judgment",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die Mundwinkel. Beharrlichkeit bringt Heil.\nSieh auf die Ernährung und womit einer selbst sucht,\nSeinen Mund zu füllen.\nBei der Zuwendung von Pflege und Ernährung ist es wichtig, daß für die\nrechten Leute gesorgt wird und man für seine eigene Ernährung in der\nrechten Weise sorgt. Wenn man jemand kennen lernen will, so braucht\nman nur darauf zu sehen, wem jemand seine Pflege angedeihen läßt und\nwelche Seiten seines eigenen Wesens er pflegt und nährt. Die Natur nährt\nalle Wesen. Der große Mann nährt und pflegt die Tüchtigen, um durch sie\nfür alle Menschen zu sorgen.\nMong Dsi VI A 14 sagt hierzu: Wenn man erkennen will, ob einer tüchtig\nist oder untüchtig, so braucht man auf nichts anderes zu sehen als darauf,",
+          "actual": "Die Mundwinkel. Beharrlichkeit bringt Heil.\nSieh auf die Ernährung und womit einer selbst sucht,\nSeinen Mund zu füllen.\nBei der Zuwendung von Pflege und Ernährung ist es wichtig, daß für die\nrechten Leute gesorgt wird und man für seine eigene Ernährung in der\nrechten Weise sorgt. Wenn man jemand kennen lernen will, so braucht\nman nur darauf zu sehen, wem jemand seine Pflege angedeihen läßt und\nwelche Seiten seines eigenen Wesens er pflegt und nährt. Die Natur nährt\nalle Wesen. Der große Mann nährt und pflegt die Tüchtigen, um durch sie\nfür alle Menschen zu sorgen.\nMong Dsi VI A 14 sagt hierzu: Wenn man erkennen will, ob einer tüchtig\nist oder untüchtig, so braucht man auf nichts anderes zu sehen als darauf,"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "image",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Unten am Berg ist der Donner: das Bild der Ernährung.\nSo hat der Edle acht auf seine Worte\nUnd ist mäßig im Essen und Trinken.\n,Gott tritt hervor im Zeichen der Erregung.\" Wenn im Frühling die Lebens-\nkräfte sich wieder regen, dann entstehen alle Dinge aufs neue. \"Er vollendet\nim Zeichen des Stillehaltens.\" So werden im Vorfrühling, wenn die Samen\nzur Erde fallen, alle Dinge fertig. Das gibt das Bild der Ernährung durch\nBewegung und Stille. Der Edle nimmt das zum Vorbild für die Ernährung\nund Pflege seines Charakters. Die Worte sind von innen nach außen gehende\nBewegung. Essen und Trinken ist die von außen nach innen gehende Be-\nwegung. Beide Arten von Bewegung sind durch Stille zu mäßigen. So be-\nwirkt die Stille, daß die vom Mund ausgehenden Worte das Maß nicht über-\nschreiten und die zum Mund eingehende Nahrung das Maß nicht über-\nschreitet. Dadurch wird der Charakter gepflegt.",
+          "actual": "Unten am Berg ist der Donner: das Bild der Ernährung.\nSo hat der Edle acht auf seine Worte\nUnd ist mäßig im Essen und Trinken.\n,Gott tritt hervor im Zeichen der Erregung.\" Wenn im Frühling die Lebens-\nkräfte sich wieder regen, dann entstehen alle Dinge aufs neue. \"Er vollendet\nim Zeichen des Stillehaltens.\" So werden im Vorfrühling, wenn die Samen\nzur Erde fallen, alle Dinge fertig. Das gibt das Bild der Ernährung durch\nBewegung und Stille. Der Edle nimmt das zum Vorbild für die Ernährung\nund Pflege seines Charakters. Die Worte sind von innen nach außen gehende\nBewegung. Essen und Trinken ist die von außen nach innen gehende Be-\nwegung. Beide Arten von Bewegung sind durch Stille zu mäßigen. So be-\nwirkt die Stille, daß die vom Mund ausgehenden Worte das Maß nicht über-\nschreiten und die zum Mund eingehende Nahrung das Maß nicht über-\nschreitet. Dadurch wird der Charakter gepflegt."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "line",
+          "linePos": 1,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Du läßt Deine Zauberschildkröte fahren\nUnd blickst nach mir mit herabhängenden Mundwinkeln.\nUnheil!\nDie Zauberschildkröte ist ein Wesen, das keiner irdischen Nahrung bedarf,\nsondern solche Zauberkraft besitzt, daß es von der Luft leben kann. Das Bild\nbesagt, daß man seiner Art und Stellung nach ganz gut frei und unabhängig\naus sich selbst heraus leben könnte. Statt dessen verzichtet man auf diese\ninnere Selbständigkeit und blickt mit Neid und Unmut zu andern empor, die\nes äußerlich besser haben. Dieser niedrige Neid ruft aber bei dem andern\nnur Hohn und Verachtung hervor. Das ist vom Übel.",
+          "actual": "Du läßt Deine Zauberschildkröte fahren\nUnd blickst nach mir mit herabhängenden Mundwinkeln.\nUnheil!\nDie Zauberschildkröte ist ein Wesen, das keiner irdischen Nahrung bedarf,\nsondern solche Zauberkraft besitzt, daß es von der Luft leben kann. Das Bild\nbesagt, daß man seiner Art und Stellung nach ganz gut frei und unabhängig\naus sich selbst heraus leben könnte. Statt dessen verzichtet man auf diese\ninnere Selbständigkeit und blickt mit Neid und Unmut zu andern empor, die\nes äußerlich besser haben. Dieser niedrige Neid ruft aber bei dem andern\nnur Hohn und Verachtung hervor. Das ist vom Übel."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "line",
+          "linePos": 2,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Nach dem Gipfel sich.wenden um Ernährung,\nVom Wege abweichen, um von dem Hügel Ernährung zu suchen:\nWenn man so fortmacht, bringt es Unheil.\nDas Normale ist, daß man für seine Nahrung selbst sorgt oder sich von denen,\ndie Pflicht und Recht dazu haben, auf rechtmäßige Weise ernähren läßt. Wenn\nAU\nman durch innere Schwäche nicht imstande ist, für seine Ernährung zu sorgen,\nso zeigt sich leicht eine Unruhe, indem man unter Umgehung des recht-\nmäßigen Erwerbs durch Gunst sich seinen Lebensunterhalt von höher Ge-\nstellten schenken läßt. Das ist unwürdig, denn man weicht von seiner Art\nab. Das führt, dauernd betrieben, zu Unheil.",
+          "actual": "Nach dem Gipfel sich.wenden um Ernährung,\nVom Wege abweichen, um von dem Hügel Ernährung zu suchen:\nWenn man so fortmacht, bringt es Unheil.\nDas Normale ist, daß man für seine Nahrung selbst sorgt oder sich von denen,\ndie Pflicht und Recht dazu haben, auf rechtmäßige Weise ernähren läßt. Wenn\nAU\nman durch innere Schwäche nicht imstande ist, für seine Ernährung zu sorgen,\nso zeigt sich leicht eine Unruhe, indem man unter Umgehung des recht-\nmäßigen Erwerbs durch Gunst sich seinen Lebensunterhalt von höher Ge-\nstellten schenken läßt. Das ist unwürdig, denn man weicht von seiner Art\nab. Das führt, dauernd betrieben, zu Unheil."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "line",
+          "linePos": 3,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Abweichen von der Ernährung. Beharrlichkeit bringt Unheil.\nZehn Jahre handle nicht danach. Nichts ist fördernd.\nWer Nahrung sucht, die nicht nährt, der taumelt von Begierde zu Genuß,\nund im Genuß verschmachtet er nach Begierde. Leidenschaftlicher Taumel,\num die Sinne zu befriedigen, führt nie zum Ziel. Nie (zehn Jahre ist eine\nvollendete Periode) darf man so handeln. Es kommt nichts Gutes dabei\nheraus.",
+          "actual": "Abweichen von der Ernährung. Beharrlichkeit bringt Unheil.\nZehn Jahre handle nicht danach. Nichts ist fördernd.\nWer Nahrung sucht, die nicht nährt, der taumelt von Begierde zu Genuß,\nund im Genuß verschmachtet er nach Begierde. Leidenschaftlicher Taumel,\num die Sinne zu befriedigen, führt nie zum Ziel. Nie (zehn Jahre ist eine\nvollendete Periode) darf man so handeln. Es kommt nichts Gutes dabei\nheraus."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "line",
+          "linePos": 4,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Nach dem Gipfel sich wenden um Ernährung bringt Heil.\nMit scharfen Augen wie ein Tiger umherspähen\nIn unersättlichem Begehren. Kein Makel.\nAnders als bei der Sechs auf zweitem Platz, die einen Menschen bedeutet,\nder geschäftig nur auf seinen eigenen Vorteil bedacht ist, bedeutet diese\nLinie einen Menschen, der von hoher Stelle aus bestrebt ist, sein Licht\nleuchten zu lassen. Dazu braucht er Hilfskräfte, weil er allein sein hohes Ziel\nnicht erreichen kann. Begierig wie ein hungriger Tiger ist er darauf aus, die\nrechten Leute zu finden. Aber weil er nicht für sich, sondern für die Allge-\nmeinheit sorgt, ist solcher Eifer kein Fehler.",
+          "actual": "Nach dem Gipfel sich wenden um Ernährung bringt Heil.\nMit scharfen Augen wie ein Tiger umherspähen\nIn unersättlichem Begehren. Kein Makel.\nAnders als bei der Sechs auf zweitem Platz, die einen Menschen bedeutet,\nder geschäftig nur auf seinen eigenen Vorteil bedacht ist, bedeutet diese\nLinie einen Menschen, der von hoher Stelle aus bestrebt ist, sein Licht\nleuchten zu lassen. Dazu braucht er Hilfskräfte, weil er allein sein hohes Ziel\nnicht erreichen kann. Begierig wie ein hungriger Tiger ist er darauf aus, die\nrechten Leute zu finden. Aber weil er nicht für sich, sondern für die Allge-\nmeinheit sorgt, ist solcher Eifer kein Fehler."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "line",
+          "linePos": 5,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Abweichen vom Weg. Bleiben in Beharrlichkeit bringt Heil.\nMan soll nicht das große Wasser durchqueren.\nMan ist sich eines Mangels bewußt. Man sollte für die Ernährung der\nMenschen sorgen, aber man hat nicht die Kraft dazu. So muß man vom\ngewohnten Weg abweichen und sich von einem geistig überlegenen, aber\näußerlich unscheinbaren Menschen Rat und Hilfe erbitten. Wenn man diese\nGesinnung beharrlich hegt, so hat man Erfolg und Heil. Nur muß man sich\nseiner Abhängigkeit bewußt bleiben. Man darf nicht mit seiner eigenen\nPerson hervortreten und große Werke, wie das Durchqueren des großen\nWassers, unternehmen wollen.",
+          "actual": "Abweichen vom Weg. Bleiben in Beharrlichkeit bringt Heil.\nMan soll nicht das große Wasser durchqueren.\nMan ist sich eines Mangels bewußt. Man sollte für die Ernährung der\nMenschen sorgen, aber man hat nicht die Kraft dazu. So muß man vom\ngewohnten Weg abweichen und sich von einem geistig überlegenen, aber\näußerlich unscheinbaren Menschen Rat und Hilfe erbitten. Wenn man diese\nGesinnung beharrlich hegt, so hat man Erfolg und Heil. Nur muß man sich\nseiner Abhängigkeit bewußt bleiben. Man darf nicht mit seiner eigenen\nPerson hervortreten und große Werke, wie das Durchqueren des großen\nWassers, unternehmen wollen."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 27,
+          "field": "line",
+          "linePos": 6,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die Quelle der Ernährung.\nBewußtsein der Gefahr bringt Heil.\nFördernd ist es, das große Wasser zu durchqueren.\n6 Das Buch der Wandlungen\nEs ist hier ein Weiser höchster Art, von dem alle Einflüsse ausgehen, die\nfür die Ernährung der andern sorgen. Eine solche Stellung bringt schwere\nVerantwortung. Bleibt er sich derer bewußt, so hat er Heil, und mag auch\ngroße und schwere Werke, wie das Durchqueren des großen Wassers, ge-\ntrost unternehmen. Sie bringen allgemeines Glück für ihn und alle.\n大​過",
+          "actual": "Die Quelle der Ernährung.\nBewußtsein der Gefahr bringt Heil.\nFördernd ist es, das große Wasser zu durchqueren.\n6 Das Buch der Wandlungen\nEs ist hier ein Weiser höchster Art, von dem alle Einflüsse ausgehen, die\nfür die Ernährung der andern sorgen. Eine solche Stellung bringt schwere\nVerantwortung. Bleibt er sich derer bewußt, so hat er Heil, und mag auch\ngroße und schwere Werke, wie das Durchqueren des großen Wassers, ge-\ntrost unternehmen. Sie bringen allgemeines Glück für ihn und alle.\n大​過"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 28,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 29,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 30,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 31,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 32,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 33,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 34,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 35,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 36,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 37,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 38,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 39,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 40,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 41,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 42,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 43,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 44,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 45,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 46,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 47,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 48,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 49,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 50,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 51,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 52,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 53,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 54,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 55,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 56,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 57,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 58,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 59,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 60,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 61,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 62,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "judgment",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Gelingen im Kleinen. Fördernd ist Beharrlichkeit.\nIm Anfang Heil, am Ende Wirren.\nDer Übergang von der alten in die neue Zeit ist schon vollzogen. Prinzipiell\nist alles schon geregelt. Nur noch im Einzelnen läßt sich Erfolg erzielen. Da-\nbei kommt es jedoch darauf an, daß man stets die rechte Gesinnung wahrt.\nEs geht alles seinen Gang wie von selbst. Das verführt zu leicht dazu, daß\nman in seiner Anspannung erlahmt und die Dinge laufen läßt, ohne sich im\nEinzelnen darum zu kümmern. Diese Gleichgültigkeit ist aber die Wurzel\nallen Übels. Aus ihr entspringen mit Notwendigkeit Verfallserscheinungen.\nHier ist die Regel aufgestellt, wie es in der Geschichte zu gehen pflegt. Aber\ndiese Regel ist kein unausweichliches Gesetz. Wer sie versteht, der vermag\ndurch unausgesetzte Beständigkeit und Vorsicht ihre Wirkungen zu ver-\nmeiden.",
+          "actual": "Gelingen im Kleinen. Fördernd ist Beharrlichkeit.\nIm Anfang Heil, am Ende Wirren.\nDer Übergang von der alten in die neue Zeit ist schon vollzogen. Prinzipiell\nist alles schon geregelt. Nur noch im Einzelnen läßt sich Erfolg erzielen. Da-\nbei kommt es jedoch darauf an, daß man stets die rechte Gesinnung wahrt.\nEs geht alles seinen Gang wie von selbst. Das verführt zu leicht dazu, daß\nman in seiner Anspannung erlahmt und die Dinge laufen läßt, ohne sich im\nEinzelnen darum zu kümmern. Diese Gleichgültigkeit ist aber die Wurzel\nallen Übels. Aus ihr entspringen mit Notwendigkeit Verfallserscheinungen.\nHier ist die Regel aufgestellt, wie es in der Geschichte zu gehen pflegt. Aber\ndiese Regel ist kein unausweichliches Gesetz. Wer sie versteht, der vermag\ndurch unausgesetzte Beständigkeit und Vorsicht ihre Wirkungen zu ver-\nmeiden."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "image",
+          "linePos": null,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Das Wasser ist oberhalb des Feuers:\nDas Bild des Zustands nach der Vollendung.\nSo bedenkt der Edle das Unglück\nUnd rüstet sich im voraus dagegen.\nWenn das Wasser im Kessel über dem Feuer hängt, so stehen beide Ele-\nmente in Beziehung, und es wird dadurch Kraft erzeugt. (Vgl. die Entstehung\ndes Dampfes.) Allein die dadurch entstehende Spannung gebietet Vorsicht.\nLäuft das Wasser liber, so wird das Feuer ausgelöscht, und seine Kraftwir-\nkung geht verloren. Ist die Hitze zu groß, so verdampft das Wasser und\ngeht in die Luft. Die Elemente, die hier in Beziehung zueinander stehen und\nso Kraft wirken, sind an sich einander feindlich. Nur die äußerste Vorsicht\nkann Schaden verhüten. So gibt es auch im Leben Verhältnisse, da alle\nKräfte ausgeglichen sind und zusammenwirken und daher scheinbar alles\nin bester Ordnung ist. Der Weise allein erkennt in solchen Zeiten die Mo-\nmente der Gefahr und weiß durch rechtzeitige Vorkehrungen sie zu bannen.",
+          "actual": "Das Wasser ist oberhalb des Feuers:\nDas Bild des Zustands nach der Vollendung.\nSo bedenkt der Edle das Unglück\nUnd rüstet sich im voraus dagegen.\nWenn das Wasser im Kessel über dem Feuer hängt, so stehen beide Ele-\nmente in Beziehung, und es wird dadurch Kraft erzeugt. (Vgl. die Entstehung\ndes Dampfes.) Allein die dadurch entstehende Spannung gebietet Vorsicht.\nLäuft das Wasser liber, so wird das Feuer ausgelöscht, und seine Kraftwir-\nkung geht verloren. Ist die Hitze zu groß, so verdampft das Wasser und\ngeht in die Luft. Die Elemente, die hier in Beziehung zueinander stehen und\nso Kraft wirken, sind an sich einander feindlich. Nur die äußerste Vorsicht\nkann Schaden verhüten. So gibt es auch im Leben Verhältnisse, da alle\nKräfte ausgeglichen sind und zusammenwirken und daher scheinbar alles\nin bester Ordnung ist. Der Weise allein erkennt in solchen Zeiten die Mo-\nmente der Gefahr und weiß durch rechtzeitige Vorkehrungen sie zu bannen."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "line",
+          "linePos": 1,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Er hemmt seine Räder.\nEr kommt mit dem Schwanz ins Wasser.\nKein Makel.\nIn Zeiten nach einem großen Übergang ist alles auf Fortschritt und Ent-\nwicklung aus und drängt voran. Aber dieses Vorwärtsdrängen zu Beginn\nB\nist nicht gut und führt sicher zu Verlust und Sturz, indem man über das Ziel\nhinausschießt. Ein starker Charakter läßt sich daher durch den allgemeinen\nSchwindel nicht anstecken, sondern hemmt rechtzeitig seinen Lauf. So wird\ner wohl nicht ganz unberührt bleiben von den unheilvollen Folgen des all-\ngemeinen Drängens, aber es trifft ihn nur von hinten wie einen Fuchs, der\ndas Wasser schon überschritten hat und nur noch mit dem Schwanz ins\nWasser kommt, und kann ihm nicht wesentlich schaden, da sein Verhalten\ndas Richtige getroffen hat.",
+          "actual": "Er hemmt seine Räder.\nEr kommt mit dem Schwanz ins Wasser.\nKein Makel.\nIn Zeiten nach einem großen Übergang ist alles auf Fortschritt und Ent-\nwicklung aus und drängt voran. Aber dieses Vorwärtsdrängen zu Beginn\nB\nist nicht gut und führt sicher zu Verlust und Sturz, indem man über das Ziel\nhinausschießt. Ein starker Charakter läßt sich daher durch den allgemeinen\nSchwindel nicht anstecken, sondern hemmt rechtzeitig seinen Lauf. So wird\ner wohl nicht ganz unberührt bleiben von den unheilvollen Folgen des all-\ngemeinen Drängens, aber es trifft ihn nur von hinten wie einen Fuchs, der\ndas Wasser schon überschritten hat und nur noch mit dem Schwanz ins\nWasser kommt, und kann ihm nicht wesentlich schaden, da sein Verhalten\ndas Richtige getroffen hat."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "line",
+          "linePos": 2,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die Frau verliert ihren Wagenvorhang.\nLauf ihm nicht nach, am siebten Tage bekommst du es.\nWenn eine Frau im Wagen fuhr, hatte sie einen Vorhang, der sie den Blicken\nder Neugierigen verbarg. Kam dieser Vorhang abhanden, so wäre es gegen\ndie gute Sitte gewesen, weiterzufahren. Auf das öffentliche Leben über-\ntragen, bedeutet es, daß einem, wenn man etwas leisten will, von maßge-\nbender Seite nicht das Vertrauen entgegengebracht wird, dessen man sozu-\nsagen zu seinem persönlichen Schutz bedarf. Gerade in Zeiten nach der\nVollendung kann man finden, daß die Herrschenden stolz und selbstbewußt\nwerden und sich nicht mehr darum kümmern, unbekannten Talenten mit\nAufmerksamkeit entgegenzukommen.\nHieraus entsteht nun in der Regel die Streberei. Wenn einem von oben her\nkein Vertrauen entgegengebracht wird, so sucht man Mittel und Wege, um\nes zu finden und sich ans Licht zu bringen. Von einem solchen unwürdigen\nVerfahren wird jedoch abgeraten. Such nicht danach.\" Wirf dich nicht an\ndie Außenwelt weg, sondern warte ruhig und bilde selbständig deinen per-\nsönlichen Wert aus. Die Zeiten ändern sich. Sind die sechs Stufen des Zei-\nchens vorüber, so kommt die neue Ara. Was einem gehört, kann man nicht\nauf die Dauer verlieren. Es kommt ganz von selbst zu einem. Man muß nur\nwarten können.\n»",
+          "actual": "Die Frau verliert ihren Wagenvorhang.\nLauf ihm nicht nach, am siebten Tage bekommst du es.\nWenn eine Frau im Wagen fuhr, hatte sie einen Vorhang, der sie den Blicken\nder Neugierigen verbarg. Kam dieser Vorhang abhanden, so wäre es gegen\ndie gute Sitte gewesen, weiterzufahren. Auf das öffentliche Leben über-\ntragen, bedeutet es, daß einem, wenn man etwas leisten will, von maßge-\nbender Seite nicht das Vertrauen entgegengebracht wird, dessen man sozu-\nsagen zu seinem persönlichen Schutz bedarf. Gerade in Zeiten nach der\nVollendung kann man finden, daß die Herrschenden stolz und selbstbewußt\nwerden und sich nicht mehr darum kümmern, unbekannten Talenten mit\nAufmerksamkeit entgegenzukommen.\nHieraus entsteht nun in der Regel die Streberei. Wenn einem von oben her\nkein Vertrauen entgegengebracht wird, so sucht man Mittel und Wege, um\nes zu finden und sich ans Licht zu bringen. Von einem solchen unwürdigen\nVerfahren wird jedoch abgeraten. Such nicht danach.\" Wirf dich nicht an\ndie Außenwelt weg, sondern warte ruhig und bilde selbständig deinen per-\nsönlichen Wert aus. Die Zeiten ändern sich. Sind die sechs Stufen des Zei-\nchens vorüber, so kommt die neue Ara. Was einem gehört, kann man nicht\nauf die Dauer verlieren. Es kommt ganz von selbst zu einem. Man muß nur\nwarten können.\n»"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "line",
+          "linePos": 3,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Der hohe Ahn züchtigt das Teufelsland.\nNach drei Jahren überwindet er es.\nGemeine darf man nicht verwenden.\nDer hohe Ahn\" ist der dynastische Titel des Herrschers Wu Ding aus der\nYin-Dynastie. Nachdem er mit starker Hand die Zustände im Reich geord-\nnet hatte, führte er langwierige Kolonialkriege zur Unterwerfung der von\nHunnen bewohnten nördlichen Grenzgebiete, aus denen dauernd Einfälle\ndrohten.\nDie Situation, die gezeichnet ist, ist die, daß nach Zeiten der Vollendung,\nwenn eine neue Macht aufgekommen ist und im Innern alles in Ordnung ist,\nmit einer gewissen Notwendigkeit die koloniale Expansion beginnt. Hier-\nbei ist in der Regel mit langwierigen Kämpfen zu rechnen. Aber dabei ist\neine richtige Kolonialpolitik besonders wichtig. Man darf die sauer erwor-\nbenen Gebiete nicht als eine Versorgungsanstalt betrachten für Menschen,\ndie sich in der Heimat irgendwie unmöglich gemacht haben, aber für die Ko-\nlonien noch gerade gut genug sind. Dadurch verdirbt man von vornherein\njeden Erfolg. Das gilt im Großen wie im Kleinen; denn nicht nur aufsteigende\nStaaten treiben Kolonialpolitik. Jeder aufstrebenden Unternehmung liegen\nder Trieb nach Expansion und die damit verbundenen Gefahren nahe.",
+          "actual": "Der hohe Ahn züchtigt das Teufelsland.\nNach drei Jahren überwindet er es.\nGemeine darf man nicht verwenden.\nDer hohe Ahn\" ist der dynastische Titel des Herrschers Wu Ding aus der\nYin-Dynastie. Nachdem er mit starker Hand die Zustände im Reich geord-\nnet hatte, führte er langwierige Kolonialkriege zur Unterwerfung der von\nHunnen bewohnten nördlichen Grenzgebiete, aus denen dauernd Einfälle\ndrohten.\nDie Situation, die gezeichnet ist, ist die, daß nach Zeiten der Vollendung,\nwenn eine neue Macht aufgekommen ist und im Innern alles in Ordnung ist,\nmit einer gewissen Notwendigkeit die koloniale Expansion beginnt. Hier-\nbei ist in der Regel mit langwierigen Kämpfen zu rechnen. Aber dabei ist\neine richtige Kolonialpolitik besonders wichtig. Man darf die sauer erwor-\nbenen Gebiete nicht als eine Versorgungsanstalt betrachten für Menschen,\ndie sich in der Heimat irgendwie unmöglich gemacht haben, aber für die Ko-\nlonien noch gerade gut genug sind. Dadurch verdirbt man von vornherein\njeden Erfolg. Das gilt im Großen wie im Kleinen; denn nicht nur aufsteigende\nStaaten treiben Kolonialpolitik. Jeder aufstrebenden Unternehmung liegen\nder Trieb nach Expansion und die damit verbundenen Gefahren nahe."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "line",
+          "linePos": 4,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Die schönsten Kleider geben Lumpen.\nDen ganzen Tag sei vorsichtig.\nIn Zeiten der Kulturblüte kommen immer zuweilen Erschütterungen vor, die\neinen inneren Schaden der Gesellschaft aufdecken und dann zunächst all-\ngemeines Aufsehen erregen. Da jedoch die allgemeine Lage günstig ist,\nlassen sich solche Schäden unschwer flicken und vor der Öffentlichkeit ver-\nheimlichen. Dann verschwindet wieder alles aus dem Gedächtnis, und es\nsieht so aus, als herrschte eitel Friede. Dem Denkenden jedoch sind solche\nVorfälle ernste Winke, die er nicht vernachlässigt. Nur dadurch kann man\ndie üblen Folgen abwenden.",
+          "actual": "Die schönsten Kleider geben Lumpen.\nDen ganzen Tag sei vorsichtig.\nIn Zeiten der Kulturblüte kommen immer zuweilen Erschütterungen vor, die\neinen inneren Schaden der Gesellschaft aufdecken und dann zunächst all-\ngemeines Aufsehen erregen. Da jedoch die allgemeine Lage günstig ist,\nlassen sich solche Schäden unschwer flicken und vor der Öffentlichkeit ver-\nheimlichen. Dann verschwindet wieder alles aus dem Gedächtnis, und es\nsieht so aus, als herrschte eitel Friede. Dem Denkenden jedoch sind solche\nVorfälle ernste Winke, die er nicht vernachlässigt. Nur dadurch kann man\ndie üblen Folgen abwenden."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "line",
+          "linePos": 5,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Der Nachbar im Osten, der einen Ochsen schlachtet,\nBekommt nicht so viel wirkliches Glück\nWie der Nachbar im Westen mit seinem kleinen Opfer.\nAuch die religiöse Haltung wird durch die seelische Stimmung in Zeiten nach\nder Vollendung beeinflußt. An Stelle der einfachen alten Formen tritt bei\nden Gottesdiensten immer reichere Ausgestaltung und immer größerer äuße-\nrer Prunk. Aber dieser Prachtentfaltung fehlt der innere Ernst. Menschliche\nWillkür tritt an die Stelle des gewissenhaften Innehaltens des göttlichen\nWillens. Aber während der Mensch sieht, was vor Augen ist, sieht Gott das\nHerz an. Darum ruht nicht so viel Segen auf dem mächtigen, aber kalten\nGottesdienste, wie auf einem einfachen, frommen Opfer ruht.",
+          "actual": "Der Nachbar im Osten, der einen Ochsen schlachtet,\nBekommt nicht so viel wirkliches Glück\nWie der Nachbar im Westen mit seinem kleinen Opfer.\nAuch die religiöse Haltung wird durch die seelische Stimmung in Zeiten nach\nder Vollendung beeinflußt. An Stelle der einfachen alten Formen tritt bei\nden Gottesdiensten immer reichere Ausgestaltung und immer größerer äuße-\nrer Prunk. Aber dieser Prachtentfaltung fehlt der innere Ernst. Menschliche\nWillkür tritt an die Stelle des gewissenhaften Innehaltens des göttlichen\nWillens. Aber während der Mensch sieht, was vor Augen ist, sieht Gott das\nHerz an. Darum ruht nicht so viel Segen auf dem mächtigen, aber kalten\nGottesdienste, wie auf einem einfachen, frommen Opfer ruht."
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 63,
+          "field": "line",
+          "linePos": 6,
+          "status": "match",
+          "hint": "exact",
+          "expected": "Er kommt mit dem Haupt ins Wasser. Gefahr.\nHier ist zum Schluß nochmals eine Warnung beigefügt. Nach dem Übergang\nüber ein Wasser kann man nur dann mit dem Kopf ins Wasser kommen,\nwenn man sich leichtsinnig wieder dem Wasser zuwendet. Solange man\nvorwärts schreitet und nicht zurücksieht, entgeht man dieser Gefahr. Allein\nes liegt etwas Verlockendes darin, stehenzubleiben und auf die überwundene\nB\nET\nGefahr zurückzublicken. Solche eitle Selbstbespiegelung bringt aber kein\nGlück. Man gerät dadurch in Gefahr, und wenn man sich nicht noch ent-\nschließt, unaufhaltsam fortzuschreiten, so fällt man dieser Gefahr zum Opfer.\n未​濟 ​6",
+          "actual": "Er kommt mit dem Haupt ins Wasser. Gefahr.\nHier ist zum Schluß nochmals eine Warnung beigefügt. Nach dem Übergang\nüber ein Wasser kann man nur dann mit dem Kopf ins Wasser kommen,\nwenn man sich leichtsinnig wieder dem Wasser zuwendet. Solange man\nvorwärts schreitet und nicht zurücksieht, entgeht man dieser Gefahr. Allein\nes liegt etwas Verlockendes darin, stehenzubleiben und auf die überwundene\nB\nET\nGefahr zurückzublicken. Solche eitle Selbstbespiegelung bringt aber kein\nGlück. Man gerät dadurch in Gefahr, und wenn man sich nicht noch ent-\nschließt, unaufhaltsam fortzuschreiten, so fällt man dieser Gefahr zum Opfer.\n未​濟 ​6"
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "judgment",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "image",
+          "linePos": null,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "line",
+          "linePos": 1,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "line",
+          "linePos": 2,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "line",
+          "linePos": 3,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "line",
+          "linePos": 4,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "line",
+          "linePos": 5,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        },
+        {
+          "translator": "wilhelm-de",
+          "hex": 64,
+          "field": "line",
+          "linePos": 6,
+          "status": "missing_gold",
+          "hint": "both_empty",
+          "expected": "",
+          "actual": ""
+        }
+      ],
+      "summary": {
+        "total": 512,
+        "match": 48,
+        "mismatch": 0,
+        "missing_gold": 464,
+        "missing_bundle": 0,
+        "skipped": 0,
+        "matchPct": 9.38
+      }
+    }
+  ],
+  "notes": [
+    "Book-primary gold (2026-06-22+): local editions in tools/source-pdfs/.",
+    "Wilhelm: Richard Wilhelm DE 1924 (Diederichs) — merged OCR book-primary; PDF arbiter when local scan available.",
+    "Legge: James Legge SBE XVI Oxford scan (OCR) — Thwan, Great Symbolism, lines, yongJiu/yongLiu.",
+    "Default gate (--gold=books): Wilhelm DE 1924 + Legge PDF. Baynes EN: --gold=pdf-wilhelm.",
+    "Zhou Yi: operational gold = ctext.org (npm run verify:hexagram-fidelity:zhouyi-ctext). Local 注疏 PDF is academic reserve, not book-primary gate."
+  ]
+}

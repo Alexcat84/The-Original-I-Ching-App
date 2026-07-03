@@ -1,0 +1,43 @@
+{
+  "updatedAt": "2026-06-30T23:34:18.374Z",
+  "auditCode": "20260630-AUD-DAT-W-07",
+  "from": 1,
+  "to": 64,
+  "ok": false,
+  "summary": {
+    "pilotClosed": 2304,
+    "pilotPending": 0,
+    "pilotVsGold": 0,
+    "pilotVsMergedContent": 1,
+    "goldVsMergedContent": 1,
+    "ledgerIssues": 0,
+    "findingsTotal": 2,
+    "ledgerAttestation": {
+      "hexComplete": 64,
+      "hexTotal": 64,
+      "fieldsTotal": 2304,
+      "fieldsVerified": 1992,
+      "fieldsCorrected": 0,
+      "fieldsVacio": 312,
+      "fieldsPending": 0
+    },
+    "mergedMetaOverlayExcluded": [
+      "chinese",
+      "hex_font",
+      "chinese_roman"
+    ]
+  },
+  "findings": [
+    {
+      "hex": 2,
+      "field": "commentary_decision",
+      "kind": "pilot_ne_merged"
+    },
+    {
+      "hex": 2,
+      "field": "commentary_decision",
+      "kind": "gold_ne_merged"
+    }
+  ],
+  "findingsTruncated": false
+}

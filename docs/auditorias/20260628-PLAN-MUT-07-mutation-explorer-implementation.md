@@ -1,6 +1,6 @@
 # Plan de implementación — Mutation Explorer (Verificador de reglas)
 
-**Código:** `20260628-PLAN-MUT-07 mutation-explorer-implementation` · **Familia:** MUT · **Estado:** open
+**Código:** `20260628-PLAN-MUT-07 mutation-explorer-implementation` · **Familia:** MUT · **Estado:** closed (implementado 2026-07-01)
 
 - **Fecha:** 2026-06-28
 - **Rama:** `feature/mutation-explorer`

@@ -96,9 +96,14 @@ const ACADEMIC_SOURCES: AcademicSource[] = [
     rest: ". Ballantine Books.",
   },
   {
+    citation: "Wilhelm, R. (1924). ",
+    title: "I Ging: Das Buch der Wandlungen",
+    rest: ". Eugen Diederichs Verlag.",
+  },
+  {
     citation: "Wilhelm, R., & Baynes, C. F. (1950). ",
     title: "The I Ching or Book of Changes",
-    rest: ". Princeton University Press.",
+    rest: ". Princeton University Press. (Archived English rendering; not the runtime oracle source.)",
   },
 ];
 
@@ -248,7 +253,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "O método clássico de moedas lança três moedas seis vezes e constrói o hexagrama linha a linha. É mais rápido do que as varetas de milenrama e produz o mesmo tipo de resultado: linhas inteiras (yang) e quebradas (yin), algumas em movimento. Como se leem depois essas linhas em movimento é uma questão à parte, abordada na secção seguinte.",
     ichingWilhelmHeading: "A tradução Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm produziu em 1924 a tradução mais completa e respeitada do I Ching em língua ocidental. Cary Baynes traduziu-a para inglês em 1950 (Princeton University Press). Esta obra é o texto base desta app, sem modificações nem simplificações.",
+      "Richard Wilhelm publicou em 1924 a tradução alemã definitiva do I Ching (Eugen Diederichs Verlag). Esta app usa esse texto oracular em alemão (juízo, imagem e linhas) como fonte, sem paráfrase nem reescrita editorial. A versão inglesa de Cary Baynes (Princeton University Press, 1950) está arquivada apenas como referência.",
     ichingLeggeHeading: "A tradução de James Legge",
     ichingLeggeBody:
       "James Legge, um missionário e sinólogo escocês, traduziu o I Ching em 1882 como parte da sua obra monumental 'The Sacred Books of the East'. A sua abordagem foi estritamente filológica e académica, procurando decifrar o significado literal dos textos confucianos e pré-confucianos. A sua versão traz um rigor interpretativo inestimável.",
@@ -311,7 +316,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "La méthode classique des pièces lance trois pièces six fois et construit l'hexagramme trait par trait. Elle est plus rapide que les tiges d'achillée et produit le même type de résultat : des traits pleins (yang) et brisés (yin), certains en mouvement. La façon dont ces traits en mouvement sont ensuite lus est une question distincte, abordée dans la section suivante.",
     ichingWilhelmHeading: "La traduction Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm a produit en 1924 la traduction la plus complète et la plus respectée du I Ching en langue occidentale. Cary Baynes l'a traduite en anglais en 1950 (Princeton University Press). Cette œuvre constitue le texte base de cette app, sans modifications ni simplifications.",
+      "Richard Wilhelm a publié en 1924 la traduction allemande définitive du I Ching (Eugen Diederichs Verlag). Cette app utilise ce texte oraculaire en allemand (jugement, image et traits) comme source, sans paraphrase ni réécriture éditoriale. La version anglaise de Cary Baynes (Princeton University Press, 1950) est archivée à titre de référence uniquement.",
     ichingLeggeHeading: "La traduction de James Legge",
     ichingLeggeBody:
       "James Legge, un missionnaire et sinologue écossais, a traduit le I Ching en 1882 dans le cadre de son œuvre monumentale 'The Sacred Books of the East'. Son approche était strictement philologique et académique, cherchant à déchiffrer le sens littéral des textes confucéens et pré-confucéens. Sa version apporte une rigueur interprétative inestimable.",
@@ -375,7 +380,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Die klassische Münzmethode wirft sechsmal drei Münzen und baut das Hexagramm Linie für Linie auf. Sie ist schneller als die Schafgarbenstäbe und liefert dieselbe Art von Ergebnis: ganze (yang) und gebrochene (yin) Linien, einige davon bewegend. Wie diese bewegenden Linien dann gelesen werden, ist eine eigene Frage, die im nächsten Abschnitt behandelt wird.",
     ichingWilhelmHeading: "Die Übersetzung Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm erstellte 1924 die vollständigste und angesehenste Übersetzung des I Ching in westlicher Sprache. Cary Baynes übersetzte sie 1950 ins Englische (Princeton University Press). Dieses Werk ist der Grundtext dieser App, ohne Modifikationen oder Vereinfachungen.",
+      "Richard Wilhelm veröffentlichte 1924 die maßgebliche deutsche Übersetzung des I Ging (Eugen Diederichs Verlag). Diese App verwendet jenen deutschen Orakeltext (Urteil, Bild und Linien) als Quelle, ohne Paraphrasen oder redaktionelle Bearbeitungen. Cary Baynes' englische Fassung von 1950 (Princeton University Press) ist nur als Referenz archiviert.",
     ichingLeggeHeading: "Die Übersetzung von James Legge",
     ichingLeggeBody:
       "James Legge, ein schottischer Missionar und Sinologe, übersetzte das I Ging 1882 als Teil seines monumentalen Werkes 'The Sacred Books of the East'. Sein Ansatz war streng philologisch und akademisch und versuchte, die wörtliche Bedeutung konfuzianischer und vorkonfuzianischer Texte zu entschlüsseln. Seine Version bringt eine unschätzbare interpretative Strenge mit sich.",
@@ -439,7 +444,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "Il metodo classico delle monete lancia tre monete sei volte e costruisce l'esagramma linea per linea. È più rapido degli steli di achillea e produce lo stesso tipo di risultato: linee intere (yang) e spezzate (yin), alcune in movimento. Come si leggono poi quelle linee in movimento è una questione a parte, affrontata nella sezione successiva.",
     ichingWilhelmHeading: "La traduzione Wilhelm/Baynes",
     ichingWilhelmBody:
-      "Richard Wilhelm ha prodotto nel 1924 la traduzione più completa e rispettata dello I Ching in lingua occidentale. Cary Baynes l'ha tradotta in inglese nel 1950 (Princeton University Press). Quest'opera costituisce il testo base di questa app, senza modifiche né semplificazioni.",
+      "Richard Wilhelm pubblicò nel 1924 la traduzione tedesca definitiva dell'I Ching (Eugen Diederichs Verlag). Questa app utilizza quel testo oraculare tedesco (giudizio, immagine e linee) come fonte, senza parafrasi né rielaborazioni editoriali. La versione inglese di Cary Baynes del 1950 (Princeton University Press) è archiviata solo come riferimento.",
     ichingLeggeHeading: "La traduzione di James Legge",
     ichingLeggeBody:
       "James Legge, missionario e sinologo scozzese, tradusse l'I Ching nel 1882 come parte della sua opera monumentale 'The Sacred Books of the East'. Il suo approccio fu strettamente filologico e accademico, cercando di decifrare il significato letterale dei testi confuciani e pre-confuciani. La sua versione porta un rigore interpretativo inestimabile.",
@@ -500,9 +505,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "三枚銭法",
     ichingMethodBody:
       "古典的な銭法は、三枚の銭を六回投じ、卦を一爻ずつ構築します。蓍草より速く、同じ種類の結果をもたらします：陽（連続した）と陰（切れた）の爻があり、その一部は動爻です。それらの動爻をどう読むかは別の問題であり、次の節で扱います。",
-    ichingWilhelmHeading: "ヴィルヘルム/バインズ訳",
+    ichingWilhelmHeading: "ヴィルヘルム訳（1924年）",
     ichingWilhelmBody:
-      "リヒャルト・ヴィルヘルムは1924年に西洋語として最も完全で尊重される易経の翻訳を出版しました。キャリー・バインズが1950年に英語に翻訳しました（Princeton University Press）。このアプリはオラクルの節（卦辞、象、爻辞）を改変や要約なく、そのままテキストの基準として用いています。",
+      "リヒャルト・ヴィルヘルムは1924年にI Gingの決定版ドイツ語訳を出版しました（Eugen Diederichs Verlag）。このアプリはそのドイツ語のオラクルテキスト（卦辞・象辞・爻辞）を、意訳や編集なしに出典として使用しています。ケーリー・ベインズによる1950年英訳（Princeton University Press）は参照用としてのみ保管されています。",
     ichingLeggeHeading: "ジェームズ・レッグ訳",
     ichingLeggeBody:
       "スコットランドの宣教師であり中国学者であるジェームズ・レッグは、その記念碑的著作「東方聖書」の一部として1882年に易経を翻訳しました。彼のアプローチは厳密に文献学的かつ学術的であり、儒教および儒教以前のテキストの文字通りの意味を解読しようとしました。彼のバージョンは非常に貴重な解釈の厳密さをもたらします。",
@@ -567,9 +572,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "三枚铜钱法",
     ichingMethodBody:
       "经典的铜钱法以三枚铜钱掷六次，逐爻构建卦象。它比蓍草更快，产生同样类型的结果：阳爻（连续）与阴爻（断裂），其中部分为动爻。这些动爻随后如何解读，则是另一个问题，将在下一节中讨论。",
-    ichingWilhelmHeading: "卫礼贤／贝恩斯译本",
+    ichingWilhelmHeading: "卫礼贤（1924）",
     ichingWilhelmBody:
-      "德国汉学家卫礼贤（Richard Wilhelm）于1924年出版了西方语言中最完整、最受推崇的易经译本。贝恩斯（Cary Baynes）于1950年将其译为英文（普林斯顿大学出版社）。本应用以这些卦辞、象辞与爻辞作为基础文本，不作意译或改写。",
+      "德国汉学家卫礼贤（Richard Wilhelm）于1924年出版了《易经》权威德文译本（Eugen Diederichs Verlag）。本应用以该德文卦辞、象辞与爻辞作为文本来源，不作意译或改写。贝恩斯（Cary Baynes）1950年英译本（普林斯顿大学出版社）仅作对照参考归档保存。",
     ichingLeggeHeading: "理雅各（James Legge）译本",
     ichingLeggeBody:
       "苏格兰传教士、汉学家理雅各于1882年翻译了《易经》，作为其丰碑巨著《东方圣书》的一部分。他的方法严格遵循语文学和学术标准，力图破译儒家及前儒家文本的字面意义。他的版本带来了无可估量的阐释严谨性。",
@@ -630,9 +635,9 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
     ichingMethodHeading: "삼전법",
     ichingMethodBody:
       "고전적인 동전법은 동전 세 개를 여섯 번 던져 괘를 한 효씩 구성합니다. 시초보다 빠르며 같은 종류의 결과를 냅니다: 양효(이어진 선)와 음효(끊긴 선), 그중 일부는 변효입니다. 그 변효를 그 다음 어떻게 읽는가는 별개의 문제로, 다음 절에서 다룹니다.",
-    ichingWilhelmHeading: "빌헬름/베인스 번역",
+    ichingWilhelmHeading: "빌헬름 번역 (1924)",
     ichingWilhelmBody:
-      "리하르트 빌헬름은 1924년 서양 언어로 된 가장 완전하고 권위 있는 주역 번역서를 출간했습니다. 케리 베인스가 1950년 영어로 번역했습니다(Princeton University Press). 이 앱은 괘사, 상, 효사 등 오라클 본문을 의역이나 편집 없이 그대로 기준 텍스트로 사용합니다.",
+      "리하르트 빌헬름은 1924년 역경의 권위 있는 독일어 번역서를 출간했습니다（Eugen Diederichs Verlag）. 이 앱은 그 독일어 오라클 본문（괘사, 상, 효사）을 의역이나 편집 없이 출처로 사용합니다. 캐리 베인스의 1950년 영어 번역（Princeton University Press）은 참조용으로만 보관됩니다.",
     ichingLeggeHeading: "제임스 레그 번역",
     ichingLeggeBody:
       "스코틀랜드의 선교사이자 중국학자인 제임스 레그는 자신의 기념비적 저작인 '동방의 성서'의 일부로 1882년에 주역을 번역했습니다. 그의 접근 방식은 엄격하게 문헌학적이고 학술적이었으며, 유교 및 유교 이전 텍스트의 문자적 의미를 해독하고자 했습니다. 그의 버전은 매우 귀중한 해석적 엄밀함을 제공합니다.",
@@ -699,7 +704,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "طريقة العملات الكلاسيكية تقذف ثلاث عملات ست مرات وتبني الغرض خطاً بخط. وهي أسرع من عيدان الزنبق وتعطي النوع نفسه من النتيجة: خطوط كاملة (يانغ) ومكسورة (يين)، بعضها متحرك. أما كيف تُقرأ تلك الخطوط المتحركة بعد ذلك فمسألة منفصلة، يتناولها القسم التالي.",
     ichingWilhelmHeading: "ترجمة Wilhelm/Baynes",
     ichingWilhelmBody:
-      "ريتشارد فيلهلم أنتج عام 1924 الترجمة الأكثر اكتمالاً واحتراماً للـ I Ching في اللغات الغربية. ترجمتها كاري بينز إلى الإنجليزية عام 1950 (Princeton University Press). تستخدم هذه التطبيق مقاطع الأوراكل (الأحكام والصورة والخطوط) كنص أساسي، دون إعادة صياغة أو تحرير.",
+      "ريتشارد فيلهلم نشر عام 1924 الترجمة الألمانية المرجعية لكتاب التغيرات (Eugen Diederichs Verlag). يستخدم هذا التطبيق ذلك النص الأوراكلي الألماني (الأحكام والصورة والخطوط) مصدراً دون إعادة صياغة أو تحرير. أما ترجمة كاري بينز الإنجليزية عام 1950 (Princeton University Press) فمحفوظة كمرجع فقط.",
     ichingLeggeHeading: "ترجمة جيمس ليغ",
     ichingLeggeBody:
       "ترجم جيمس ليغ، وهو مبشر وعالم صينيات اسكتلندي، كتاب I Ching في عام 1882 كجزء من عمله الضخم 'الكتب المقدسة في الشرق'. كان نهجه فقهياً وأكاديمياً بصرامة، سعياً لفك المعنى الحرفي للنصوص الكونفوشيوسية وما قبل الكونفوشيوسية. وتوفر نسخته دقة تفسيرية لا تقدر بثمن.",
@@ -767,7 +772,7 @@ const NOTES_PAGE_UI: Record<AppLocale, NotesPageUiMessages> = {
       "शास्त्रीय सिक्का विधि तीन सिक्कों को छह बार फेंककर हेक्साग्राम को एक-एक रेखा बनाती है। यह यारो की छड़ों से तेज़ है और उसी प्रकार का परिणाम देती है: अखंड (यांग) और टूटी हुई (यिन) रेखाएं, जिनमें कुछ गतिशील होती हैं। उन गतिशील रेखाओं को फिर कैसे पढ़ा जाता है, यह एक अलग विषय है, जिसे अगले खंड में देखा गया है।",
     ichingWilhelmHeading: "Wilhelm/Baynes अनुवाद",
     ichingWilhelmBody:
-      "जर्मन चीनी विद्वान रिचर्ड विल्हेम ने 1924 में पश्चिमी भाषाओं में I Ching का सबसे पूर्ण और सम्मानित अनुवाद प्रस्तुत किया। Cary Baynes ने इसे 1950 में अंग्रेजी में अनुवाद किया (Princeton University Press)। यह ऐप ओरेकल के अंशों (निर्णय, छवि और रेखाएँ) को बिना पैराफ्रेज़ या संपादन के आधार पाठ के रूप में उपयोग करता है।",
+      "जर्मन चीनी विद्वान रिचर्ड विल्हेम ने 1924 में I Ching का आधिकारिक जर्मन अनुवाद प्रकाशित किया (Eugen Diederichs Verlag)। यह ऐप उस जर्मन ओरेकल पाठ (निर्णय, छवि और रेखाएँ) को बिना पैराफ्रेज़ या संपादकीय पुनर्लेखन के स्रोत के रूप में उपयोग करता है। Cary Baynes का 1950 का अंग्रेज़ी अनुवाद (Princeton University Press) केवल संदर्भ के लिए संग्रहीत है।",
     ichingLeggeHeading: "जेम्स लेग अनुवाद",
     ichingLeggeBody:
       "एक स्कॉटिश मिशनरी और चीनविज्ञानी जेम्स लेग ने 1882 में अपने स्मारकीय कार्य 'द सेक्रेड बुक्स ऑफ द ईस्ट' के हिस्से के रूप में आई चिंग का अनुवाद किया। उनका दृष्टिकोण कड़ाई से भाषाशास्त्रीय और शैक्षणिक था, जो कन्फ्यूशियस और पूर्व-कन्फ्यूशियस ग्रंथों के शाब्दिक अर्थ को समझने की कोशिश कर रहा था। उनका संस्करण एक अमूल्य व्याख्यात्मक कठोरता लाता है।",

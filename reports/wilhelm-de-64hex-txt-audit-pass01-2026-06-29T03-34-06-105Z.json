@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-06-29T03:34:06.105Z",
+  "pass": "01",
+  "g0": {
+    "pass": false,
+    "errors": [
+      "hex 4: missing",
+      "hex 9: missing L5_oraculo",
+      "hex 11: missing L1_oraculo",
+      "hex 13: missing",
+      "hex 14: missing L2_oraculo",
+      "hex 16: missing",
+      "hex 18: missing L1_oraculo",
+      "hex 18: missing L2_oraculo",
+      "hex 18: missing L3_oraculo",
+      "hex 18: missing L4_oraculo",
+      "hex 18: missing L5_oraculo",
+      "hex 18: missing L6_oraculo",
+      "hex 20: missing L1_oraculo",
+      "hex 20: missing L2_oraculo",
+      "hex 20: missing L3_oraculo",
+      "hex 20: missing L4_oraculo",
+      "hex 20: missing L5_oraculo",
+      "hex 20: missing L6_oraculo",
+      "hex 24: missing",
+      "hex 25: missing L1_oraculo",
+      "hex 25: missing L2_oraculo",
+      "hex 25: missing L3_oraculo",
+      "hex 25: missing L4_oraculo",
+      "hex 25: missing L5_oraculo",
+      "hex 25: missing L6_oraculo",
+      "hex 27: missing",
+      "hex 48: missing L3_oraculo",
+      "hex 63: missing"
+    ],
+    "warnings": [],
+    "fieldCount": 33
+  },
+  "outputPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\datasets\\wilhelm-de\\book-one\\wilhelm-de-64hex-parsed-pass01.json"
+}

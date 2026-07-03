@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": "Wilhelm DE 1924 Diederichs — Erstes Buch (33 campos Baynes)",
+  "scanPrimary": "585 JPG 300 DPI (tools/source-pdfs/source jpgs/) pp. 23–212",
+  "authorityRule": "contenido_pdf es la transcripción literal del libro físico (JPG). Zeno runtime y pass03 OCR son referencia de trabajo, no juez final.",
+  "columns": {
+    "contenido_reconciliado": "Runtime Zeno merged actual (referencia diagnóstica).",
+    "contenido_pass03": "Parser pass03 anclado a páginas JPG (bootstrap OCR).",
+    "contenido_pdf": "Transcripción AU literal JPG — único valor que promueve al maestro.",
+    "au_estado": "cerrado | vacio_en_libro | pendiente",
+    "resolucion_disputa": "coincide_zeno | diff_zeno | vacio_en_libro | na"
+  },
+  "auEstado": {
+    "cerrado": "Campo transcrito y verificado contra JPG; listo para promote AU gold.",
+    "vacio_en_libro": "Campo ausente en impreso (p. ej. yong en hex ≥ 3).",
+    "pendiente": "Sin AU JPG literal; no promover."
+  },
+  "promoteOrder": [
+    "1. au_gold.contenido_pdf si au_estado ∈ {cerrado, vacio_en_libro}",
+    "2. Nunca promover pass03 o Zeno sin AU cerrado por campo",
+    "3. Runtime merged actual se reemplaza solo tras AU 64×33 cerrada"
+  ],
+  "transcriptionRules": [
+    "Marcadores DE: DAS URTEIL, DAS BILD, Die einzelnen Linien, Wenn lauter Neunen/Sechsen",
+    "Unir cortes de línea con guión final",
+    "Preservar comillas alemanas del impreso",
+    "No normalizar ortografía respecto al libro 1924",
+    "Saltos de párrafo como \\n en TSV"
+  ]
+}

@@ -1,0 +1,821 @@
+{
+  "count": 136,
+  "issues": [
+    {
+      "hex": 1,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "乾"
+    },
+    {
+      "hex": 1,
+      "field": "wen_yen_note",
+      "issue": "cjk",
+      "tail": "ach ist. ↵ Diese Divergenz zwischen Wollen und Können führt, da kein Ausweg möglich ist, zur Reue. ↵ 坤​:"
+    },
+    {
+      "hex": 2,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "坤"
+    },
+    {
+      "hex": 3,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "屯"
+    },
+    {
+      "hex": 4,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "蒙"
+    },
+    {
+      "hex": 5,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "需"
+    },
+    {
+      "hex": 5,
+      "field": "sequence",
+      "issue": "orphan_tail",
+      "tail": "n warten muß. Es liegt nicht ↵ in der Macht des Menschen, sondern ist vom Himmel und Regen abhängig. ↵ W"
+    },
+    {
+      "hex": 6,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "訟"
+    },
+    {
+      "hex": 6,
+      "field": "L3_a_oraculo",
+      "issue": "orphan_tail",
+      "tail": "rlichkeit. Gefahr, am ↵ Ende kommt Heil. Folgst du etwa eines Königs Diensten, so ↵ suche nicht Werke. ↵ -"
+    },
+    {
+      "hex": 7,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "師"
+    },
+    {
+      "hex": 7,
+      "field": "commentary_decision",
+      "issue": "orphan_tail",
+      "tail": "as Zeichen \"leitet\" ist im Text \"Du\"-vergiften geschrieben, muß aber ↵ \"Dan\"= leiten gelesen werden. ↵ -"
+    },
+    {
+      "hex": 7,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "so kommt es dazu, daß Leichen geführt werden müssen, das heißt, ↵ daß eine Niederlage erlitten wird. ↵ ―"
+    },
+    {
+      "hex": 8,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "比"
+    },
+    {
+      "hex": 8,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "ßen her. Die Erde hat als Bild den Kessel, das Gerät zum Auffangen des ↵ Segens, der von oben kommt. ↵ -"
+    },
+    {
+      "hex": 9,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "小畜"
+    },
+    {
+      "hex": 9,
+      "field": "L3_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "e, die beiden unteren, verlassen hat, zeigt er, daß er seine ↵ Familie nicht in Ordnung halten kann. ↵ -"
+    },
+    {
+      "hex": 10,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "履"
+    },
+    {
+      "hex": 11,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "泰"
+    },
+    {
+      "hex": 11,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "uf viertem Platz vereinigt sich mit der Anfangsneun, daher ↵ bringt Hingehen„Unternehmungen\" — Heil. ↵ -"
+    },
+    {
+      "hex": 11,
+      "field": "L2_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "en Erklärung:„So ↵ erhält man Hilfe nämlich von Sechs auf fünftem Platz -, in der Mitte zu ↵ wandeln.\" ↵ -"
+    },
+    {
+      "hex": 11,
+      "field": "L4_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "ichtet, wie er winken würde, wenn der Strich sich egoistisch mit der ↵ Anfangssechs verbinden würde. ↵ -"
+    },
+    {
+      "hex": 11,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "n Neun auf zweitem Platz Durch sein ↵ zentrales Wesen erlangt er die Erfüllung aller seiner Wünsche. ↵ -"
+    },
+    {
+      "hex": 12,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "否"
+    },
+    {
+      "hex": 12,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "ten treu zu sein und sich nicht beteiligen zu müssen an ↵ dem Verkehr mit den vorrückenden Gemeinen. ↵ A"
+    },
+    {
+      "hex": 13,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "同人"
+    },
+    {
+      "hex": 13,
+      "field": "L4_b_comentario",
+      "issue": "cyrillic",
+      "tail": "zes gemildert ist, läßt er sich ↵ durch die Notlage zur Rückkehr zum rechten Weg und Verzicht bewegen."
+    },
+    {
+      "hex": 14,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "大有"
+    },
+    {
+      "hex": 15,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "謙"
+    },
+    {
+      "hex": 15,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "gt, angedeutet. ↵ Hier ist die Bescheidenheit an niedriger Stelle, die nicht übergangen werden ↵ kann. ↵ -"
+    },
+    {
+      "hex": 16,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "豫"
+    },
+    {
+      "hex": 17,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "隨"
+    },
+    {
+      "hex": 17,
+      "field": "misc_notes",
+      "issue": "orphan_tail",
+      "tail": "wache, um Nachfolge zu erzielen. Die Bewegung beider Zeichen ist ↵ gleichsinnig nach oben gerichtet. ↵ -"
+    },
+    {
+      "hex": 17,
+      "field": "L2_a_oraculo",
+      "issue": "orphan_tail",
+      "tail": "Hängt man sich an den kleinen Knaben, so verliert man den ↵ starken Mann. ↵ -"
+    },
+    {
+      "hex": 18,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "蠱"
+    },
+    {
+      "hex": 19,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "臨"
+    },
+    {
+      "hex": 19,
+      "field": "L3_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " Indem dadurch wird der ↵ ebenfalls Charakter von Dschen ↵ durch Bewegung eintritt, ↵ Fehler überwunden. ↵ -"
+    },
+    {
+      "hex": 20,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "觀"
+    },
+    {
+      "hex": 20,
+      "field": "ruler_note",
+      "issue": "orphan_tail",
+      "tail": "eht sich auf sie. ↵ Gen und Kun ↵ ie Herren des Zeichens sind die Neun auf fünftem Platz und die obere ↵ \""
+    },
+    {
+      "hex": 20,
+      "field": "sequence",
+      "issue": "orphan_tail",
+      "tail": " groß sind, dann kann man sie betrachten. ↵ Darum folgt darauf das Zeichen: die Betrachtung. ↵ נז'ס ↵ CH ↵ P"
+    },
+    {
+      "hex": 20,
+      "field": "L3_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "rnzeichen Gen, Berg. Daher der Rückblick auf sein Leben, daher auch der Gedanke des rechten Weges. ↵ ľ"
+    },
+    {
+      "hex": 21,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "噬嗑"
+    },
+    {
+      "hex": 21,
+      "field": "misc_notes",
+      "issue": "orphan_tail",
+      "tail": "nd Stillstand dazwischen ↵ beide durch den einen verhängnisvollen Strich auf viertem Platz ↵ gebildet. ↵ -"
+    },
+    {
+      "hex": 21,
+      "field": "commentary_decision",
+      "issue": "cjk",
+      "tail": "d diese Weichheit durch die ↵ Festigkeit des Platzes ausgeglichen, so daß sie nicht zur Schwäche wird."
+    },
+    {
+      "hex": 22,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "賁"
+    },
+    {
+      "hex": 22,
+      "field": "commentary_decision",
+      "issue": "cjk",
+      "tail": "ionen von Gehalt und Form bilden. Auch hier ist ↵ die Liebe der Gehalt und die Gerechtigkeit die Form."
+    },
+    {
+      "hex": 22,
+      "field": "L3_a_oraculo",
+      "issue": "orphan_tail",
+      "tail": "Anmutig und feucht. Dauernde Beharrlichkeit bringt Heil. ↵ 7 Das Buch der Wandlungen II ↵ -"
+    },
+    {
+      "hex": 23,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "剝"
+    },
+    {
+      "hex": 24,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "復"
+    },
+    {
+      "hex": 24,
+      "field": "sequence",
+      "issue": "orphan_tail",
+      "tail": "ollkommen zersplittert ist, kommt es unten zurück. ↵ Darum folgt darauf das Zeichen: die Wiederkehr. ↵ t"
+    },
+    {
+      "hex": 25,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "無妄"
+    },
+    {
+      "hex": 26,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "大畜"
+    },
+    {
+      "hex": 26,
+      "field": "ruler_note",
+      "issue": "orphan_tail",
+      "tail": "mmentar zur Entscheidung ↵ • ↵ heißt: Das Feste steigt empor und ehrt den Würdigen. ↵ = ↵ I ↵ B ↵ $3 ↵ De ↵ 2. ↵ to ↵ Di"
+    },
+    {
+      "hex": 27,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "頤"
+    },
+    {
+      "hex": 27,
+      "field": "misc_notes",
+      "issue": "cjk",
+      "tail": "Brunnen, das zur Nahrung nötige Wasser, ↵ und Nr. 50, Ding, der Tiegel, die zur Nahrung nötige Speise."
+    },
+    {
+      "hex": 27,
+      "field": "L4_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "charfen Augen ergibt sich aus ↵ der an Li erinnernden Form des Gesamtzeichens. Li ist auch das Auge. ↵ -"
+    },
+    {
+      "hex": 28,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "大過"
+    },
+    {
+      "hex": 28,
+      "field": "ruler_note",
+      "issue": "cjk",
+      "tail": "t im Übergewicht. Die Neun auf viertem Platz ist ein Balken, der sich ↵ nicht durchbiegt. ↵ Kernzeichen:"
+    },
+    {
+      "hex": 28,
+      "field": "L3_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " des ↵ Durchbiegens. Denn durch Eigensinn verbaut man sich die Möglichkeit der ↵ Unterstützung. ↵ T ↵ E ↵ De ↵ ."
+    },
+    {
+      "hex": 29,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "坎"
+    },
+    {
+      "hex": 30,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "離"
+    },
+    {
+      "hex": 30,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "Er steht oben im Kernzeichen ↵ Dui, der Mund, daher die Klage.) Darauf beruht sein Heil! ↵ f ↵ e ↵ F ↵ Er ↵ ཀ ↵ en"
+    },
+    {
+      "hex": 31,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "咸"
+    },
+    {
+      "hex": 32,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "恆"
+    },
+    {
+      "hex": 32,
+      "field": "L4_a_oraculo",
+      "issue": "orphan_tail",
+      "tail": "Im Feld ist kein Wild. ↵ T ↵ ??"
+    },
+    {
+      "hex": 32,
+      "field": "L4_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "latz aber keine ↵ Dauer, der vierte hat Dauer, aber keinen Charakter stark auf schwachem ↵ Platz. ↵ -- ↵ - ↵ -"
+    },
+    {
+      "hex": 33,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "遯"
+    },
+    {
+      "hex": 33,
+      "field": "commentary_decision",
+      "issue": "orphan_tail",
+      "tail": "esentlicher Bedeutung, daß man die richtige ↵ Zeit trifft, da der Rückzug in der Ordnung ist. ↵ i ↵ de ↵ d ↵ ?"
+    },
+    {
+      "hex": 33,
+      "field": "L4_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "ein unten. Das ist für ihn schlimm nicht für den Edlen -, ↵ denn er kann sich nicht selbst regieren. ↵ -"
+    },
+    {
+      "hex": 34,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "大壯"
+    },
+    {
+      "hex": 34,
+      "field": "ruler_note",
+      "issue": "orphan_tail",
+      "tail": "denn ↵ die vier Yangstriche begründen die Macht des Zeichens, und der vierte ↵ steht an ihrer Spitze. ↵ De"
+    },
+    {
+      "hex": 35,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "晉"
+    },
+    {
+      "hex": 35,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": ". Aber er geht einsam den Weg der Pflicht und ↵ wartet gelassen die Zeit ab, die sicher kommen wird. ↵ \""
+    },
+    {
+      "hex": 35,
+      "field": "L3_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "ie Mißverständnisse aufgeklärt. An der Spitze der Gleichgesinnten ist ↵ ihm der Fortschritt möglich. ↵ ("
+    },
+    {
+      "hex": 36,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "明夷"
+    },
+    {
+      "hex": 36,
+      "field": "commentary_decision",
+      "issue": "orphan_tail",
+      "tail": "den ↵ Schwierigkeiten heraus, und das gefährdete Licht kann doch nicht zum Aufhören gebracht werden. ↵ -"
+    },
+    {
+      "hex": 37,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "家人"
+    },
+    {
+      "hex": 37,
+      "field": "commentary_image",
+      "issue": "orphan_tail",
+      "tail": "m Brennstoff unfehlbar beruht · und in seinem Wandel die ↵ Dauer - wie der Wind unaufhörlich weht. ↵ - ↵ -"
+    },
+    {
+      "hex": 38,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "睽"
+    },
+    {
+      "hex": 39,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "蹇"
+    },
+    {
+      "hex": 39,
+      "field": "L6_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "m Platz ihm ↵ als dem Vornehmen nachfolgt, unter dessen Leitung die Hemmnisse überwunden werden. ↵ - ↵ \" ↵ -"
+    },
+    {
+      "hex": 40,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "解"
+    },
+    {
+      "hex": 40,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "ebenso wie der vorige los dadurch, daß er dem Zeichen Dschen entsprechend sich nach oben bewegt. ↵ G ↵ -"
+    },
+    {
+      "hex": 40,
+      "field": "L6_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "Anfangssechs, zu der das Verhältnis der Entsprechung besteht, von dem man sich befreien ↵ muß. ↵ I ↵ S ↵ g ↵ r"
+    },
+    {
+      "hex": 41,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "損"
+    },
+    {
+      "hex": 41,
+      "field": "L1_b_comentario",
+      "issue": "cjk",
+      "tail": "Obere rücksichtslos fordern, so ↵ würde dadurch die Gebefreudigkeit des Unteren herabgemindert werden."
+    },
+    {
+      "hex": 41,
+      "field": "L6_a_oraculo",
+      "issue": "orphan_tail",
+      "tail": "il. Fördernd ist es, ↵ etwas zu unternehmen. Man bekommt Diener, aber hat kein ↵ besonderes Heim mehr. ↵ -"
+    },
+    {
+      "hex": 41,
+      "field": "L6_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "g, seine Richtung ist Südwesten kennt, daher treue Gehilfen, aber nicht für Familiensondervorteil. ↵ -"
+    },
+    {
+      "hex": 42,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "益"
+    },
+    {
+      "hex": 42,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " Der Strich ist unten im Zeichen Dschen ↵ und bewegt sich deshalb nach oben. Daher das große Heil. ↵ - ↵ -"
+    },
+    {
+      "hex": 42,
+      "field": "L6_b_comentario",
+      "issue": "cjk",
+      "tail": ", weil seine Gesinnung nicht dauernd, d. h. nicht in ↵ Einklang mit den Forderungen der Zeit ist. ↵ 夬 ↵ ​-"
+    },
+    {
+      "hex": 43,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "夬"
+    },
+    {
+      "hex": 43,
+      "field": "ruler_note",
+      "issue": "orphan_tail",
+      "tail": "m an geehrtem Platz, darum ist die Neun auf fünftem Platz der beherrschende Herr des Zeichens. ↵ fel ↵ d"
+    },
+    {
+      "hex": 43,
+      "field": "commentary_decision",
+      "issue": "cyrillic",
+      "tail": " aber die ↵ Situation an sich Erfolg verheißt, ist der Gebrauch der Waffen nach außen ↵ hin nicht nötig."
+    },
+    {
+      "hex": 43,
+      "field": "commentary_image",
+      "issue": "orphan_tail",
+      "tail": "führt sie leicht zu Trotz, darum muß sie gemildert werden durch die freundliche Art von Dui. ↵ S ↵ T ↵ t ↵ ¡"
+    },
+    {
+      "hex": 44,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "姤"
+    },
+    {
+      "hex": 44,
+      "field": "commentary_decision",
+      "issue": "orphan_tail",
+      "tail": "n kann. Es ist also eine wichtige Zeit, die Zeit des Zusammentreffens des Lichten mit dem Dunklen. ↵ -"
+    },
+    {
+      "hex": 44,
+      "field": "L3_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "noch nicht befriedigt, daher das Unbefriedigende der Lage, obwohl große Fehler vermieden ↵ werden. ↵ - ↵ ―"
+    },
+    {
+      "hex": 45,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "萃"
+    },
+    {
+      "hex": 45,
+      "field": "commentary_decision",
+      "issue": "orphan_tail",
+      "tail": " den Menschen die Ahnen sind. Wenn man diese ↵ Kräfte kennt, so werden einem alle Verhältnisse klar. ↵ S"
+    },
+    {
+      "hex": 45,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " Lachen kommt ↵ wieder (Dui = Heiterkeit). Aber wichtig ist es, die Richtung nach oben ↵ festzuhalten. ↵ ―"
+    },
+    {
+      "hex": 45,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " gehörig, daher erhaben. Dieses ↵ Wesen muß sich in Dauer gestalten, darum schwindet die Reue. ↵ D ↵ e ↵ h ↵ i"
+    },
+    {
+      "hex": 46,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "升"
+    },
+    {
+      "hex": 46,
+      "field": "L1_a_oraculo",
+      "issue": "orphan_tail",
+      "tail": "Empordringen, das Zutrauen findet, bringt großes Heil. ↵ j ↵ P ↵ Ex ↵ מ"
+    },
+    {
+      "hex": 47,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "困"
+    },
+    {
+      "hex": 47,
+      "field": "L3_b_comentario",
+      "issue": "cjk",
+      "tail": "irekt von dem bevorstehenden Tode; darauf bezieht ↵ sich das \"unglückverheißend\", das im Text b steht."
+    },
+    {
+      "hex": 48,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "井"
+    },
+    {
+      "hex": 49,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "革"
+    },
+    {
+      "hex": 49,
+      "field": "L3_b_comentario",
+      "issue": "bullet_noise",
+      "tail": "chlossenheit wirken. Alle drei Striche einheitlich zusammengefaßt: dann ↵ erst ist der Erfolg möglich."
+    },
+    {
+      "hex": 50,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "鼎"
+    },
+    {
+      "hex": 51,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "震"
+    },
+    {
+      "hex": 51,
+      "field": "commentary_decision",
+      "issue": "orphan_tail",
+      "tail": "Frühling und zugleich das Wiedererwachen der Lebenskraft, die von unten ↵ her sich wieder regt. ↵ ~1 ↵ π ↵ T"
+    },
+    {
+      "hex": 51,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " Die dürfen nicht verlorengehen. Das ist möglich, wenn man ↵ sich zentral und korrekt verhält. ↵ - ↵ \" ↵ ― ↵ S"
+    },
+    {
+      "hex": 51,
+      "field": "L6_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " ergibt sich aus dem verschiedenen Platz. Darum muß man ganz ↵ unabhängig in seinen Handlungen sein. ↵ -"
+    },
+    {
+      "hex": 52,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "艮"
+    },
+    {
+      "hex": 52,
+      "field": "commentary_decision",
+      "issue": "cjk",
+      "tail": "hen und das untere einander gleichsam den Rücken zu. So sieht man im ↵ Hof die andern Menschen nicht¹."
+    },
+    {
+      "hex": 52,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " zentrale Haltung der Linie und ihre Zugehörigkeit zu dem oberen Halbzeichen \"das ↵ Stillehalten\". ↵ S ↵ ="
+    },
+    {
+      "hex": 53,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "漸"
+    },
+    {
+      "hex": 53,
+      "field": "commentary_image",
+      "issue": "orphan_tail",
+      "tail": "dem ↵ tä ↵ Ein ↵ Artere ↵ T ↵ Zet ↵ ste ↵ Dr. ↵ ÷ ↵ 21- ↵ -20 ↵ 7d ↵ d"
+    },
+    {
+      "hex": 53,
+      "field": "L5_b_comentario",
+      "issue": "cjk",
+      "tail": "t auf ↵ der Naturbeziehung des Wesens, darum kann sie verzögert, aber nicht dauernd verhindert werden."
+    },
+    {
+      "hex": 54,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "歸妹"
+    },
+    {
+      "hex": 54,
+      "field": "L6_b_comentario",
+      "issue": "cjk",
+      "tail": "d eines leeren ↵ Korbs, das untere, Dui, hat als Tier das Schaf sind daher leer und vergeblich. ↵ 豐 ​5 ↵ -"
+    },
+    {
+      "hex": 55,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "豐"
+    },
+    {
+      "hex": 56,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "旅"
+    },
+    {
+      "hex": 56,
+      "field": "L4_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "Kernzeichen Dui bedeutet ebenfalls Metall und Schädigung). Darum ist ↵ er im Herzen noch nicht froh. ↵ -"
+    },
+    {
+      "hex": 57,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "巽"
+    },
+    {
+      "hex": 58,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "兌"
+    },
+    {
+      "hex": 58,
+      "field": "commentary_image",
+      "issue": "orphan_tail",
+      "tail": "holung des Mundes bedeutet die ↵ gemeinsame Besprechung, die Wiederholung des Sees die Einübung. ↵ X ↵ t ↵ A"
+    },
+    {
+      "hex": 59,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "渙"
+    },
+    {
+      "hex": 60,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "節"
+    },
+    {
+      "hex": 61,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "中孚"
+    },
+    {
+      "hex": 61,
+      "field": "L3_b_comentario",
+      "issue": "orphan_tail",
+      "tail": " Wechsel von Schluchzen und Lachen ist durch das Zeichen Dui und das ↵ Kernzeichen Dschen bedingt. ↵ ― ↵ -"
+    },
+    {
+      "hex": 61,
+      "field": "L5_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "die ↵ korrekte, zentrale und geehrte Stellung die Wirkung des Strichs als Herr ↵ des Zeichens gezeigt. ↵ ="
+    },
+    {
+      "hex": 62,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "小過"
+    },
+    {
+      "hex": 62,
+      "field": "L1_b_comentario",
+      "issue": "orphan_tail",
+      "tail": "Vogel Zeit ist, sich stillezuhalten, und er fliegt auf, so gerät er sicher dem ↵ Jäger in die Hände. ↵ -"
+    },
+    {
+      "hex": 63,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "既濟"
+    },
+    {
+      "hex": 64,
+      "field": "chinese",
+      "issue": "cjk",
+      "tail": "未濟"
+    }
+  ]
+}

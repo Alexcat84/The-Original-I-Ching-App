@@ -1,0 +1,45 @@
+Holz
+Feuer
+Ooooooo
+Ꮕ
+Erde
+одо
+Metall
+O
+Wasser
+Das Wasser im Norden ist entstanden aus der Eins des Himmels, der sich
+die Sechs der Erde ergänzend zugesellt. Das Feuer im Süden ist entstanden
+aus der Zwei der Erde, der sich die Sieben des Himmels ergänzend zuge-
+sellt. Das Holz im Osten ist entstanden aus der Drei des Himmels, der sich
+die Acht der Erde ergänzend zugesellt. Das Metall im Westen ist entstanden
+aus der Vier der Erde, der sich die Neun des Himmels ergänzend zugesellt.
+Die Erde in der Mitte (Erdboden, Tu, stofflich, im Unterschied von Di, Erde,
+als Weltkörper) ist entstanden aus der Fünf des Himmels, der sich die Zehn
+der Erde ergänzend zugesellt.
+Die zweite Anordnung, wobei die Zahlen wieder auseinandertreten und
+Süd
+Holz
+Feuer
+Sommer
+Erde
+000000000
+4
+9
+2
+Hotz
+Herbst
+Ost
+Früh
+&
+ling 8
+|| 3
+7 || West
+Metall
+6
+1
+Wasser Winter
+Erde
+Winter Metall
+Nord
+3
+235

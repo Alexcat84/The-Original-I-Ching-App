@@ -1,11 +1,9 @@
 /**
  * QA code: TS-WEB-OVR-005 overlay-title-pango-exhaustive · v1.1.0
- * Area: apps/web/src/lib/overlay-title-pango, sumi-hexagram-art (overlay variant)
+ * Area: apps/web/src/lib/overlay-title-pango
  * Family: WEB-OVR
- *
- * Full 64×63 mutation-pair grid for Wilhelm, Legge, and Zhou Yi (12096 renders, ~6 min).
- * Config: vitest.exhaustive.config.ts — explicit CI step, not default npm test.
  */
+
 import { describe, expect, it } from "vitest";
 import sharp from "sharp";
 import { getAllHexagramRecords } from "@iching-oracle/iching-data";

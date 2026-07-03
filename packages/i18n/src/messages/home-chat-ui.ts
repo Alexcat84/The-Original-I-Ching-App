@@ -42,7 +42,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "Cerrar",
     iChing: "I Ching",
     bones: "Huesos",
-    iChingTagline: "Tres monedas · Zhu Xi · Wilhelm/Baynes",
+    iChingTagline: "Tres monedas · Zhu Xi · Wilhelm (1924)",
     bonesTagline: "Huesos de Oráculo · Grietas 兆 · estilo Shang",
     emptyInviteMorning:
       "Buen momento para escuchar al oráculo. ¿Qué inquietud trae este nuevo día? Escribe tu consulta con intención.",
@@ -69,7 +69,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "Close",
     iChing: "I Ching",
     bones: "Bones",
-    iChingTagline: "Three coins · Zhu Xi · Wilhelm/Baynes",
+    iChingTagline: "Three coins · Zhu Xi · Wilhelm (1924)",
     bonesTagline: "Oracle Bones · Cracks 兆 · Shang style",
     emptyInviteMorning:
       "Good time to consult the oracle. What concern comes with this new day?",
@@ -96,7 +96,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "Fechar",
     iChing: "I Ching",
     bones: "Ossos",
-    iChingTagline: "Três moedas · Zhu Xi · Wilhelm/Baynes",
+    iChingTagline: "Três moedas · Zhu Xi · Wilhelm (1924)",
     bonesTagline: "Ossos de Oráculo · Fissuras 兆 · estilo Shang",
     emptyInviteMorning:
       "Bom momento para ouvir o oráculo. Que inquietação traz este novo dia?",
@@ -124,7 +124,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "Fermer",
     iChing: "I Ching",
     bones: "Os",
-    iChingTagline: "Trois pièces · Zhu Xi · Wilhelm/Baynes",
+    iChingTagline: "Trois pièces · Zhu Xi · Wilhelm (1924)",
     bonesTagline: "Os Oracle · Fissures 兆 · style Shang",
     emptyInviteMorning:
       "Bon moment pour écouter l'oracle. Quelle préoccupation t'accompagne aujourd'hui ?",
@@ -151,7 +151,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "Schließen",
     iChing: "I Ching",
     bones: "Knochen",
-    iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm/Baynes",
+    iChingTagline: "Drei Münzen · Zhu Xi · Wilhelm (1924)",
     bonesTagline: "Orakelknochen · Risse 兆 · Shang-Stil",
     emptyInviteMorning:
       "Guter Zeitpunkt für das Orakel. Welche Frage bringt dieser Tag mit sich?",
@@ -178,7 +178,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "Chiudi",
     iChing: "I Ching",
     bones: "Ossa",
-    iChingTagline: "Tre monete · Zhu Xi · Wilhelm/Baynes",
+    iChingTagline: "Tre monete · Zhu Xi · Wilhelm (1924)",
     bonesTagline: "Ossa dell'Oracolo · Crepe 兆 · stile Shang",
     emptyInviteMorning:
       "Momento ideale per l'oracolo. Quale inquietudine porta questo nuovo giorno?",
@@ -205,7 +205,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "閉じる",
     iChing: "I Ching",
     bones: "骨占",
-    iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム/ベインズ",
+    iChingTagline: "三枚の硬貨 · 朱熹 · ヴィルヘルム（1924）",
     bonesTagline: "甲骨占 · 亀裂 兆 · 殷様式",
     emptyInviteMorning:
       "いまは託宣に向いた時間。今日の不安を問いにしてみましょう。",
@@ -231,7 +231,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "关闭",
     iChing: "I Ching",
     bones: "甲骨",
-    iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm/Baynes",
+    iChingTagline: "三枚铜钱 · 朱熹 · Wilhelm (1924)",
     bonesTagline: "甲骨 · 裂纹 兆 · 商式",
     emptyInviteMorning: "此刻适合聆听神谕。今天你带着什么问题而来？",
     emptyInviteAfternoon: "变化仍在流动。今天你需要看清什么？",
@@ -255,7 +255,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "닫기",
     iChing: "I Ching",
     bones: "골복",
-    iChingTagline: "세 동전 · 주희 · Wilhelm/Baynes",
+    iChingTagline: "세 동전 · 주희 · Wilhelm (1924)",
     bonesTagline: "골복 · 균열 兆 · 상나라 방식",
     emptyInviteMorning:
       "지금은 오라클에 귀 기울이기 좋은 시간입니다. 어떤 고민이 있나요?",
@@ -281,7 +281,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "إغلاق",
     iChing: "I Ching",
     bones: "عظام الكهانة",
-    iChingTagline: "ثلاث عملات · تشو شي · فيلهلم/بينز",
+    iChingTagline: "ثلاث عملات · تشو شي · فيلهلم (1924)",
     bonesTagline: "عظام الكهانة · الشقوق 兆 · أسلوب شانغ",
     emptyInviteMorning:
       "وقت مناسب للتشاور مع الأوراكل. ما القلق الذي يحمله هذا اليوم الجديد؟ اكتب استشارتك بنية صادقة.",
@@ -307,7 +307,7 @@ const HOME_CHAT_UI: Record<AppLocale, HomeChatUiMessages> = {
     drawerClose: "बंद करें",
     iChing: "I Ching",
     bones: "अस्थि ओरेकल",
-    iChingTagline: "तीन सिक्के · झू शी · विल्हेल्म/बेयन्स",
+    iChingTagline: "तीन सिक्के · झू शी · विल्हेल्म (1924)",
     bonesTagline: "अस्थि ओरेकल · दरारें 兆 · शांग शैली",
     emptyInviteMorning:
       "ओरेकल से पूछने का अच्छा समय है। आज की आपकी मुख्य चिंता क्या है?",

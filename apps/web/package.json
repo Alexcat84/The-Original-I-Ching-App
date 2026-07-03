@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "predev": "npm run build --prefix ../../backend/claude",
+    "predev": "npm run build --prefix ../../packages/iching-data && npm run build --prefix ../../backend/claude",
     "dev": "next dev",
-    "prebuild": "npm run build --prefix ../../backend/claude",
+    "prebuild": "npm run build --prefix ../../packages/iching-data && npm run build --prefix ../../backend/claude",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

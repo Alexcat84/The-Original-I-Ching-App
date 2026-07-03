@@ -1,0 +1,20 @@
+{
+  "updatedAt": "2026-06-30T21:13:38.485Z",
+  "hex": 33,
+  "jpgPages": "452-455",
+  "fieldsClosed": 37,
+  "fieldsTotal": 37,
+  "pilotPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\wilhelm-de-comments-hex-33-pilot-au.tsv",
+  "disputesPath": "C:\\Users\\AlexDesk\\Documents\\iching-app\\tools\\manual-gold\\wilhelm-de-comments-au\\by-hex\\wilhelm-de-comments-hex-33-disputes.tsv",
+  "disputeResolutions": {
+    "ruler_note": "coincide_ninguno",
+    "commentary_decision": "coincide_ninguno",
+    "image_oraculo": "coincide_ninguno",
+    "commentary_image": "coincide_ninguno",
+    "L1_b_comentario": "coincide_pass04",
+    "L3_b_comentario": "coincide_pass02",
+    "L4_b_comentario": "coincide_ninguno",
+    "L5_b_comentario": "coincide_ninguno",
+    "L6_b_comentario": "coincide_ninguno"
+  }
+}

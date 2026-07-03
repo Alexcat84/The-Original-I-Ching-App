@@ -1,0 +1,68 @@
+Untere Hälfte
+--
+XX
+IA AN
+ZUM AUFFINDEN DER ZEICHEN
+DES I GING
+1
+12
+6
+25 24
+33
+4.4
+11
+13
+2
+7
+15
+SCHEMA
+36
+34
+16
+40
+62
+46 32
+51 3
+Obere Hälfte
+55
+5 26
+8 23
+29
+39
+48
+E
+63
+10 19 54 60
+27
+4
+52
+18
+22
+41
+9
+20
+42
+59
+53
+57
+37
+14
+35
+21
+64
+56
+50
+30
+61 38
+HI
+43
+4.5
+17
+47
+31
+28
+49
+58
+Es genügt, das Zeichen, das man aufsuchen will, in seine
+beiden Bestandteile zu trennen. Der Treffpunkt der beiden
+Spalten gibt die Nummer des Zeichens.

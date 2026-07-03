@@ -1,0 +1,4 @@
+hex	field	level	de_lines	en_lines	errors	notes	de_first_line
+54	intro	de_book_extra	5	1	0	1 línea(s) editorial(es) en intro — válido en libro DE 1924, ausente en Baynes.	54. Gui me / DAS HEIRATENDE MÄDCHEN
+64	intro	contaminated	4	1	1		64. We Dsi / VOR DER VOLLENDUNG
+64	L6_comentario	contaminated	2	1	1		Vor der Vollendung an der Grenze der neuen Zeit ist man im vollen gegenseitigen Vertrauen mit den Seinen zusammen und verbringt die Zeit des Wartens beim Wein. Da die neue Zeit schon unmittelbar vor der Tür steht, ist das kein Makel. Nur muß man dabei auf das rechte Maß be dacht sein. Wenn man sich den Kopf im Übermut begießt, so verliert man die günstige Lage durch Unmäßigkeit.

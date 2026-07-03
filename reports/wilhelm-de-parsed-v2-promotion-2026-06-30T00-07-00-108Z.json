@@ -1,0 +1,282 @@
+{
+  "generatedAt": "2026-06-30T00:07:00.107Z",
+  "g2": {
+    "pass": true,
+    "checked": 29,
+    "matched": 29,
+    "errors": []
+  },
+  "fillProgress": {
+    "totalFilled": 1004,
+    "totalPaste": 1664,
+    "pct": 60.3,
+    "byHex": {
+      "1": {
+        "filled": 18,
+        "total": 26
+      },
+      "2": {
+        "filled": 18,
+        "total": 26
+      },
+      "3": {
+        "filled": 15,
+        "total": 26
+      },
+      "4": {
+        "filled": 16,
+        "total": 26
+      },
+      "5": {
+        "filled": 15,
+        "total": 26
+      },
+      "6": {
+        "filled": 15,
+        "total": 26
+      },
+      "7": {
+        "filled": 15,
+        "total": 26
+      },
+      "8": {
+        "filled": 16,
+        "total": 26
+      },
+      "9": {
+        "filled": 15,
+        "total": 26
+      },
+      "10": {
+        "filled": 15,
+        "total": 26
+      },
+      "11": {
+        "filled": 16,
+        "total": 26
+      },
+      "12": {
+        "filled": 16,
+        "total": 26
+      },
+      "13": {
+        "filled": 15,
+        "total": 26
+      },
+      "14": {
+        "filled": 15,
+        "total": 26
+      },
+      "15": {
+        "filled": 16,
+        "total": 26
+      },
+      "16": {
+        "filled": 16,
+        "total": 26
+      },
+      "17": {
+        "filled": 16,
+        "total": 26
+      },
+      "18": {
+        "filled": 16,
+        "total": 26
+      },
+      "19": {
+        "filled": 15,
+        "total": 26
+      },
+      "20": {
+        "filled": 16,
+        "total": 26
+      },
+      "21": {
+        "filled": 16,
+        "total": 26
+      },
+      "22": {
+        "filled": 16,
+        "total": 26
+      },
+      "23": {
+        "filled": 16,
+        "total": 26
+      },
+      "24": {
+        "filled": 16,
+        "total": 26
+      },
+      "25": {
+        "filled": 16,
+        "total": 26
+      },
+      "26": {
+        "filled": 15,
+        "total": 26
+      },
+      "27": {
+        "filled": 16,
+        "total": 26
+      },
+      "28": {
+        "filled": 16,
+        "total": 26
+      },
+      "29": {
+        "filled": 15,
+        "total": 26
+      },
+      "30": {
+        "filled": 15,
+        "total": 26
+      },
+      "31": {
+        "filled": 16,
+        "total": 26
+      },
+      "32": {
+        "filled": 16,
+        "total": 26
+      },
+      "33": {
+        "filled": 16,
+        "total": 26
+      },
+      "34": {
+        "filled": 15,
+        "total": 26
+      },
+      "35": {
+        "filled": 16,
+        "total": 26
+      },
+      "36": {
+        "filled": 16,
+        "total": 26
+      },
+      "37": {
+        "filled": 16,
+        "total": 26
+      },
+      "38": {
+        "filled": 15,
+        "total": 26
+      },
+      "39": {
+        "filled": 15,
+        "total": 26
+      },
+      "40": {
+        "filled": 16,
+        "total": 26
+      },
+      "41": {
+        "filled": 16,
+        "total": 26
+      },
+      "42": {
+        "filled": 16,
+        "total": 26
+      },
+      "43": {
+        "filled": 16,
+        "total": 26
+      },
+      "44": {
+        "filled": 16,
+        "total": 26
+      },
+      "45": {
+        "filled": 16,
+        "total": 26
+      },
+      "46": {
+        "filled": 15,
+        "total": 26
+      },
+      "47": {
+        "filled": 15,
+        "total": 26
+      },
+      "48": {
+        "filled": 16,
+        "total": 26
+      },
+      "49": {
+        "filled": 16,
+        "total": 26
+      },
+      "50": {
+        "filled": 15,
+        "total": 26
+      },
+      "51": {
+        "filled": 15,
+        "total": 26
+      },
+      "52": {
+        "filled": 16,
+        "total": 26
+      },
+      "53": {
+        "filled": 16,
+        "total": 26
+      },
+      "54": {
+        "filled": 16,
+        "total": 26
+      },
+      "55": {
+        "filled": 16,
+        "total": 26
+      },
+      "56": {
+        "filled": 15,
+        "total": 26
+      },
+      "57": {
+        "filled": 15,
+        "total": 26
+      },
+      "58": {
+        "filled": 16,
+        "total": 26
+      },
+      "59": {
+        "filled": 15,
+        "total": 26
+      },
+      "60": {
+        "filled": 16,
+        "total": 26
+      },
+      "61": {
+        "filled": 15,
+        "total": 26
+      },
+      "62": {
+        "filled": 16,
+        "total": 26
+      },
+      "63": {
+        "filled": 15,
+        "total": 26
+      },
+      "64": {
+        "filled": 16,
+        "total": 26
+      }
+    }
+  },
+  "enDeSummary": {
+    "total": 2112,
+    "blocks": 27,
+    "fieldsPerHex": 33,
+    "pair": 1451,
+    "en_only": 475,
+    "de_only": 0,
+    "both_empty": 186
+  },
+  "note": "parsed-v2 not promoted to runtime; merged.json unchanged until AU closure"
+}

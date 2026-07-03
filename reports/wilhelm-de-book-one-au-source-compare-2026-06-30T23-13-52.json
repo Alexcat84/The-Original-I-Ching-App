@@ -1,0 +1,375 @@
+{
+  "updatedAt": "2026-06-30T23:13:52.901Z",
+  "results": [
+    {
+      "hex": 1,
+      "pageRange": "23-27",
+      "fieldsTotal": 33,
+      "match": 19,
+      "diff": 14,
+      "diffs": [
+        {
+          "field": "chinese_roman",
+          "zenoLen": 4,
+          "pass03Len": 4,
+          "zenoSnippet": "Kiën",
+          "pass03Snippet": "KIAN"
+        },
+        {
+          "field": "trigrama_arriba",
+          "zenoLen": 40,
+          "pass03Len": 40,
+          "zenoSnippet": "oben Kiën, das Schöpferische, der Himmel",
+          "pass03Snippet": "oben Kiän, das Schöpferische, der Himmel"
+        },
+        {
+          "field": "trigrama_abajo",
+          "zenoLen": 41,
+          "pass03Len": 41,
+          "zenoSnippet": "unten Kiën, das Schöpferische, der Himmel",
+          "pass03Snippet": "unten Kiän, das Schöpferische, der Himmel"
+        },
+        {
+          "field": "intro",
+          "zenoLen": 1155,
+          "pass03Len": 1129,
+          "zenoSnippet": "1. Kiën / DAS SCHÖPFERISCHE\noben Kiën, das Schöpferische, der Himmel\nunten Kiën,",
+          "pass03Snippet": "1. KIAN / DAS SCHÖPFERISCHE\noben Kiän, das Schöpferische, der Himmel\nunten Kiän,"
+        },
+        {
+          "field": "judgment_comentario",
+          "zenoLen": 4038,
+          "pass03Len": 4363,
+          "zenoSnippet": "Dem ursprünglichen Sinne nach gehören die Eigenschaften paarweise zusammen. Für ",
+          "pass03Snippet": "Dem ursprünglichen Sinne nach gehören die Eigenschaften paarweise zu-\nsammen. Fü"
+        },
+        {
+          "field": "image_comentario",
+          "zenoLen": 890,
+          "pass03Len": 888,
+          "zenoSnippet": "Die Verdoppelung des Zeichens Kiën, dessen Bild der Himmel ist, deutet, da es nu",
+          "pass03Snippet": "Die Verdoppelung des Zeichens Kiän, dessen Bild der Himmel ist, deutet, da\nes nu"
+        },
+        {
+          "field": "L1_comentario",
+          "zenoLen": 1089,
+          "pass03Len": 2147,
+          "zenoSnippet": "Der Drache hat in China eine ganz andere Bedeutung als in der westlichen Auffass",
+          "pass03Snippet": "Der Drache hat in China eine ganz andere Bedeutung als in der westlichen\n¹ Das S"
+        },
+        {
+          "field": "L2_comentario",
+          "zenoLen": 553,
+          "pass03Len": 554,
+          "zenoSnippet": "Hier beginnen die Wirkungen der lichten Kraft sich zu zeigen. Auf menschliche Ve",
+          "pass03Snippet": "Hier beginnen die Wirkungen der lichten Kraft sich zu zeigen. Auf mensch-\nliche "
+        },
+        {
+          "field": "L3_comentario",
+          "zenoLen": 767,
+          "pass03Len": 1053,
+          "zenoSnippet": "Ein Wirkungskreis eröffnet sich für den bedeutenden Mann. Sein Ruhm beginnt sich",
+          "pass03Snippet": "Ein Wirkungskreis eröffnet sich für den bedeutenden Mann. Sein Ruhm\nbeginnt sich"
+        },
+        {
+          "field": "L4_comentario",
+          "zenoLen": 635,
+          "pass03Len": 639,
+          "zenoSnippet": "Hier ist die Stelle des Übergangs erreicht, wo die Freiheit sich betätigen kann.",
+          "pass03Snippet": "Hier ist die Stelle des Übergangs erreicht, wo die Freiheit sich betätigen\nkann."
+        },
+        {
+          "field": "L5_etiqueta",
+          "zenoLen": 32,
+          "pass03Len": 34,
+          "zenoSnippet": "Neun auf fünftem Platz bedeutet:",
+          "pass03Snippet": "O Neun auf fünftem Platz bedeutet:"
+        },
+        {
+          "field": "L5_comentario",
+          "zenoLen": 702,
+          "pass03Len": 700,
+          "zenoSnippet": "Hier ist der große Mann in der Sphäre der Himmlischen angelangt. Sein Einfluß er",
+          "pass03Snippet": "Hier ist der große Mann in der Sphäre der Himmlischen angelangt. Sein\nEinfluß er"
+        },
+        {
+          "field": "L6_comentario",
+          "zenoLen": 279,
+          "pass03Len": 279,
+          "zenoSnippet": "Wenn man so hoch emporsteigen will, daß man die Fühlung mit den übrigen Menschen",
+          "pass03Snippet": "Wenn man so hoch emporsteigen will, daß man die Fühlung mit den übrigen\nMenschen"
+        },
+        {
+          "field": "yong_comentario",
+          "zenoLen": 447,
+          "pass03Len": 453,
+          "zenoSnippet": "Wenn alle Linien Neunen sind, so kommt das ganze Zeichen in Bewegung und verwand",
+          "pass03Snippet": "Wenn alle Linien Neunen sind, so kommt das ganze Zeichen in Bewegung\nund verwand"
+        }
+      ]
+    },
+    {
+      "hex": 2,
+      "pageRange": "28-31",
+      "fieldsTotal": 33,
+      "match": 16,
+      "diff": 17,
+      "diffs": [
+        {
+          "field": "chinese_roman",
+          "zenoLen": 3,
+          "pass03Len": 3,
+          "zenoSnippet": "Kun",
+          "pass03Snippet": "KUN"
+        },
+        {
+          "field": "intro",
+          "zenoLen": 1565,
+          "pass03Len": 1580,
+          "zenoSnippet": "2. Kun / DAS EMPFANGENDE\noben Kun, das Empfangende, die Erde\nunten Kun, das Empf",
+          "pass03Snippet": "​2. KUN / DAS EMPFANGENDE\noben Kun, das Empfangende, die Erde\nunten Kun, das Emp"
+        },
+        {
+          "field": "judgment_oraculo",
+          "zenoLen": 334,
+          "pass03Len": 334,
+          "zenoSnippet": "Das Empfangende wirkt erhabenes Gelingen,\nfördernd durch die Beharrlichkeit eine",
+          "pass03Snippet": "Das Empfangende wirkt erhabenes Gelingen,\nFördernd durch die Beharrlichkeit eine"
+        },
+        {
+          "field": "judgment_comentario",
+          "zenoLen": 2821,
+          "pass03Len": 3266,
+          "zenoSnippet": "Die vier Grundrichtungen des Schöpferischen: »erhabenes Gelingen, fördernd durch",
+          "pass03Snippet": "Die vier Grundrichtungen des Schöpferischen: \"erhabenes Gelingen, fördernd\ndurch"
+        },
+        {
+          "field": "image_comentario",
+          "zenoLen": 464,
+          "pass03Len": 466,
+          "zenoSnippet": "Ebenso wie es nur einen Himmel gibt, gibt es auch nur eine Erde. Während aber be",
+          "pass03Snippet": "Ebenso wie es nur einen Himmel gibt, gibt es auch nur eine Erde. Während\naber be"
+        },
+        {
+          "field": "L1_comentario",
+          "zenoLen": 594,
+          "pass03Len": 593,
+          "zenoSnippet": "Wie die lichte Kraft das Leben darstellt, so die schattige Kraft den Tod. Im Her",
+          "pass03Snippet": "Wie die lichte Kraft das Leben darstellt, so die schattige Kraft den Tod.\nIm Her"
+        },
+        {
+          "field": "L2_etiqueta",
+          "zenoLen": 33,
+          "pass03Len": 35,
+          "zenoSnippet": "Sechs auf zweitem Platz bedeutet:",
+          "pass03Snippet": "O Sechs auf zweitem Platz bedeutet:"
+        },
+        {
+          "field": "L2_comentario",
+          "zenoLen": 1317,
+          "pass03Len": 1320,
+          "zenoSnippet": "Der Himmel hat als Symbol den Kreis, die Erde das rechtwinklige Quadrat. Somit i",
+          "pass03Snippet": "Der Himmel hat als Symbol den Kreis, die Erde das rechtwinklige Quadrat.\nSomit i"
+        },
+        {
+          "field": "L3_oraculo",
+          "zenoLen": 127,
+          "pass03Len": 127,
+          "zenoSnippet": "Verborgene Linien; man vermag beharrlich zu bleiben.\nFolgst du etwa eines Königs",
+          "pass03Snippet": "Verborgene Linien; man vermag beharrlich zu bleiben.\nFolgst du etwa eines Königs"
+        },
+        {
+          "field": "L3_comentario",
+          "zenoLen": 539,
+          "pass03Len": 544,
+          "zenoSnippet": "Wenn man frei von Eitelkeit ist, so vermag man seine Vorzüge so zu verdecken, da",
+          "pass03Snippet": "Wenn man frei von Eitelkeit ist, so vermag man seine Vorzüge so zu ver-\ndecken, "
+        },
+        {
+          "field": "L4_comentario",
+          "zenoLen": 476,
+          "pass03Len": 480,
+          "zenoSnippet": "Das Schattige öffnet sich, wenn es sich bewegt, und schließt sich, wenn es ruht.",
+          "pass03Snippet": "Das Schattige öffnet sich, wenn es sich bewegt, und schließt sich, wenn es\nruht."
+        },
+        {
+          "field": "L5_oraculo",
+          "zenoLen": 41,
+          "pass03Len": 41,
+          "zenoSnippet": "Gelbes Untergewand bringt erhabenes Heil.",
+          "pass03Snippet": "Gelbes Untergewand bringt erhabenes Heil!"
+        },
+        {
+          "field": "L5_comentario",
+          "zenoLen": 423,
+          "pass03Len": 437,
+          "zenoSnippet": "Gelb ist die Farbe der Erde und der Mitte, das Symbol des Zuverlässigen und Echt",
+          "pass03Snippet": "Gelb ist die Farbe der Erde und der Mitte, das Symbol des Zuverlässigen\nund Echt"
+        },
+        {
+          "field": "L6_comentario",
+          "zenoLen": 637,
+          "pass03Len": 637,
+          "zenoSnippet": "Auf dem obersten Platz sollte das Schattige dem Lichten weichen. Will es sich au",
+          "pass03Snippet": "Auf dem obersten Platz sollte das Schattige dem Lichten weichen. Will es\nsich au"
+        },
+        {
+          "field": "yong_etiqueta",
+          "zenoLen": 45,
+          "pass03Len": 74,
+          "zenoSnippet": "Wenn lauter Sechsen erscheinen, bedeutet das:",
+          "pass03Snippet": "Wenn lauter Sechsen erscheinen, verwandelt sich das Zeichen des Empfangen-"
+        },
+        {
+          "field": "yong_oraculo",
+          "zenoLen": 37,
+          "pass03Len": 162,
+          "zenoSnippet": "Fördernd ist dauernde Beharrlichkeit.",
+          "pass03Snippet": "den in das Zeichen des Schöpferischen. Es gewinnt so die Kraft der Dauer\nim Fest"
+        },
+        {
+          "field": "yong_comentario",
+          "zenoLen": 235,
+          "pass03Len": 0,
+          "zenoSnippet": "Wenn lauter Sechsen erscheinen, verwandelt sich das Zeichen des Empfangenden in ",
+          "pass03Snippet": ""
+        }
+      ]
+    },
+    {
+      "hex": 8,
+      "pageRange": "48-50",
+      "fieldsTotal": 33,
+      "match": 15,
+      "diff": 18,
+      "diffs": [
+        {
+          "field": "chinese_roman",
+          "zenoLen": 2,
+          "pass03Len": 2,
+          "zenoSnippet": "Bi",
+          "pass03Snippet": "BI"
+        },
+        {
+          "field": "intro",
+          "zenoLen": 702,
+          "pass03Len": 644,
+          "zenoSnippet": "8. Bi / DAS ZUSAMMENHALTEN\noben Kan, das Abgründige, das Wasser\nunten Kun, das E",
+          "pass03Snippet": "8. BI / DAS ZUSAMMENHALTEN\noben Kan, das Abgründige, das Wasser\nunten Kun, das E"
+        },
+        {
+          "field": "judgment_oraculo",
+          "zenoLen": 207,
+          "pass03Len": 207,
+          "zenoSnippet": "Das Zusammenhalten bringt Heil.\nErgründe das Orakel nochmals,\nob du Erhabenheit,",
+          "pass03Snippet": "Das Zusammenhalten bringt Heil.\nErgründe das Orakel nochmals,\nOb du Erhabenheit,"
+        },
+        {
+          "field": "judgment_comentario",
+          "zenoLen": 1394,
+          "pass03Len": 1395,
+          "zenoSnippet": "Es handelt sich darum, daß man sich mit andern zusammentut, um durch den Zusamme",
+          "pass03Snippet": "Es handelt sich darum, daß man sich mit andern zusammentut, um durch den\nZusamme"
+        },
+        {
+          "field": "image_oraculo",
+          "zenoLen": 184,
+          "pass03Len": 184,
+          "zenoSnippet": "Auf der Erde ist Wasser: das Bild des Zusammenhaltens.\nSo haben die Könige der V",
+          "pass03Snippet": "Auf der Erde ist Wasser: Das Bild des Zusammenhaltens.\nSo haben die Könige der V"
+        },
+        {
+          "field": "image_comentario",
+          "zenoLen": 701,
+          "pass03Len": 705,
+          "zenoSnippet": "Das Wasser auf der Erde füllt alle Lücken aus und haftet fest an ihr. Die Gesell",
+          "pass03Snippet": "Das Wasser auf der Erde füllt alle Lücken aus und haftet fest an ihr. Die\nGesell"
+        },
+        {
+          "field": "L1_oraculo",
+          "zenoLen": 129,
+          "pass03Len": 129,
+          "zenoSnippet": "Halte wahr und treu zu ihm: das ist kein Makel.\nWahrheit wie eine volle Tonschüs",
+          "pass03Snippet": "Halte wahr und treu zu ihm: das ist kein Makel.\nWahrheit wie eine volle Tonschüs"
+        },
+        {
+          "field": "L1_comentario",
+          "zenoLen": 392,
+          "pass03Len": 394,
+          "zenoSnippet": "Wenn es sich um Anknüpfen von Beziehungen handelt, ist volle Wahrhaftigkeit die ",
+          "pass03Snippet": "Wenn es sich um Anknüpfen von Beziehungen handelt, ist volle Wahr-\nhaftigkeit di"
+        },
+        {
+          "field": "L2_oraculo",
+          "zenoLen": 51,
+          "pass03Len": 51,
+          "zenoSnippet": "Halte zu ihm im Innern. Beharrlichkeit bringt Heil.",
+          "pass03Snippet": "Halte zu ihm im Innern. Beharrlichkeit bringt Heil!"
+        },
+        {
+          "field": "L2_comentario",
+          "zenoLen": 339,
+          "pass03Len": 489,
+          "zenoSnippet": "Wenn man auf rechte und beharrliche Weise den Bitten, die von oben her zum Wirke",
+          "pass03Snippet": "Wenn man auf rechte und beharrliche Weise den Bitten, die von oben her\nzum Wirke"
+        },
+        {
+          "field": "L3_oraculo",
+          "zenoLen": 60,
+          "pass03Len": 60,
+          "zenoSnippet": "Du hältst zusammen mit Menschen,\ndie nicht die rechten sind.",
+          "pass03Snippet": "Du hältst zusammen mit Menschen, die nicht die rechten sind."
+        },
+        {
+          "field": "L3_comentario",
+          "zenoLen": 386,
+          "pass03Len": 387,
+          "zenoSnippet": "Man ist oft unter lauter Menschen, die nicht zur eigenen Sphäre gehören. Da darf",
+          "pass03Snippet": "Man ist oft unter lauter Menschen, die nicht zur eigenen Sphäre gehören.\nDa darf"
+        },
+        {
+          "field": "L4_oraculo",
+          "zenoLen": 56,
+          "pass03Len": 56,
+          "zenoSnippet": "Auch äußerlich halte zu ihm. Beharrlichkeit bringt Heil.",
+          "pass03Snippet": "Auch äußerlich halte zu ihm. Beharrlichkeit bringt Heil!"
+        },
+        {
+          "field": "L4_comentario",
+          "zenoLen": 234,
+          "pass03Len": 235,
+          "zenoSnippet": "Die Beziehungen zu einem Mann, der Mittelpunkt des Zusammenhaltens ist, sind hie",
+          "pass03Snippet": "Die Beziehungen zu einem Mann, der Mittelpunkt des Zusammenhaltens\nist, sind hie"
+        },
+        {
+          "field": "L5_etiqueta",
+          "zenoLen": 32,
+          "pass03Len": 34,
+          "zenoSnippet": "Neun auf fünftem Platz bedeutet:",
+          "pass03Snippet": "O Neun auf fünftem Platz bedeutet:"
+        },
+        {
+          "field": "L5_oraculo",
+          "zenoLen": 181,
+          "pass03Len": 181,
+          "zenoSnippet": "Offenbarung des Zusammenhaltens.\nDer König läßt bei der Jagd nur von drei Seiten",
+          "pass03Snippet": "Offenbarung des Zusammenhaltens.\nDer König läßt bei der Jagd nur von drei Seiten"
+        },
+        {
+          "field": "L5_comentario",
+          "zenoLen": 1336,
+          "pass03Len": 1337,
+          "zenoSnippet": "Bei den königlichen Treibjagden im alten China war es üblich, daß das Wild von d",
+          "pass03Snippet": "Bei den königlichen Treibjagden im alten China war es üblich, daß das Wild\nvon d"
+        },
+        {
+          "field": "L6_comentario",
+          "zenoLen": 219,
+          "pass03Len": 219,
+          "zenoSnippet": "Das Haupt ist der Anfang. Ohne einen rechten Anfang gibt es kein rechtes Ende. W",
+          "pass03Snippet": "Das Haupt ist der Anfang. Ohne einen rechten Anfang gibt es kein rechtes\nEnde. W"
+        }
+      ]
+    }
+  ]
+}

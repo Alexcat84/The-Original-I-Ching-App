@@ -1,0 +1,206 @@
+{
+  "generatedAt": "2026-06-28T15:12:46.964Z",
+  "seed": 20260628,
+  "count": 20,
+  "samples": [
+    {
+      "id": "01-legge-23to4",
+      "translator": "legge",
+      "primary": "#23 Po (剝)",
+      "transformed": "#4 Măng (蒙)",
+      "changingLines": [
+        2
+      ]
+    },
+    {
+      "id": "02-zhouyi-34to60",
+      "translator": "zhouyi",
+      "primary": "#34 大壯 (大壯)",
+      "transformed": "#60 節 (節)",
+      "changingLines": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "03-legge-62to20",
+      "translator": "legge",
+      "primary": "#62 Hsiâo Kwo (小過)",
+      "transformed": "#20 Kwân (觀)",
+      "changingLines": [
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": "04-legge-35to33",
+      "translator": "legge",
+      "primary": "#35 Žin (晉)",
+      "transformed": "#33 Thun (遁)",
+      "changingLines": [
+        3,
+        5
+      ]
+    },
+    {
+      "id": "05-zhouyi-22to27",
+      "translator": "zhouyi",
+      "primary": "#22 賁 (賁)",
+      "transformed": "#27 頤 (頤)",
+      "changingLines": [
+        3
+      ]
+    },
+    {
+      "id": "06-zhouyi-33to12",
+      "translator": "zhouyi",
+      "primary": "#33 遯 (遁)",
+      "transformed": "#12 否 (否)",
+      "changingLines": [
+        3
+      ]
+    },
+    {
+      "id": "07-wilhelm-14to32",
+      "translator": "wilhelm",
+      "primary": "#14 Posession in Great Measure (大有)",
+      "transformed": "#32 Duration (恆)",
+      "changingLines": [
+        1,
+        6
+      ]
+    },
+    {
+      "id": "08-zhouyi-46to15",
+      "translator": "zhouyi",
+      "primary": "#46 升 (升)",
+      "transformed": "#15 謙 (謙)",
+      "changingLines": [
+        2
+      ]
+    },
+    {
+      "id": "09-legge-57to8",
+      "translator": "legge",
+      "primary": "#57 Sun (巽)",
+      "transformed": "#8 Pî (比)",
+      "changingLines": [
+        2,
+        3,
+        6
+      ]
+    },
+    {
+      "id": "10-zhouyi-34to11",
+      "translator": "zhouyi",
+      "primary": "#34 大壯 (大壯)",
+      "transformed": "#11 泰 (泰)",
+      "changingLines": [
+        4
+      ]
+    },
+    {
+      "id": "11-legge-40to56",
+      "translator": "legge",
+      "primary": "#40 Kieh (解)",
+      "transformed": "#56 Lü (旅)",
+      "changingLines": [
+        2,
+        3,
+        6
+      ]
+    },
+    {
+      "id": "12-legge-30to14",
+      "translator": "legge",
+      "primary": "#30 Lî (離)",
+      "transformed": "#14 Tâ Yû (大有)",
+      "changingLines": [
+        2
+      ]
+    },
+    {
+      "id": "13-zhouyi-17to51",
+      "translator": "zhouyi",
+      "primary": "#17 隨 (隨)",
+      "transformed": "#51 震 (震)",
+      "changingLines": [
+        5
+      ]
+    },
+    {
+      "id": "14-wilhelm-11to64",
+      "translator": "wilhelm",
+      "primary": "#11 Peace (泰)",
+      "transformed": "#64 Before Completion (未濟)",
+      "changingLines": [
+        1,
+        3,
+        4,
+        6
+      ]
+    },
+    {
+      "id": "15-legge-17to33",
+      "translator": "legge",
+      "primary": "#17 Sui (隨)",
+      "transformed": "#33 Thun (遁)",
+      "changingLines": [
+        1,
+        3,
+        6
+      ]
+    },
+    {
+      "id": "16-zhouyi-31to45",
+      "translator": "zhouyi",
+      "primary": "#31 咸 (咸)",
+      "transformed": "#45 萃 (萃)",
+      "changingLines": [
+        3
+      ]
+    },
+    {
+      "id": "17-zhouyi-2to36",
+      "translator": "zhouyi",
+      "primary": "#2 坤 (坤)",
+      "transformed": "#36 明夷 (明夷)",
+      "changingLines": [
+        1,
+        3
+      ]
+    },
+    {
+      "id": "18-wilhelm-28to29",
+      "translator": "wilhelm",
+      "primary": "#28 Preponderance of the Great (大過)",
+      "transformed": "#29 The Abysmal (Water) (坎)",
+      "changingLines": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "19-zhouyi-7to11",
+      "translator": "zhouyi",
+      "primary": "#7 師 (師)",
+      "transformed": "#11 泰 (泰)",
+      "changingLines": [
+        1,
+        3
+      ]
+    },
+    {
+      "id": "20-zhouyi-7to19",
+      "translator": "zhouyi",
+      "primary": "#7 師 (師)",
+      "transformed": "#19 臨 (臨)",
+      "changingLines": [
+        1
+      ]
+    }
+  ]
+}

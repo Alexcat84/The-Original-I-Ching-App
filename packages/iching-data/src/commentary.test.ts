@@ -17,20 +17,12 @@ describe("wilhelm commentary", () => {
     expect(getAllWilhelmCommentary()).toHaveLength(64);
   });
 
-  it("always has non-empty about block and per-point commentary", () => {
+  it("has Erstes Buch intro and Drittes Buch Ten Wings on every hex", () => {
     for (const c of getAllWilhelmCommentary()) {
       expect(c.about.intro.length).toBeGreaterThan(0);
-      expect(c.about.miscNotes.length).toBeGreaterThan(0);
-      expect(c.about.rulerNote.length).toBeGreaterThan(0);
-      expect(c.judgment.bookOne.length).toBeGreaterThan(0);
       expect(c.judgment.tenWings.length).toBeGreaterThan(0);
-      expect(c.image.bookOne.length).toBeGreaterThan(0);
       expect(c.image.tenWings.length).toBeGreaterThan(0);
       expect(c.lines).toHaveLength(6);
-      for (const line of c.lines) {
-        expect(line.commentary.bookOne.length).toBeGreaterThan(0);
-        expect(line.commentary.tenWings.length).toBeGreaterThan(0);
-      }
     }
   });
 
@@ -55,19 +47,19 @@ describe("wilhelm commentary", () => {
     }
   });
 
-  it("only has yong for hex 1 and 2", () => {
+  it("has per-line Ten Wings from hex 3 onward (6/6 lines)", () => {
     for (const c of getAllWilhelmCommentary()) {
-      if (c.number === 1 || c.number === 2) {
-        expect(c.yong).not.toBeNull();
-      } else {
-        expect(c.yong).toBeNull();
-      }
+      if (c.number <= 2) continue;
+      const populated = c.lines.filter((line) => line.commentary.tenWings.length > 0).length;
+      expect(populated).toBe(6);
     }
   });
 
   it("looks up by number", () => {
     const c = getWilhelmCommentaryByNumber(1);
     expect(c.number).toBe(1);
+    expect(c.about.intro).toMatch(/Schöpf/i);
+    expect(c.judgment.tenWings).toMatch(/Kungtse|Erhabenheit/i);
   });
 });
 
