@@ -3,7 +3,7 @@
  * must complete current legal acceptance before entering the app.
  */
 
-export type PostAuthClientRoute = "/" | "/auth/complete-legal" | "/login";
+export type PostAuthClientRoute = "/" | "/auth/complete-legal" | "/auth/update-password" | "/login";
 
 /**
  * Reads legal_acceptance_current from GET /api/account/me.
