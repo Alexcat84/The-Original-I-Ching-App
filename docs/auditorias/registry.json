@@ -1255,7 +1255,7 @@
       "type": "EXT",
       "family": "DAT-W",
       "date": "2026-07-01",
-      "status": "open",
+      "status": "closed",
       "path": "docs/auditorias/20260701-EXT-DAT-W-08-wilhelm-de-ocr-field-contamination.md",
       "relatedCodes": [
         "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",

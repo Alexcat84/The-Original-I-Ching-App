@@ -26,80 +26,69 @@ Play Console's bulk paste box expects each locale wrapped in its own tag, in thi
 order — copy the whole block below in one paste.
 
 <en-US>
-Version 4.2.1: richer readings, verified texts.
-- Wilhelm 1924 German: read the I Ching in its original language -- a fourth translator option.
-- Mutation Explorer: cross-check any hexagram cast against source texts and the classical mutation rules in effect.
-- Exhaustive text audit: 73 verified corrections across Wilhelm oracle readings, judgments, and Ten Wings commentaries.
+Version 4.2.1: explore the oracle in depth.
+- New: Oracle Reading Explorer -- consult original texts and classical commentaries for all 64 hexagrams, anytime.
+- Exhaustive text audit: Wilhelm 1924 oracle and commentary fully verified and corrected.
 </en-US>
 
 <ar>
-الإصدار 4.2.1: قراءات أعمق، نصوص محقَّقة.
-- فيلهلم 1924 الألماني: استشر الآي تشينغ بلغته الأصلية -- خيار رابع للمترجم.
-- مستكشف التحولات: تحقق من أي ضربة هيكساغرام مقابل النصوص الأصلية وقواعد التحول الكلاسيكية.
-- تدقيق نصي شامل: 73 تصحيحًا موثَّقًا في قراءات فيلهلم الأوراكلية والأحكام وتعليقات العشرة أجنحة.
+الإصدار 4.2.1: استكشف الأوراكل بعمق.
+- جديد: مستكشف قراءة الأوراكل -- استشر النصوص الأصلية والشروح الكلاسيكية للـ64 هكساغرام في أي وقت.
+- تدقيق نصي شامل: التحقق الكامل من نصوص وشروح فيلهلم 1924 وتصحيحها.
 </ar>
 
 <de-DE>
-Version 4.2.1: tiefere Lektüre, verifizierten Texte.
-- Wilhelm 1924 Deutsch: das I Ging in seiner Originalsprache lesen -- eine vierte Übersetzerquelle.
-- Mutations-Explorer: jede Hexagramm-Werfung mit Quelltexten und klassischen Mutationsregeln abgleichen.
-- Vollständige Textprüfung: 73 verifizierte Korrekturen in Orakelsprüchen, Urteilen und Zehn-Flügel-Kommentaren.
+Version 4.2.1: das Orakel in der Tiefe erkunden.
+- Neu: Orakel-Lese-Explorer -- originale Texte und klassische Kommentare zu allen 64 Hexagrammen jederzeit abrufbar.
+- Vollstandige Textprufung: Orakeltexte und Kommentare von Wilhelm 1924 vollstandig gepruft und korrigiert.
 </de-DE>
 
 <es-419>
-Version 4.2.1: lecturas más ricas, textos verificados.
-- Wilhelm 1924 alemán: consulta el I Ching en su idioma original -- una cuarta opcion de traductor.
-- Explorador de mutaciones: contrasta cualquier tirada con los textos fuente y las reglas clasicas de mutacion.
-- Auditoria exhaustiva: 73 correcciones verificadas en textos oraculares, juicios y comentarios de las Diez Alas de Wilhelm.
+Version 4.2.1: explora el oraculo en profundidad.
+- Nuevo: Explorador de lecturas del oraculo -- consulta textos originales y comentarios clasicos de los 64 hexagramas cuando quieras.
+- Auditoria exhaustiva de textos: textos oraculares y comentarios Wilhelm 1924 verificados y corregidos en detalle.
 </es-419>
 
 <fr-FR>
-Version 4.2.1 : lectures plus riches, textes verifies.
-- Wilhelm 1924 allemand : consultez le Yi King dans sa langue d'origine -- une quatrieme source.
-- Explorateur de mutations : comparez chaque tirage avec les textes sources et les regles classiques.
-- Audit exhaustif : 73 corrections verifiees dans les textes oraculaires, jugements et Dix Ailes de Wilhelm.
+Version 4.2.1 : explorez l'oracle en profondeur.
+- Nouveau : Explorateur de lectures oraculaires -- consultez les textes originaux et commentaires classiques des 64 hexagrammes a tout moment.
+- Audit textuel exhaustif : textes et commentaires Wilhelm 1924 entierement verifies et corriges.
 </fr-FR>
 
 <hi-IN>
-संस्करण 4.2.1: समृद्ध पाठ, सत्यापित ग्रंथ।
-- Wilhelm 1924 जर्मन: मूल भाषा में I Ching -- चौथा अनुवादक विकल्प।
-- Mutation Explorer: किसी भी हेक्साग्राम कास्ट को स्रोत ग्रंथों और शास्त्रीय नियमों से जांचें।
-- व्यापक पाठ ऑडिट: Wilhelm के दैववाणी पाठों, निर्णयों और दस पंखों में 73 सत्यापित सुधार।
+संस्करण 4.2.1: ओरेकल की गहराई में उतरें।
+- नया: ओरेकल रीडिंग एक्सप्लोरर -- सभी 64 हेक्साग्राम के मूल ग्रंथ और शास्त्रीय टिप्पणियाँ कभी भी देखें।
+- व्यापक पाठ ऑडिट: Wilhelm 1924 के ओरेकल पाठ और टिप्पणियाँ पूरी तरह सत्यापित और सुधारी गईं।
 </hi-IN>
 
 <it-IT>
-Versione 4.2.1: letture piu ricche, testi verificati.
-- Wilhelm 1924 tedesco: consulta l'I Ching nella sua lingua originale -- una quarta fonte.
-- Mutation Explorer: confronta qualsiasi lancio con i testi sorgente e le regole classiche di mutazione.
-- Audit esaustivo: 73 correzioni verificate nei testi oracolari, giudizi e Dieci Ali di Wilhelm.
+Versione 4.2.1: esplora l'oracolo in profondita.
+- Nuovo: Esploratore di letture oracolari -- consulta testi originali e commenti classici di tutti i 64 esagrammi in qualsiasi momento.
+- Audit testuale esaustivo: testi e commenti Wilhelm 1924 completamente verificati e corretti.
 </it-IT>
 
 <ja-JP>
-バージョン 4.2.1：豊かな解釈、検証済みテキスト。
-- ヴィルヘルム 1924 年ドイツ語：原語で易経を読む -- 第4の翻訳者オプション。
-- 変爻エクスプローラー：どの卦も原典テキストと古典的な変爻ルールで確認。
-- 徹底的なテキスト監査：ヴィルヘルムの卦辞・爻辞・十翼に 73 件の検証済み修正。
+バージョン 4.2.1：オラクルを深く探索する。
+- 新機能：オラクル・リーディング・エクスプローラー -- 64卦すべての原典テキストと古典注釈をいつでも参照できます。
+- 徹底的なテキスト監査：ヴィルヘルム 1924 年のオラクルテキストと注釈を完全に検証・修正しました。
 </ja-JP>
 
 <ko-KR>
-버전 4.2.1: 풍부한 해석, 검증된 텍스트.
-- 빌헬름 1924년 독일어: 원어로 읽는 역경 -- 네 번째 번역자 옵션.
-- 변효 탐색기: 모든 괘를 원전 텍스트 및 고전적인 변효 규칙으로 대조 확인.
-- 철저한 텍스트 감사: 빌헬름의 괘사, 효사, 십익에 73건의 검증된 수정.
+버전 4.2.1: 오라클을 깊이 탐색하세요.
+- 새 기능: 오라클 리딩 탐색기 -- 64괘 모든 원전 텍스트와 고전 주석을 언제든지 조회하세요.
+- 철저한 텍스트 감사: 빌헬름 1924년 오라클 텍스트와 주석 전면 검증 및 수정 완료.
 </ko-KR>
 
 <pt-BR>
-Versao 4.2.1: leituras mais ricas, textos verificados.
-- Wilhelm 1924 alemao: consulte o I Ching no idioma original -- uma quarta fonte de traducao.
-- Explorador de mutacoes: compare qualquer lancamento com os textos fonte e as regras classicas.
-- Auditoria exaustiva: 73 correcoes verificadas nos textos oraculares, julgamentos e Dez Asas de Wilhelm.
+Versao 4.2.1: explore o oraculo em profundidade.
+- Novo: Explorador de leituras do oraculo -- consulte textos originais e comentarios classicos de todos os 64 hexagramas a qualquer momento.
+- Auditoria textual exaustiva: textos e comentarios Wilhelm 1924 totalmente verificados e corrigidos.
 </pt-BR>
 
 <zh-CN>
-版本 4.2.1：更丰富的解读，经验证的文本。
-- 卫礼贤 1924 年德文：以原始语言阅读《易经》-- 第四个译者选项。
-- 变爻探索器：将任意卦象与原典文本及古典变爻规则对照核查。
-- 全面文本审计：对卫礼贤的卦辞、爻辞及十翼注释进行 73 项经验证的修正。
+版本 4.2.1：深入探索易经卦象。
+- 新功能：神谕解读探索器 -- 随时查阅全部64卦的原典文本与经典注释。
+- 全面文本审计：卫礼贤 1924 年卦辞与注释文本全面验证并修正完毕。
 </zh-CN>
 
 ---

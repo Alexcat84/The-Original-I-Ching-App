@@ -333,7 +333,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     result: "514/514 fields matched (100%).",
     statusKind: "current",
     statusLabel: "Current as of this date.",
-    currentStatusNote: "",
+    currentStatusNote: "A post-verification field audit (W-08, July 2026) identified and corrected 73 OCR artifacts across the Wilhelm 1924 dataset. Text re-verified against the first printed edition after all corrections.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -379,7 +379,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
     result: "2,304/2,304 fields matched (100%).",
     statusKind: "current",
     statusLabel: "Current as of this date.",
-    currentStatusNote: "",
+    currentStatusNote: "A post-verification field audit (W-08, July 2026) identified and corrected 73 OCR artifacts across the Wilhelm 1924 dataset. Text re-verified against the first printed edition after all corrections.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -576,7 +576,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     result: "514/514 campos coincidentes (100%).",
     statusKind: "current",
     statusLabel: "Vigente a la fecha.",
-    currentStatusNote: "",
+    currentStatusNote: "Una auditoría de campo posterior a la verificación (W-08, julio de 2026) identificó y corrigió 73 artefactos OCR en el conjunto de datos Wilhelm 1924. Texto reverificado contra la primera edición impresa tras todas las correcciones.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -622,7 +622,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
     result: "2.304/2.304 campos coincidentes (100%).",
     statusKind: "current",
     statusLabel: "Vigente a la fecha.",
-    currentStatusNote: "",
+    currentStatusNote: "Una auditoría de campo posterior a la verificación (W-08, julio de 2026) identificó y corrigió 73 artefactos OCR en el conjunto de datos Wilhelm 1924. Texto reverificado contra la primera edición impresa tras todas las correcciones.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -821,7 +821,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     result: "514/514 campos correspondentes (100%).",
     statusKind: "current",
     statusLabel: "Vigente nesta data.",
-    currentStatusNote: "",
+    currentStatusNote: "Uma auditoria de campo pós-verificação (W-08, julho de 2026) identificou e corrigiu 73 artefactos OCR no conjunto de dados Wilhelm 1924. Texto reverificado contra a primeira edição impressa após todas as correções.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -867,7 +867,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
     result: "2.304/2.304 campos correspondentes (100%).",
     statusKind: "current",
     statusLabel: "Vigente nesta data.",
-    currentStatusNote: "",
+    currentStatusNote: "Uma auditoria de campo pós-verificação (W-08, julho de 2026) identificou e corrigiu 73 artefactos OCR no conjunto de dados Wilhelm 1924. Texto reverificado contra a primeira edição impressa após todas as correções.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1066,7 +1066,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     result: "514/514 champs correspondants (100 %).",
     statusKind: "current",
     statusLabel: "En vigueur à ce jour.",
-    currentStatusNote: "",
+    currentStatusNote: "Un audit de champs post-vérification (W-08, juillet 2026) a identifié et corrigé 73 artefacts OCR dans le jeu de données Wilhelm 1924. Texte revérifié par rapport à la première édition imprimée après toutes les corrections.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1112,7 +1112,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
     result: "2 304/2 304 champs concordants (100 %).",
     statusKind: "current",
     statusLabel: "En vigueur à ce jour.",
-    currentStatusNote: "",
+    currentStatusNote: "Un audit de champs post-vérification (W-08, juillet 2026) a identifié et corrigé 73 artefacts OCR dans le jeu de données Wilhelm 1924. Texte revérifié par rapport à la première édition imprimée après toutes les corrections.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1311,7 +1311,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     result: "514/514 Felder übereinstimmend (100 %).",
     statusKind: "current",
     statusLabel: "Gültig zum Stichtag.",
-    currentStatusNote: "",
+    currentStatusNote: "Eine Feldprüfung nach der Verifikation (W-08, Juli 2026) identifizierte und korrigierte 73 OCR-Artefakte im Wilhelm-1924-Datensatz. Text nach allen Korrekturen gegen die erste Druckausgabe nachgeprüft.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1357,7 +1357,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
     result: "2.304/2.304 Felder übereinstimmend (100 %).",
     statusKind: "current",
     statusLabel: "Gültig zum Stichtag.",
-    currentStatusNote: "",
+    currentStatusNote: "Eine Feldprüfung nach der Verifikation (W-08, Juli 2026) identifizierte und korrigierte 73 OCR-Artefakte im Wilhelm-1924-Datensatz. Text nach allen Korrekturen gegen die erste Druckausgabe nachgeprüft.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1555,7 +1555,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     result: "514/514 campi corrispondenti (100%).",
     statusKind: "current",
     statusLabel: "Vigente alla data.",
-    currentStatusNote: "",
+    currentStatusNote: "Un audit di campo post-verifica (W-08, luglio 2026) ha identificato e corretto 73 artefatti OCR nel dataset Wilhelm 1924. Testo riverificato rispetto alla prima edizione a stampa dopo tutte le correzioni.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1601,7 +1601,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
     result: "2.304/2.304 campi corrispondenti (100%).",
     statusKind: "current",
     statusLabel: "Vigente alla data.",
-    currentStatusNote: "",
+    currentStatusNote: "Un audit di campo post-verifica (W-08, luglio 2026) ha identificato e corretto 73 artefatti OCR nel dataset Wilhelm 1924. Testo riverificato rispetto alla prima edizione a stampa dopo tutte le correzioni.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1796,7 +1796,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     result: "514/514フィールドが一致（100%）。",
     statusKind: "current",
     statusLabel: "現時点で有効。",
-    currentStatusNote: "",
+    currentStatusNote: "事後フィールド審査W-08（2026年7月）により、Wilhelm 1924データセット内のOCRアーティファクト73件を特定・修正しました。すべての修正後、初版印刷版に対してテキストを再検証済み。",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1842,7 +1842,7 @@ const BLOCKS_JA: AuditSourceBlock[] = [
     result: "2,304/2,304フィールドが一致（100%）。",
     statusKind: "current",
     statusLabel: "現時点で有効。",
-    currentStatusNote: "",
+    currentStatusNote: "事後フィールド審査W-08（2026年7月）により、Wilhelm 1924データセット内のOCRアーティファクト73件を特定・修正しました。すべての修正後、初版印刷版に対してテキストを再検証済み。",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2035,7 +2035,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     result: "514/514个字段一致（100%）。",
     statusKind: "current",
     statusLabel: "截至本日有效。",
-    currentStatusNote: "",
+    currentStatusNote: "事后字段审计W-08（2026年7月）在Wilhelm 1924数据集中识别并修正了73处OCR残留。所有修正完成后，已对照首版印刷版重新验证文本。",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2081,7 +2081,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     result: "2,304/2,304个字段一致（100%）。",
     statusKind: "current",
     statusLabel: "截至本日有效。",
-    currentStatusNote: "",
+    currentStatusNote: "事后字段审计W-08（2026年7月）在Wilhelm 1924数据集中识别并修正了73处OCR残留。所有修正完成后，已对照首版印刷版重新验证文本。",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2273,7 +2273,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     result: "514/514개 필드 일치(100%).",
     statusKind: "current",
     statusLabel: "현재 기준 유효.",
-    currentStatusNote: "",
+    currentStatusNote: "사후 필드 감사 W-08 (2026년 7월)에서 Wilhelm 1924 데이터셋의 OCR 아티팩트 73건을 식별 및 수정했습니다. 모든 수정 후 초판 인쇄본과 텍스트를 재검증했습니다.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2319,7 +2319,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     result: "2,304/2,304개 필드 일치(100%).",
     statusKind: "current",
     statusLabel: "현재 기준 유효.",
-    currentStatusNote: "",
+    currentStatusNote: "사후 필드 감사 W-08 (2026년 7월)에서 Wilhelm 1924 데이터셋의 OCR 아티팩트 73건을 식별 및 수정했습니다. 모든 수정 후 초판 인쇄본과 텍스트를 재검증했습니다.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2513,7 +2513,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result: "تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
     statusLabel: "ساري حتى هذا التاريخ.",
-    currentStatusNote: "",
+    currentStatusNote: "كشف تدقيق الحقول اللاحق للتحقق W-08 (يوليو 2026) عن 73 خللاً في التعرف الضوئي على الحروف ضمن مجموعة بيانات Wilhelm 1924 وعالجها. أُعيد التحقق من النص مقارنةً بالطبعة الأولى المطبوعة بعد تطبيق جميع التصحيحات.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2559,7 +2559,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     result: "تطابق 2,304/2,304 حقلاً (100%).",
     statusKind: "current",
     statusLabel: "ساري حتى هذا التاريخ.",
-    currentStatusNote: "",
+    currentStatusNote: "كشف تدقيق الحقول اللاحق للتحقق W-08 (يوليو 2026) عن 73 خللاً في التعرف الضوئي على الحروف ضمن مجموعة بيانات Wilhelm 1924 وعالجها. أُعيد التحقق من النص مقارنةً بالطبعة الأولى المطبوعة بعد تطبيق جميع التصحيحات.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2753,7 +2753,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     result: "514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
     statusLabel: "इस तिथि तक वैध।",
-    currentStatusNote: "",
+    currentStatusNote: "पोस्ट-वेरिफिकेशन फ़ील्ड ऑडिट W-08 (जुलाई 2026) ने Wilhelm 1924 डेटासेट में 73 OCR अवशेष पहचानकर सुधारे। सभी सुधारों के बाद प्रथम मुद्रित संस्करण के विरुद्ध पाठ को पुन: सत्यापित किया गया।",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2799,7 +2799,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     result: "2,304/2,304 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
     statusLabel: "इस तिथि तक वैध।",
-    currentStatusNote: "",
+    currentStatusNote: "पोस्ट-वेरिफिकेशन फ़ील्ड ऑडिट W-08 (जुलाई 2026) ने Wilhelm 1924 डेटासेट में 73 OCR अवशेष पहचानकर सुधारे। सभी सुधारों के बाद प्रथम मुद्रित संस्करण के विरुद्ध पाठ को पुन: सत्यापित किया गया।",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
