@@ -5,11 +5,12 @@ import { useAppLocale } from "@/lib/use-app-locale";
 import { getTwoFactorUiMessages, getUpdatePasswordUiMessages } from "@iching-oracle/i18n";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type PageState =
   | "init"
   | "expired"
+  | "load-error"
   | "loading-2fa"
   | "2fa-totp"
   | "2fa-email"
@@ -84,6 +85,33 @@ export default function UpdatePasswordPage() {
 
   const checkedRef = useRef(false);
 
+  const checkBootstrap = useCallback(async (token: string) => {
+    setState("loading-2fa");
+    try {
+      const res = await fetch("/api/account/bootstrap", {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      });
+      // Fail-closed: any non-OK response means we cannot determine 2FA state.
+      if (!res.ok) {
+        setState("load-error");
+        return;
+      }
+      const bs = (await res.json()) as {
+        twoFactorEnabled?: boolean;
+        twoFactorMethod?: string;
+      };
+      if (bs.twoFactorEnabled) {
+        setState(bs.twoFactorMethod === "email" ? "2fa-email" : "2fa-totp");
+      } else {
+        setState("form");
+      }
+    } catch {
+      // Network failure or parse error — fail closed, not open.
+      setState("load-error");
+    }
+  }, []);
+
   useEffect(() => {
     if (checkedRef.current) return;
     checkedRef.current = true;
@@ -99,29 +127,9 @@ export default function UpdatePasswordPage() {
       }
       const token = data.session.access_token;
       setAccessToken(token);
-      setState("loading-2fa");
-
-      try {
-        const res = await fetch("/api/account/bootstrap", {
-          headers: { Authorization: `Bearer ${token}` },
-          cache: "no-store",
-        });
-        if (res.ok) {
-          const bs = (await res.json()) as {
-            twoFactorEnabled?: boolean;
-            twoFactorMethod?: string;
-          };
-          if (bs.twoFactorEnabled) {
-            setState(bs.twoFactorMethod === "email" ? "2fa-email" : "2fa-totp");
-            return;
-          }
-        }
-      } catch {
-        // Non-fatal: if bootstrap fails, skip the 2FA gate
-      }
-      setState("form");
+      await checkBootstrap(token);
     });
-  }, [router]);
+  }, [router, checkBootstrap]);
 
   async function sendEmailCode() {
     setTfMsg("");
@@ -192,17 +200,35 @@ export default function UpdatePasswordPage() {
     }
     setLoading(true);
     try {
-      const sb = getSupabaseBrowser();
-      const { error } = await sb.auth.updateUser({ password: newPassword });
-      if (error) {
-        setErr(error.message || L.errGeneric);
+      // Server-side endpoint: re-validates Bearer token, checks 2FA step-up
+      // from DB, and uses the admin client to update the password.
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: newPassword }),
+      });
+
+      if (!res.ok) {
+        const d = (await res.json()) as { code?: string; error?: string };
+        if (d.code === "TWO_FACTOR_STEP_UP_REQUIRED") {
+          // 2FA window expired server-side — send back to 2FA step
+          setErr(TF.challengeSessionExpired);
+          setState(state === "form" ? "form" : "form"); // keep showing error on form
+          return;
+        }
+        setErr(d.error ?? L.errGeneric);
         return;
       }
+
       // Send security notification — best-effort, never blocks the flow
       void fetch("/api/auth/notify-password-changed", {
         method: "POST",
         headers: { Authorization: `Bearer ${accessToken}` },
       });
+
       setMsg(L.successMsg);
       setState("done");
       setTimeout(() => router.replace("/"), 1500);
@@ -233,6 +259,31 @@ export default function UpdatePasswordPage() {
             <h1 className="auth-pro-heading">{L.title}</h1>
             <p className="auth-pro-err">{L.expiredMsg}</p>
             <Link href="/login" className="auth-pro-text-link" style={{ marginTop: 16, display: "block" }}>
+              {L.backToLogin}
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Fail-closed: could not load 2FA status
+  if (state === "load-error") {
+    return (
+      <div className="auth-pro-shell">
+        <div className="auth-pro-form-panel auth-pro-form-panel--solo">
+          <div className="auth-pro-card">
+            <h1 className="auth-pro-heading">{L.title}</h1>
+            <p className="auth-pro-err">{L.loadErrorMsg}</p>
+            <button
+              type="button"
+              className="auth-pro-btn auth-pro-btn-primary"
+              style={{ marginTop: 16 }}
+              onClick={() => void checkBootstrap(accessToken)}
+            >
+              {L.retryButton}
+            </button>
+            <Link href="/login" className="auth-pro-text-link" style={{ marginTop: 12, display: "block" }}>
               {L.backToLogin}
             </Link>
           </div>
@@ -309,7 +360,14 @@ export default function UpdatePasswordPage() {
             <button
               type="button"
               className="auth-pro-text-link"
-              style={{ marginTop: 12, display: "block", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+              style={{
+                marginTop: 12,
+                display: "block",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+              }}
               onClick={() => {
                 setShowRecovery((v) => !v);
                 setTfErr("");

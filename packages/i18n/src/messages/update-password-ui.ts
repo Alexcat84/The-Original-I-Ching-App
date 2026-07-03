@@ -19,6 +19,8 @@ export type UpdatePasswordUiMessages = {
   notifyEmailSubject: string;
   notifyEmailText: string;
   notifyEmailHtml: string;
+  loadErrorMsg: string;
+  retryButton: string;
 };
 
 const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
@@ -40,6 +42,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "Alerta de seguridad: tu contraseña ha sido cambiada | The Original I Ching App",
     notifyEmailText: "Tu contraseña de The Original I Ching App ha sido cambiada. Si no realizaste este cambio, contacta al soporte de inmediato.",
     notifyEmailHtml: "<p>Tu contraseña de <strong>The Original I Ching App</strong> ha sido cambiada.</p><p>Si no realizaste este cambio, contacta al soporte de inmediato.</p>",
+    loadErrorMsg: "No se pudieron verificar tus ajustes de seguridad. Inténtalo de nuevo.",
+    retryButton: "Reintentar",
   },
   en: {
     title: "Set new password",
@@ -59,6 +63,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "Security alert: your password was changed | The Original I Ching App",
     notifyEmailText: "Your password for The Original I Ching App has been changed. If you did not make this change, please contact support immediately.",
     notifyEmailHtml: "<p>Your password for <strong>The Original I Ching App</strong> has been changed.</p><p>If you did not make this change, please contact support immediately.</p>",
+    loadErrorMsg: "Could not verify your security settings. Please try again.",
+    retryButton: "Try again",
   },
   pt: {
     title: "Definir nova palavra-passe",
@@ -78,6 +84,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "Alerta de segurança: a tua palavra-passe foi alterada | The Original I Ching App",
     notifyEmailText: "A tua palavra-passe do The Original I Ching App foi alterada. Se não fizeste esta alteração, contacta o suporte imediatamente.",
     notifyEmailHtml: "<p>A tua palavra-passe do <strong>The Original I Ching App</strong> foi alterada.</p><p>Se não fizeste esta alteração, contacta o suporte imediatamente.</p>",
+    loadErrorMsg: "Não foi possível verificar as tuas definições de segurança. Tente novamente.",
+    retryButton: "Tentar novamente",
   },
   fr: {
     title: "Définir un nouveau mot de passe",
@@ -97,6 +105,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "Alerte de sécurité : votre mot de passe a été modifié | The Original I Ching App",
     notifyEmailText: "Votre mot de passe pour The Original I Ching App a été modifié. Si vous n'êtes pas à l'origine de ce changement, contactez immédiatement le support.",
     notifyEmailHtml: "<p>Votre mot de passe pour <strong>The Original I Ching App</strong> a été modifié.</p><p>Si vous n'êtes pas à l'origine de ce changement, contactez immédiatement le support.</p>",
+    loadErrorMsg: "Impossible de vérifier vos paramètres de sécurité. Veuillez réessayer.",
+    retryButton: "Réessayer",
   },
   de: {
     title: "Neues Passwort festlegen",
@@ -116,6 +126,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "Sicherheitshinweis: Dein Passwort wurde geändert | The Original I Ching App",
     notifyEmailText: "Dein Passwort für The Original I Ching App wurde geändert. Wenn du diese Änderung nicht vorgenommen hast, kontaktiere sofort den Support.",
     notifyEmailHtml: "<p>Dein Passwort für <strong>The Original I Ching App</strong> wurde geändert.</p><p>Wenn du diese Änderung nicht vorgenommen hast, kontaktiere sofort den Support.</p>",
+    loadErrorMsg: "Sicherheitseinstellungen konnten nicht geprüft werden. Bitte erneut versuchen.",
+    retryButton: "Erneut versuchen",
   },
   it: {
     title: "Imposta nuova password",
@@ -135,6 +147,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "Avviso di sicurezza: la tua password è stata modificata | The Original I Ching App",
     notifyEmailText: "La tua password per The Original I Ching App è stata modificata. Se non hai effettuato questa modifica, contatta immediatamente il supporto.",
     notifyEmailHtml: "<p>La tua password per <strong>The Original I Ching App</strong> è stata modificata.</p><p>Se non hai effettuato questa modifica, contatta immediatamente il supporto.</p>",
+    loadErrorMsg: "Impossibile verificare le impostazioni di sicurezza. Riprova.",
+    retryButton: "Riprova",
   },
   ja: {
     title: "新しいパスワードを設定",
@@ -154,6 +168,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "セキュリティ通知：パスワードが変更されました | The Original I Ching App",
     notifyEmailText: "The Original I Ching Appのパスワードが変更されました。心当たりがない場合は、すぐにサポートへご連絡ください。",
     notifyEmailHtml: "<p><strong>The Original I Ching App</strong>のパスワードが変更されました。</p><p>心当たりがない場合は、すぐにサポートへご連絡ください。</p>",
+    loadErrorMsg: "セキュリティ設定を確認できませんでした。もう一度お試しください。",
+    retryButton: "再試行",
   },
   zh: {
     title: "设置新密码",
@@ -173,6 +189,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "安全提醒：您的密码已更改 | The Original I Ching App",
     notifyEmailText: "您的 The Original I Ching App 密码已更改。如果不是您本人操作，请立即联系客服。",
     notifyEmailHtml: "<p>您的 <strong>The Original I Ching App</strong> 密码已更改。</p><p>如果不是您本人操作，请立即联系客服。</p>",
+    loadErrorMsg: "无法验证安全设置，请重试。",
+    retryButton: "重试",
   },
   ko: {
     title: "새 비밀번호 설정",
@@ -192,6 +210,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "보안 알림: 비밀번호가 변경되었습니다 | The Original I Ching App",
     notifyEmailText: "The Original I Ching App 비밀번호가 변경되었습니다. 본인이 변경하지 않은 경우 즉시 지원팀에 문의하세요.",
     notifyEmailHtml: "<p><strong>The Original I Ching App</strong> 비밀번호가 변경되었습니다.</p><p>본인이 변경하지 않은 경우 즉시 지원팀에 문의하세요.</p>",
+    loadErrorMsg: "보안 설정을 확인할 수 없습니다. 다시 시도하세요.",
+    retryButton: "다시 시도",
   },
   ar: {
     title: "تعيين كلمة مرور جديدة",
@@ -211,6 +231,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "تنبيه أمني: تم تغيير كلمة المرور الخاصة بك | The Original I Ching App",
     notifyEmailText: "تم تغيير كلمة المرور الخاصة بك في The Original I Ching App. إذا لم تقم بهذا التغيير، يرجى التواصل مع الدعم فوراً.",
     notifyEmailHtml: "<p>تم تغيير كلمة المرور الخاصة بك في <strong>The Original I Ching App</strong>.</p><p>إذا لم تقم بهذا التغيير، يرجى التواصل مع الدعم فوراً.</p>",
+    loadErrorMsg: "تعذّر التحقق من إعدادات الأمان. حاول مجدداً.",
+    retryButton: "إعادة المحاولة",
   },
   hi: {
     title: "नया पासवर्ड सेट करें",
@@ -230,6 +252,8 @@ const UPDATE_PASSWORD_UI: Record<AppLocale, UpdatePasswordUiMessages> = {
     notifyEmailSubject: "सुरक्षा सूचना: आपका पासवर्ड बदल दिया गया है | The Original I Ching App",
     notifyEmailText: "The Original I Ching App का आपका पासवर्ड बदल दिया गया है। यदि आपने यह परिवर्तन नहीं किया, तो तुरंत सहायता से संपर्क करें।",
     notifyEmailHtml: "<p><strong>The Original I Ching App</strong> का आपका पासवर्ड बदल दिया गया है।</p><p>यदि आपने यह परिवर्तन नहीं किया, तो तुरंत सहायता से संपर्क करें।</p>",
+    loadErrorMsg: "सुरक्षा सेटिंग सत्यापित नहीं हो सकीं। फिर से प्रयास करें।",
+    retryButton: "पुनः प्रयास करें",
   },
 };
 
