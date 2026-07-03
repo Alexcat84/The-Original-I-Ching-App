@@ -102,7 +102,7 @@ describe("H6 regression — #44 姤 → #51 震 with 5 changing lines", () => {
     expect(texts.selectedLineTexts[0]!.fromHexagram).toBe("transformed");
   });
 
-  it("[W/B 1950 EN — historical reference, not active source] Wilhelm line text was 'Shock is mired.' (line 4 of #51)", () => {
+  it.skip("[W/B 1950 EN — historical reference, not active source] Wilhelm line text was 'Shock is mired.' (line 4 of #51)", () => {
     // HISTORICAL: W/B Baynes English 1950 fingerprint. Active source is Wilhelm 1924 German.
     // See describe block "Wilhelm (1924, German) — oracle text fingerprints" for current assertions.
     const { texts } = cast([...LINE_VALUES]);
@@ -238,7 +238,7 @@ describe("selectTextsForClaude — complete coverage of all 10 Zhu Xi rules", ()
     expect(rule).toBe("QIAN_ALL_NINE");
     expect(texts.selectedLineTexts).toHaveLength(0);
     expect(texts.specialYaoText).toBeTruthy();
-    expect(texts.specialYaoText).toContain("dragons"); // W/B 1950 EN: "dragons appear without a head"
+    expect(texts.specialYaoText).toContain("Drachen"); // DE 1924: "Es erscheint eine Schar von Drachen ohne Haupt."
     expect(texts.primaryImage).not.toBe(""); // image is NOT cleared for Qian
   });
 
@@ -250,7 +250,7 @@ describe("selectTextsForClaude — complete coverage of all 10 Zhu Xi rules", ()
     expect(rule).toBe("KUN_ALL_SIX");
     expect(texts.selectedLineTexts).toHaveLength(0);
     expect(texts.specialYaoText).toBeTruthy();
-    expect(texts.specialYaoText).toContain("perseverance"); // W/B 1950 EN: "furthering through perseverance"
+    expect(texts.specialYaoText).toContain("Beharrlichkeit"); // DE 1924: "Fördernd ist dauernde Beharrlichkeit."
     expect(texts.primaryImage).not.toBe("");
   });
 });
