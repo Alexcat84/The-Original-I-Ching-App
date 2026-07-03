@@ -2,16 +2,78 @@
 
 import { getSupabaseBrowser, isSupabaseBrowserConfigured } from "@/lib/supabase-browser";
 import { useAppLocale } from "@/lib/use-app-locale";
-import { getUpdatePasswordUiMessages } from "@iching-oracle/i18n";
+import { getTwoFactorUiMessages, getUpdatePasswordUiMessages } from "@iching-oracle/i18n";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+
+type PageState =
+  | "init"
+  | "expired"
+  | "loading-2fa"
+  | "2fa-totp"
+  | "2fa-email"
+  | "form"
+  | "done";
+
+function resolveVerifyError(
+  code: string | undefined,
+  TF: ReturnType<typeof getTwoFactorUiMessages>,
+): string {
+  switch (code) {
+    case "TWO_FACTOR_LOCKED":
+      return TF.challengeLocked;
+    case "TWO_FACTOR_INVALID_CODE":
+      return TF.challengeInvalidCode;
+    case "TWO_FACTOR_EMAIL_CODE_MISSING":
+      return TF.challengeEmailMissing;
+    case "TWO_FACTOR_EMAIL_CODE_EXPIRED":
+      return TF.challengeEmailExpired;
+    case "TWO_FACTOR_EMAIL_NOT_CONFIGURED":
+      return TF.challengeEmailServerMisconfig;
+    case "TWO_FACTOR_SECRET_DECRYPT_FAILED":
+      return TF.challengeDecryptFailed;
+    case "TWO_FACTOR_METHOD_NOT_LINKED":
+      return TF.challengeMethodNotLinked;
+    default:
+      return TF.challengeVerifyFailed;
+  }
+}
+
+function resolveSendError(
+  code: string | undefined,
+  TF: ReturnType<typeof getTwoFactorUiMessages>,
+): string {
+  switch (code) {
+    case "TWO_FACTOR_LOCKED":
+      return TF.challengeLocked;
+    case "TWO_FACTOR_SESSION_EXPIRED":
+      return TF.sendSessionExpired;
+    case "TWO_FACTOR_EMAIL_NOT_CONFIGURED":
+      return TF.challengeEmailServerMisconfig;
+    default:
+      return TF.sendTryLater;
+  }
+}
 
 export default function UpdatePasswordPage() {
   const router = useRouter();
   const locale = useAppLocale();
   const L = useMemo(() => getUpdatePasswordUiMessages(locale), [locale]);
+  const TF = useMemo(() => getTwoFactorUiMessages(locale), [locale]);
 
+  const [state, setState] = useState<PageState>("init");
+  const [accessToken, setAccessToken] = useState("");
+
+  // 2FA state
+  const [tfCode, setTfCode] = useState("");
+  const [showRecovery, setShowRecovery] = useState(false);
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [tfErr, setTfErr] = useState("");
+  const [tfMsg, setTfMsg] = useState("");
+  const [tfLoading, setTfLoading] = useState(false);
+
+  // Password form state
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNew, setShowNew] = useState(false);
@@ -19,7 +81,7 @@ export default function UpdatePasswordPage() {
   const [err, setErr] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sessionReady, setSessionReady] = useState<boolean | null>(null);
+
   const checkedRef = useRef(false);
 
   useEffect(() => {
@@ -30,14 +92,91 @@ export default function UpdatePasswordPage() {
       return;
     }
     const sb = getSupabaseBrowser();
-    void sb.auth.getSession().then(({ data }) => {
+    void sb.auth.getSession().then(async ({ data }) => {
       if (!data.session) {
-        setSessionReady(false);
-      } else {
-        setSessionReady(true);
+        setState("expired");
+        return;
       }
+      const token = data.session.access_token;
+      setAccessToken(token);
+      setState("loading-2fa");
+
+      try {
+        const res = await fetch("/api/account/bootstrap", {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: "no-store",
+        });
+        if (res.ok) {
+          const bs = (await res.json()) as {
+            twoFactorEnabled?: boolean;
+            twoFactorMethod?: string;
+          };
+          if (bs.twoFactorEnabled) {
+            setState(bs.twoFactorMethod === "email" ? "2fa-email" : "2fa-totp");
+            return;
+          }
+        }
+      } catch {
+        // Non-fatal: if bootstrap fails, skip the 2FA gate
+      }
+      setState("form");
     });
   }, [router]);
+
+  async function sendEmailCode() {
+    setTfMsg("");
+    setTfErr("");
+    setTfLoading(true);
+    try {
+      const res = await fetch("/api/auth/2fa/email/send", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (res.ok) {
+        setTfMsg(TF.infoCodeSent);
+      } else {
+        const d = (await res.json()) as { code?: string };
+        setTfErr(resolveSendError(d.code, TF));
+      }
+    } catch {
+      setTfErr(TF.sendTryLater);
+    } finally {
+      setTfLoading(false);
+    }
+  }
+
+  async function verifyTwoFactor(e: React.FormEvent) {
+    e.preventDefault();
+    setTfErr("");
+    setTfLoading(true);
+    try {
+      const body = showRecovery
+        ? { recoveryCode }
+        : state === "2fa-email"
+          ? { emailCode: tfCode }
+          : { token: tfCode };
+
+      const res = await fetch("/api/auth/2fa/challenge/verify", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        setState("form");
+      } else {
+        const d = (await res.json()) as { code?: string };
+        setTfErr(resolveVerifyError(d.code, TF));
+      }
+    } catch {
+      setTfErr(TF.challengeVerifyFailed);
+    } finally {
+      setTfLoading(false);
+    }
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -59,14 +198,23 @@ export default function UpdatePasswordPage() {
         setErr(error.message || L.errGeneric);
         return;
       }
+      // Send security notification — best-effort, never blocks the flow
+      void fetch("/api/auth/notify-password-changed", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       setMsg(L.successMsg);
+      setState("done");
       setTimeout(() => router.replace("/"), 1500);
+    } catch {
+      setErr(L.errGeneric);
     } finally {
       setLoading(false);
     }
   }
 
-  if (sessionReady === null) {
+  // Loading / init skeleton
+  if (state === "init" || state === "loading-2fa") {
     return (
       <div className="auth-pro-shell">
         <div className="auth-pro-form-panel auth-pro-form-panel--solo">
@@ -76,7 +224,8 @@ export default function UpdatePasswordPage() {
     );
   }
 
-  if (sessionReady === false) {
+  // Expired / invalid link
+  if (state === "expired") {
     return (
       <div className="auth-pro-shell">
         <div className="auth-pro-form-panel auth-pro-form-panel--solo">
@@ -92,6 +241,90 @@ export default function UpdatePasswordPage() {
     );
   }
 
+  // 2FA challenge step
+  if (state === "2fa-totp" || state === "2fa-email") {
+    return (
+      <div className="auth-pro-shell">
+        <div className="auth-pro-form-panel auth-pro-form-panel--solo">
+          <div className="auth-pro-card">
+            <h1 className="auth-pro-heading">{TF.challengeTitle}</h1>
+            <p style={{ marginBottom: 16, fontSize: "0.9rem", opacity: 0.8 }}>
+              {showRecovery
+                ? TF.recoveryOptionsIntro
+                : state === "2fa-email"
+                  ? TF.challengeIntroEmail
+                  : TF.challengeIntroTotp}
+            </p>
+            <form onSubmit={(e) => void verifyTwoFactor(e)} noValidate>
+              {showRecovery ? (
+                <div className="auth-pro-field">
+                  <input
+                    type="text"
+                    className="auth-pro-input"
+                    placeholder={TF.recoveryCodePlaceholder}
+                    value={recoveryCode}
+                    onChange={(e) => setRecoveryCode(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
+              ) : (
+                <>
+                  {state === "2fa-email" && (
+                    <button
+                      type="button"
+                      className="auth-pro-btn auth-pro-btn-primary"
+                      onClick={() => void sendEmailCode()}
+                      disabled={tfLoading}
+                      style={{ marginBottom: 12 }}
+                    >
+                      {tfLoading ? "…" : TF.sendEmailCode}
+                    </button>
+                  )}
+                  <div className="auth-pro-field">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      className="auth-pro-input"
+                      placeholder={
+                        state === "2fa-email" ? TF.emailCodePlaceholder : TF.totpPlaceholderShort
+                      }
+                      value={tfCode}
+                      onChange={(e) => setTfCode(e.target.value)}
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                    />
+                  </div>
+                </>
+              )}
+              {tfErr ? <p className="auth-pro-err">{tfErr}</p> : null}
+              {tfMsg ? <p className="auth-pro-msg">{tfMsg}</p> : null}
+              <button
+                type="submit"
+                className="auth-pro-btn auth-pro-btn-primary"
+                disabled={tfLoading}
+              >
+                {tfLoading ? "…" : TF.verify}
+              </button>
+            </form>
+            <button
+              type="button"
+              className="auth-pro-text-link"
+              style={{ marginTop: 12, display: "block", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+              onClick={() => {
+                setShowRecovery((v) => !v);
+                setTfErr("");
+                setTfMsg("");
+              }}
+            >
+              {showRecovery ? TF.chooseAnotherMethod : TF.iHaveRecoveryCodes}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Password form (state === "form" | "done")
   return (
     <div className="auth-pro-shell">
       <div className="auth-pro-form-panel auth-pro-form-panel--solo">
@@ -144,7 +377,11 @@ export default function UpdatePasswordPage() {
             </div>
             {err ? <p className="auth-pro-err">{err}</p> : null}
             {msg ? <p className="auth-pro-msg">{msg}</p> : null}
-            <button type="submit" className="auth-pro-btn auth-pro-btn-primary" disabled={loading}>
+            <button
+              type="submit"
+              className="auth-pro-btn auth-pro-btn-primary"
+              disabled={loading || state === "done"}
+            >
               {loading ? "…" : L.submitButton}
             </button>
           </form>

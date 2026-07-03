@@ -115,7 +115,11 @@ export {
   type CheckoutSuccessUiMessages,
 } from "./messages/checkout-success-ui.js";
 export { getAuthCallbackUiMessages, type AuthCallbackUiMessages } from "./messages/auth-callback-ui.js";
-export { getUpdatePasswordUiMessages, type UpdatePasswordUiMessages } from "./messages/update-password-ui.js";
+export {
+  formatPasswordChangedEmail,
+  getUpdatePasswordUiMessages,
+  type UpdatePasswordUiMessages,
+} from "./messages/update-password-ui.js";
 export {
   getSiteMetaUiMessages,
   htmlLangFromAppLocale,
