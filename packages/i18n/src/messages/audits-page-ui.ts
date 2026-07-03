@@ -256,7 +256,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 (514 fields total).",
     result: "Final: 514/514 fields matched (100%).",
     statusKind: "superseded",
-    statusLabel: "Superseded.",
+    statusLabel: "Obsolete.",
     currentStatusNote: "Comparative cross-reference against the Wilhelm/Baynes 1950 English rendering, retained for historical completeness. The app's oracle source is the first printed edition (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
@@ -332,8 +332,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Judgment (卦辭), Image (象辭), and the 6 lines (爻辭) of all 64 hexagrams, including 用九/用六 for hexagrams 1 and 2 (514 fields total).",
     result: "514/514 fields matched (100%).",
     statusKind: "current",
-    statusLabel: "Current canonical source.",
-    currentStatusNote: "",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "A post-verification field audit (W-08, July 2026) identified and corrected 73 OCR artifacts across the Wilhelm 1924 dataset. Text re-verified against the first printed edition after all corrections.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -347,7 +347,7 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Wilhelm's own commentary and Confucius's Ten Wings notes on judgment, image, and each line; About this hexagram block; Words on the Text (hex 1-2 only); yong commentary (hex 1-2 only). 64 hexagrams.",
     result: "1920/1920 fields matched (100%).",
     statusKind: "superseded",
-    statusLabel: "Superseded.",
+    statusLabel: "Obsolete.",
     currentStatusNote: "Comparative cross-reference against the Wilhelm/Baynes 1950 English commentary, retained for completeness. Commentary is drawn from the first printed edition (Diederichs, 1924).",
   },
   {
@@ -378,8 +378,8 @@ const BLOCKS_EN: AuditSourceBlock[] = [
       "Wilhelm's own commentary and the Ten Wings notes on judgment, image, and each line; About this hexagram block; Words on the Text (hexagrams 1 and 2 only); yong commentary (hexagrams 1 and 2 only). 64 hexagrams; 2,304 fields in total.",
     result: "2,304/2,304 fields matched (100%).",
     statusKind: "current",
-    statusLabel: "Current canonical source.",
-    currentStatusNote: "",
+    statusLabel: "Current as of this date.",
+    currentStatusNote: "A post-verification field audit (W-08, July 2026) identified and corrected 73 OCR artifacts across the Wilhelm 1924 dataset. Text re-verified against the first printed edition after all corrections.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -501,7 +501,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 (514 campos en total).",
     result: "Final: 514/514 campos coincidentes (100%).",
     statusKind: "superseded",
-    statusLabel: "Superado.",
+    statusLabel: "Obsoleto.",
     currentStatusNote: "Cotejo comparativo contra la versión inglesa Wilhelm/Baynes de 1950, conservado por integridad histórica. La fuente oracular de la app es la primera edición impresa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
@@ -575,8 +575,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Juicio (卦辭), Imagen (象辭) y las 6 líneas (爻辭) de los 64 hexagramas, incluido 用九/用六 de los hexagramas 1 y 2 (514 campos en total).",
     result: "514/514 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente canónica vigente.",
-    currentStatusNote: "",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "Una auditoría de campo posterior a la verificación (W-08, julio de 2026) identificó y corrigió 73 artefactos OCR en el conjunto de datos Wilhelm 1924. Texto reverificado contra la primera edición impresa tras todas las correcciones.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -590,7 +590,7 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Comentario propio de Wilhelm y notas de las Diez Alas de Confucio en juicio, imagen y cada línea; bloque Acerca de este hexagrama; Words on the Text (solo hex 1-2); comentario yong (solo hex 1-2). 64 hexagramas.",
     result: "1920/1920 campos coincidentes (100%).",
     statusKind: "superseded",
-    statusLabel: "Superado.",
+    statusLabel: "Obsoleto.",
     currentStatusNote: "Cotejo comparativo contra los comentarios de la versión inglesa Wilhelm/Baynes de 1950, conservado por integridad histórica. El comentario proviene de la primera edición impresa (Diederichs, 1924).",
   },
   {
@@ -621,8 +621,8 @@ const BLOCKS_ES: AuditSourceBlock[] = [
       "Comentario propio de Wilhelm y las Diez Alas confucianas en juicio, imagen y cada línea; bloque Acerca de este hexagrama; Wen Yen (hexagramas 1 y 2 solamente); comentario yong (hexagramas 1 y 2 solamente). 64 hexagramas; 2.304 campos en total.",
     result: "2.304/2.304 campos coincidentes (100%).",
     statusKind: "current",
-    statusLabel: "Fuente canónica vigente.",
-    currentStatusNote: "",
+    statusLabel: "Vigente a la fecha.",
+    currentStatusNote: "Una auditoría de campo posterior a la verificación (W-08, julio de 2026) identificó y corrigió 73 artefactos OCR en el conjunto de datos Wilhelm 1924. Texto reverificado contra la primera edición impresa tras todas las correcciones.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -746,7 +746,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 (514 campos no total).",
     result: "Final: 514/514 campos correspondentes (100%).",
     statusKind: "superseded",
-    statusLabel: "Superado.",
+    statusLabel: "Obsoleto.",
     currentStatusNote: "Cotejo comparativo contra a versão inglesa Wilhelm/Baynes de 1950, mantido por integridade histórica. A fonte oracular da app é a primeira edição impressa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
@@ -820,8 +820,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Julgamento (卦辭), Imagem (象辭) e as 6 linhas (爻辭) dos 64 hexagramas, incluindo 用九/用六 para os hexagramas 1 e 2 (514 campos no total).",
     result: "514/514 campos correspondentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte canónica atual.",
-    currentStatusNote: "",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "Uma auditoria de campo pós-verificação (W-08, julho de 2026) identificou e corrigiu 73 artefactos OCR no conjunto de dados Wilhelm 1924. Texto reverificado contra a primeira edição impressa após todas as correções.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -835,7 +835,7 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Comentário próprio de Wilhelm e notas das Dez Asas de Confúcio em juízo, imagem e cada linha; bloco Sobre este hexagrama; Words on the Text (apenas hex 1-2); comentário yong (apenas hex 1-2). 64 hexagramas.",
     result: "1920/1920 campos coincidentes (100%).",
     statusKind: "superseded",
-    statusLabel: "Superado.",
+    statusLabel: "Obsoleto.",
     currentStatusNote: "Cotejo comparativo contra os comentários da versão inglesa Wilhelm/Baynes de 1950, mantido por integridade histórica. O comentário provém da primeira edição impressa (Diederichs, 1924).",
   },
   {
@@ -866,8 +866,8 @@ const BLOCKS_PT: AuditSourceBlock[] = [
       "Comentário próprio de Wilhelm e as Dez Asas confucianas sobre julgamento, imagem e cada linha; bloco Sobre este hexagrama; Wen Yen (hexagramas 1 e 2 apenas); comentário yong (hexagramas 1 e 2 apenas). 64 hexagramas; 2.304 campos no total.",
     result: "2.304/2.304 campos correspondentes (100%).",
     statusKind: "current",
-    statusLabel: "Fonte canónica atual.",
-    currentStatusNote: "",
+    statusLabel: "Vigente nesta data.",
+    currentStatusNote: "Uma auditoria de campo pós-verificação (W-08, julho de 2026) identificou e corrigiu 73 artefactos OCR no conjunto de dados Wilhelm 1924. Texto reverificado contra a primeira edição impressa após todas as correções.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -991,7 +991,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 (514 champs au total).",
     result: "Final : 514/514 champs correspondants (100 %).",
     statusKind: "superseded",
-    statusLabel: "Supplanté.",
+    statusLabel: "Obsolète.",
     currentStatusNote: "Référence croisée comparative vis-à-vis de la version anglaise Wilhelm/Baynes de 1950, conservée à titre historique. La source oraculaire de l'application est la première édition imprimée (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
@@ -1065,8 +1065,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Jugement (卦辭), Image (象辭) et les 6 traits (爻辭) des 64 hexagrammes, y compris 用九/用六 pour les hexagrammes 1 et 2 (514 champs au total).",
     result: "514/514 champs correspondants (100 %).",
     statusKind: "current",
-    statusLabel: "Source canonique en vigueur.",
-    currentStatusNote: "",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "Un audit de champs post-vérification (W-08, juillet 2026) a identifié et corrigé 73 artefacts OCR dans le jeu de données Wilhelm 1924. Texte revérifié par rapport à la première édition imprimée après toutes les corrections.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1080,7 +1080,7 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Commentaire propre de Wilhelm et notes des Dix Ailes de Confucius sur jugement, image et chaque ligne; bloc À propos de cet hexagramme; Words on the Text (hex 1-2 seulement); commentaire yong (hex 1-2 seulement). 64 hexagrammes.",
     result: "1920/1920 champs concordants (100%).",
     statusKind: "superseded",
-    statusLabel: "Supplanté.",
+    statusLabel: "Obsolète.",
     currentStatusNote: "Référence croisée comparative vis-à-vis des commentaires de la version anglaise Wilhelm/Baynes de 1950, conservée à titre historique. Le commentaire est tiré de la première édition imprimée (Diederichs, 1924).",
   },
   {
@@ -1111,8 +1111,8 @@ const BLOCKS_FR: AuditSourceBlock[] = [
       "Commentaire propre de Wilhelm et les Dix Ailes confucéennes sur jugement, image et chaque trait; bloc À propos de cet hexagramme; Wen Yen (hexagrammes 1 et 2 uniquement); commentaire yong (hexagrammes 1 et 2 uniquement). 64 hexagrammes; 2 304 champs au total.",
     result: "2 304/2 304 champs concordants (100 %).",
     statusKind: "current",
-    statusLabel: "Source canonique en vigueur.",
-    currentStatusNote: "",
+    statusLabel: "En vigueur à ce jour.",
+    currentStatusNote: "Un audit de champs post-vérification (W-08, juillet 2026) a identifié et corrigé 73 artefacts OCR dans le jeu de données Wilhelm 1924. Texte revérifié par rapport à la première édition imprimée après toutes les corrections.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1236,7 +1236,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 (514 Felder insgesamt).",
     result: "Final: 514/514 Felder übereinstimmend (100 %).",
     statusKind: "superseded",
-    statusLabel: "Abgelöst.",
+    statusLabel: "Obsolet.",
     currentStatusNote: "Vergleichsreferenz gegen die englische Wilhelm/Baynes-Fassung von 1950, aufbewahrt für die historische Vollständigkeit. Die Orakelquelle der App ist die erste Druckausgabe (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
@@ -1310,8 +1310,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Urteil (卦辭), Bild (象辭) und die 6 Linien (爻辭) aller 64 Hexagramme, einschließlich 用九/用六 für Hexagramm 1 und 2 (514 Felder insgesamt).",
     result: "514/514 Felder übereinstimmend (100 %).",
     statusKind: "current",
-    statusLabel: "Aktuelle kanonische Quelle.",
-    currentStatusNote: "",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "Eine Feldprüfung nach der Verifikation (W-08, Juli 2026) identifizierte und korrigierte 73 OCR-Artefakte im Wilhelm-1924-Datensatz. Text nach allen Korrekturen gegen die erste Druckausgabe nachgeprüft.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1325,7 +1325,7 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Wilhelms eigener Kommentar und Konfuzius' Zehn-Flügel-Noten zu Urteil, Bild und jeder Linie; Block Über dieses Hexagramm; Words on the Text (nur Hex 1-2); yong-Kommentar (nur Hex 1-2). 64 Hexagramme.",
     result: "1920/1920 Felder übereinstimmend (100%).",
     statusKind: "superseded",
-    statusLabel: "Abgelöst.",
+    statusLabel: "Obsolet.",
     currentStatusNote: "Vergleichsreferenz gegen den Kommentar der englischen Wilhelm/Baynes-Fassung von 1950, aufbewahrt für die historische Vollständigkeit. Der Kommentar entstammt der ersten Druckausgabe (Diederichs, 1924).",
   },
   {
@@ -1356,8 +1356,8 @@ const BLOCKS_DE: AuditSourceBlock[] = [
       "Wilhelms eigener Kommentar und die Zehn-Flügel-Noten zu Urteil, Bild und jeder Linie; Block Über dieses Hexagramm; Wen Yen (nur Hexagramm 1 und 2); yong-Kommentar (nur Hexagramm 1 und 2). 64 Hexagramme; 2.304 Felder insgesamt.",
     result: "2.304/2.304 Felder übereinstimmend (100 %).",
     statusKind: "current",
-    statusLabel: "Aktuelle kanonische Quelle.",
-    currentStatusNote: "",
+    statusLabel: "Gültig zum Stichtag.",
+    currentStatusNote: "Eine Feldprüfung nach der Verifikation (W-08, Juli 2026) identifizierte und korrigierte 73 OCR-Artefakte im Wilhelm-1924-Datensatz. Text nach allen Korrekturen gegen die erste Druckausgabe nachgeprüft.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1480,7 +1480,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 (514 campi totali).",
     result: "Final: 514/514 campi corrispondenti (100%).",
     statusKind: "superseded",
-    statusLabel: "Superato.",
+    statusLabel: "Obsoleto.",
     currentStatusNote: "Riferimento incrociato comparativo rispetto alla versione inglese Wilhelm/Baynes del 1950, conservato per completezza storica. La fonte oraculare dell'app è la prima edizione a stampa (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
@@ -1554,8 +1554,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Giudizio (卦辭), Immagine (象辭) e le 6 linee (爻辭) di tutti i 64 esagrammi, incluso 用九/用六 per gli esagrammi 1 e 2 (514 campi totali).",
     result: "514/514 campi corrispondenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte canonica corrente.",
-    currentStatusNote: "",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "Un audit di campo post-verifica (W-08, luglio 2026) ha identificato e corretto 73 artefatti OCR nel dataset Wilhelm 1924. Testo riverificato rispetto alla prima edizione a stampa dopo tutte le correzioni.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1569,7 +1569,7 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Commento proprio di Wilhelm e note delle Dieci Ali di Confucio su giudizio, immagine e ogni linea; blocco Informazioni su questo esagramma; Words on the Text (solo hex 1-2); commento yong (solo hex 1-2). 64 esagrammi.",
     result: "1920/1920 campi coincidenti (100%).",
     statusKind: "superseded",
-    statusLabel: "Superato.",
+    statusLabel: "Obsoleto.",
     currentStatusNote: "Riferimento incrociato comparativo rispetto ai commenti della versione inglese Wilhelm/Baynes del 1950, conservato per completezza storica. Il commento è tratto dalla prima edizione a stampa (Diederichs, 1924).",
   },
   {
@@ -1600,8 +1600,8 @@ const BLOCKS_IT: AuditSourceBlock[] = [
       "Commento proprio di Wilhelm e le note delle Dieci Ali confuciane su giudizio, immagine e ogni linea; blocco Informazioni su questo esagramma; Wen Yen (solo esagrammi 1 e 2); commento yong (solo esagrammi 1 e 2). 64 esagrammi; 2.304 campi in totale.",
     result: "2.304/2.304 campi corrispondenti (100%).",
     statusKind: "current",
-    statusLabel: "Fonte canonica corrente.",
-    currentStatusNote: "",
+    statusLabel: "Vigente alla data.",
+    currentStatusNote: "Un audit di campo post-verifica (W-08, luglio 2026) ha identificato e corretto 73 artefatti OCR nel dataset Wilhelm 1924. Testo riverificato rispetto alla prima edizione a stampa dopo tutte le correzioni.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1795,8 +1795,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "全64卦の判断（卦辭）、象（象辭）、6本の爻（爻辭）、卦1・卦2の用九/用六を含む、合計514フィールド。",
     result: "514/514フィールドが一致（100%）。",
     statusKind: "current",
-    statusLabel: "現在の標準オラクルソース。",
-    currentStatusNote: "",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "事後フィールド審査W-08（2026年7月）により、Wilhelm 1924データセット内のOCRアーティファクト73件を特定・修正しました。すべての修正後、初版印刷版に対してテキストを再検証済み。",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -1841,8 +1841,8 @@ const BLOCKS_JA: AuditSourceBlock[] = [
       "ヴィルヘルム自身の注釈と十翼による卦辞・象辞・各爻への注；この卦についてブロック；Wen Yen（卦1・卦2のみ）；用九/用六の注釈（卦1・卦2のみ）。64卦；合計2,304フィールド。",
     result: "2,304/2,304フィールドが一致（100%）。",
     statusKind: "current",
-    statusLabel: "現在の標準注釈ソース。",
-    currentStatusNote: "",
+    statusLabel: "現時点で有効。",
+    currentStatusNote: "事後フィールド審査W-08（2026年7月）により、Wilhelm 1924データセット内のOCRアーティファクト73件を特定・修正しました。すべての修正後、初版印刷版に対してテキストを再検証済み。",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -1962,7 +1962,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
     standardCompared: "全部64卦的卦辭、象辭，以及6条爻辭，包括用九/用六（共514个字段）。",
     result: "最终: 514/514个字段一致（100%）。",
     statusKind: "superseded",
-    statusLabel: "已超代。",
+    statusLabel: "已废止。",
     currentStatusNote: "作为与1950年英译本（卫礼贤/贝恩斯）的对照参考予以保留，以供历史完整性参考。本应用的卦辞来源为初版印刷版（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）。",
   },
   {
@@ -2034,8 +2034,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "全部64卦的卦辭、象辭，以及6条爻辭，包括第1、2卦的用九/用六（共514个字段）。",
     result: "514/514个字段一致（100%）。",
     statusKind: "current",
-    statusLabel: "当前标准卦辞来源。",
-    currentStatusNote: "",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "事后字段审计W-08（2026年7月）在Wilhelm 1924数据集中识别并修正了73处OCR残留。所有修正完成后，已对照首版印刷版重新验证文本。",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2049,7 +2049,7 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "卫礼贤本人注释与孔子十翼对卦辞、象辞及六爻的注；关于此卦块；Words on the Text（仅第1-2卦）；用九/用六注释（仅第1-2卦）。64卦。",
     result: "1920/1920 字段一致（100%）。",
     statusKind: "superseded",
-    statusLabel: "已超代。",
+    statusLabel: "已废止。",
     currentStatusNote: "作为与1950年英译本（卫礼贤/贝恩斯）注释的对照参考予以保留。注释取自初版印刷版（Diederichs，1924年）。",
   },
   {
@@ -2080,8 +2080,8 @@ const BLOCKS_ZH: AuditSourceBlock[] = [
       "卫礼贤本人注释与儒家十翼对卦辞、象辞及六爻的注；关于此卦块；Wen Yen（仅第1、2卦）；用九/用六注释（仅第1、2卦）。64卦；共2,304个字段。",
     result: "2,304/2,304个字段一致（100%）。",
     statusKind: "current",
-    statusLabel: "当前标准注释来源。",
-    currentStatusNote: "",
+    statusLabel: "截至本日有效。",
+    currentStatusNote: "事后字段审计W-08（2026年7月）在Wilhelm 1924数据集中识别并修正了73处OCR残留。所有修正完成后，已对照首版印刷版重新验证文本。",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2200,7 +2200,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
     standardCompared: "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "최종: 514/514개 필드 일치(100%).",
     statusKind: "superseded",
-    statusLabel: "대체됨.",
+    statusLabel: "폐기됨.",
     currentStatusNote: "1950년 영어 번역본（Wilhelm/Baynes）과의 비교 대조 참고용으로 기록을 보관합니다. 앱의 오라클 출처는 초판 인쇄본（Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag）입니다.",
   },
   {
@@ -2272,8 +2272,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "64개 괘 전체의 괘사(卦辭), 상(象辭), 6개 효(爻辭), 괘 1과 2의 용구/용육(用九/用六) 포함, 총 514개 필드.",
     result: "514/514개 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현행 표준 오라클 출처.",
-    currentStatusNote: "",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "사후 필드 감사 W-08 (2026년 7월)에서 Wilhelm 1924 데이터셋의 OCR 아티팩트 73건을 식별 및 수정했습니다. 모든 수정 후 초판 인쇄본과 텍스트를 재검증했습니다.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2287,7 +2287,7 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "Wilhelm 자신의 주석과 공자 십익의 괘사·상사·각 효 주석; 이 괘에 대하여 블록; Words on the Text(1-2괴만); 용 주석(1-2괴만). 64괴.",
     result: "1920/1920 필드 일치(100%).",
     statusKind: "superseded",
-    statusLabel: "대체됨.",
+    statusLabel: "폐기됨.",
     currentStatusNote: "1950년 영어 번역본（Wilhelm/Baynes）의 주석과의 비교 대조 참고용으로 보관합니다. 주석은 초판 인쇄본（Diederichs, 1924년）에서 가져온 것입니다.",
   },
   {
@@ -2318,8 +2318,8 @@ const BLOCKS_KO: AuditSourceBlock[] = [
       "Wilhelm 자신의 주석과 십익의 괘사, 상사, 각 효 주석; 이 괘에 대하여 블록; Wen Yen(괘 1, 2만); 용 주석(괘 1, 2만). 64괘; 총 2,304개 필드.",
     result: "2,304/2,304개 필드 일치(100%).",
     statusKind: "current",
-    statusLabel: "현행 표준 주석 출처.",
-    currentStatusNote: "",
+    statusLabel: "현재 기준 유효.",
+    currentStatusNote: "사후 필드 감사 W-08 (2026년 7월)에서 Wilhelm 1924 데이터셋의 OCR 아티팩트 73건을 식별 및 수정했습니다. 모든 수정 후 초판 인쇄본과 텍스트를 재검증했습니다.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2440,7 +2440,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
     standardCompared: "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 (514 حقلاً إجمالاً).",
     result: "نهائي: تطابق 514/514 حقلاً (100%).",
     statusKind: "superseded",
-    statusLabel: "تجاوزه نظير أحدث.",
+    statusLabel: "مهمل.",
     currentStatusNote: "مرجع مقارن مقابل الترجمة الإنجليزية Wilhelm/Baynes عام 1950، محتفظ به لاستيفاء السجل التاريخي. مصدر الأوراكل في التطبيق هو الطبعة الأولى المطبوعة (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag).",
   },
   {
@@ -2512,8 +2512,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "الحكم (卦辭)، الصورة (象辭)، والخطوط الستة (爻辭) لجميع الـ64 هكساغرام، بما في ذلك 用九/用六 للهكساغرامين 1 و2 (514 حقلاً إجمالاً).",
     result: "تطابق 514/514 حقلاً (100%).",
     statusKind: "current",
-    statusLabel: "المصدر الأساسي الساري.",
-    currentStatusNote: "",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "كشف تدقيق الحقول اللاحق للتحقق W-08 (يوليو 2026) عن 73 خللاً في التعرف الضوئي على الحروف ضمن مجموعة بيانات Wilhelm 1924 وعالجها. أُعيد التحقق من النص مقارنةً بالطبعة الأولى المطبوعة بعد تطبيق جميع التصحيحات.",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2527,7 +2527,7 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "شرح Wilhelm نفسه وملاحظات العشرة أجنحة لConfucius على الحكم والصورة وكل خط؛ كتلة حول هذا الHexagram؛ Words on the Text (Hexagram 1-2 فقط)؛ شرح yong (1-2 فقط). 64 hexagram.",
     result: "1920/1920 حقلاً متطابقاً (100%).",
     statusKind: "superseded",
-    statusLabel: "تجاوزه نظير أحدث.",
+    statusLabel: "مهمل.",
     currentStatusNote: "مرجع مقارن مقابل تعليق الترجمة الإنجليزية Wilhelm/Baynes عام 1950، محتفظ به لاستيفاء السجل التاريخي. التعليق مستمد من الطبعة الأولى المطبوعة (Diederichs، 1924).",
   },
   {
@@ -2558,8 +2558,8 @@ const BLOCKS_AR: AuditSourceBlock[] = [
       "شرح فيلهلم نفسه وملاحظات العشرة أجنحة على الحكم والصورة وكل خط؛ كتلة حول هذا الهكساغرام؛ Wen Yen (هكساغرام 1 و2 فقط)؛ شرح yong (هكساغرام 1 و2 فقط). 64 هكساغرام؛ 2,304 حقلا إجمالا.",
     result: "تطابق 2,304/2,304 حقلاً (100%).",
     statusKind: "current",
-    statusLabel: "المصدر الأساسي الساري.",
-    currentStatusNote: "",
+    statusLabel: "ساري حتى هذا التاريخ.",
+    currentStatusNote: "كشف تدقيق الحقول اللاحق للتحقق W-08 (يوليو 2026) عن 73 خللاً في التعرف الضوئي على الحروف ضمن مجموعة بيانات Wilhelm 1924 وعالجها. أُعيد التحقق من النص مقارنةً بالطبعة الأولى المطبوعة بعد تطبيق جميع التصحيحات.",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
@@ -2680,7 +2680,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
     standardCompared: "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), जिसमें 用九/用六 शामिल है (कुल 514 फ़ील्ड)।",
     result: "अंतिम: 514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "superseded",
-    statusLabel: "अतिक्रमित।",
+    statusLabel: "अप्रचलित।",
     currentStatusNote: "1950 के Wilhelm/Baynes अंग्रेज़ी अनुवाद के साथ तुलनात्मक क्रॉस-रेफरेंस के रूप में संग्रहीत। ऐप का ओरेकल स्रोत प्रथम मुद्रित संस्करण (Wilhelm, R. (1924). I Ging: Das Buch der Wandlungen. Eugen Diederichs Verlag) है।",
   },
   {
@@ -2752,8 +2752,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "सभी 64 हेक्साग्राम का निर्णय (卦辭), छवि (象辭), और 6 रेखाएँ (爻辭), हेक्साग्राम 1 और 2 के 用九/用六 सहित (कुल 514 फ़ील्ड)।",
     result: "514/514 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान प्रामाणिक स्रोत।",
-    currentStatusNote: "",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "पोस्ट-वेरिफिकेशन फ़ील्ड ऑडिट W-08 (जुलाई 2026) ने Wilhelm 1924 डेटासेट में 73 OCR अवशेष पहचानकर सुधारे। सभी सुधारों के बाद प्रथम मुद्रित संस्करण के विरुद्ध पाठ को पुन: सत्यापित किया गया।",
   },
   {
     id: "wilhelm-commentary-txt-maestro-2026-06-23",
@@ -2767,7 +2767,7 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "Wilhelm का अपना टीका और Confucius के दस पंख की judgment/image/प्रत्येक रेखा पर टिप्पणियाँ; About this hexagram ब्लॉक; Words on the Text (केवल hex 1-2); yong टीका (1-2)। 64 हेक्साग्राम।",
     result: "1920/1920 फ़ील्ड मेल (100%)।",
     statusKind: "superseded",
-    statusLabel: "अतिक्रमित।",
+    statusLabel: "अप्रचलित।",
     currentStatusNote: "1950 के Wilhelm/Baynes अंग्रेज़ी टीके के साथ तुलनात्मक क्रॉस-रेफरेंस के रूप में संग्रहीत। टिप्पणी प्रथम मुद्रित संस्करण (Diederichs, 1924) से ली गई है।",
   },
   {
@@ -2798,8 +2798,8 @@ const BLOCKS_HI: AuditSourceBlock[] = [
       "Wilhelm की अपनी टिप्पणी और निर्णय, छवि और प्रत्येक रेखा पर दस पंखों की टिप्पणियाँ; About this hexagram ब्लॉक; Wen Yen (केवल हेक्साग्राम 1 और 2); yong टिप्पणी (केवल हेक्साग्राम 1 और 2)। 64 हेक्साग्राम; कुल 2,304 फ़ील्ड।",
     result: "2,304/2,304 फ़ील्ड मेल खाए (100%)।",
     statusKind: "current",
-    statusLabel: "वर्तमान प्रामाणिक स्रोत।",
-    currentStatusNote: "",
+    statusLabel: "इस तिथि तक वैध।",
+    currentStatusNote: "पोस्ट-वेरिफिकेशन फ़ील्ड ऑडिट W-08 (जुलाई 2026) ने Wilhelm 1924 डेटासेट में 73 OCR अवशेष पहचानकर सुधारे। सभी सुधारों के बाद प्रथम मुद्रित संस्करण के विरुद्ध पाठ को पुन: सत्यापित किया गया।",
   },
   {
     id: "huang-mutation-pdf-2026-06-22",
