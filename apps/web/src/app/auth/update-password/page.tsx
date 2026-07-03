@@ -214,24 +214,20 @@ export default function UpdatePasswordPage() {
       if (!res.ok) {
         const d = (await res.json()) as { code?: string; error?: string };
         if (d.code === "TWO_FACTOR_STEP_UP_REQUIRED") {
-          // 2FA window expired server-side — send back to 2FA step
+          // 2FA window expired server-side — show error, user must retry the flow
           setErr(TF.challengeSessionExpired);
-          setState(state === "form" ? "form" : "form"); // keep showing error on form
           return;
         }
         setErr(d.error ?? L.errGeneric);
         return;
       }
 
-      // Send security notification — best-effort, never blocks the flow
-      void fetch("/api/auth/notify-password-changed", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-
+      // Server has changed the password, sent the notification email, and
+      // invalidated all active sessions (global sign-out). Redirect to login
+      // so the user authenticates with their new credentials.
       setMsg(L.successMsg);
       setState("done");
-      setTimeout(() => router.replace("/"), 1500);
+      setTimeout(() => router.replace("/login"), 1500);
     } catch {
       setErr(L.errGeneric);
     } finally {

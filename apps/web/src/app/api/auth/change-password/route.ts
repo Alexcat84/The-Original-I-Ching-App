@@ -1,7 +1,14 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import {
+  formatPasswordChangedEmail,
+  getUpdatePasswordUiMessages,
+  parseAppLocale,
+} from "@iching-oracle/i18n";
 import { apiError } from "@/lib/api-error";
-import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { getAuthenticatedUser, invalidateAuthCache } from "@/lib/auth/bearer-user";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
 
 export const runtime = "nodejs";
 
@@ -9,6 +16,10 @@ export const runtime = "nodejs";
 const STEP_UP_TTL_MINUTES = 15;
 
 export async function POST(req: Request) {
+  // Extract raw JWT before getAuthenticatedUser consumes the body/headers,
+  // so we can use it for global sign-out and cache invalidation afterward.
+  const bearerToken = (req.headers.get("authorization") ?? "").slice(7).trim();
+
   const authUser = await getAuthenticatedUser(req);
   if (!authUser) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
@@ -82,8 +93,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Use the service-role admin client — bypasses RLS and is not subject to
-  // the user's session state (which may be a recovery session with limited scope).
+  // Update password using admin client (service role — bypasses RLS and recovery-session scope limits).
   const { error } = await supabase.auth.admin.updateUserById(authUser.userId, { password });
   if (error) {
     return apiError(500, {
@@ -92,6 +102,45 @@ export async function POST(req: Request) {
       action: "retry",
       message: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
+  }
+
+  // Send security notification email BEFORE invalidating the session.
+  // (After global sign-out the bearer token is revoked and a separate
+  //  client-side notify call would get 401 — so we do it here.)
+  const resendApiKey = process.env.RESEND_API_KEY?.trim();
+  const from = process.env.TWO_FACTOR_EMAIL_FROM?.trim() ?? "noreply@theoriginaliching.com";
+  if (resendApiKey) {
+    try {
+      const cookieStore = await cookies();
+      const locale = parseAppLocale(cookieStore.get(UI_LOCALE_COOKIE)?.value);
+      const { subject, text, html } = formatPasswordChangedEmail(
+        getUpdatePasswordUiMessages(locale),
+      );
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${resendApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ from, to: [authUser.email], subject, text, html }),
+      });
+    } catch {
+      // Non-fatal — never block the password change response
+    }
+  }
+
+  // Invalidate ALL active sessions for this user (global sign-out).
+  // Standard security requirement: a stolen session should not remain valid
+  // after the user resets their password.
+  if (bearerToken) {
+    try {
+      await supabase.auth.admin.signOut(bearerToken, "global");
+    } catch {
+      // Non-fatal — password was already changed; sign-out failure is acceptable
+    }
+    // Also evict from the in-process JWT cache so this serverless instance
+    // doesn't serve the now-revoked token for the remaining 60-second TTL.
+    invalidateAuthCache(bearerToken);
   }
 
   return NextResponse.json({ ok: true });
