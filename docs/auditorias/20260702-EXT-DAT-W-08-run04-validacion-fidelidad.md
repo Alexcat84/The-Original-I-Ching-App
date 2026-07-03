@@ -1,11 +1,13 @@
 # Validación W-08 — Run 04 (cobertura completa 2 hex/lote)
-**Código:** `20260702-EXT-DAT-W-08-RUN-04` · **Familia:** DAT-W · **Estado:** errores-parcialmente-aplicados
+**Código:** `20260702-EXT-DAT-W-08-RUN-04` · **Familia:** DAT-W · **Estado:** cerrado
 
 **Ejecutado por:** Claude Sonnet 5 (auditor externo bilingüe DE/EN)
 **Fecha:** 2 jul 2026
 **Script:** `scripts/validate-wilhelm-de-fidelity-2hex.py` (nuevo — 2 hexagramas por lote)
 **Commit dataset al momento del run:** `be47dede`
-**Correcciones CAT-A aplicadas en:** pendiente de commit
+**Correcciones CAT-A aplicadas en:** `2cd8eb5f`
+**Correcciones CAT-B round 1 aplicadas en:** `ef1872e7`
+**Correcciones CAT-B round 2 aplicadas en:** `40b3fd98`
 
 ---
 
@@ -195,7 +197,7 @@ Los 4 archivos de datos fueron copiados junto al script para el run:
 
 ## Resumen de correcciones
 
-### CAT-A aplicadas (49 fixes, script: `repair-w08-run04.mjs`)
+### CAT-A aplicadas (49 fixes, script: `repair-w08-run04.mjs`, commit `2cd8eb5f`)
 
 | Archivos fuente modificados | Fixes |
 |----------------------------|-------|
@@ -211,35 +213,67 @@ Tipos de fix:
 - Mayúscula ẞ → ß: hex 1, 2, 60
 - **Nuevo TYPE A**: hex 44 L1 — oración oracular desplazada a bookOne
 
-### CAT-B pendientes (requieren texto del libro)
+---
 
-| Hex | Campo | Descripción |
-|-----|-------|-------------|
-| 1 | `about.rulerNote` | Meses "April-Mai" (¿debería ser "Mai-Juni"?) |
-| 2 | `about.rulerNote` | Meses "Oktober-November" (¿debería ser "November-Dezember"?) |
-| 2 | `image.tenWings` | Campo con contenido incorrecto (copia de bookOne) |
-| 6 | `lines[1].commentary.tenWings` | Trigrama "Kan" faltante + comilla suelta |
-| 15 | `lines[2].commentary.tenWings` | "äußerst ehrfurchtsvoll" vs "voll von Verdienst" |
-| 20 | `judgment.tenWings` | Parentético espurio "(statt Gen Gen steht Sun über Kun)" |
-| 29 | `about.miscNotes` | "Schöpferische" vs "Receptive" — contradicción factual |
-| 37 | `lines[4].text` | "naht er seiner Sippe" — ¿falta "sich"? |
-| 44 | `lines[2].commentary.tenWings` | Guiones y saltos anómalos (leve) |
-| 45 | `about.rulerNote` | "zweitem und viertem Platz" — ¿debería ser "viertem und fünftem"? |
-| 49 | `judgment.tenWings` | "Gi zusammen mit Kun\nes bedeutet Erde" — OCR fragmentó sintaxis |
-| 49 | `lines[2].commentary.tenWings` | Pronombre "ihr" vs "ihm" + carácter suelto "•" |
-| 52 | `lines[1].commentary.tenWings` | Nota al pie insertada en mitad de párrafo |
-| 55 | `lines[4].commentary.tenWings` | Falta "Heil" al final |
-| 55 | `image.tenWings` | Frase con estructura anómala ("zusammengehalten-ohne weiteres") |
-| 56 | `lines[3].commentary.tenWings` | Frase fragmentada con guiones |
+### CAT-B resueltas — Round 1 (11 fixes, script: `repair-w08-catb-round1.mjs`, commit `ef1872e7`)
 
-### CAT-C — No accionable (contenido legítimo Wilhelm, diferencias editoriales)
+Usuario proveyó texto directo del libro para todos los ítems. Sin reconstrucciones.
+
+| Hex | Campo afectado (`fields`) | Campo generado | Fixes aplicados |
+|-----|--------------------------|----------------|-----------------|
+| 44 | `L3_b_comentario` | `lines[2].commentary.tenWings` | Comilla apertura añadida; 2 pares de guiones parentéticos restaurados (`entspricht―da`→`entspricht — da`; `Zusammentreffen das`→`Zusammentreffen —`); basura final `\n-\n―` eliminada |
+| 45 | `ruler_note` | `about.rulerNote` | Reemplazo completo: "Neun auf zweitem Platz" es OCR de "zweiter Linie die Neun auf viertem Platz" — texto correcto confirmado del libro |
+| 49 | `commentary_decision` | `judgment.tenWings` | Eliminados marcadores de lista basura `\n-\n-\n`; 2 pares de guiones parentéticos restaurados (`weist ähnlich…war — auf`; `Kun — es bedeutet Erde —`) |
+| 52 | `L2_b_comentario` | `lines[1].commentary.tenWings` | Nota al pie "Der Satz im Kommentar: 'Gen Ki Dschr'…" inserida por OCR entre "Kern" y "zeichens" — eliminada; "Kernzeichens" reconstruido |
+| 55 | `L5_b_comentario` | `lines[4].commentary.tenWings` | Coma espuria `",hingehen"` → `"hingehen"`; espacio faltante `es"kommen"` → `es "kommen"` |
+
+### CAT-B resueltas — Round 2 (13 fixes, script: `repair-w08-catb-round2.mjs`, commit `40b3fd98`)
+
+| Hex | Campo afectado (`fields`) | Campo generado | Fixes aplicados |
+|-----|--------------------------|----------------|-----------------|
+| 2 | `commentary_image` | `image.tenWings` | Reemplazo completo: campo contenía copia del `image.bookOne` (texto "Ebenso wie es nur einen Himmel gibt…") en vez del Da Xiang. Reemplazado con texto correcto confirmado del libro: "Der Zustand der Erde ist die empfangende Hingebung. / So trägt der Edle weiträumigen Wesens die Außenwelt." + prosa comentario |
+| 6 | `L2_b_comentario` | `lines[1].commentary.tenWings` | Comilla apertura añadida a cita Xiao Xiang; comillas alrededor de "das Abgründige" restauradas; guión apertura en "— als Neun —" añadido; coma en "und, mit den andern" añadida |
+| 15 | `L3_b_comentario` | `lines[2].commentary.tenWings` | Comilla apertura añadida. **Ver: Pendiente de verificación de contenido** |
+| 49 | `L3_b_comentario` | `lines[2].commentary.tenWings` | Comilla apertura añadida; viñeta espuria `•` entre cita oracular y prosa eliminada; pronombre "ihr" confirmado correcto en libro (no "ihm") |
+| 55 | `commentary_image` | `image.tenWings` | Em-dash antes de "namentlich" restaurado; espacio antes de `"Durchbeißen"` añadido; "zusammengehalten-ohne" → "zusammengehalten — ohne"; salto de línea espurio antes de "luftreinigende" eliminado |
+| 56 | `L4_b_comentario` | `lines[3].commentary.tenWings` | Salto de línea entre "ist" y "schwach" eliminado; em-dash de cierre del parentético añadido: "— noch nicht erreicht hat" |
+
+---
+
+### CAT-C — Confirmados sin cambio (verificados contra libro físico)
+
+| Hex | Campo | Resultado |
+|-----|-------|-----------|
+| 1 | `about.rulerNote` | ✅ "April-Mai" correcto en libro — diferencia con Baynes es editorial, no OCR |
+| 2 | `about.rulerNote` | ✅ "Oktober-November" correcto en libro — ídem |
+| 20 | `judgment.tenWings` | ✅ Parentético "(statt Gen Gen steht Sun über Kun)" presente en libro — no es espurio |
+| 29 | `about.miscNotes` | ✅ "das Schöpferische selbst" correcto en libro — Baynes traduce diferente intencionalmente |
+| 37 | `lines[4].text` | ✅ "naht er seiner Sippe" correcto en libro — sin "sich"; gramática arcaica intencional |
+
+CAT-C adicionales sin verificación de libro (contenido legítimo Wilhelm, diferencias editoriales):
 Hex 18 (nota zyklischen Zeichen), 22 (párrafo Schopenhauer), 42 (transliteración Bau Hi), 46 (transliteración Schong), 54 (Bemerkung matrimonio), 61 (párrafo Dschou I Hong Giä), 64 (Bemerkung final).
+
+---
+
+### ✅ Hex 15 L3 — Verificación completada (2026-07-02)
+
+**Confirmado contra libro físico (Part II, Xiao Xiang por línea).**
+
+El libro tiene formato (a)/(b) en la sección Part II de comentarios — no en Buch I, que no usa ese formato para Hex 15. La confusión de navegación fue del auditor al dirigir al usuario a Buch I.
+
+Texto del libro (con artefactos OCR visibles): `"In seiner Art herrlich, in seinen Sitten ehrfurchtsvoll, ist der Bescheidene äußerst ehrfurdttsvoIl, und deshalb vermag er seine Stellung zu wahren."`
+
+El "ehrfurdttsvoIl" del libro = "ehrfurchtsvoll" con OCR garbled (`ch`→`dts`, `l`→`I`). La segunda aparición es correcta — no hay error en el dataset. El fix de round 2 (comilla apertura) fue el único necesario.
+
+**Todos los ítems CAT-B resueltos. Auditoría W-08 run04 cerrada.**
 
 ---
 
 ## Acción tomada
 
-- Script `repair-w08-run04.mjs` aplicado: 49 fixes en 3 archivos fuente.
-- `npm run build:data` ejecutado: 6 JSONs regenerados.
-- Pendiente: **commit** del resultado.
-- Pendiente: **CAT-B** — usuario proveerá texto del libro para los 16 campos listados arriba.
+- Script `repair-w08-run04.mjs` aplicado: 49 fixes CAT-A en 3 archivos fuente → commit `2cd8eb5f`.
+- Script `repair-w08-catb-round1.mjs` aplicado: 11 fixes CAT-B en `comments-merged.json` → commit `ef1872e7`.
+- Script `repair-w08-catb-round2.mjs` aplicado: 13 fixes CAT-B en `comments-merged.json` → commit `40b3fd98`.
+- `npm run build:data` ejecutado después de cada ronda.
+- 16 ítems CAT-B originales resueltos: 11 fixes (round1) + 13 fixes (round2) + 5 CAT-C confirmados sin cambio.
+- H15 L3 verificado contra libro el 2026-07-02 — contenido correcto, solo faltaba la comilla apertura (ya aplicada en round 2). **Auditoría cerrada.**

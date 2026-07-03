@@ -1,5 +1,5 @@
 # Auditoría externa: Contaminación OCR y sangrado de campos en Wilhelm DE 1924
-**Código:** `20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination` · **Familia:** DAT-W · **Estado:** remediado-pendiente-cat-b
+**Código:** `20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination` · **Familia:** DAT-W · **Estado:** cerrado
 
 **Validado por:** Claude Sonnet 5 (auditor externo bilingüe DE/EN)
 **Fecha:** 1 jul 2026
@@ -112,4 +112,4 @@ El patrón es uniforme: el texto oracular de la línea fue cortado en el proceso
 | [Run 01](20260701-EXT-DAT-W-08-run01-validacion-fidelidad.md) | `b485d92a` | 30 errores en 6 lotes | Todos corregidos en `652e9e57` + `50705abf` |
 | [Run 02](20260701-EXT-DAT-W-08-run02-validacion-fidelidad.md) | `1e9ea602` | 2 errores + lote 9-16 vacío (API) | Corregidos en `be47dede` |
 | [Run 03](20260702-EXT-DAT-W-08-run03-validacion-fidelidad.md) | `1e9ea602` | 3 errores en lote 9-16 | Corregidos en `be47dede` |
-| [Run 04](20260702-EXT-DAT-W-08-run04-validacion-fidelidad.md) | `be47dede` | 49 CAT-A aplicados + 16 CAT-B pendientes libro | 49 fixes aplicados en commit pendiente |
+| [Run 04](20260702-EXT-DAT-W-08-run04-validacion-fidelidad.md) | `be47dede` | 49 CAT-A + 16 CAT-B (24 fixes + 5 CAT-C confirmados) | 49 CAT-A en `2cd8eb5f`; CAT-B round1 (11 fixes) en `ef1872e7`; CAT-B round2 (13 fixes) en `40b3fd98`; H15 contenido verificado el 2026-07-02 ✅ |
