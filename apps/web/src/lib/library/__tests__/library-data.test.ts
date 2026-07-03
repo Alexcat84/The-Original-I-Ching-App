@@ -28,7 +28,7 @@ describe("library-data (Wilhelm DE runtime)", () => {
   });
 
   it("loads Wilhelm DE commentary for detail pages", () => {
-    const detail = getLibraryDetail(1);
+    const detail = getLibraryDetail(1)!;
     expect(detail.records.wilhelm.judgment).toMatch(/Schöpf/i);
     expect(detail.commentary.wilhelm.about.intro.length).toBeGreaterThan(0);
   });
