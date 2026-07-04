@@ -3103,7 +3103,15 @@ export default function WebViewScreen() {
       // Applies equally in staging and production builds — there is no legitimate
       // reason for the APK to navigate outside its configured domain outside of the
       // Google OAuth flow (handled above) and the rn_signout reload (handled above).
-      if (!url.startsWith(BASE_URL)) {
+      // Parsed-origin comparison prevents bypass via same-prefix subdomains
+      // (e.g. "https://example.com.evil.com/" would pass a startsWith check).
+      let crossOrigin = true;
+      try {
+        crossOrigin = new URL(url).origin !== new URL(BASE_URL).origin;
+      } catch {
+        // Unparseable URL — block it.
+      }
+      if (crossOrigin) {
         if (__DEV__) console.warn("[WebView] cross-origin navigation blocked:", url);
         return false;
       }

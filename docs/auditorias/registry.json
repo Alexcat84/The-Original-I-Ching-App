@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-07-01",
+  "updatedAt": "2026-07-04",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -1265,6 +1265,20 @@
       "relatedTests": [
         "VF-FID-001 hexagram-fidelity-runtime"
       ]
+    },
+    {
+      "code": "20260704-AUD-FABLE5-01 full-repo-audit",
+      "title": "Auditoría completa del repositorio — Fable 5 (13 hallazgos, 5 cerrados en PR)",
+      "shortName": "full-repo-audit",
+      "type": "AUD",
+      "family": "SEC",
+      "date": "2026-07-04",
+      "status": "mitigated",
+      "path": "docs/auditorias/20260704-AUD-FABLE5-01-full-repo-audit.md",
+      "relatedCodes": [
+        "20260616-AUD-SEC-01 npm-dependencies"
+      ],
+      "relatedTests": []
     }
   ]
 }

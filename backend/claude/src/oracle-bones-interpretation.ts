@@ -331,8 +331,8 @@ function buildOracleBonesUserContent(
 
   return `
 NEW ORACLE BONES CONSULTATION${hasContext ? " (same thread as prior readings)" : ""}:
-Positive charge (affirmation tested): "${cast.positiveCharge}"
-Negative charge: "${cast.negativeCharge}"
+Positive charge (affirmation tested): <user_question>${cast.positiveCharge}</user_question>
+Negative charge: <user_question>${cast.negativeCharge}</user_question>
 Medium: ${cast.medium} (turtle plastron vs ox scapula — aesthetic only; verdict is fixed)
 Crack pattern id: ${cast.patternId}
 System verdict code: ${cast.verdict}

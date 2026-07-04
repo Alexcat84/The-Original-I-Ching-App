@@ -53,9 +53,29 @@ export async function getAuthenticatedUser(req: Request): Promise<AuthenticatedU
 
 /**
  * Invalidates any cached entry for this token (call on logout or token revocation).
- * Sensitive operations (delete account, 2FA changes) should call auth.getUser directly
- * rather than relying on getAuthenticatedUser to bypass the cache.
  */
 export function invalidateAuthCache(token: string) {
   jwtCache.delete(token);
+}
+
+/**
+ * Like getAuthenticatedUser but always hits Supabase — no cache.
+ * Use for irreversible operations (account delete, 2FA disable) where a stale
+ * cached result would be a security risk.
+ */
+export async function getAuthenticatedUserUncached(req: Request): Promise<AuthenticatedUser | null> {
+  const header = req.headers.get("authorization") ?? "";
+  const token = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
+  if (!token) return null;
+
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data.user?.id) return null;
+
+  const email = data.user.email ?? "";
+  if (!email || !data.user.email_confirmed_at) return null;
+
+  return { userId: data.user.id, email };
 }
