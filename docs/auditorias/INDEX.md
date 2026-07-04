@@ -171,6 +171,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260622-AUD-DOC-01 user-docs-vs-implementation` | DOC | Docs producto vs código | closed | [20260622-AUD-DOC-01-user-docs-vs-implementation.md](./20260622-AUD-DOC-01-user-docs-vs-implementation.md) |
 | `20260625-PLAN-DOC-04 audits-timeline-ui` | DOC | Plan timeline único `/audits` | closed | [20260625-PLAN-DOC-04-audits-timeline-ui.md](./20260625-PLAN-DOC-04-audits-timeline-ui.md) |
 | `20260616-AUD-SEC-01 npm-dependencies` | SEC | Dependencias npm | open | [20260616-AUD-SEC-01-npm-dependencies.md](./20260616-AUD-SEC-01-npm-dependencies.md) |
+| `20260704-AUD-FABLE5-01 full-repo-audit` | SEC | Auditoría completa repo Fable 5 (13 hallazgos) | mitigated | [20260704-AUD-FABLE5-01-full-repo-audit.md](./20260704-AUD-FABLE5-01-full-repo-audit.md) |
 | `00000000-RPT-ARCH-01 architecture-fullstack` | ARCH | Arquitectura full-stack | reference | [00000000-RPT-ARCH-01-architecture-fullstack.md](./00000000-RPT-ARCH-01-architecture-fullstack.md) |
 | `00000000-AUD-SYM-01 dynamic-symbols` | SYM | Símbolos dinámicos | closed | [00000000-AUD-SYM-01-dynamic-symbols.md](./00000000-AUD-SYM-01-dynamic-symbols.md) |
 | `00000000-RPT-LEG-01 legacy-general-report` | LEG | Reporte general legacy | reference | [00000000-RPT-LEG-01-legacy-general-report.md](./00000000-RPT-LEG-01-legacy-general-report.md) |

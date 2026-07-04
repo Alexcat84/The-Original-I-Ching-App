@@ -1231,6 +1231,40 @@
       "area": "scripts/generate-sumi-fallback-glyph-samples"
     },
     {
+      "code": "GEN-WEB-OVR-002 zhouyi-64hex-master-together",
+      "title": "Generate 64 Zhou Yi stamp images via Together (Master 1504²)",
+      "shortName": "zhouyi-64hex-master-together",
+      "type": "GEN",
+      "family": "WEB-OVR",
+      "version": "1.1.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-07-03",
+          "change": "64 hex Zhou Yi landscapes + production overlay at Master tier"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-07-03",
+          "change": "Together prod parity (12-step Schnell, no negative_prompt); promo watermark"
+        }
+      ],
+      "path": "scripts/generate-zhouyi-64hex-master-together.mjs",
+      "npmScript": "npm run generate:zhouyi-64hex:master",
+      "variants": [
+        {
+          "variantId": "quick",
+          "npmScript": "npm run generate:zhouyi-64hex:master:quick",
+          "version": "1.0.0"
+        }
+      ],
+      "artifacts": "tools/output/zhouyi-64hex-master/",
+      "relatedAuditCodes": [
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "area": "scripts/generate-zhouyi-64hex-master-together"
+    },
+    {
       "code": "SEC-001 security-scan",
       "title": "Trivy + Semgrep security scan",
       "shortName": "security-scan",
@@ -2177,6 +2211,32 @@
       "npmScript": "npm run test --prefix apps/web",
       "relatedAuditCodes": [],
       "area": "apps/web/src/lib/overlay-title-pango"
+    },
+    {
+      "code": "TS-WEB-OVR-009 zhouyi-64hex-master-together",
+      "title": "Zhou Yi 64-hex Together Master stamp generation (vitest driver)",
+      "shortName": "zhouyi-64hex-master-together",
+      "type": "TS",
+      "family": "WEB-OVR",
+      "version": "1.1.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-07-03",
+          "change": "64 hex classical Chinese overlays composited on Together FLUX at 1504²"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-07-03",
+          "change": "Prod Together call + promotional watermark on composited PNG"
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/generate-zhouyi-64hex-master-together.test.ts",
+      "npmScript": "npm run generate:zhouyi-64hex:master:quick",
+      "relatedAuditCodes": [
+        "20260625-AUD-IMG-OVR-02 mutation-title-layout"
+      ],
+      "area": "scripts/generate-zhouyi-64hex-master-together"
     }
   ]
 }

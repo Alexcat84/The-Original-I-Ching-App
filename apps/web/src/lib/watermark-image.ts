@@ -8,19 +8,46 @@ function escapeXml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 }
 
+export type WatermarkStyleOverride = {
+  opacity?: number;
+  fontSize?: number;
+  /** Dark stroke behind white text — for promo assets on bright landscapes. */
+  highContrast?: boolean;
+};
+
 function tierOrFree(tier: string): TierKey {
   const k = toContextTierKey(tier);
   return k in WATERMARK_CONFIG ? k : "free";
 }
 
-function watermarkVisibility(tier: string): { fontSize: number; opacity: number; text: string } {
+function watermarkVisibility(
+  tier: string,
+  override?: WatermarkStyleOverride,
+): { fontSize: number; opacity: number; text: string; highContrast: boolean } {
   const cfg = WATERMARK_CONFIG[tierOrFree(tier)];
   return {
     // Keep watermark legible on compressed/generated images in all tiers.
-    fontSize: Math.max(cfg.fontSize, 13),
-    opacity: Math.max(cfg.opacity, 0.58),
+    fontSize: override?.fontSize ?? Math.max(cfg.fontSize, 13),
+    opacity: override?.opacity ?? Math.max(cfg.opacity, 0.58),
     text: cfg.text,
+    highContrast: override?.highContrast ?? false,
   };
+}
+
+function buildWatermarkTextElement(params: {
+  x: number;
+  y: number;
+  text: string;
+  fontSize: number;
+  opacity: number;
+  highContrast: boolean;
+}): string {
+  const fill = `rgba(255,255,255,${params.opacity})`;
+  if (!params.highContrast) {
+    return `<text x="${params.x}" y="${params.y}" text-anchor="end" fill="${fill}" font-size="${params.fontSize}" font-family="system-ui,sans-serif" font-weight="600">${escapeXml(params.text)}</text>`;
+  }
+  const strokeWidth = Math.max(2, Math.round(params.fontSize * 0.12));
+  return `<text x="${params.x}" y="${params.y}" text-anchor="end" fill="${fill}" stroke="rgba(20,20,20,0.88)" stroke-width="${strokeWidth}" paint-order="stroke fill" font-size="${params.fontSize}" font-family="system-ui,sans-serif" font-weight="700">${escapeXml(params.text)}</text>`;
 }
 
 function buildYinYangMarkSvg(x: number, y: number, radius: number, opacity: number): string {
@@ -55,7 +82,14 @@ export function injectSvgDataUrlWatermark(dataUrl: string, tier: string): string
   const hasSymbol = wm.text.includes("☯");
   const watermarkText = wm.text.replace("☯", "").trim();
   const textX = hasSymbol ? width - 56 : width - 24;
-  const insertText = `<text x="${textX}" y="${height - 24}" text-anchor="end" fill="rgba(255,255,255,${wm.opacity})" font-size="${wm.fontSize}" font-family="system-ui,sans-serif" font-weight="600">${escapeXml(watermarkText || wm.text)}</text>`;
+  const insertText = buildWatermarkTextElement({
+    x: textX,
+    y: height - 24,
+    text: watermarkText || wm.text,
+    fontSize: wm.fontSize,
+    opacity: wm.opacity,
+    highContrast: wm.highContrast,
+  });
   const insertSymbol = hasSymbol
     ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, wm.fontSize * 0.5), wm.opacity)
     : "";
@@ -66,8 +100,22 @@ export function injectSvgDataUrlWatermark(dataUrl: string, tier: string): string
   return prefix + encodeURIComponent(newSvg);
 }
 
-async function watermarkRasterBuffer(buf: Buffer, tier: string): Promise<string> {
-  const wm = watermarkVisibility(tier);
+async function watermarkRasterBuffer(
+  buf: Buffer,
+  tier: string,
+  override?: WatermarkStyleOverride,
+): Promise<string> {
+  const out = await applyRasterWatermarkBuffer(buf, tier, override);
+  return `data:image/png;base64,${out.toString("base64")}`;
+}
+
+/** Burn-in tier watermark on a raster buffer (PNG/JPEG). Used by consult finalize and batch generators. */
+export async function applyRasterWatermarkBuffer(
+  buf: Buffer,
+  tier: string,
+  override?: WatermarkStyleOverride,
+): Promise<Buffer> {
+  const wm = watermarkVisibility(tier, override);
   const meta = await sharp(buf).metadata();
   const width = meta.width ?? 1344;
   const height = meta.height ?? 768;
@@ -77,14 +125,20 @@ async function watermarkRasterBuffer(buf: Buffer, tier: string): Promise<string>
   const symbol = hasSymbol
     ? buildYinYangMarkSvg(width - 24, height - 30, Math.max(7, wm.fontSize * 0.5), wm.opacity)
     : "";
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><style>.wm{fill:rgba(255,255,255,${wm.opacity});font-size:${wm.fontSize}px;font-family:system-ui,sans-serif;font-weight:600}</style><text x="${textX}" y="${height - 24}" text-anchor="end" class="wm">${escapeXml(watermarkText || wm.text)}</text>${symbol}</svg>`;
-  // Render watermark SVG → PNG via resvg so text renders on Vercel (librsvg misses fonts).
+  const textEl = buildWatermarkTextElement({
+    x: textX,
+    y: height - 24,
+    text: watermarkText || wm.text,
+    fontSize: wm.fontSize,
+    opacity: wm.opacity,
+    highContrast: wm.highContrast,
+  });
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${textEl}${symbol}</svg>`;
   const wmPng = await renderSvgToPng(svg, width);
-  const out = await sharp(buf)
+  return sharp(buf)
     .composite([{ input: wmPng, top: 0, left: 0 }])
     .png({ compressionLevel: 9 })
     .toBuffer();
-  return `data:image/png;base64,${out.toString("base64")}`;
 }
 
 async function watermarkRemoteUrl(imageUrl: string, tier: string): Promise<string> {

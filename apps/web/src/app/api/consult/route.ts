@@ -310,7 +310,6 @@ export async function POST(req: Request) {
     sessionId?: string | null;
     isDeepening?: boolean;
     responseMode?: "ritual" | "stream_ritual";
-    adminKey?: string;
     imageProviderOverride?: ImageProvider;
     sessionTitle?: string | null;
     oracleMode?: OracleType;

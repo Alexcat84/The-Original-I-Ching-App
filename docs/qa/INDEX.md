@@ -76,6 +76,7 @@ npm run verify:qa-registry        # Registry + cabeceras en archivos
 | `TS-WEB-OVR-006 overlay-title-pango-e2e-samples` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | 4 muestras e2e: Together FLUX + overlay prod + resvg + composite. Config `vitest.overlay-samples.config.ts`; skip sin `TOGETHER_API_KEY` | `npm run gen:overlay-e2e-samples --prefix apps/web` |
 | `TS-WEB-OVR-007 overlay-title-long-name-samples` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | Títulos Wilhelm largos que expanden a dos líneas de subtítulo | `npm run test --prefix apps/web -- overlay-title-pango.long-name-samples` |
 | `TS-WEB-OVR-008 overlay-title-random-samples` | `apps/web/src/lib/overlay-title-pango` | 1.0.0 | Muestras random de overlay (ruta prod); skip sin `TOGETHER_API_KEY` | `npm run gen:overlay-random-samples --prefix apps/web` |
+| `TS-WEB-OVR-009 zhouyi-64hex-master-together` | `scripts/generate-zhouyi-64hex-master-together` | 1.1.0 | 64 hex Zhou Yi + overlay prod + promo watermark; skip sin `GENERATE_ZHOUYI_64HEX` | `npm run generate:zhouyi-64hex:master:quick` |
 
 ### Data / context — `TS-DATA-*`, `TS-CTX-*`
 
@@ -199,6 +200,8 @@ Detalle y versiones: [`registry.json`](./registry.json).
 | `GEN-ENG-001 cast-catalog` | `scripts/generate-cast-catalog` | 1.0.0 | `generate:cast-catalog` | `packages/iching-data/src/generated/cast-catalog.json` |
 | `GEN-WEB-OVR-001 sumi-fallback-samples` | `scripts/generate-sumi-fallback-glyph-samples` | 1.0.0 | `generate:sumi-fallback-glyphs` | `reports/sumi-fallback-glyphs/` + manifest |
 | — | — | — | `generate:sumi-fallback-glyphs:quick` | variante `:quick` → vitest smoke |
+| `GEN-WEB-OVR-002 zhouyi-64hex-master-together` | `scripts/generate-zhouyi-64hex-master-together` | 1.1.0 | `generate:zhouyi-64hex:master` | `tools/output/zhouyi-64hex-master/` + manifest |
+| — | — | — | `generate:zhouyi-64hex:master:quick` | variante `:quick` → hex #1 smoke |
 
 ---
 

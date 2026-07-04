@@ -1,6 +1,6 @@
 {
   "name": "iching-oracle",
-  "version": "0.0.1",
+  "version": "4.2.1",
   "private": true,
   "packageManager": "npm@10.9.2",
   "workspaces": [
@@ -23,6 +23,8 @@
     "verify:overlay-glyphs": "node scripts/verify-overlay-glyphs.mjs && npm run test --prefix apps/web -- embed-svg-overlay-font",
     "generate:sumi-fallback-glyphs": "node scripts/generate-sumi-fallback-glyph-samples.mjs",
     "generate:sumi-fallback-glyphs:quick": "node scripts/generate-sumi-fallback-glyph-samples.mjs -- --quick",
+    "generate:zhouyi-64hex:master": "node scripts/generate-zhouyi-64hex-master-together.mjs",
+    "generate:zhouyi-64hex:master:quick": "node scripts/generate-zhouyi-64hex-master-together.mjs -- --quick",
     "verify:docs-remediation": "node scripts/verify-docs-remediation.mjs",
     "verify:mutation-rules-fidelity": "node scripts/verify-mutation-rules-fidelity.mjs",
     "inject:qa-headers": "node scripts/inject-qa-headers.mjs",

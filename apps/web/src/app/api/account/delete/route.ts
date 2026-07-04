@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Logger } from "next-axiom";
-import { getAuthenticatedUser } from "@/lib/auth/bearer-user";
+import { getAuthenticatedUserUncached } from "@/lib/auth/bearer-user";
 import { apiError } from "@/lib/api-error";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -12,7 +12,7 @@ const VALID_CONFIRMATIONS = new Set(["DELETE", "ELIMINAR", "SUPPRIMER", "LÖSCHE
 export async function POST(req: Request) {
   const log = new Logger({ source: "api/account/delete" });
 
-  const user = await getAuthenticatedUser(req);
+  const user = await getAuthenticatedUserUncached(req);
   if (!user) {
     return apiError(401, { error: "auth_required", code: "AUTH_REQUIRED", action: "login" });
   }
