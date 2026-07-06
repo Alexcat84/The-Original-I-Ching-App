@@ -13,10 +13,73 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
+| 4.2.2 | 62 | 2026-07-04 | Production |
 | 4.2.1 | 61 | 2026-07-02 | Production |
 | 4.2.0 | 60 | 2026-06-25 | Production |
 | 4.1.9 | 59 | 2026-06-24 | Production |
 | 4.1.8 | 58 | 2026-06-22 | Production |
+
+---
+
+## 4.2.2 (versionCode 62) — 2026-07-04
+
+Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
+order — copy the whole block below in one paste.
+
+<en-US>
+Version 4.2.2: security and stability.
+- Security hardening across the app: account operations, session handling, and data integrity all tightened.
+</en-US>
+
+<ar>
+الإصدار 4.2.2: أمان واستقرار.
+- تعزيز الأمان في جميع أنحاء التطبيق: عمليات الحساب ومعالجة الجلسات وسلامة البيانات، كلها مُحكَمة.
+</ar>
+
+<de-DE>
+Version 4.2.2: Sicherheit und Stabilität.
+- Sicherheitshärtung in der gesamten App: Kontooperationen, Sitzungsverwaltung und Datenintegrität verbessert.
+</de-DE>
+
+<es-419>
+Version 4.2.2: seguridad y estabilidad.
+- Refuerzo de seguridad en toda la app: operaciones de cuenta, manejo de sesion e integridad de datos mejorados.
+</es-419>
+
+<fr-FR>
+Version 4.2.2 : sécurité et stabilité.
+- Renforcement de la sécurité dans toute l'application : opérations de compte, gestion de session et intégrité des données améliorées.
+</fr-FR>
+
+<hi-IN>
+संस्करण 4.2.2: सुरक्षा और स्थिरता।
+- पूरे ऐप में सुरक्षा सुदृढ़ीकरण: खाता संचालन, सत्र प्रबंधन और डेटा अखंडता सुधारी गई।
+</hi-IN>
+
+<it-IT>
+Versione 4.2.2: sicurezza e stabilità.
+- Rafforzamento della sicurezza in tutta l'app: operazioni account, gestione sessioni e integrità dei dati migliorati.
+</it-IT>
+
+<ja-JP>
+バージョン4.2.2：セキュリティと安定性。
+- アプリ全体のセキュリティ強化：アカウント操作、セッション管理、データ整合性を改善。
+</ja-JP>
+
+<ko-KR>
+버전 4.2.2: 보안 및 안정성.
+- 앱 전체 보안 강화: 계정 작업, 세션 처리, 데이터 무결성 개선.
+</ko-KR>
+
+<pt-BR>
+Versão 4.2.2: segurança e estabilidade.
+- Reforço de segurança em todo o app: operações de conta, gerenciamento de sessão e integridade de dados aprimorados.
+</pt-BR>
+
+<zh-CN>
+版本 4.2.2：安全与稳定。
+- 全面安全加固：账户操作、会话管理和数据完整性全面提升。
+</zh-CN>
 
 ---
 
