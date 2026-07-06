@@ -6,7 +6,7 @@
 
 import { access, mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { getAllHexagramRecords } from "@iching-oracle/iching-data";
+import { getAllHexagramRecords, type HexagramRecord } from "@iching-oracle/iching-data";
 import {
   buildImagePrompt,
   buildTogetherNegativePrompt,
@@ -49,13 +49,6 @@ const PROMO_WATERMARK = {
   fontSize: 20,
   highContrast: true,
 } as const;
-
-type HexRow = {
-  number: number;
-  name: string;
-  chineseName: string;
-  binaryTopFirst: string;
-};
 
 function linesFromBinaryTopFirst(binaryTopFirst: string): SumiLineInput[] {
   const bits = binaryTopFirst.padStart(6, "0").slice(-6);
@@ -208,7 +201,7 @@ async function compositeWithProductionOverlay(
     .toBuffer();
 }
 
-function outputFileName(hex: HexRow): string {
+function outputFileName(hex: Pick<HexagramRecord, "number" | "chineseName">): string {
   const num = String(hex.number).padStart(2, "0");
   return `hex-${num}-${hex.chineseName}.png`;
 }
@@ -228,7 +221,7 @@ function sleep(ms: number): Promise<void> {
 
 describe("generate-zhouyi-64hex-master-together", () => {
   it.skipIf(!GENERATE)("writes Master-tier Zhou Yi stamp images via Together", async () => {
-    const rows = getAllHexagramRecords({ translator: "zhouyi" }) as HexRow[];
+    const rows = [...getAllHexagramRecords({ translator: "zhouyi" })];
     expect(rows).toHaveLength(64);
 
     await mkdir(OUT_DIR, { recursive: true });
@@ -261,7 +254,7 @@ describe("generate-zhouyi-64hex-master-together", () => {
         ? `zhouyi-64hex-master-${hex.number}-${seedSalt}`
         : `zhouyi-64hex-master-${hex.number}`;
       const prompt = buildImagePrompt(
-        { number: hex.number },
+        hex,
         null,
         "general",
         [],
