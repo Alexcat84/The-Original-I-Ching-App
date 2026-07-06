@@ -14,7 +14,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "i18n:audit": "node tools/i18n-audit.mjs",
+    "i18n:audit": "node scripts/i18n-audit.mjs",
     "changelog:generate": "node scripts/generate-changelog.js",
     "changelog:update": "node scripts/update-changelog.js",
     "qa:mutation-output": "node scripts/mutation-output-qa.mjs",
