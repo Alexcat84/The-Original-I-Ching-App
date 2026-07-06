@@ -2150,10 +2150,10 @@
           "change": "Record<AppLocale> parity"
         }
       ],
-      "path": "tools/i18n-audit.mjs",
+      "path": "scripts/i18n-audit.mjs",
       "npmScript": "npm run i18n:audit",
       "relatedAuditCodes": [],
-      "area": "tools/i18n-audit"
+      "area": "scripts/i18n-audit"
     },
     {
       "code": "VF-FID-003 mutation-rules-fidelity",

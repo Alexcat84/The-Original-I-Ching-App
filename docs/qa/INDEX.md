@@ -210,7 +210,7 @@ Detalle y versiones: [`registry.json`](./registry.json).
 | Código | Area | npm script | Descripción |
 |--------|------|------------|-------------|
 | `SEC-001 security-scan` | `monorepo/root` | `security:scan` | Trivy + Semgrep → `security/` (sin cabecera en `package.json`) |
-| `I18N-001 i18n-audit` | `tools/i18n-audit` | `i18n:audit` | Cobertura claves `@iching-oracle/i18n` |
+| `I18N-001 i18n-audit` | `scripts/i18n-audit` | `i18n:audit` | Cobertura claves `@iching-oracle/i18n` |
 
 ---
 
