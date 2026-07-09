@@ -260,6 +260,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     consultationNotFound: "Consulta não encontrada",
     noResultsYet:
       "Escolha hexagramas ou insira um código de verificação para ver os textos oráculo.",
+    verifyButton: "Verificar",
   }),
   fr: L({
     title: "Vérification de lecture",
@@ -322,6 +323,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     consultationNotFound: "Consultation introuvable",
     noResultsYet:
       "Choisissez des hexagrammes ou entrez un code de vérification pour voir les textes oraculaires.",
+    verifyButton: "Vérifier",
   }),
   de: L({
     title: "Leseverifikation",
@@ -384,6 +386,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     consultationNotFound: "Konsultation nicht gefunden",
     noResultsYet:
       "Wählen Sie Hexagramme oder geben Sie einen Verifikationscode ein, um die Orakeltexte zu sehen.",
+    verifyButton: "Prüfen",
   }),
   it: L({
     title: "Verifica della lettura",
@@ -446,6 +449,7 @@ const MUTATION_EXPLORER_UI: Record<AppLocale, MutationExplorerUiMessages> = {
     consultationNotFound: "Consulta non trovata",
     noResultsYet:
       "Scegli esagrammi o inserisci un codice di verifica per vedere i testi oracolari.",
+    verifyButton: "Verifica",
   }),
   ja: L({
     title: "読み取り検証",
