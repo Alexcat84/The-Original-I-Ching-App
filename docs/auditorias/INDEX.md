@@ -136,6 +136,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | Código | Fecha | Título | Estado | Documento |
 |--------|-------|--------|--------|-----------|
 | `20260607-INC-SUP-INC-01 consultation-content-wipe` | 2026-06-07 | **P0** wipe `consultation_content` | closed | [20260607-INC-SUP-INC-01-consultation-content-wipe.md](./20260607-INC-SUP-INC-01-consultation-content-wipe.md) |
+| `20260711-INC-OPS-01 local-assets-loss-and-backup` | 2026-07-11 | Pérdida local tools/reports post-untrack; restauración + backup | closed | [20260711-INC-OPS-01-local-assets-loss-and-backup.md](./20260711-INC-OPS-01-local-assets-loss-and-backup.md) |
 | `00000000-AUD-SUP-01 supabase-db-stability` | — | Estabilidad DB por fases | open | [00000000-AUD-SUP-01-supabase-db-stability.md](./00000000-AUD-SUP-01-supabase-db-stability.md) |
 | `00000000-AUD-SUP-02 warp-timeout-kills` | — | Warp / timeout PostgREST (cerrada: Fase 8 confirmada en producción 2026-06-25) | closed | [00000000-AUD-SUP-02-warp-timeout-kills.md](./00000000-AUD-SUP-02-warp-timeout-kills.md) |
 
