@@ -102,6 +102,19 @@ export default function LoginPage() {
     setMsg(null);
   }
 
+  /* Marketing CTAs ("Regístrate") land here with ?mode=signup — default to the
+     register tab. Plain location.search (not useSearchParams) to avoid the
+     Suspense boundary requirement on this client page. */
+  useEffect(() => {
+    try {
+      if (new URLSearchParams(window.location.search).get("mode") === "signup") {
+        setMode("signup");
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   useEffect(() => {
     if (!isSupabaseBrowserConfigured()) {
       setConfigError(true);

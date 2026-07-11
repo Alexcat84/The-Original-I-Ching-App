@@ -14,7 +14,7 @@ export function MutationExplorerDocNav({ backLabel }: Props) {
 
   return (
     <nav className="doc-nav">
-      <Link href="/">{backLabel}</Link>
+      <Link href="/chat">{backLabel}</Link>
     </nav>
   );
 }

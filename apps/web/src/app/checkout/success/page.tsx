@@ -159,7 +159,7 @@ export default function CheckoutSuccessPage() {
             <button
               type="button"
               className="composer-reading-pill is-active checkout-success-cta"
-              onClick={() => router.replace("/")}
+              onClick={() => router.replace("/chat")}
             >
               {ui.ctaOracle}
             </button>
@@ -171,7 +171,7 @@ export default function CheckoutSuccessPage() {
             <button
               type="button"
               className="composer-reading-pill is-active checkout-success-cta"
-              onClick={() => router.replace("/")}
+              onClick={() => router.replace("/chat")}
             >
               {ui.ctaOracle}
             </button>

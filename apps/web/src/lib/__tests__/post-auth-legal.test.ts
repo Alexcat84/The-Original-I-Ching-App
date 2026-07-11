@@ -93,7 +93,7 @@ describe("post-auth-legal client", () => {
           json: async () => ({ legal_acceptance_current: true }),
         }),
       );
-      await expect(resolvePostAuthClientRoute("t")).resolves.toBe("/");
+      await expect(resolvePostAuthClientRoute("t")).resolves.toBe("/chat");
     });
 
     it("routes to complete-legal when not current", async () => {

@@ -32,7 +32,7 @@ export function MutationExplorerAccessGate({ children }: Props) {
         } = await supabase.auth.getSession();
 
         if (!session?.access_token) {
-          router.replace("/");
+          router.replace("/chat");
           return;
         }
 
@@ -46,7 +46,7 @@ export function MutationExplorerAccessGate({ children }: Props) {
         });
         if (!accessRes.ok) {
           setState("denied");
-          router.replace("/");
+          router.replace("/chat");
           return;
         }
 
@@ -59,7 +59,7 @@ export function MutationExplorerAccessGate({ children }: Props) {
             setState("allowed");
           } else {
             setState("denied");
-            router.replace("/");
+            router.replace("/chat");
           }
           return;
         }
@@ -67,7 +67,7 @@ export function MutationExplorerAccessGate({ children }: Props) {
         setState("allowed");
       } catch {
         setState("denied");
-        router.replace("/");
+        router.replace("/chat");
       }
     }
 

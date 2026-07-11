@@ -109,7 +109,7 @@ export default function AdminPage() {
           />
           <div className="composer-actions">
             <button type="button" onClick={() => void onLogin()}>Entrar</button>
-            <Link className="secondary-btn" href="/">Volver al chat</Link>
+            <Link className="secondary-btn" href="/chat">Volver al chat</Link>
           </div>
           {message ? <p className="meta-line">{message}</p> : null}
         </section>
@@ -168,7 +168,7 @@ export default function AdminPage() {
         <div className="composer-actions">
           <button type="button" onClick={() => void onSave()}>Guardar cambios</button>
           <button type="button" className="secondary-btn" onClick={() => void onLogout()}>Cerrar sesión admin</button>
-          <Link className="secondary-btn" href="/">Abrir chat</Link>
+          <Link className="secondary-btn" href="/chat">Abrir chat</Link>
         </div>
 
         {message ? <p className="meta-line">{message}</p> : null}

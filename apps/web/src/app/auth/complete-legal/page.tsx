@@ -50,7 +50,7 @@ export default function CompleteLegalPage() {
         return;
       }
       if (legal.current) {
-        window.location.replace("/");
+        window.location.replace("/chat");
         return;
       }
       setIsUpdate(legal.hasPrior);
@@ -89,7 +89,7 @@ export default function CompleteLegalPage() {
       } catch {
         // ignore
       }
-      window.location.replace("/");
+      window.location.replace("/chat");
     } finally {
       setBusy(false);
     }

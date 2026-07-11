@@ -7,6 +7,7 @@ import {
   type AppLocale,
 } from "@iching-oracle/i18n";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { setAppLocale } from "@/lib/set-app-locale";
@@ -27,9 +28,17 @@ type NavKey = "oracle" | "guide" | "library" | "sources" | "pricing" | "faqs";
  * check here.
  */
 export function MarketingNav({ active }: { active?: NavKey }) {
+  const router = useRouter();
   const locale = useAppLocale();
   const m = getMarketingUiMessages(locale);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const onLocaleChange = (next: AppLocale) => {
+    setAppLocale(next);
+    // Server-rendered marketing sections read the locale cookie — refetch RSC
+    // so the whole page follows the picker without a manual reload.
+    router.refresh();
+  };
 
   const links: Array<{ key: NavKey; href: string; label: string }> = [
     { key: "oracle", href: "/#oraculo", label: m.nav.oracle },
@@ -58,7 +67,7 @@ export function MarketingNav({ active }: { active?: NavKey }) {
         <div className="mk-nav-actions">
           <AuthLocalePicker
             locale={locale}
-            onChange={setAppLocale}
+            onChange={onLocaleChange}
             order={LOCALE_SELECT_ORDER}
             labels={getLanguageLabels()}
             ariaLabel={m.nav.consult}

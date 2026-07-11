@@ -40,6 +40,13 @@ export type BuildPlansCheckoutUrlOptions = {
   email?: string | null;
   /** If true, fail when no user id can be resolved (authenticated CTAs must pass app_user_id). */
   requireAppUserId?: boolean;
+  /**
+   * RevenueCat package identifier — passed as ?package_id= so the hosted Web
+   * Purchase Link skips pack selection and lands on that pack's checkout.
+   * Unknown ids degrade gracefully: RC shows the normal pack selection page.
+   * @see https://www.revenuecat.com/docs/web/web-billing/web-purchase-links
+   */
+  packageId?: string | null;
 };
 
 export type BuildPlansCheckoutUrlResult =
@@ -125,6 +132,11 @@ export async function buildPlansCheckoutUrl(
 
     if (email) {
       target.searchParams.set("email", email);
+    }
+
+    const packageId = options?.packageId?.trim();
+    if (packageId) {
+      target.searchParams.set("package_id", packageId);
     }
 
     const pathOnly = target.pathname.replace(/\/+$/, "") || "/";
