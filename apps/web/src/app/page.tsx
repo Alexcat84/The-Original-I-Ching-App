@@ -40,7 +40,13 @@ export default async function MarketingHomePage() {
 
   return (
     <div className="mk-root">
-      <script nonce={nonce} dangerouslySetInnerHTML={{ __html: rnWebViewGuardScript }} />
+      {/* suppressHydrationWarning: browsers hide the nonce attribute from the DOM,
+          so the client sees "" vs the SSR value — same pattern as the root layout. */}
+      <script
+        nonce={nonce}
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: rnWebViewGuardScript }}
+      />
       <MarketingNav active="oracle" />
 
       {/* ================= HERO ================= */}

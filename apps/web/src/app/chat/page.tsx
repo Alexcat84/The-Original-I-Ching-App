@@ -1240,10 +1240,12 @@ export default function HomePage() {
 
   /* Hydration-safe render flag for APK-only UI. The marketing site owns the
      doc/feedback links in the browser; inside the APK WebView they stay in the
-     chat because the marketing site is not reachable there. */
+     chat because the marketing site is not reachable there. Checks
+     window.ReactNativeWebView too — the html class can lose a timing race with
+     React hydration rewriting <html className>. */
   const [inRnWebView, setInRnWebView] = useState(false);
   useEffect(() => {
-    setInRnWebView(isRnWebView());
+    setInRnWebView(isRnWebView() || "ReactNativeWebView" in window);
   }, [isRnWebView]);
 
   const tourBeforeCloseDrawer = useCallback(

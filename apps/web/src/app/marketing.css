@@ -1165,6 +1165,90 @@
   color: var(--mk-text-muted);
 }
 
+/* ---------- doc pages (re-skin of existing .doc-article content) ----------
+   The articles and their nested components (audits timeline, FAQ accordions,
+   guia sections) style themselves through the app theme variables. Re-map
+   those tokens to the ink palette here so every doc page inherits the dark
+   marketing look without markup changes, regardless of the user's chat theme. */
+.mk-doc {
+  --bg: var(--mk-bg);
+  --bg-mid: var(--mk-bg-alt);
+  --secondary-bg: var(--mk-bg-card);
+  --card-bg: var(--mk-bg-card);
+  --bar: var(--mk-bg-alt);
+  --bar-border: var(--mk-line-soft);
+  --fg: var(--mk-text-soft);
+  --fg-muted: var(--mk-text-muted);
+  --muted-fg: var(--mk-text-dim);
+  --title-shell: var(--mk-text-strong);
+  --title-chat: var(--mk-gold-soft);
+  --card-title: var(--mk-text-strong);
+  --accent: var(--mk-gold);
+  --ghost-link: var(--mk-link);
+  --commentary-accent: var(--mk-gold);
+}
+.mk-doc-main {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 64px) clamp(20px, 4.5vw, 56px) clamp(48px, 8vw, 88px);
+}
+.mk-doc .oracle-shell {
+  background: transparent;
+  color: var(--mk-text-soft);
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+.mk-doc .doc-article h1 {
+  font-weight: 500;
+  font-size: clamp(28px, 4vw, 38px);
+  color: var(--mk-text-strong);
+}
+.mk-doc .doc-article h2 {
+  font-weight: 500;
+  font-size: clamp(19px, 2.4vw, 23px);
+  color: var(--mk-text-strong);
+  margin-top: 2.1rem;
+}
+.mk-doc .doc-article a {
+  color: var(--mk-link);
+}
+.mk-doc .doc-article a:hover {
+  color: var(--mk-red);
+}
+.mk-doc .doc-article strong {
+  color: var(--mk-text);
+}
+.mk-doc .doc-nav {
+  font-family: var(--mk-font-ui);
+  font-size: 12.5px;
+  color: var(--mk-text-dim);
+}
+.mk-doc .doc-nav a {
+  color: var(--mk-text-muted);
+  text-decoration: none;
+}
+.mk-doc .doc-nav a:hover {
+  color: var(--mk-text);
+}
+/* APK WebView: doc pages are reached from the chat's doc links — hide the
+   marketing chrome and show a plain back-to-chat link instead. The native
+   shell stamps `iching-rn-webview` on <html>, so this is CSS-only. */
+.mk-doc-apk-back {
+  display: none;
+  font-family: var(--mk-font-ui);
+  font-size: 13px;
+  margin-bottom: 1.1rem;
+}
+html.iching-rn-webview .mk-nav,
+html.iching-rn-webview .mk-nav-mobile,
+html.iching-rn-webview .mk-footer {
+  display: none;
+}
+html.iching-rn-webview .mk-doc-apk-back {
+  display: inline-block;
+}
+
 /* ---------- final CTA ---------- */
 .mk-final {
   position: relative;
