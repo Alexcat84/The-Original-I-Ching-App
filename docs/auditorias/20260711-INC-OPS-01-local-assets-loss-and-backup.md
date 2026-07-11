@@ -30,6 +30,37 @@ conservaba todo en el historial.
 3. Verificación de completitud: 0 archivos faltantes contra
    `git ls-tree 732c40b1~1 -- tools reports`.
 
+## Hallazgos de la verificación final (2026-07-11, segunda pasada)
+
+1. **ZIP v1 malformado.** El primer ZIP (creado con `tar -a`, bsdtar/Windows)
+   tenía el directorio central corrupto: Python/Explorer/Drive solo veían 12
+   entradas de un XLSX interno. Los datos estaban (bsdtar streaming leía
+   10 424 entradas) pero un backup que exige herramientas no estándar no es
+   backup. **Regenerado como `iching-git-backup-2026-07-11-v2.zip`** (zipfile
+   estándar, 8 897 archivos, test de corrupción OK, 648 MB). El v1 subido a
+   Drive debe reemplazarse. Regla: verificar SIEMPRE el archivo con una
+   herramienta distinta a la que lo creó antes de declararlo backup.
+2. **6 libros fuente perdidos (no recuperables de git).** `tools/source-pdfs/`
+   perdió en la misma limpieza local los libros que el manifest v2 cataloga y
+   que NUNCA estuvieron en git (gitignored, solo el manifest se commitea):
+   - `wilhelm-baynes-1950-pantheon.pdf` (gold Apéndice I — casting audits)
+   - `16_ The Sacred Books of China, vol 2… (Legge SBE XVI).pdf`
+   - `legge-yi-king-sbe-xvi.pdf` (legacy)
+   - `zhouyi-zhushu-song-er07.pdf`
+   - `Introduction To The Study Of The Classic Of Change (Zhu Xi/Adler).epub`
+   - `The Complete I Ching 10th Anniversary (Alfred Huang).epub`
+   Consecuencia: `npm run verify:hexagram-fidelity` (gate PDF-gold) queda
+   bloqueado hasta reponerlos (re-descarga archive.org / recompra). Los
+   cross-checks EPUB de Wilhelm y Legge sí sobreviven.
+
+## Verificación final ejecutada
+
+- Hash por archivo disco vs git pre-untrack: 648/648 OK.
+- Hash por archivo disco vs rama backup: 2 784/2 784 OK; rama confirmada en
+  origin (`c02f7566`).
+- Corpus generado reproduce byte a byte desde datasets restaurados.
+- ZIP v2 verificado con zipfile estándar (test corrupción + conteo + merged.json).
+
 ## Estrategia de backup adoptada
 
 1. **Rama huérfana `backup/local-assets-2026-07-11`** (pusheada a origin):
@@ -38,8 +69,11 @@ conservaba todo en el historial.
    scripts `tools/*.mjs`, `reports/` completo. Excluye regenerables
    (`fallback-tools/output` ya en R2; `output/zhouyi-64hex-master` regenerable;
    `node_modules`). Ver `BACKUP-README.md` en esa rama.
-2. **ZIP completo offline** (757 MB, incluye los regenerables):
-   `iching-git-backup-2026-07-11.zip` → Drive del usuario.
+2. **ZIP completo offline** (648 MB, incluye los regenerables):
+   `iching-git-backup-2026-07-11-v2.zip` → Drive del usuario (el v1 de 757 MB
+   está malformado — descartar).
+3. **Pendiente:** reponer los 6 libros fuente de `tools/source-pdfs/` (ver
+   hallazgo 2) y añadirlos al ZIP v3 + Drive cuando estén.
 
 ## Reglas derivadas (obligatorias)
 
