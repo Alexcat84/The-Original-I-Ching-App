@@ -2,7 +2,8 @@ import { Cinzel, Inter, Ma_Shan_Zheng, Noto_Serif } from "next/font/google";
 
 const fontDisplay = Cinzel({
   subsets: ["latin", "latin-ext"],
-  weight: ["600", "700"],
+  // 400/500 added for the marketing site (hero/section headings use weight 500).
+  weight: ["400", "500", "600", "700"],
   variable: "--font-oracle-display",
   display: "swap",
 });
@@ -21,6 +22,8 @@ const fontOracleCn = Ma_Shan_Zheng({
 const fontPresentationSerif = Noto_Serif({
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600"],
+  // Italic 400 used by the marketing site for oracle quotations.
+  style: ["normal", "italic"],
   variable: "--font-oracle-serif",
   display: "swap",
 });
