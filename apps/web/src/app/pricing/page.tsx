@@ -5,6 +5,7 @@ import {
   getMarketingUiMessages,
   getPricingUiMessages,
 } from "@iching-oracle/i18n";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { MarketingDocShell } from "@/components/marketing/MarketingDocShell";
 import { MarketingPricingCards } from "@/components/marketing/MarketingPricingCards";
@@ -60,6 +61,13 @@ export default function PricingPage() {
         <p className="mk-pricing-sub" style={{ maxWidth: "48rem" }}>
           {p.threadLimitDepends}
         </p>
+        {balance === null ? (
+          <div>
+            <Link href="/login?mode=signup" className="mk-pricing-free-cta">
+              {m.pricing.registerFreeCta}
+            </Link>
+          </div>
+        ) : null}
         <div style={{ marginTop: 40 }}>
           <MarketingPricingCards />
         </div>

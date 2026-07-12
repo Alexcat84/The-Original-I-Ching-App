@@ -351,6 +351,9 @@ export default async function MarketingHomePage() {
               {m.pricing.title}
             </h2>
             <p className="mk-pricing-sub">{m.pricing.subtitle}</p>
+            <Link href="/login?mode=signup" className="mk-pricing-free-cta">
+              {m.pricing.registerFreeCta}
+            </Link>
           </div>
           <MarketingPricingCards />
         </div>

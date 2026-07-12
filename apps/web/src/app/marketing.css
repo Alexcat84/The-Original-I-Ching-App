@@ -1203,6 +1203,25 @@
   line-height: 1.7;
   color: var(--mk-text-muted);
 }
+.mk-pricing-free-cta {
+  display: inline-block;
+  margin: 22px 0 0;
+  padding: 12px 22px;
+  border: 1px solid rgba(201, 162, 75, 0.5);
+  border-radius: 8px;
+  background: rgba(201, 162, 75, 0.08);
+  font-family: var(--mk-font-ui);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--mk-gold-soft) !important;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
+}
+.mk-pricing-free-cta:hover {
+  border-color: rgba(201, 162, 75, 0.85);
+  background: rgba(201, 162, 75, 0.15);
+  color: var(--mk-gold-soft) !important;
+  transform: translateY(-2px);
+}
 .mk-pricing-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -127,6 +127,8 @@ export type MarketingUiMessages = {
     practitionerDetail: string;
     masterDetail: string;
     buyCta: string;
+    /** Registration hook shown by the packs — links to sign-up. */
+    registerFreeCta: string;
   };
   faq: {
     eyebrow: string;
@@ -180,7 +182,7 @@ const ES: MarketingUiMessages = {
     eyebrow: "El oráculo original · desde 800 a.C.",
     title: "Donde la tinta antigua encuentra su lienzo",
     subtitle:
-      "El I Ching completo: Wilhelm, Legge y el Zhouyi chino, leído para ti por una inteligencia entrenada en respetar cada palabra del original.",
+      "El momento de recibir las respuestas a tus preguntas ha llegado. ¿Qué te inquieta este día?",
     cta: "Iniciar consulta",
     playHint: "Lleva el oráculo contigo, también en Android",
   },
@@ -273,6 +275,7 @@ const ES: MarketingUiMessages = {
     practitionerDetail: "Añade el texto original Zhou Yi",
     masterDetail: "Añade la síntesis Master (3), 2 tokens por consulta",
     buyCta: "Comprar",
+    registerFreeCta: "¡Regístrate y obtén 2 sesiones gratis!",
   },
   faq: {
     eyebrow: "Preguntas frecuentes",
@@ -326,7 +329,7 @@ const EN: MarketingUiMessages = {
     eyebrow: "The original oracle · since 800 BC",
     title: "Where ancient ink meets its canvas",
     subtitle:
-      "The complete I Ching: Wilhelm, Legge and the Chinese Zhouyi, read for you by an intelligence trained to respect every word of the original.",
+      "The moment to receive the answers to your questions has come. What weighs on you today?",
     cta: "Start a consultation",
     playHint: "Take the oracle with you, also on Android",
   },
@@ -419,6 +422,7 @@ const EN: MarketingUiMessages = {
     practitionerDetail: "Adds the original Zhou Yi text",
     masterDetail: "Adds the Master (3) synthesis, 2 tokens per consultation",
     buyCta: "Buy",
+    registerFreeCta: "Sign up and get 2 free sessions!",
   },
   faq: {
     eyebrow: "Frequently asked questions",
@@ -472,7 +476,7 @@ const PT: MarketingUiMessages = {
     eyebrow: "O oráculo original · desde 800 a.C.",
     title: "Onde a tinta antiga encontra sua tela",
     subtitle:
-      "O I Ching completo: Wilhelm, Legge e o Zhouyi chinês, lido para você por uma inteligência treinada para respeitar cada palavra do original.",
+      "Chegou o momento de receber as respostas às suas perguntas. O que te inquieta hoje?",
     cta: "Iniciar consulta",
     playHint: "Leve o oráculo com você, também no Android",
   },
@@ -564,6 +568,7 @@ const PT: MarketingUiMessages = {
     practitionerDetail: "Adiciona o texto original Zhou Yi",
     masterDetail: "Adiciona a síntese Master (3), 2 tokens por consulta",
     buyCta: "Comprar",
+    registerFreeCta: "Cadastre-se e ganhe 2 sessões grátis!",
   },
   faq: {
     eyebrow: "Perguntas frequentes",
@@ -617,7 +622,7 @@ const FR: MarketingUiMessages = {
     eyebrow: "L'oracle originel · depuis 800 av. J.-C.",
     title: "Là où l'encre ancienne rencontre sa toile",
     subtitle:
-      "Le Yi King complet : Wilhelm, Legge et le Zhouyi chinois, lus pour vous par une intelligence entraînée à respecter chaque mot de l'original.",
+      "Le moment de recevoir les réponses à tes questions est venu. Qu'est-ce qui te préoccupe aujourd'hui ?",
     cta: "Commencer une consultation",
     playHint: "Emportez l'oracle avec vous, aussi sur Android",
   },
@@ -711,6 +716,7 @@ const FR: MarketingUiMessages = {
     practitionerDetail: "Ajoute le texte original Zhou Yi",
     masterDetail: "Ajoute la synthèse Master (3), 2 jetons par consultation",
     buyCta: "Acheter",
+    registerFreeCta: "Inscris-toi et obtiens 2 séances gratuites !",
   },
   faq: {
     eyebrow: "Questions fréquentes",
@@ -765,7 +771,7 @@ const DE: MarketingUiMessages = {
     eyebrow: "Das ursprüngliche Orakel · seit 800 v. Chr.",
     title: "Wo alte Tinte auf ihre Leinwand trifft",
     subtitle:
-      "Das vollständige I Ging: Wilhelm, Legge und das chinesische Zhouyi, für Sie gelesen von einer Intelligenz, die jedes Wort des Originals respektiert.",
+      "Der Moment, die Antworten auf deine Fragen zu empfangen, ist gekommen. Was beschäftigt dich heute?",
     cta: "Befragung beginnen",
     playHint: "Nimm das Orakel mit, auch auf Android",
   },
@@ -859,6 +865,7 @@ const DE: MarketingUiMessages = {
     practitionerDetail: "Fügt den Originaltext Zhou Yi hinzu",
     masterDetail: "Fügt die Master-(3)-Synthese hinzu, 2 Tokens pro Befragung",
     buyCta: "Kaufen",
+    registerFreeCta: "Registriere dich und erhalte 2 kostenlose Sitzungen!",
   },
   faq: {
     eyebrow: "Häufige Fragen",
@@ -913,7 +920,7 @@ const IT: MarketingUiMessages = {
     eyebrow: "L'oracolo originale · dall'800 a.C.",
     title: "Dove l'inchiostro antico incontra la sua tela",
     subtitle:
-      "L'I Ching completo: Wilhelm, Legge e lo Zhouyi cinese, letti per te da un'intelligenza addestrata a rispettare ogni parola dell'originale.",
+      "È giunto il momento di ricevere le risposte alle tue domande. Cosa ti inquieta oggi?",
     cta: "Inizia una consultazione",
     playHint: "Porta l'oracolo con te, anche su Android",
   },
@@ -1006,6 +1013,7 @@ const IT: MarketingUiMessages = {
     practitionerDetail: "Aggiunge il testo originale Zhou Yi",
     masterDetail: "Aggiunge la sintesi Master (3), 2 token per consultazione",
     buyCta: "Acquista",
+    registerFreeCta: "Registrati e ottieni 2 sessioni gratuite!",
   },
   faq: {
     eyebrow: "Domande frequenti",
@@ -1059,7 +1067,7 @@ const JA: MarketingUiMessages = {
     eyebrow: "本来の神託 · 紀元前800年より",
     title: "古の墨が、その画布に出会う場所",
     subtitle:
-      "完全な易経：ヴィルヘルム、レッグ、そして中国の周易。原典の一語一句を尊重するよう訓練された知性が、あなたのために読み解きます。",
+      "あなたの問いへの答えを受け取る時が来ました。今日、何が心にかかっていますか？",
     cta: "占いを始める",
     playHint: "Androidでもオラクルを持ち歩けます",
   },
@@ -1151,6 +1159,7 @@ const JA: MarketingUiMessages = {
     practitionerDetail: "周易の原文を追加",
     masterDetail: "Master (3) 統合を追加、1回の占いで2トークン",
     buyCta: "購入",
+    registerFreeCta: "登録して2回の無料セッションを手に入れよう！",
   },
   faq: {
     eyebrow: "よくある質問",
@@ -1204,7 +1213,7 @@ const ZH: MarketingUiMessages = {
     eyebrow: "本源神谕 · 始于公元前800年",
     title: "古墨与画布相遇之处",
     subtitle:
-      "完整的易经：卫礼贤、理雅各与中文周易，由一个被训练为尊重原文每一个字的智能，为您读解。",
+      "接收你所有疑问答案的时刻已经到来。今天，什么让你困扰？",
     cta: "开始占卜",
     playHint: "随身携带神谕，Android 亦可",
   },
@@ -1290,6 +1299,7 @@ const ZH: MarketingUiMessages = {
     practitionerDetail: "增加周易原文",
     masterDetail: "增加 Master (3) 综合占卜，每次消耗2枚代币",
     buyCta: "购买",
+    registerFreeCta: "注册即可获得2次免费占卜！",
   },
   faq: {
     eyebrow: "常见问题",
@@ -1343,7 +1353,7 @@ const KO: MarketingUiMessages = {
     eyebrow: "본래의 신탁 · 기원전 800년부터",
     title: "오래된 먹이 화폭을 만나는 곳",
     subtitle:
-      "완전한 주역: 빌헬름, 레그, 그리고 중국어 주역. 원문의 한 단어 한 단어를 존중하도록 훈련된 지성이 당신을 위해 읽어 드립니다.",
+      "당신의 물음에 대한 답을 받을 순간이 왔습니다. 오늘 무엇이 마음에 걸리나요?",
     cta: "점치기 시작",
     playHint: "Android에서도 오라클을 휴대하세요",
   },
@@ -1432,6 +1442,7 @@ const KO: MarketingUiMessages = {
     practitionerDetail: "주역 원문 추가",
     masterDetail: "Master (3) 종합 추가, 점 한 번에 토큰 2개",
     buyCta: "구매",
+    registerFreeCta: "가입하고 무료 세션 2회를 받으세요!",
   },
   faq: {
     eyebrow: "자주 묻는 질문",
@@ -1485,7 +1496,7 @@ const AR: MarketingUiMessages = {
     eyebrow: "الأوراكل الأصلي · منذ 800 ق.م",
     title: "حيث يلتقي الحبر القديم بلوحته",
     subtitle:
-      "كتاب التغيرات الكامل: ويلهلم، ليج، وتشو يي الصيني، يقرؤه لك ذكاء دُرّب على احترام كل كلمة من الأصل.",
+      "لقد حان وقت تلقّي الإجابات على أسئلتك. ما الذي يشغل بالك اليوم؟",
     cta: "ابدأ استشارة",
     playHint: "احمل الأوراكل معك، على أندرويد أيضاً",
   },
@@ -1577,6 +1588,7 @@ const AR: MarketingUiMessages = {
     practitionerDetail: "يضيف نص تشو يي الأصلي",
     masterDetail: "يضيف تركيب Master (3)، توكنان لكل استشارة",
     buyCta: "اشترِ",
+    registerFreeCta: "سجّل واحصل على جلستين مجانيتين!",
   },
   faq: {
     eyebrow: "الأسئلة الشائعة",
@@ -1630,7 +1642,7 @@ const HI: MarketingUiMessages = {
     eyebrow: "मूल ओरेकल · 800 ई.पू. से",
     title: "जहाँ प्राचीन स्याही अपने कैनवास से मिलती है",
     subtitle:
-      "संपूर्ण ई चिंग: विल्हेम, लेग और चीनी झोउई, आपके लिए एक ऐसी बुद्धि द्वारा पढ़ा गया जो मूल के हर शब्द का सम्मान करने के लिए प्रशिक्षित है।",
+      "आपके प्रश्नों के उत्तर पाने का क्षण आ गया है। आज आपको क्या व्यथित कर रहा है?",
     cta: "परामर्श शुरू करें",
     playHint: "ओरेकल को साथ ले जाएँ, Android पर भी",
   },
@@ -1723,6 +1735,7 @@ const HI: MarketingUiMessages = {
     practitionerDetail: "मूल झोउ यी पाठ जोड़ता है",
     masterDetail: "Master (3) संश्लेषण जोड़ता है, प्रति परामर्श 2 टोकन",
     buyCta: "खरीदें",
+    registerFreeCta: "पंजीकरण करें और 2 निःशुल्क सत्र पाएं!",
   },
   faq: {
     eyebrow: "अक्सर पूछे जाने वाले प्रश्न",
