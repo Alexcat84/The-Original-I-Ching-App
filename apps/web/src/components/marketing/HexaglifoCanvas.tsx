@@ -54,7 +54,7 @@ export function HexaglifoCanvas({ locale }: { locale: AppLocale }) {
     let h = 0;
     let gi = 0;
     let gap = 4;
-    const cap = { x: 0, y: 0 };
+    const cap = { x: 0, y: 0, size: 15 };
     // Fewer particles on small screens — the anchor is much smaller there.
     const N = window.innerWidth < 900 ? 1200 : 2200;
     const parts: Particle[] = [];
@@ -92,7 +92,11 @@ export function HexaglifoCanvas({ locale }: { locale: AppLocale }) {
         rh = ar.height;
       }
       cap.x = rx + rw / 2;
-      cap.y = ry + rh - 4;
+      // Sit the name just below the glyph (glyph bottom ≈ 0.85·rh), not at the
+      // very bottom of the tall anchor, so it stays on screen. Scale the label
+      // with the glyph so it reads at large sizes.
+      cap.y = ry + rh * 0.92;
+      cap.size = Math.max(15, Math.round(rh * 0.021));
       // Glyph fidelity: calligraphy only if it covers every char of the name;
       // otherwise Noto Serif SC (full CJK coverage) so the figure is always
       // the correct library glyph, never tofu.
@@ -251,8 +255,8 @@ export function HexaglifoCanvas({ locale }: { locale: AppLocale }) {
       else capA = Math.max(0, 1 - pt / 0.5);
       if (capA > 0) {
         const name = localeRef.current === "es" ? g.es : g.en;
-        ctx.fillStyle = `rgba(165,152,138,${capA * 0.95})`;
-        ctx.font = "13px system-ui, sans-serif";
+        ctx.fillStyle = `rgba(180,168,148,${capA * 0.95})`;
+        ctx.font = `${cap.size}px system-ui, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "alphabetic";
         ctx.fillText(`${g.n} · ${g.ch} ${g.pin} · ${name}`, cap.x, cap.y);

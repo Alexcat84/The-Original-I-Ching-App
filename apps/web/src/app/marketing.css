@@ -562,9 +562,11 @@
 .mk-hero-canvas-anchor {
   position: relative;
   /* Scale the glyph with viewport width so wide screens get a big, screen-
-     filling hexagram while narrower desktops stay proportional. The canvas
+     filling hexagram while narrower desktops stay proportional. Bounded by the
+     viewport height (minus room for nav + the glyph's name caption) so the
+     caption never falls below the fold on wide-but-short windows. The canvas
      samples this element's rect for glyph size + position. */
-  height: clamp(560px, 44vw, 880px);
+  height: min(clamp(560px, 44vw, 880px), calc(100vh - 210px));
   /* Left-nudge only kicks in past ~1440px, growing with width — so it never
      crosses into the headline on laptop-width desktops (where the copy column
      is tighter) but bleeds boldly left on large monitors. */

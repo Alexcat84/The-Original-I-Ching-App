@@ -8,7 +8,7 @@ import {
 } from "@iching-oracle/i18n";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { setAppLocale } from "@/lib/set-app-locale";
 import { useAppLocale } from "@/lib/use-app-locale";
@@ -48,6 +48,9 @@ export function MarketingNav({ active }: { active?: NavKey }) {
   const m = getMarketingUiMessages(locale);
   const [menuOpen, setMenuOpen] = useState(false);
   const [spyKey, setSpyKey] = useState<NavKey | null>(null);
+  // While a click-driven scroll is in flight, the scroll-spy is paused so it
+  // can't flicker the underline back to an intermediate/earlier section.
+  const suppressSpyUntilRef = useRef(0);
 
   const onLocaleChange = (next: AppLocale) => {
     setAppLocale(next);
@@ -74,6 +77,8 @@ export function MarketingNav({ active }: { active?: NavKey }) {
     if (!els.length) return;
 
     const compute = () => {
+      // Paused during a click-driven scroll — the optimistic underline wins.
+      if (Date.now() < suppressSpyUntilRef.current) return;
       // Pick the last section whose top has passed the header line.
       let current: NavKey | null = null;
       for (const s of SPY_SECTIONS) {
@@ -97,12 +102,36 @@ export function MarketingNav({ active }: { active?: NavKey }) {
     };
   }, [isHome]);
 
-  const scrollToAnchor = useCallback((anchor: string) => {
-    const el = document.getElementById(anchor);
-    if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-    window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+  const targetY = useCallback((el: HTMLElement) => {
+    return Math.max(0, el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET);
   }, []);
+
+  const scrollToAnchor = useCallback(
+    (anchor: string, key: NavKey) => {
+      const el = document.getElementById(anchor);
+      if (!el) return;
+      // 1) Underline the clicked item immediately and freeze the scroll-spy so
+      //    it can't drag the underline elsewhere while we animate. This makes
+      //    the underline correct on the FIRST click regardless of how the
+      //    browser handles the scroll (the reported bug was the underline
+      //    landing on "Oráculo" until a second click).
+      setSpyKey(key);
+      suppressSpyUntilRef.current = Date.now() + 1000;
+      // 2) Smooth-scroll to the section.
+      window.scrollTo({ top: targetY(el), behavior: "smooth" });
+      // 3) Fallback: some environments (heavy extensions, main-thread
+      //    contention with the hero canvas) drop the smooth animation and the
+      //    page never moves. If we haven't arrived shortly, jump instantly so
+      //    the click always lands.
+      window.setTimeout(() => {
+        const want = targetY(el);
+        if (Math.abs(window.scrollY - want) > 48) {
+          window.scrollTo({ top: want, behavior: "auto" });
+        }
+      }, 700);
+    },
+    [targetY],
+  );
 
   /** On home the active item is driven by the scroll-spy; elsewhere by `active`. */
   const activeKey: NavKey | null = isHome ? spyKey : (active ?? null);
@@ -118,7 +147,7 @@ export function MarketingNav({ active }: { active?: NavKey }) {
           aria-current={current}
           onClick={(e) => {
             e.preventDefault();
-            scrollToAnchor(item.anchor!);
+            scrollToAnchor(item.anchor!, item.key);
             history.replaceState(null, "", `#${item.anchor}`);
             onNavigate?.();
           }}
