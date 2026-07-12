@@ -157,6 +157,13 @@
   padding: clamp(56px, 9vw, 96px) clamp(20px, 4.5vw, 56px);
   border-bottom: 1px solid var(--mk-line);
 }
+/* Keep anchor targets clear of the sticky header on hash jumps / scrollIntoView. */
+.mk-hero,
+.mk-section,
+.mk-final,
+#auditorias {
+  scroll-margin-top: 88px;
+}
 .mk-section--alt {
   background: var(--mk-bg-alt);
 }

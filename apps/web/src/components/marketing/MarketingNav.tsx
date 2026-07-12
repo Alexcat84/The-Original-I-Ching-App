@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { setAppLocale } from "@/lib/set-app-locale";
+import { NAV_HEADER_OFFSET, navLog, scrollToSection } from "@/lib/marketing/scroll-to-section";
 import { useAppLocale } from "@/lib/use-app-locale";
 
 /** English first in the UI selector (default app language) — same as chat. */
@@ -31,7 +32,6 @@ const SPY_SECTIONS: Array<{ id: string; key: NavKey }> = [
   { id: "precios", key: "pricing" },
 ];
 
-const HEADER_OFFSET = 84;
 
 /**
  * Marketing site sticky nav. On the home page the anchor items (Oráculo /
@@ -87,12 +87,13 @@ export function MarketingNav({ active }: { active?: NavKey }) {
       for (const s of SPY_SECTIONS) {
         const el = document.getElementById(s.id);
         if (!el) continue;
-        if (el.getBoundingClientRect().top <= HEADER_OFFSET + 40) current = s.key;
+        if (el.getBoundingClientRect().top <= NAV_HEADER_OFFSET + 40) current = s.key;
       }
       // Near the bottom, force the last anchor section (precios).
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80) {
         current = "pricing";
       }
+      navLog("spy", { scrollY: Math.round(window.scrollY), current });
       setSpyKey(current);
     };
 
@@ -112,6 +113,24 @@ export function MarketingNav({ active }: { active?: NavKey }) {
     };
 
     compute();
+
+    // Cross-page landing: arriving at /#section (e.g. clicking Biblioteca/Precios
+    // from Guía) does a native hash jump that lands too high because the page
+    // above hasn't settled — the reported "lands on Oráculo, second click works"
+    // race. Lock the underline to the target and scroll to it with re-checks.
+    try {
+      const hash = decodeURIComponent((window.location.hash || "").replace("#", ""));
+      const hashSection = SPY_SECTIONS.find((s) => s.id === hash);
+      if (hashSection) {
+        navLog("hash landing", hash, "->", hashSection.key);
+        setSpyKey(hashSection.key);
+        clickLockRef.current = hashSection.key;
+        scrollToSection(hash);
+      }
+    } catch {
+      /* ignore */
+    }
+
     window.addEventListener("scroll", compute, { passive: true });
     window.addEventListener("resize", compute);
     window.addEventListener("wheel", releaseLock, { passive: true });
@@ -126,37 +145,17 @@ export function MarketingNav({ active }: { active?: NavKey }) {
     };
   }, [isHome]);
 
-  const targetY = useCallback((el: HTMLElement) => {
-    return Math.max(0, el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET);
+  const scrollToAnchor = useCallback((anchor: string, key: NavKey) => {
+    if (!document.getElementById(anchor)) return;
+    navLog("click", key, "->", anchor);
+    // Underline the clicked item immediately and LOCK it there until the user
+    // scrolls by hand — keeps the underline correct even if the scroll below is
+    // dropped by the browser. scrollToSection re-measures/re-corrects at
+    // escalating delays so it lands under the header even before layout settles.
+    setSpyKey(key);
+    clickLockRef.current = key;
+    scrollToSection(anchor);
   }, []);
-
-  const scrollToAnchor = useCallback(
-    (anchor: string, key: NavKey) => {
-      const el = document.getElementById(anchor);
-      if (!el) return;
-      // 1) Underline the clicked item immediately and LOCK it there until the
-      //    user scrolls by hand. This keeps the underline correct on the FIRST
-      //    click regardless of whether the scroll below actually runs (the
-      //    reported bug: underline landed on "Oráculo" until a second click,
-      //    worse for far targets like Pricing whose long scroll is easier to
-      //    drop under main-thread contention).
-      setSpyKey(key);
-      clickLockRef.current = key;
-      // 2) Smooth-scroll to the section.
-      window.scrollTo({ top: targetY(el), behavior: "smooth" });
-      // 3) Fallback: some environments (heavy extensions, main-thread
-      //    contention with the hero canvas) drop the smooth animation and the
-      //    page never moves. If we haven't arrived shortly, jump instantly so
-      //    the click always lands.
-      window.setTimeout(() => {
-        const want = targetY(el);
-        if (Math.abs(window.scrollY - want) > 48) {
-          window.scrollTo({ top: want, behavior: "auto" });
-        }
-      }, 700);
-    },
-    [targetY],
-  );
 
   /** On home the active item is driven by the scroll-spy; elsewhere by `active`. */
   const activeKey: NavKey | null = isHome ? spyKey : (active ?? null);
