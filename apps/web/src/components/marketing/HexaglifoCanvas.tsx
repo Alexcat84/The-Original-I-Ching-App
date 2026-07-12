@@ -188,6 +188,29 @@ export function HexaglifoCanvas({ locale }: { locale: AppLocale }) {
       mouse.y = e.clientY - r.top;
     };
 
+    // Re-sample the anchor (position only, no re-scatter, no canvas resize) so
+    // particles retarget to the new spot. Used when the layout shifts sides
+    // without a resize event (e.g. an LTR/RTL flip).
+    const reposition = () => {
+      if (!w || !h) return;
+      assign(sample(hexs[gi].ch, gap || 5));
+    };
+
+    // A language switch (e.g. ↔ Arabic) flips the page LTR/RTL and moves the
+    // hexagram anchor to the opposite side. The canvas gets no resize event, so
+    // without this the glyph lingers at its old position and collides with the
+    // copy until the next morph. Re-sample across a few frames while the RTL
+    // flip + RSC refresh settle.
+    const onLocaleChange = () => {
+      let tries = 0;
+      const redo = () => {
+        if (stopped) return;
+        reposition();
+        if (++tries < 6) window.setTimeout(redo, 90);
+      };
+      requestAnimationFrame(redo);
+    };
+
     const easeOut = (k: number) => 1 - Math.pow(1 - k, 3);
     let t = 0;
     let pt = 0;
@@ -295,6 +318,7 @@ export function HexaglifoCanvas({ locale }: { locale: AppLocale }) {
       }
       window.addEventListener("resize", onResize);
       window.addEventListener("mousemove", onMove);
+      window.addEventListener("iching:locale-changed", onLocaleChange);
       raf = requestAnimationFrame(tick);
     };
 
@@ -305,6 +329,7 @@ export function HexaglifoCanvas({ locale }: { locale: AppLocale }) {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("iching:locale-changed", onLocaleChange);
     };
   }, []);
 

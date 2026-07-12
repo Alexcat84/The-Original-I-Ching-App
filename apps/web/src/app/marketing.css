@@ -502,7 +502,9 @@
   animation: mkGlowPulse 11s ease-in-out 2s infinite;
 }
 .mk-hero-copy {
-  padding: 0 40px 0 8px;
+  /* Logical inline padding so it mirrors in RTL (Arabic). */
+  padding-block: 0;
+  padding-inline: 8px 40px;
   position: relative;
   z-index: 1;
 }
@@ -571,6 +573,11 @@
      crosses into the headline on laptop-width desktops (where the copy column
      is tighter) but bleeds boldly left on large monitors. */
   transform: translateX(min(0px, calc((100vw - 1440px) * -0.26)));
+}
+/* RTL (Arabic): the grid mirrors — copy moves right, the glyph column moves
+   left — so the nudge must go the other way (toward centre from the left). */
+[dir="rtl"] .mk-hero-canvas-anchor {
+  transform: translateX(max(0px, calc((100vw - 1440px) * 0.26)));
 }
 .mk-hero-canvas {
   position: absolute;
