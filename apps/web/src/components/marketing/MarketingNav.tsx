@@ -48,9 +48,11 @@ export function MarketingNav({ active }: { active?: NavKey }) {
   const m = getMarketingUiMessages(locale);
   const [menuOpen, setMenuOpen] = useState(false);
   const [spyKey, setSpyKey] = useState<NavKey | null>(null);
-  // While a click-driven scroll is in flight, the scroll-spy is paused so it
-  // can't flicker the underline back to an intermediate/earlier section.
-  const suppressSpyUntilRef = useRef(0);
+  // After a nav click the underline locks to the clicked item and the
+  // scroll-spy is paused, so the underline stays correct even if the scroll
+  // itself is dropped by the browser (heavy extensions / main-thread
+  // contention). The lock is released the moment the user scrolls by hand.
+  const clickLockRef = useRef<NavKey | null>(null);
 
   const onLocaleChange = (next: AppLocale) => {
     setAppLocale(next);
@@ -77,8 +79,9 @@ export function MarketingNav({ active }: { active?: NavKey }) {
     if (!els.length) return;
 
     const compute = () => {
-      // Paused during a click-driven scroll — the optimistic underline wins.
-      if (Date.now() < suppressSpyUntilRef.current) return;
+      // Locked to the clicked item until the user scrolls by hand — the
+      // optimistic underline wins even if the click-scroll never happened.
+      if (clickLockRef.current !== null) return;
       // Pick the last section whose top has passed the header line.
       let current: NavKey | null = null;
       for (const s of SPY_SECTIONS) {
@@ -93,12 +96,33 @@ export function MarketingNav({ active }: { active?: NavKey }) {
       setSpyKey(current);
     };
 
+    // A hand-driven scroll releases the post-click lock so the spy resumes.
+    // Programmatic scrolls fire "scroll" (not wheel/touch/key), so they don't
+    // release it — the underline stays on the clicked item while it animates.
+    const releaseLock = () => {
+      if (clickLockRef.current !== null) {
+        clickLockRef.current = null;
+        compute();
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " ", "Spacebar"].includes(e.key)) {
+        releaseLock();
+      }
+    };
+
     compute();
     window.addEventListener("scroll", compute, { passive: true });
     window.addEventListener("resize", compute);
+    window.addEventListener("wheel", releaseLock, { passive: true });
+    window.addEventListener("touchmove", releaseLock, { passive: true });
+    window.addEventListener("keydown", onKey);
     return () => {
       window.removeEventListener("scroll", compute);
       window.removeEventListener("resize", compute);
+      window.removeEventListener("wheel", releaseLock);
+      window.removeEventListener("touchmove", releaseLock);
+      window.removeEventListener("keydown", onKey);
     };
   }, [isHome]);
 
@@ -110,13 +134,14 @@ export function MarketingNav({ active }: { active?: NavKey }) {
     (anchor: string, key: NavKey) => {
       const el = document.getElementById(anchor);
       if (!el) return;
-      // 1) Underline the clicked item immediately and freeze the scroll-spy so
-      //    it can't drag the underline elsewhere while we animate. This makes
-      //    the underline correct on the FIRST click regardless of how the
-      //    browser handles the scroll (the reported bug was the underline
-      //    landing on "Oráculo" until a second click).
+      // 1) Underline the clicked item immediately and LOCK it there until the
+      //    user scrolls by hand. This keeps the underline correct on the FIRST
+      //    click regardless of whether the scroll below actually runs (the
+      //    reported bug: underline landed on "Oráculo" until a second click,
+      //    worse for far targets like Pricing whose long scroll is easier to
+      //    drop under main-thread contention).
       setSpyKey(key);
-      suppressSpyUntilRef.current = Date.now() + 1000;
+      clickLockRef.current = key;
       // 2) Smooth-scroll to the section.
       window.scrollTo({ top: targetY(el), behavior: "smooth" });
       // 3) Fallback: some environments (heavy extensions, main-thread
