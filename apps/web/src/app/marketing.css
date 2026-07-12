@@ -50,6 +50,12 @@
 .mk-root a:hover {
   color: var(--mk-red);
 }
+/* Neutralize the chat app's global `button { margin-top: .75rem }` default so
+   marketing buttons (locale trigger, burger, pricing cards) align cleanly.
+   All marketing buttons carry their own classes for the rest of their look. */
+.mk-root button {
+  margin: 0;
+}
 
 /* ---------- keyframes ---------- */
 @keyframes mkFadeUp {
@@ -287,7 +293,11 @@
   font-size: 13px;
 }
 .mk-nav-consult {
-  padding: 10px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 24px;
   background: var(--mk-red);
   color: var(--mk-red-text) !important;
   border-radius: 4px;
@@ -351,8 +361,8 @@
    --ink class lives on the menu element itself (not under .mk-root). */
 .locale-picker-trigger--ink {
   min-width: 4rem;
-  min-height: 34px;
-  padding: 7px 12px;
+  height: 40px;
+  padding: 0 12px;
   border-radius: 8px;
   border: 1px solid rgba(201, 162, 75, 0.4);
   background: rgba(201, 162, 75, 0.07);
@@ -461,7 +471,7 @@
 .mk-hero {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr minmax(300px, 520px);
+  grid-template-columns: 1fr minmax(340px, 620px);
   align-items: center;
   min-height: calc(100vh - 80px);
   box-sizing: border-box;
@@ -507,6 +517,10 @@
 }
 .mk-hero-title {
   margin: 0;
+  /* ~14em fits the longest intended first line ("Donde la tinta antigua")
+     and pushes the next word to line 2; em keeps the break proportional as
+     the font shrinks with the clamp. */
+  max-width: 14em;
   font-family: var(--mk-font-display);
   font-weight: 500;
   font-size: clamp(34px, 5vw, 58px);
@@ -547,7 +561,10 @@
 }
 .mk-hero-canvas-anchor {
   position: relative;
-  height: 560px;
+  height: 660px;
+  /* Nudge the particle glyph left so it reads as part of the composition,
+     not pinned to the edge. The canvas samples this element's rect. */
+  transform: translateX(-48px);
 }
 .mk-hero-canvas {
   position: absolute;
@@ -563,7 +580,9 @@
     padding-top: 48px;
   }
   .mk-hero-copy { padding: 0; }
-  .mk-hero-canvas-anchor { height: 340px; margin-top: 24px; }
+  /* Single-column mobile: reset the desktop left-nudge so the glyph stays centered. */
+  .mk-hero-canvas-anchor { height: 340px; margin-top: 24px; transform: none; }
+  .mk-hero-title { max-width: 100%; }
 }
 
 /* ---------- modes ---------- */
