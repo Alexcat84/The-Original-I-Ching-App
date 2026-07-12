@@ -7,8 +7,8 @@ import {
   type AppLocale,
 } from "@iching-oracle/i18n";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { setAppLocale } from "@/lib/set-app-locale";
 import { useAppLocale } from "@/lib/use-app-locale";
@@ -21,17 +21,33 @@ const LOCALE_SELECT_ORDER: AppLocale[] = [
 
 type NavKey = "oracle" | "guide" | "library" | "sources" | "pricing" | "faqs";
 
+/** Nav item: `anchor` links scroll within the home page; the rest are routes. */
+type NavItem = { key: NavKey; label: string; anchor?: string; route?: string };
+
+/** Home-section ids the scroll-spy watches, mapped to their nav item. */
+const SPY_SECTIONS: Array<{ id: string; key: NavKey }> = [
+  { id: "oraculo", key: "oracle" },
+  { id: "biblioteca", key: "library" },
+  { id: "precios", key: "pricing" },
+];
+
+const HEADER_OFFSET = 84;
+
 /**
- * Marketing site sticky nav. The "Consultar" CTA points to /login: guests get
- * the register/sign-in card there, and /login redirects authenticated users
- * straight to /chat — so this link works for both states without a session
- * check here.
+ * Marketing site sticky nav. On the home page the anchor items (Oráculo /
+ * Biblioteca / Precios) smooth-scroll in place — using plain <a> + a scroll
+ * handler instead of next/link avoids the App Router re-navigating "/" and
+ * bouncing the page back to the top. A scroll-spy moves the underline to the
+ * section actually in view. On doc pages the anchors become /#section links.
  */
 export function MarketingNav({ active }: { active?: NavKey }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const locale = useAppLocale();
   const m = getMarketingUiMessages(locale);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [spyKey, setSpyKey] = useState<NavKey | null>(null);
 
   const onLocaleChange = (next: AppLocale) => {
     setAppLocale(next);
@@ -40,14 +56,84 @@ export function MarketingNav({ active }: { active?: NavKey }) {
     router.refresh();
   };
 
-  const links: Array<{ key: NavKey; href: string; label: string }> = [
-    { key: "oracle", href: "/#oraculo", label: m.nav.oracle },
-    { key: "guide", href: "/guia", label: m.nav.guide },
-    { key: "library", href: "/#biblioteca", label: m.nav.library },
-    { key: "sources", href: "/notes", label: m.nav.sources },
-    { key: "pricing", href: "/#precios", label: m.nav.pricing },
-    { key: "faqs", href: "/faqs", label: m.nav.faqs },
+  const items: NavItem[] = [
+    { key: "oracle", label: m.nav.oracle, anchor: "oraculo" },
+    { key: "guide", label: m.nav.guide, route: "/guia" },
+    { key: "library", label: m.nav.library, anchor: "biblioteca" },
+    { key: "sources", label: m.nav.sources, route: "/notes" },
+    { key: "pricing", label: m.nav.pricing, anchor: "precios" },
+    { key: "faqs", label: m.nav.faqs, route: "/faqs" },
   ];
+
+  // Scroll-spy: underline follows the section in view (home only).
+  useEffect(() => {
+    if (!isHome) return;
+    const els = SPY_SECTIONS.map((s) => document.getElementById(s.id)).filter(
+      (el): el is HTMLElement => el !== null,
+    );
+    if (!els.length) return;
+
+    const compute = () => {
+      // Pick the last section whose top has passed the header line.
+      let current: NavKey | null = null;
+      for (const s of SPY_SECTIONS) {
+        const el = document.getElementById(s.id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= HEADER_OFFSET + 40) current = s.key;
+      }
+      // Near the bottom, force the last anchor section (precios).
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80) {
+        current = "pricing";
+      }
+      setSpyKey(current);
+    };
+
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
+  }, [isHome]);
+
+  const scrollToAnchor = useCallback((anchor: string) => {
+    const el = document.getElementById(anchor);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+    window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+  }, []);
+
+  /** On home the active item is driven by the scroll-spy; elsewhere by `active`. */
+  const activeKey: NavKey | null = isHome ? spyKey : (active ?? null);
+
+  const renderItem = (item: NavItem, onNavigate?: () => void) => {
+    const isActive = activeKey === item.key;
+    const current = isActive ? "true" : undefined;
+    if (item.anchor && isHome) {
+      return (
+        <a
+          key={item.key}
+          href={`#${item.anchor}`}
+          aria-current={current}
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToAnchor(item.anchor!);
+            history.replaceState(null, "", `#${item.anchor}`);
+            onNavigate?.();
+          }}
+        >
+          {item.label}
+        </a>
+      );
+    }
+    const href = item.anchor ? `/#${item.anchor}` : item.route!;
+    return (
+      <Link key={item.key} href={href} aria-current={current} onClick={onNavigate}>
+        {item.label}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -57,13 +143,7 @@ export function MarketingNav({ active }: { active?: NavKey }) {
           <img src="/marketing/logo-v3.jpg" alt="The Original I Ching" />
           <span>THE ORIGINAL I CHING</span>
         </Link>
-        <nav className="mk-nav-links">
-          {links.map((l) => (
-            <Link key={l.key} href={l.href} aria-current={active === l.key ? "true" : undefined}>
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+        <nav className="mk-nav-links">{items.map((it) => renderItem(it))}</nav>
         <div className="mk-nav-actions">
           <AuthLocalePicker
             locale={locale}
@@ -71,6 +151,7 @@ export function MarketingNav({ active }: { active?: NavKey }) {
             order={LOCALE_SELECT_ORDER}
             labels={getLanguageLabels()}
             ariaLabel={m.nav.consult}
+            variant="ink"
           />
           <Link href="/login" className="mk-nav-consult">
             {m.nav.consult}
@@ -88,11 +169,7 @@ export function MarketingNav({ active }: { active?: NavKey }) {
       </header>
       {menuOpen ? (
         <nav className="mk-nav-mobile">
-          {links.map((l) => (
-            <Link key={l.key} href={l.href} onClick={() => setMenuOpen(false)}>
-              {l.label}
-            </Link>
-          ))}
+          {items.map((it) => renderItem(it, () => setMenuOpen(false)))}
         </nav>
       ) : null}
     </>

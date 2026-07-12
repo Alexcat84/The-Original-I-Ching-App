@@ -67,24 +67,34 @@
   to { transform: scaleX(1); }
 }
 @keyframes mkFloatY {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
+  0% { transform: translateY(0) rotate(-1.2deg); }
+  50% { transform: translateY(-7px) rotate(1.2deg); }
+  100% { transform: translateY(0) rotate(-1.2deg); }
 }
 @keyframes mkGlowPulse {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 0.8; }
 }
+/* Gentle, organic drift: small rotation + a touch of bob, so the coin sways
+   like it hangs on a thread rather than ticking like a metronome. */
 @keyframes mkCoinSway {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
+  0% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-3px); }
+  100% { transform: rotate(-3deg) translateY(0); }
 }
 @keyframes mkStalkSway {
-  0%, 100% { transform: rotate(-3.5deg); }
-  50% { transform: rotate(3.5deg); }
+  0% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+  100% { transform: rotate(-2deg); }
 }
 @keyframes mkStalkGlow {
-  0%, 100% { opacity: 0.65; }
+  0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
+}
+/* Soft easing shared by card entrances and hovers (ease-out, no snap). */
+@keyframes mkReveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -94,6 +104,30 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- scroll reveal (staggered, gentle) ---------- */
+.mk-reveal > * {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mk-reveal.mk-in > * {
+  opacity: 1;
+  transform: none;
+}
+.mk-reveal.mk-in > *:nth-child(2) { transition-delay: 0.1s; }
+.mk-reveal.mk-in > *:nth-child(3) { transition-delay: 0.2s; }
+.mk-reveal.mk-in > *:nth-child(4) { transition-delay: 0.3s; }
+.mk-reveal.mk-in > *:nth-child(5) { transition-delay: 0.4s; }
+@media (prefers-reduced-motion: reduce) {
+  .mk-reveal > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
@@ -310,6 +344,68 @@
   .mk-nav-brand span { display: none; }
 }
 
+/* ---------- locale picker (ink variant) ----------
+   The default picker styling in globals.css keys off html[data-theme]; the
+   marketing site is dark-only, so these ink rules are self-contained and win
+   regardless of the chat theme cookie. The menu is portaled to <body>, so the
+   --ink class lives on the menu element itself (not under .mk-root). */
+.locale-picker-trigger--ink {
+  min-width: 4rem;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 162, 75, 0.4);
+  background: rgba(201, 162, 75, 0.07);
+  color: var(--mk-gold);
+  font-family: var(--mk-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.25s, background 0.25s;
+}
+.locale-picker-trigger--ink:hover {
+  border-color: rgba(201, 162, 75, 0.7);
+  background: rgba(201, 162, 75, 0.12);
+}
+.locale-picker-trigger--ink .locale-picker-trigger__chevron {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid rgba(201, 162, 75, 0.7);
+}
+/* !important: the base menu colors are set by html[data-theme="light|dark"]
+   .locale-picker-menu rules (specificity 0,2,1) which the chat theme cookie
+   drives even on marketing pages. This ink variant must win regardless of
+   that cookie. Scoped to --ink, which only exists on the marketing site. */
+.locale-picker-menu--ink {
+  background: #14110f !important;
+  border: 1px solid rgba(201, 162, 75, 0.28) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55) !important;
+}
+.locale-picker-menu--ink .locale-picker-menu__row {
+  border-bottom-color: rgba(201, 162, 75, 0.12) !important;
+}
+.locale-picker-menu--ink .locale-picker-menu__row:hover {
+  background: rgba(201, 162, 75, 0.1) !important;
+}
+.locale-picker-menu--ink .locale-picker-menu__row.is-active {
+  background: rgba(197, 61, 46, 0.16) !important;
+}
+.locale-picker-menu--ink .locale-picker-menu__code {
+  color: #c9a24b !important;
+}
+.locale-picker-menu--ink .locale-picker-menu__name {
+  color: rgba(239, 232, 220, 0.62) !important;
+}
+
 /* ---------- footer ---------- */
 .mk-footer {
   padding: clamp(36px, 5vw, 56px) clamp(20px, 4.5vw, 56px);
@@ -484,14 +580,17 @@
   padding: clamp(28px, 4vw, 48px);
   border-radius: 14px;
   overflow: hidden;
-  transition: transform 0.35s, border-color 0.35s, box-shadow 0.35s;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
 }
 .mk-mode-card--gold {
   border: 1px solid rgba(201, 162, 75, 0.24);
   background: linear-gradient(180deg, rgba(201, 162, 75, 0.06), transparent);
 }
 .mk-mode-card--gold:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.012);
   border-color: rgba(201, 162, 75, 0.55);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
@@ -500,7 +599,7 @@
   background: linear-gradient(180deg, rgba(197, 61, 46, 0.06), transparent);
 }
 .mk-mode-card--red:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.012);
   border-color: rgba(197, 61, 46, 0.6);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
@@ -588,13 +687,16 @@
 }
 .mk-mode-coin {
   height: 80px;
-  animation: mkCoinSway 6s ease-in-out infinite;
-  transform-origin: center 120%;
+  animation: mkCoinSway 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transform-origin: center 118%;
+  will-change: transform;
 }
 .mk-mode-bone {
   height: 80px;
   filter: invert(0.92);
-  animation: mkFloatY 7s ease-in-out infinite;
+  animation: mkFloatY 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transform-origin: center bottom;
+  will-change: transform;
 }
 .mk-stalks {
   position: relative;
@@ -615,7 +717,9 @@
   border-radius: 2px;
   background: linear-gradient(180deg, #e8d9a0, #9a7418);
   transform-origin: bottom center;
-  animation: mkStalkSway 5.4s ease-in-out infinite, mkStalkGlow 4.6s ease-in-out infinite;
+  animation:
+    mkStalkSway 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+    mkStalkGlow 6s ease-in-out infinite;
 }
 .mk-stalk-base {
   position: absolute;
@@ -901,23 +1005,38 @@
   padding: 44px 32px 38px;
   border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.3s, border-color 0.3s;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
 }
 .mk-source-card--gold {
   border: 1px solid rgba(201, 162, 75, 0.3);
   background: linear-gradient(180deg, rgba(201, 162, 75, 0.06), transparent);
 }
-.mk-source-card--gold:hover { transform: translateY(-6px); border-color: rgba(201, 162, 75, 0.6); }
+.mk-source-card--gold:hover {
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(201, 162, 75, 0.6);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.4);
+}
 .mk-source-card--ivory {
   border: 1px solid rgba(239, 232, 220, 0.22);
   background: linear-gradient(180deg, rgba(239, 232, 220, 0.05), transparent);
 }
-.mk-source-card--ivory:hover { transform: translateY(-6px); border-color: rgba(239, 232, 220, 0.5); }
+.mk-source-card--ivory:hover {
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(239, 232, 220, 0.5);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.4);
+}
 .mk-source-card--red {
   border: 1px solid rgba(197, 61, 46, 0.35);
   background: linear-gradient(180deg, rgba(197, 61, 46, 0.07), transparent);
 }
-.mk-source-card--red:hover { transform: translateY(-6px); border-color: rgba(197, 61, 46, 0.65); }
+.mk-source-card--red:hover {
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(197, 61, 46, 0.65);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.4);
+}
 .mk-source-vert {
   position: absolute;
   top: 18px;

@@ -6,6 +6,7 @@ import { HexaglifoCanvas } from "@/components/marketing/HexaglifoCanvas";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingPricingCards } from "@/components/marketing/MarketingPricingCards";
+import { MarketingReveal } from "@/components/marketing/MarketingReveal";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
@@ -88,7 +89,7 @@ export default async function MarketingHomePage() {
           </div>
           <span className="mk-section-head-glyphs">錢 · 骨</span>
         </div>
-        <div className="mk-modes-grid">
+        <MarketingReveal className="mk-modes-grid">
           <div className="mk-mode-card mk-mode-card--gold">
             <div className="mk-mode-glow-gold" />
             <div style={{ display: "flex", alignItems: "flex-end", gap: 34, flexWrap: "wrap" }}>
@@ -146,7 +147,7 @@ export default async function MarketingHomePage() {
               </Link>
             </p>
           </div>
-        </div>
+        </MarketingReveal>
       </div>
 
       {/* ================= EL RITUAL ================= */}
@@ -158,7 +159,7 @@ export default async function MarketingHomePage() {
           </div>
           <span className="mk-section-head-glyphs">問 · 選 · 擲 · 讀 · 話</span>
         </div>
-        <div className="mk-ritual-grid">
+        <MarketingReveal className="mk-ritual-grid">
           {(
             [
               ["一", "問", m.ritual.step1Title, m.ritual.step1Desc],
@@ -176,7 +177,7 @@ export default async function MarketingHomePage() {
               <p className="mk-ritual-desc">{desc}</p>
             </div>
           ))}
-        </div>
+        </MarketingReveal>
         <p style={{ margin: "40px 0 0" }}>
           <Link href="/guia" className="mk-link-red">
             {m.ritual.guideCta}
@@ -273,7 +274,7 @@ export default async function MarketingHomePage() {
             </h2>
             <p className="mk-sources-intro-sub">{m.sources.subtitle}</p>
           </div>
-          <div className="mk-sources-cards">
+          <MarketingReveal className="mk-sources-cards">
             <Link href="/notes" className="mk-source-card mk-source-card--gold">
               <span className="mk-source-vert" style={{ color: "rgba(201,162,75,.4)" }}>
                 德文譯本
@@ -314,7 +315,7 @@ export default async function MarketingHomePage() {
               <h3 className="mk-source-name">Zhou Yi</h3>
               <p className="mk-source-detail">{m.sources.zhouyiDetail}</p>
             </Link>
-          </div>
+          </MarketingReveal>
         </div>
         <div id="auditorias" className="mk-audits-box">
           <div className="mk-audits-head">

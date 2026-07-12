@@ -35,8 +35,6 @@ export function MarketingFooter() {
           </div>
           <div>
             <p>{m.footer.libraryHeading}</p>
-            <Link href="/#biblioteca">{m.footer.hexagrams}</Link>
-            <br />
             <Link href="/notes">{m.footer.sources}</Link>
             <br />
             <Link href="/audits">{m.footer.audits}</Link>

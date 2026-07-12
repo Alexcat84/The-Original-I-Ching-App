@@ -49,9 +49,13 @@ conservaba todo en el historial.
    - `zhouyi-zhushu-song-er07.pdf`
    - `Introduction To The Study Of The Classic Of Change (Zhu Xi/Adler).epub`
    - `The Complete I Ching 10th Anniversary (Alfred Huang).epub`
-   Consecuencia: `npm run verify:hexagram-fidelity` (gate PDF-gold) queda
-   bloqueado hasta reponerlos (re-descarga archive.org / recompra). Los
-   cross-checks EPUB de Wilhelm y Legge sí sobreviven.
+   Consecuencia: `npm run verify:hexagram-fidelity` (gate PDF-gold local) queda
+   sin fuentes. **No es bloqueante:** el usuario confirma (2026-07-11) que la
+   validación campo-a-campo contra los libros ya se completó vía Claude API y
+   los datasets master están validados y congelados; los libros fuente ya no
+   son necesarios para operar ni releasear. El usuario conserva copias propias
+   de los libros. El gate PDF-gold local queda como herramienta histórica; si
+   se quisiera re-ejecutar, reponer las fuentes desde esas copias.
 
 ## Verificación final ejecutada
 
@@ -72,8 +76,9 @@ conservaba todo en el historial.
 2. **ZIP completo offline** (648 MB, incluye los regenerables):
    `iching-git-backup-2026-07-11-v2.zip` → Drive del usuario (el v1 de 757 MB
    está malformado — descartar).
-3. **Pendiente:** reponer los 6 libros fuente de `tools/source-pdfs/` (ver
-   hallazgo 2) y añadirlos al ZIP v3 + Drive cuando estén.
+3. Los 6 libros fuente de `tools/source-pdfs/` NO se reponen (hallazgo 2): los
+   datasets master ya están validados y congelados; el usuario conserva copias
+   propias. No se requiere ZIP v3.
 
 ## Reglas derivadas (obligatorias)
 
