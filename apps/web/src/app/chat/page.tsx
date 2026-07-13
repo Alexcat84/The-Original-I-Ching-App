@@ -6111,14 +6111,7 @@ export default function HomePage() {
                           {docNav.feedback}
                         </Link>
                       </div>
-                    ) : (
-                      /* Browser: back to the marketing site (the WebView guard
-                         on "/" would bounce APK users straight back here, so
-                         this link is browser-only). */
-                      <div className="composer-doc-links" aria-label={chrome.docLinksAria}>
-                        <Link href="/">{docNav.backToOracle}</Link>
-                      </div>
-                    )}
+                    ) : null}
                   </section>
                 </div>
               </div>
