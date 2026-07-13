@@ -1436,6 +1436,25 @@ html.iching-rn-webview .mk-nav-mobile,
 html.iching-rn-webview .mk-footer {
   display: none;
 }
+/* Links inside the re-skinned doc pages must keep the app's OWN adaptive link
+   color inside the APK WebView (globals `--ghost-link`: teal in light, mint in
+   dark) — NOT the unconditional marketing `.mk-root a` color (--mk-link #d9cfc0),
+   which is nearly invisible on the app's light theme. `.mk-doc .doc-* a` (0,2,1)
+   outranks `.mk-root a` (0,1,1); under the APK theme --ghost-link is not re-mapped.
+   In the BROWSER the higher-specificity `html:not(.iching-rn-webview) .mk-doc
+   .doc-article a` rule above still wins, so the marketing look there is unchanged.
+   `.doc-nav` is rendered ONLY in the APK (see MarketingDocShell) → full app
+   treatment (color + underline). `.doc-article a` also exists in the browser →
+   color only, decoration left to the cascade (stays 'none' as marketing does). */
+.mk-doc .doc-nav a {
+  color: var(--ghost-link, #2a7a94);
+  text-decoration: underline;
+}
+.mk-doc .doc-nav a:hover,
+.mk-doc .doc-article a,
+.mk-doc .doc-article a:hover {
+  color: var(--ghost-link, #2a7a94);
+}
 
 /* ---------- final CTA ---------- */
 .mk-final {
