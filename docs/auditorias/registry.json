@@ -1312,7 +1312,8 @@
       "status": "open",
       "path": "docs/auditorias/20260713-AUD-WEB-01-react-19-upgrade-assessment.md",
       "relatedCodes": [
-        "20260713-PLAN-WEB-01 react-19-migration"
+        "20260713-PLAN-WEB-01 react-19-migration",
+        "20260713-PLAN-WEB-01b react-19-migration-corrections"
       ],
       "relatedTests": []
     },
@@ -1326,6 +1327,22 @@
       "status": "open",
       "path": "docs/auditorias/20260713-PLAN-WEB-01-react-19-migration.md",
       "relatedCodes": [
+        "20260713-AUD-WEB-01 react-19-upgrade-assessment",
+        "20260713-PLAN-WEB-01b react-19-migration-corrections"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260713-PLAN-WEB-01b react-19-migration-corrections",
+      "title": "Correcciones y luz verde: migración React 18.2 → 19.2 (web)",
+      "shortName": "react-19-migration-corrections",
+      "type": "PLAN",
+      "family": "WEB",
+      "date": "2026-07-13",
+      "status": "open",
+      "path": "docs/auditorias/20260713-PLAN-WEB-01b-react-19-migration-corrections.md",
+      "relatedCodes": [
+        "20260713-PLAN-WEB-01 react-19-migration",
         "20260713-AUD-WEB-01 react-19-upgrade-assessment"
       ],
       "relatedTests": []
