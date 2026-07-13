@@ -57,6 +57,30 @@
   margin: 0;
 }
 
+/* Per-navigation page fade (see MarketingPageFade). Opacity-only so the sticky
+   nav is never given a transform/filter containing block. `both` fill keeps the
+   final state if the animation is interrupted. Honour reduced-motion, and skip
+   it entirely inside the APK WebView (doc pages there load by full reload). */
+.mk-page-fade {
+  animation: mkPageFade 320ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes mkPageFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+html.iching-rn-webview .mk-page-fade {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-page-fade {
+    animation: none;
+  }
+}
+
 /* ---------- keyframes ---------- */
 @keyframes mkFadeUp {
   from { opacity: 0; transform: translateY(26px); }

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAppLocale } from "@/lib/use-app-locale";
 import { MarketingFooter } from "./MarketingFooter";
 import { MarketingNav } from "./MarketingNav";
+import { MarketingPageFade } from "./MarketingPageFade";
 
 type NavKey = "oracle" | "guide" | "library" | "sources" | "pricing" | "faqs";
 
@@ -69,13 +70,15 @@ export function MarketingDocShell({
 
   return (
     <div className="mk-root mk-doc">
-      {inRnWebView ? null : <MarketingNav active={active} />}
-      <main className="mk-doc-main">
-        {inRnWebView ? apkDocNav : null}
-        {children}
-        {inRnWebView ? apkDocNav : null}
-      </main>
-      {inRnWebView ? null : <MarketingFooter />}
+      <MarketingPageFade>
+        {inRnWebView ? null : <MarketingNav active={active} />}
+        <main className="mk-doc-main">
+          {inRnWebView ? apkDocNav : null}
+          {children}
+          {inRnWebView ? apkDocNav : null}
+        </main>
+        {inRnWebView ? null : <MarketingFooter />}
+      </MarketingPageFade>
     </div>
   );
 }

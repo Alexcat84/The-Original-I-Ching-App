@@ -5,6 +5,7 @@ import Link from "next/link";
 import { HexaglifoCanvas } from "@/components/marketing/HexaglifoCanvas";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
+import { MarketingPageFade } from "@/components/marketing/MarketingPageFade";
 import { MarketingPricingCards } from "@/components/marketing/MarketingPricingCards";
 import { MarketingReveal } from "@/components/marketing/MarketingReveal";
 import { resolveDocLocale } from "@/lib/doc-locale";
@@ -48,6 +49,7 @@ export default async function MarketingHomePage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: rnWebViewGuardScript }}
       />
+      <MarketingPageFade>
       <MarketingNav active="oracle" />
 
       {/* ================= HERO ================= */}
@@ -427,6 +429,7 @@ export default async function MarketingHomePage() {
       </div>
 
       <MarketingFooter />
+      </MarketingPageFade>
     </div>
   );
 }
