@@ -23,6 +23,14 @@ Sentry.init({
     if (msg.includes("Error invoking postMessage: Java object is gone")) {
       return null;
     }
+    // The installed Android APK loads "/" in a WebView and our pre-hydration
+    // guard immediately redirects it to "/chat". That navigation aborts the
+    // marketing page's in-flight RSC stream, and the WebView surfaces the
+    // aborted read as an uncaught "Connection closed." It is expected and
+    // non-actionable (the user lands on /chat) — suppress the noise.
+    if (msg === "Connection closed." || msg === "Connection closed") {
+      return null;
+    }
     return event;
   },
 });
