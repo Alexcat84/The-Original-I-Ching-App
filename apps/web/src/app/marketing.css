@@ -1429,21 +1429,12 @@ html.iching-rn-webview .mk-doc-main {
   padding: 0;
 }
 /* APK WebView: doc pages are reached from the chat's doc links — hide the
-   marketing chrome and show a plain back-to-chat link instead. The native
-   shell stamps `iching-rn-webview` on <html>, so this is CSS-only. */
-.mk-doc-apk-back {
-  display: none;
-  font-family: var(--mk-font-ui);
-  font-size: 13px;
-  margin-bottom: 1.1rem;
-}
+   marketing chrome (MarketingDocShell renders the original .doc-nav row + the
+   app theme instead). The native shell stamps `iching-rn-webview` on <html>. */
 html.iching-rn-webview .mk-nav,
 html.iching-rn-webview .mk-nav-mobile,
 html.iching-rn-webview .mk-footer {
   display: none;
-}
-html.iching-rn-webview .mk-doc-apk-back {
-  display: inline-block;
 }
 
 /* ---------- final CTA ---------- */
