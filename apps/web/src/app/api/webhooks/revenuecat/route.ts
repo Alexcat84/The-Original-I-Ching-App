@@ -100,18 +100,30 @@ export async function POST(req: NextRequest) {
   const eventType = (event?.type as string) ?? "";
   const userId = (event?.app_user_id as string) ?? "";
   const productId = (event?.product_id as string) ?? "";
+  const rcEnvironment = String(event?.environment ?? "").toUpperCase();
 
-  // TEST events are gated by env var (default OFF in production).
-  // Returns 200 to prevent RevenueCat from retrying the event.
-  if (eventType === TEST_EVENT) {
-    const allowTest =
-      process.env.REVENUECAT_ALLOW_TEST_EVENTS === "1" ||
-      process.env.REVENUECAT_ALLOW_TEST_EVENTS === "true";
-    if (!allowTest) {
-      log.info("webhook_test_event_skipped", { eventType });
-      await log.flush();
-      return NextResponse.json({ skipped: "test_event_disabled_in_production" });
-    }
+  // TEST events AND SANDBOX-environment purchases (Stripe test cards — no real
+  // money) must NEVER credit real tokens in production. Sandbox and production
+  // share one RevenueCat project, so this production webhook also receives
+  // sandbox events, and the sandbox checkout URL is a public NEXT_PUBLIC var —
+  // without this gate anyone could pay with a 4242… test card and be granted
+  // real tokens. Both are gated by the same env var (default OFF) so staging,
+  // where it is ON, can still test end-to-end. Returns 200 so RevenueCat does
+  // not retry the skipped event.
+  const allowTestOrSandbox =
+    process.env.REVENUECAT_ALLOW_TEST_EVENTS === "1" ||
+    process.env.REVENUECAT_ALLOW_TEST_EVENTS === "true";
+  if (eventType === TEST_EVENT && !allowTestOrSandbox) {
+    log.info("webhook_test_event_skipped", { eventType });
+    await log.flush();
+    return NextResponse.json({ skipped: "test_event_disabled_in_production" });
+  }
+  // Fail-closed: with the flag off, only genuine PRODUCTION purchases credit
+  // tokens. SANDBOX (or any missing/unknown environment) is rejected.
+  if (eventType !== TEST_EVENT && rcEnvironment !== "PRODUCTION" && !allowTestOrSandbox) {
+    log.info("webhook_non_production_event_skipped", { eventType, environment: rcEnvironment });
+    await log.flush();
+    return NextResponse.json({ skipped: "non_production_event_disabled" });
   }
 
   if (!REAL_PURCHASE_EVENTS.has(eventType) && eventType !== TEST_EVENT) {
