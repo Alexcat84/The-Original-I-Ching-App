@@ -34,8 +34,6 @@
     "@iching-oracle/sharing": "file:../../packages/sharing",
     "@iching-oracle/ui": "file:../../packages/ui",
     "@napi-rs/canvas": "^1.0.1",
-    "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.18.0",
     "@resvg/resvg-js": "^2.6.2",
     "@revenuecat/purchases-js": "^1.29.1",
     "@sentry/nextjs": "10.58.0",
