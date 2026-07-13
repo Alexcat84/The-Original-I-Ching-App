@@ -1,6 +1,8 @@
 # Correcciones y luz verde — Migración React 18.2 → 19.2 (web)
 
-**Código:** `20260713-PLAN-WEB-01b react-19-migration-corrections` · **Familia:** WEB · **Estado:** open
+**Código:** `20260713-PLAN-WEB-01b react-19-migration-corrections` · **Familia:** WEB · **Estado:** paused
+
+> **⏸️ PAUSADO (2026-07-13) — Estado tras intentar ejecución.** Las correcciones de este addendum eran correctas y se aplicaron (override **solo** `react-dom`; gate fail-closed sobre mobile; `three` conservado). Al ejecutar la Fase 1 emergieron **dos blockers**: (1) **`ViewTransition` no existe en React estable 19.2.7** (verificado en el tarball de npm: sin build `react/experimental`, sin export) → el motivo del upgrade no está en el canal estable; (2) sin override **global** de `react` (que este addendum —con razón— prohíbe para no mover mobile), npm dedupea el árbol web a `react@18.2.0` y no hay forma determinista de forzarlo a 19.2.7 sin tocar mobile. Ambos hacen que el upgrade **no compense ahora**. Se revirtió la rama; **`apps/mobile` quedó intacto en 19.0.0**. La **Sección 3** (limpieza de `@react-three/fiber` + `drei`, conservando `three`) **sí se ejecutó**, pero como **commit independiente en staging/main** (no plegado a un PR de upgrade que ya no existe). Reanudar el upgrade solo cuando haya un consumidor real de una API de React 19 o `ViewTransition` se estabilice en el canal estable y Next 15+ lo exponga con fiabilidad.
 
 - **Fecha:** 2026-07-13
 - **Rama objetivo:** `chore/react-19` → `staging` → `main`

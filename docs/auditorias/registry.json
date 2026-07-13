@@ -1309,7 +1309,7 @@
       "type": "AUD",
       "family": "WEB",
       "date": "2026-07-13",
-      "status": "open",
+      "status": "paused",
       "path": "docs/auditorias/20260713-AUD-WEB-01-react-19-upgrade-assessment.md",
       "relatedCodes": [
         "20260713-PLAN-WEB-01 react-19-migration",
@@ -1324,7 +1324,7 @@
       "type": "PLAN",
       "family": "WEB",
       "date": "2026-07-13",
-      "status": "open",
+      "status": "paused",
       "path": "docs/auditorias/20260713-PLAN-WEB-01-react-19-migration.md",
       "relatedCodes": [
         "20260713-AUD-WEB-01 react-19-upgrade-assessment",
@@ -1339,7 +1339,7 @@
       "type": "PLAN",
       "family": "WEB",
       "date": "2026-07-13",
-      "status": "open",
+      "status": "paused",
       "path": "docs/auditorias/20260713-PLAN-WEB-01b-react-19-migration-corrections.md",
       "relatedCodes": [
         "20260713-PLAN-WEB-01 react-19-migration",

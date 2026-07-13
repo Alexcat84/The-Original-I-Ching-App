@@ -1,6 +1,8 @@
 # Evaluación — Upgrade React 18.2 → 19.2 (web)
 
-**Código:** `20260713-AUD-WEB-01 react-19-upgrade-assessment` · **Familia:** WEB · **Estado:** open
+**Código:** `20260713-AUD-WEB-01 react-19-upgrade-assessment` · **Familia:** WEB · **Estado:** paused
+
+> **⏸️ PAUSADO (2026-07-13).** `ViewTransition` **no está en React estable 19.2.7** (verificado en el tarball de npm: sin build `react/experimental`, sin export de `ViewTransition`/`unstable_ViewTransition`). El motivo central del upgrade —View Transitions nativas— no existe en el canal estable, y ninguna otra API de React 19 está en uso. Además, un install limpio del árbol web exigiría un override **global** de `react` que movería `apps/mobile` fuera del 19.0.0 validado por Expo. El upgrade queda **pausado** hasta que haya un consumidor real de una API de React 19, o hasta que `ViewTransition` se estabilice y Next 15+ lo exponga de forma fiable. **El scan de compatibilidad de este doc sigue vigente** para ese momento. La limpieza de `@react-three` (dep muerta) sí se rescató por separado. Ver [`20260713-PLAN-WEB-01b`](./20260713-PLAN-WEB-01b-react-19-migration-corrections.md) §Estado.
 
 - **Fecha:** 2026-07-13
 - **Rama objetivo:** `chore/react-19` (aún no creada)
