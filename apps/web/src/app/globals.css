@@ -5151,14 +5151,20 @@ html[data-theme="dark"] .audit-timeline {
   font-weight: 700;
 }
 
-/* Light mode only: verification-date chip so active dates pop off the pale shell */
-html:not([data-theme="dark"]) .audit-timeline__date--active {
+/* Light mode: give EVERY verification date the same chip-sized box (padding +
+   radius) so active (green) and muted (plain) rows share identical geometry and
+   every headline starts at the same x. Only the background distinguishes an
+   active date. Without this, the active chip's horizontal padding shifted its
+   headline ~13px to the right of the muted rows. */
+html:not([data-theme="dark"]) .audit-timeline__date {
   display: inline-block;
   padding: 0.06rem 0.4rem;
   border-radius: 0.22rem;
-  background: color-mix(in srgb, var(--audit-timeline-date-active) 13%, var(--bg));
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+}
+html:not([data-theme="dark"]) .audit-timeline__date--active {
+  background: color-mix(in srgb, var(--audit-timeline-date-active) 13%, var(--bg));
 }
 
 .audit-timeline__date--muted {
