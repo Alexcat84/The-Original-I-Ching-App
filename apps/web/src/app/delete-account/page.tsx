@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { getDeleteAccountPageMessages, getDocNavUiMessages } from "@iching-oracle/i18n";
+import { getDeleteAccountPageMessages } from "@iching-oracle/i18n";
+import { MarketingDocShell } from "@/components/marketing/MarketingDocShell";
 import { resolveDocLocale } from "@/lib/doc-locale";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,17 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DeleteAccountPage() {
   const locale = await resolveDocLocale();
   const m = getDeleteAccountPageMessages(locale);
-  const nav = getDocNavUiMessages(locale);
 
   return (
+    <MarketingDocShell>
     <div className="oracle-shell doc-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link>
-        {" · "}
-        <Link href="/privacy">{nav.privacyPolicy}</Link>
-        {" · "}
-        <Link href="/terms">{nav.termsOfService}</Link>
-      </nav>
       <article className="doc-article">
         <h1>{m.h1}</h1>
         <p>{m.intro}</p>
@@ -66,13 +59,7 @@ export default async function DeleteAccountPage() {
           )}
         </p>
       </article>
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link>
-        {" · "}
-        <Link href="/privacy">{nav.privacyPolicy}</Link>
-        {" · "}
-        <Link href="/terms">{nav.termsOfService}</Link>
-      </nav>
     </div>
+    </MarketingDocShell>
   );
 }

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export const metadata: Metadata = {
@@ -13,26 +12,18 @@ export const metadata: Metadata = {
   },
   ...buildCanonicalMetadata("/guia"),
 };
-import { getDocNavUiMessages, getGuiaPageUiMessages } from "@iching-oracle/i18n";
+import { getGuiaPageUiMessages } from "@iching-oracle/i18n";
 
+import { MarketingDocShell } from "@/components/marketing/MarketingDocShell";
 import { resolveDocLocale } from "@/lib/doc-locale";
 
 
 export default async function GuiaRapidaPage() {
   const locale = await resolveDocLocale();
-  const nav = getDocNavUiMessages(locale);
   const g = getGuiaPageUiMessages(locale);
   return (
+    <MarketingDocShell active="guide">
     <div className="oracle-shell doc-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-        <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> ·{" "}
-        <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-        <Link href="/terms">{nav.termsShort}</Link>
-      </nav>
       <article className="doc-article">
         <h1>{g.title}</h1>
         <p className="doc-lead">
@@ -152,15 +143,8 @@ export default async function GuiaRapidaPage() {
           <li>{g.privacyLi3}</li>
         </ul>
 
-        <nav className="doc-nav" style={{ marginTop: "3rem" }}>
-          <Link href="/">{nav.backToOracle}</Link> ·{" "}
-          <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-          <Link href="/about">{nav.aboutShort}</Link> ·{" "}
-          <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-          <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-          <Link href="/terms">{nav.termsShort}</Link>
-        </nav>
       </article>
     </div>
+    </MarketingDocShell>
   );
 }

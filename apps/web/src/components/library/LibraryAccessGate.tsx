@@ -33,7 +33,7 @@ export function LibraryAccessGate({ children }: Props) {
         } = await supabase.auth.getSession();
 
         if (!session?.access_token) {
-          router.replace("/");
+          router.replace("/chat");
           return;
         }
 
@@ -46,11 +46,11 @@ export function LibraryAccessGate({ children }: Props) {
           setState("allowed");
         } else {
           setState("denied");
-          router.replace("/");
+          router.replace("/chat");
         }
       } catch {
         setState("denied");
-        router.replace("/");
+        router.replace("/chat");
       }
     }
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-07-04",
+  "updatedAt": "2026-07-11",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -713,7 +713,9 @@
         "20260628-PLAN-MUT-07 mutation-explorer-implementation",
         "20260628-PLAN-MUT-08 mutation-rules-ssot-migration"
       ],
-      "relatedTests": ["TS-ENG-004 mutation-explore"]
+      "relatedTests": [
+        "TS-ENG-004 mutation-explore"
+      ]
     },
     {
       "code": "20260630-AUD-MUT-09 mutation-reading-hierarchy-parity",
@@ -729,7 +731,10 @@
         "20260622-AUD-MUT-04 mutation-rules-pdf-gold",
         "20260630-PLAN-MUT-09 mutation-explorer-unified-cast-tab"
       ],
-      "relatedTests": ["TS-WEB-015 mutation-explorer-oracle-blocks", "TS-ENG-004 mutation-explore"]
+      "relatedTests": [
+        "TS-WEB-015 mutation-explorer-oracle-blocks",
+        "TS-ENG-004 mutation-explore"
+      ]
     },
     {
       "code": "20260622-AUD-DOC-01 user-docs-vs-implementation",
@@ -1217,7 +1222,9 @@
       "date": null,
       "status": "reference",
       "path": "docs/plans/00000000-PLAN-SUP-08-anti-warp-serialize-burst.md",
-      "relatedCodes": ["00000000-AUD-SUP-02 warp-timeout-kills"],
+      "relatedCodes": [
+        "00000000-AUD-SUP-02 warp-timeout-kills"
+      ],
       "relatedTests": []
     },
     {
@@ -1277,6 +1284,21 @@
       "path": "docs/auditorias/20260704-AUD-FABLE5-01-full-repo-audit.md",
       "relatedCodes": [
         "20260616-AUD-SEC-01 npm-dependencies"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260711-INC-OPS-01 local-assets-loss-and-backup",
+      "title": "INC: pérdida local de tools/ y reports/ post-untrack — restauración y backup",
+      "shortName": "local-assets-loss-and-backup",
+      "type": "INC",
+      "family": "OPS",
+      "date": "2026-07-11",
+      "status": "closed",
+      "path": "docs/auditorias/20260711-INC-OPS-01-local-assets-loss-and-backup.md",
+      "relatedCodes": [
+        "20260704-AUD-FABLE5-01 full-repo-audit",
+        "20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination"
       ],
       "relatedTests": []
     }

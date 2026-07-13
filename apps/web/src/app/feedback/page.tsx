@@ -10,6 +10,7 @@ import {
 } from "@iching-oracle/i18n";
 import { useAppLocale } from "@/lib/use-app-locale";
 import { CustomSelect, type SelectOption } from "@/components/CustomSelect";
+import { MarketingDocShell } from "@/components/marketing/MarketingDocShell";
 
 const WEB_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "web";
 const SUPPORT_EMAIL = "support@theoriginaliching.com";
@@ -103,14 +104,8 @@ export default function FeedbackPage() {
   }, [validate, category, description, email, locale, m]);
 
   return (
+    <MarketingDocShell>
     <div className="oracle-shell doc-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-        <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/privacy">{nav.privacyShort}</Link>
-      </nav>
-
       <article className="doc-article">
         <h1>{m.title}</h1>
         <p className="doc-lead">{m.subtitle}</p>
@@ -205,13 +200,7 @@ export default function FeedbackPage() {
           </form>
         )}
       </article>
-
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-        <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/privacy">{nav.privacyShort}</Link>
-      </nav>
     </div>
+    </MarketingDocShell>
   );
 }

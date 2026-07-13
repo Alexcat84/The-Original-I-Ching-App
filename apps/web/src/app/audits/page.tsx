@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 import {
   formatAuditTimelineDateCompact,
   getAuditsPageUiMessages,
-  getDocNavUiMessages,
   type AuditBlockCategory,
   type AuditsPageUiMessages,
   type AuditTimelineEntry,
 } from "@iching-oracle/i18n";
+import { MarketingDocShell } from "@/components/marketing/MarketingDocShell";
 import { resolveDocLocale } from "@/lib/doc-locale";
 
 type TimelineField = {
@@ -159,19 +158,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AuditsPage() {
   const locale = await resolveDocLocale();
-  const nav = getDocNavUiMessages(locale);
   const a = getAuditsPageUiMessages(locale);
   const sections = groupTimelineByCategory(a.timeline);
 
   return (
+    <MarketingDocShell>
     <div className="oracle-shell doc-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-        <Link href="/terms">{nav.termsShort}</Link>
-      </nav>
       <article className="doc-article doc-article--audits-timeline">
         {sections.map((section) => (
           <section key={section.category} className="audit-timeline-section">
@@ -184,13 +176,7 @@ export default async function AuditsPage() {
           </section>
         ))}
       </article>
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-        <Link href="/terms">{nav.termsShort}</Link>
-      </nav>
     </div>
+    </MarketingDocShell>
   );
 }

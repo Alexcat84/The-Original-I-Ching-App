@@ -8,9 +8,12 @@ import { resolveDocLocale } from "@/lib/doc-locale";
 import { ChatSessionProvider } from "@/providers/chat-session-provider";
 import { rootFontClassName } from "@/lib/google-fonts-root";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
+import "@fontsource/noto-serif-sc/400.css";
 import "@fontsource/noto-serif-sc/700.css";
+import "@fontsource/noto-serif-sc/900.css";
 import "@fontsource/noto-serif-tc/700.css";
 import "./globals.css";
+import "./marketing.css";
 
 export const dynamic = "force-dynamic";
 

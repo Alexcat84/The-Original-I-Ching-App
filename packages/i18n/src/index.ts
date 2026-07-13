@@ -172,6 +172,7 @@ export {
   getMutationExplorerUiMessages,
   type MutationExplorerUiMessages,
 } from "./messages/mutation-explorer-ui.js";
+export { getMarketingUiMessages, type MarketingUiMessages } from "./messages/marketing-ui.js";
 export { getPrivacyPageMessages, type PrivacyPageMessages } from "./messages/privacy-page-ui.js";
 export {
   formatPerThreadCap,

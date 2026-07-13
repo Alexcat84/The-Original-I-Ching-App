@@ -73,7 +73,7 @@ export function LibraryContentLoader({
         } = await supabase.auth.getSession();
 
         if (!session?.access_token) {
-          router.replace("/");
+          router.replace("/chat");
           return;
         }
 
@@ -84,7 +84,7 @@ export function LibraryContentLoader({
 
         if (!res.ok) {
           setState("denied");
-          router.replace("/");
+          router.replace("/chat");
           return;
         }
 
@@ -93,7 +93,7 @@ export function LibraryContentLoader({
         setState("ready");
       } catch {
         setState("denied");
-        router.replace("/");
+        router.replace("/chat");
       }
     }
 

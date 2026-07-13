@@ -25,7 +25,17 @@ if (process.env.CI || process.env.VERCEL) {
 }
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
-const toolsDatasets = join(repoRoot, "tools", "datasets");
+// Sentinel: first input build-hexagrams.mjs reads. Checking the directory alone
+// is not enough — a partial local tools/datasets (missing merged sources) would
+// crash the build instead of falling back to the committed generated files.
+const toolsDatasets = join(
+  repoRoot,
+  "tools",
+  "datasets",
+  "wilhelm-de",
+  "book-one",
+  "wilhelm-de-64hex-merged.json",
+);
 
 if (existsSync(toolsDatasets)) {
   // Run each build script directly via the current node binary — no shell,

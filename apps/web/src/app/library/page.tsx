@@ -51,7 +51,7 @@ export default async function LibraryIndexPage() {
   return (
     <div className="oracle-shell doc-page library-page">
       <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link>
+        <Link href="/chat">{nav.backToOracle}</Link>
       </nav>
       <LibraryAccessGate>
         <article className="doc-article">

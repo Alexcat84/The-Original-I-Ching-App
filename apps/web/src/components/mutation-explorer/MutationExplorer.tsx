@@ -337,7 +337,7 @@ export function MutationExplorer({ locale }: Props) {
         <div className="mutation-explorer mutation-explorer--consultation">
           <p className="mutation-explorer-error">{loadError}</p>
           <p className="mutation-explorer-footer-nav">
-            <Link href="/" className="consultation-record-verify-link">
+            <Link href="/chat" className="consultation-record-verify-link">
               {ui.backToThread}
             </Link>
           </p>
@@ -480,7 +480,7 @@ export function MutationExplorer({ locale }: Props) {
         </section>
 
         <p className="mutation-explorer-footer-nav">
-          <Link href="/" className="consultation-record-verify-link">
+          <Link href="/chat" className="consultation-record-verify-link">
             {ui.backToThread}
           </Link>
         </p>

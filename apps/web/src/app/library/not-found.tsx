@@ -11,7 +11,7 @@ export default async function LibraryNotFound() {
   return (
     <div className="oracle-shell doc-page library-page">
       <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/library">{messages.detailCrumb}</Link>
+        <Link href="/chat">{nav.backToOracle}</Link> · <Link href="/library">{messages.detailCrumb}</Link>
       </nav>
       <article className="doc-article">
         <h1>{messages.notFound}</h1>

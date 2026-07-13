@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-06-25",
+  "updatedAt": "2026-07-11",
   "conventions": "./CONVENTIONS.md",
   "subRegistries": [
     {
@@ -211,8 +211,12 @@
       "date": null,
       "status": "reference",
       "path": "docs/workflows/00000000-WF-DOC-02-mandatory-doc-qa-registration.md",
-      "relatedCodes": ["00000000-WF-DOC-01 docs-content-update-guide"],
-      "relatedTests": ["VF-DOC-002 qa-registry-integrity"]
+      "relatedCodes": [
+        "00000000-WF-DOC-01 docs-content-update-guide"
+      ],
+      "relatedTests": [
+        "VF-DOC-002 qa-registry-integrity"
+      ]
     },
     {
       "code": "00000000-WF-QA-01 test-lifecycle",
@@ -288,6 +292,21 @@
       "relatedCodes": [
         "20260607-INC-SUP-INC-01 consultation-content-wipe",
         "00000000-RUN-SUP-05 recover-pitr"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260711-OPS-WEB-01 marketing-site-restructure",
+      "title": "Ops: reestructura web — marketing en /, chat en /chat",
+      "shortName": "marketing-site-restructure",
+      "type": "OPS",
+      "family": "WEB",
+      "collection": "ops",
+      "date": "2026-07-11",
+      "status": "active",
+      "path": "docs/20260711-OPS-WEB-01-marketing-site-restructure.md",
+      "relatedCodes": [
+        "20260711-INC-OPS-01 local-assets-loss-and-backup"
       ],
       "relatedTests": []
     }

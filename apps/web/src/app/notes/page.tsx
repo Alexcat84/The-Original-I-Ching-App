@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export const metadata: Metadata = {
@@ -14,23 +13,17 @@ export const metadata: Metadata = {
   ...buildCanonicalMetadata("/notes"),
 };
 
-import { getDocNavUiMessages, getNotesPageUiMessages } from "@iching-oracle/i18n";
+import { getNotesPageUiMessages } from "@iching-oracle/i18n";
+import { MarketingDocShell } from "@/components/marketing/MarketingDocShell";
 import { resolveDocLocale } from "@/lib/doc-locale";
 
 export default async function NotesPage() {
   const locale = await resolveDocLocale();
-  const nav = getDocNavUiMessages(locale);
   const n = getNotesPageUiMessages(locale);
 
   return (
+    <MarketingDocShell active="sources">
     <div className="oracle-shell doc-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-        <Link href="/terms">{nav.termsShort}</Link>
-      </nav>
       <article className="doc-article">
         <h1>{n.title}</h1>
         <p className="doc-lead">{n.lead}</p>
@@ -176,13 +169,7 @@ export default async function NotesPage() {
           </>
         )}
       </article>
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/faqs">{nav.faqs}</Link> · <Link href="/notes">{nav.methodNotes}</Link> ·{" "}
-        <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
-        <Link href="/about">{nav.aboutShort}</Link> · <Link href="/privacy">{nav.privacyShort}</Link> ·{" "}
-        <Link href="/terms">{nav.termsShort}</Link>
-      </nav>
     </div>
+    </MarketingDocShell>
   );
 }

@@ -10,6 +10,12 @@ export type AuthLocalePickerProps = {
   order: AppLocale[];
   labels: Record<AppLocale, string>;
   ariaLabel: string;
+  /**
+   * "ink" adds marker classes so the marketing site can style the trigger and
+   * the (body-portaled) menu with its dark palette, independent of the app
+   * `data-theme` cookie that the default styling keys off.
+   */
+  variant?: "default" | "ink";
 };
 
 function codeLabel(code: AppLocale): string {
@@ -22,7 +28,8 @@ type MenuRect = { top: number; left: number; minW: number };
  * Custom locale menu (former native RN bar: list with code + language name).
  * Menu is portaled to `document.body` so it is not clipped by `.chat-surface { overflow: hidden }`.
  */
-export function AuthLocalePicker({ locale, onChange, order, labels, ariaLabel }: AuthLocalePickerProps) {
+export function AuthLocalePicker({ locale, onChange, order, labels, ariaLabel, variant = "default" }: AuthLocalePickerProps) {
+  const ink = variant === "ink";
   const [open, setOpen] = useState(false);
   const [menuRect, setMenuRect] = useState<MenuRect | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -96,7 +103,7 @@ export function AuthLocalePicker({ locale, onChange, order, labels, ariaLabel }:
       <ul
         ref={menuRef}
         id={listId}
-        className="locale-picker-menu locale-picker-menu--portal"
+        className={`locale-picker-menu locale-picker-menu--portal${ink ? " locale-picker-menu--ink" : ""}`}
         role="listbox"
         aria-label={ariaLabel}
         style={{
@@ -127,12 +134,12 @@ export function AuthLocalePicker({ locale, onChange, order, labels, ariaLabel }:
     ) : null;
 
   return (
-    <div className="locale-picker" ref={rootRef}>
+    <div className={`locale-picker${ink ? " locale-picker--ink" : ""}`} ref={rootRef}>
       <button
         ref={buttonRef}
         type="button"
         id="ui-locale-select"
-        className="locale-picker-trigger"
+        className={`locale-picker-trigger${ink ? " locale-picker-trigger--ink" : ""}`}
         aria-label={ariaLabel}
         aria-expanded={open}
         aria-controls={open ? listId : undefined}

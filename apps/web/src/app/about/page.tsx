@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { getAppTraceabilityUiMessages, getDocNavUiMessages } from "@iching-oracle/i18n";
+import { getAppTraceabilityUiMessages } from "@iching-oracle/i18n";
+import { MarketingDocShell } from "@/components/marketing/MarketingDocShell";
 import { resolveDocLocale } from "@/lib/doc-locale";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
@@ -16,39 +16,34 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const locale = await resolveDocLocale();
-  const nav = getDocNavUiMessages(locale);
   const trace = getAppTraceabilityUiMessages(locale);
 
   return (
-    <div className="oracle-shell doc-page">
-      <nav className="doc-nav">
-        <Link href="/">{nav.backToOracle}</Link> · <Link href="/guia">{nav.userGuide}</Link> ·{" "}
-        <Link href="/notes">{nav.methodNotes}</Link> · <Link href="/faqs">{nav.faqs}</Link> ·{" "}
-        <Link href="/audits">{nav.fidelityAudits}</Link> ·{" "}
-        <Link href="/privacy">{nav.privacyShort}</Link> · <Link href="/terms">{nav.termsShort}</Link>
-      </nav>
-      <article className="doc-article">
-        <h1 id="about-doc-title">{trace.aboutHeading}</h1>
-        <section id="rn-app-trace-root" aria-labelledby="about-doc-title">
-          <dl className="apk-trace-dl">
-            <div className="apk-trace-row">
-              <dt>{trace.appNameLabel}</dt>
-              <dd>{trace.appNameValue}</dd>
-            </div>
-            <div className="apk-trace-native-metrics">
+    <MarketingDocShell>
+      <div className="oracle-shell doc-page">
+        <article className="doc-article">
+          <h1 id="about-doc-title">{trace.aboutHeading}</h1>
+          <section id="rn-app-trace-root" aria-labelledby="about-doc-title">
+            <dl className="apk-trace-dl">
               <div className="apk-trace-row">
-                <dt>{trace.versionLabel}</dt>
-                <dd id="rn-trace-version">…</dd>
+                <dt>{trace.appNameLabel}</dt>
+                <dd>{trace.appNameValue}</dd>
               </div>
-              <div className="apk-trace-row">
-                <dt>{trace.androidVersionCodeLabel}</dt>
-                <dd id="rn-trace-code">…</dd>
+              <div className="apk-trace-native-metrics">
+                <div className="apk-trace-row">
+                  <dt>{trace.versionLabel}</dt>
+                  <dd id="rn-trace-version">…</dd>
+                </div>
+                <div className="apk-trace-row">
+                  <dt>{trace.androidVersionCodeLabel}</dt>
+                  <dd id="rn-trace-code">…</dd>
+                </div>
               </div>
-            </div>
-          </dl>
-          <p className="apk-trace-rights">{trace.rightsLine}</p>
-        </section>
-      </article>
-    </div>
+            </dl>
+            <p className="apk-trace-rights">{trace.rightsLine}</p>
+          </section>
+        </article>
+      </div>
+    </MarketingDocShell>
   );
 }

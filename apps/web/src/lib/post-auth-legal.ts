@@ -3,7 +3,7 @@
  * must complete current legal acceptance before entering the app.
  */
 
-export type PostAuthClientRoute = "/" | "/auth/complete-legal" | "/auth/update-password" | "/login";
+export type PostAuthClientRoute = "/chat" | "/auth/complete-legal" | "/auth/update-password" | "/login";
 
 /**
  * Reads legal_acceptance_current from GET /api/account/me.
@@ -58,5 +58,5 @@ export async function fetchLegalAcceptanceStatus(
 export async function resolvePostAuthClientRoute(accessToken: string): Promise<PostAuthClientRoute> {
   const legal = await fetchLegalAcceptanceCurrent(accessToken);
   if (legal === null) return "/login";
-  return legal ? "/" : "/auth/complete-legal";
+  return legal ? "/chat" : "/auth/complete-legal";
 }
