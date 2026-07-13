@@ -1,6 +1,8 @@
 # Plan — Migración React 18.2 → 19.2 (web), paso a paso
 
-**Código:** `20260713-PLAN-WEB-01 react-19-migration` · **Familia:** WEB · **Estado:** open
+**Código:** `20260713-PLAN-WEB-01 react-19-migration` · **Familia:** WEB · **Estado:** paused
+
+> **⏸️ PAUSADO (2026-07-13).** Ejecución iniciada y detenida en Fase 1. Dos blockers confirmados: (1) `ViewTransition` **no está en React estable 19.2.7** (sin build experimental ni export en el tarball de npm) → el motivo del upgrade no existe en el canal estable; (2) el install limpio del árbol web dedupea las deps a `react@18.2.0` (sus peers lo aceptan) y solo un override **global** de `react` lo forzaría a 19.2.7, arrastrando `apps/mobile` fuera del 19.0.0 de Expo. Se revirtió la rama `chore/react-19`; **`apps/mobile` nunca se tocó (19.0.0)**. La Fase 1 §three.js (limpieza de `@react-three`) se rescató como commit independiente en staging/main. Reanudar solo cuando haya un consumidor real de una API de React 19 o `ViewTransition` se estabilice. Ver [`20260713-PLAN-WEB-01b`](./20260713-PLAN-WEB-01b-react-19-migration-corrections.md) §Estado.
 
 - **Fecha:** 2026-07-13
 - **Rama objetivo:** `chore/react-19` → `staging` → `main`

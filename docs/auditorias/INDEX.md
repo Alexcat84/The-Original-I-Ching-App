@@ -207,9 +207,9 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 
 | Código | Fecha | Título | Estado | Documento |
 |--------|-------|--------|--------|-----------|
-| `20260713-AUD-WEB-01 react-19-upgrade-assessment` | 2026-07-13 | Evaluación: upgrade React 18.2 → 19.2 (web) | open | [20260713-AUD-WEB-01-react-19-upgrade-assessment.md](./20260713-AUD-WEB-01-react-19-upgrade-assessment.md) |
-| `20260713-PLAN-WEB-01 react-19-migration` | 2026-07-13 | Plan: migración React 18.2 → 19.2, paso a paso | open | [20260713-PLAN-WEB-01-react-19-migration.md](./20260713-PLAN-WEB-01-react-19-migration.md) |
-| `20260713-PLAN-WEB-01b react-19-migration-corrections` | 2026-07-13 | Correcciones y luz verde (revisión externa) al plan de migración | open | [20260713-PLAN-WEB-01b-react-19-migration-corrections.md](./20260713-PLAN-WEB-01b-react-19-migration-corrections.md) |
+| `20260713-AUD-WEB-01 react-19-upgrade-assessment` | 2026-07-13 | Evaluación: upgrade React 18.2 → 19.2 (web) | paused | [20260713-AUD-WEB-01-react-19-upgrade-assessment.md](./20260713-AUD-WEB-01-react-19-upgrade-assessment.md) |
+| `20260713-PLAN-WEB-01 react-19-migration` | 2026-07-13 | Plan: migración React 18.2 → 19.2, paso a paso | paused | [20260713-PLAN-WEB-01-react-19-migration.md](./20260713-PLAN-WEB-01-react-19-migration.md) |
+| `20260713-PLAN-WEB-01b react-19-migration-corrections` | 2026-07-13 | Correcciones y luz verde (revisión externa) al plan de migración | paused | [20260713-PLAN-WEB-01b-react-19-migration-corrections.md](./20260713-PLAN-WEB-01b-react-19-migration-corrections.md) |
 
 ---
 
