@@ -63,3 +63,32 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NODE_OPTIONS: "--max-old-space-size=4096"
+
+  # Non-blocking canary for the two monorepo resolution fragilities (react 18/19 split):
+  # regenerates the lockfile from scratch and fails on ERESOLVE or a wrong react split.
+  # Uses npm@10.9.2 (the declared packageManager that generated the committed lockfile);
+  # npm@11 ERESOLVEs on the load-bearing expo-app-integrity peer override.
+  # See docs/auditorias/20260713-AUD-WEB-02-monorepo-resolution-blocker.md.
+  resolution-guard:
+    runs-on: ubuntu-latest
+    continue-on-error: true # informational at first; flip to blocking once trusted
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Disable corepack
+        run: corepack disable
+
+      - name: Use npm@10.9.2 (declared packageManager / lockfile generator)
+        run: npm install -g npm@10.9.2
+
+      - name: Regenerate lockfile from scratch (no flags — must resolve without ERESOLVE)
+        run: |
+          rm -f package-lock.json
+          npm install --package-lock-only
+
+      - name: Assert react split (web 18.x, mobile 19.0.0) + report hoisting
+        run: node .github/scripts/check-react-resolution.mjs

@@ -1,81 +1,87 @@
-# Bloqueo de resolución del monorepo — pausa del bump React 18.3.1
+# Resolución del monorepo — ground truth + blindaje (split react 18/19)
 
 **Código:** `20260713-AUD-WEB-02 monorepo-resolution-blocker` · **Familia:** WEB · **Estado:** reference
 
-> **Hallazgo, no un bump.** Este doc **no** documenta una migración: documenta por qué el bump acordado a React 18.3.1 (el "hedge" de [`20260713-AUD-WEB-01`](./20260713-AUD-WEB-01-react-19-upgrade-assessment.md) / [`PLAN-WEB-01`](./20260713-PLAN-WEB-01-react-19-migration.md)) **quedó pausado por costo desproporcionado**, y sobre todo la **restricción estructural del monorepo** que hay que resolver **antes** de la futura migración a Next 16.
+> **⚠️ CORRECCIÓN (2026-07-14, verificación de ground truth).** La versión original de este doc afirmaba que `main` tiene un **ERESOLVE preexistente** que impide `npm install` desde cero. **Eso era incorrecto.** Verificado en clon fresco de `main`: con **`npm@10.9.2`** (el `packageManager` declarado, que generó el lockfile) `rm package-lock.json && npm install --package-lock-only` **sin flags** da **exit 0 — resuelve limpio**. El ERESOLVE que vi antes fue un **artefacto de `npm@11.5.1`** (mi npm de sistema; también el que CI instala), más estricto con peers. Este doc queda reescrito alrededor de las **dos fragilidades reales** (override load-bearing + no-determinismo de hoisting), no de un bloqueo inexistente.
 
-- **Fecha:** 2026-07-13
-- **Rama:** `chore/react-18-3-1` (creada, ejecutada como dry-run, **abandonada sin merge**). `main` intacto y verde.
-- **Alcance intentado:** `apps/web` + `packages/ui` + `overrides` raíz. **`apps/mobile` nunca se tocó (19.0.0).**
+- **Fecha:** 2026-07-13 · **corregido:** 2026-07-14
+- **Alcance:** diagnóstico de resolución de `apps/web` + `apps/mobile` en el monorepo npm. **`apps/mobile` no se toca (19.0.0). El lockfile no se edita a mano.**
 - **Relacionado:** [`20260713-AUD-WEB-01`](./20260713-AUD-WEB-01-react-19-upgrade-assessment.md), [`20260713-PLAN-WEB-01`](./20260713-PLAN-WEB-01-react-19-migration.md), [`20260713-PLAN-WEB-01b`](./20260713-PLAN-WEB-01b-react-19-migration-corrections.md)
 
 ---
 
 ## 0. Veredicto
 
-**El bump a `react@18.3.1` se pausa.** No por tipos ni por incompatibilidad de librerías (todo eso salió limpio), sino porque **no existe forma de regenerar un lockfile limpio con `18.3.1` hoisteado para el web** usando solo los mecanismos permitidos (dep directa de `apps/web` + override de `react-dom`, sin override global de `react`), debido a una **restricción estructural preexistente del monorepo**. El payoff, además, es marginal (ver §4). El catálogo de warnings de React 19 se obtendrá durante la **migración real a Next 16**.
+**`main` resuelve limpio con el npm declarado (`10.9.2`).** No hay bloqueo duro. Pero el split react 18 (web) / 19 (mobile) deja **dos fragilidades reales** que ahora quedan **blindadas** (doc + guard de CI), y por las que el hedge a React 18.3.1 **sigue pausado** (payoff marginal — ver §4):
+
+1. **Override `expo-app-integrity` load-bearing** (§2.a).
+2. **No-determinismo de hoisting de react** (§2.b).
 
 ---
 
-## 1. La restricción estructural (el hallazgo de valor)
+## 1. Ground truth (Fase 0 — clon fresco de `main`, `--package-lock-only`, sin flags)
 
-Cuatro factores del repo confluyen y se bloquean entre sí:
+| npm | Resultado | Detalle |
+|-----|-----------|---------|
+| **`10.9.2`** (packageManager declarado) | **exit 0 — limpio** | pero el regen **hoistea `react@19.0.0`** al root (≠ committeado `18.2.0`); `apps/web` **nestea `18.2.0`**, `apps/mobile` `19.0.0` |
+| **`11.5.1`** (mi sistema + lo que CI instala con `npm install -g npm@11.5.1`) | **ERESOLVE (exit 1)** | conflicto de **expo**: `peer expo@"*" from expo-device@7.1.4` bajo `expo-app-integrity@0.3.0` — **no** es react |
 
-1. **`.npmrc` → `install-strategy=hoisted`.** npm aplana a **una sola versión de `react`** en `node_modules/` raíz (de ahí resuelven `next` y las deps del web).
-2. **Split de versiones react.** `apps/web` pide `react` exacto (hoy `18.2.0`); `apps/mobile` pide `19.0.0` exacto (Expo SDK 53 / RN 0.79.6). **Ninguna satisface a la otra.**
-3. **Deps del web con peer `^18`** (`next`, `@sentry/*`, `@vercel/*`, etc.). En resolución estricta fuerzan la línea 18.x para el árbol web.
-4. **Conflicto peer PREEXISTENTE de expo/mobile:** `expo-app-integrity@0.3.0` declara peer `expo-device@~5.2.1`, pero el proyecto usa `~7.1.4` (hay un `overrides.expo-app-integrity` que lo remapea). Aun así, **`npm install` desde cero falla con `ERESOLVE`** en el subárbol de expo — **también en `main`**, no solo en la rama del bump.
-
-**Consecuencia:** el lockfile del repo **solo puede mantenerse con `npm ci`** (instala del lockfile sin re-resolver peers) **o con `npm install --legacy-peer-deps`**. Un `npm install` limpio desde cero **no** es posible hoy.
+**Lockfile committeado:** `node_modules/react` = **18.2.0** hoisteado (web + `next` en 18.2.0; mobile anidado 19.0.0). **Es el único estado sano** y se instala con `npm ci` con cualquiera de los dos npm (npm ci no re-resuelve peers, por eso CI —npm 11— está verde).
 
 ---
 
-## 2. Por qué el bump 18.3.1 no sale limpio (matriz de intentos)
+## 2. Las dos fragilidades reales
 
-| Intento | Resultado |
-|---|---|
-| `npm install` incremental (lockfile de main de base) | Mantiene el **root stale en `18.2.0`**; el override `react-dom@18.3.1` **no se aplica** (el lockfile lo pinnea). El web correría en 18.2.0 → **no enciende los warnings de 18.3** (el objetivo del hedge). |
-| Borrar `react`/`react-dom` físicos + `npm install` (mantener lockfile) | Deja el `react` del web **anidado en 18.3.1** y el **root sin react** → **`next` (hoisteado al root) no encuentra react** → `next build` rompe con `Cannot find module 'react'`. |
-| `npm install` **desde cero** (para aplicar el override) | **`ERESOLVE` de expo** (factor 4). |
-| `npm install --legacy-peer-deps` desde cero | Ignora los peer `^18`; con `hoisted` **hoistea `19.0.0`** al root (16 deps del web quedan en 19.0.0 + `react-dom@18.3.1`) → mezcla incoherente, peor. |
+### 2.a — El override `expo-app-integrity` es LOAD-BEARING
 
-`react-dom@18.3.1` tiene peer `react: "^18.3.1"`: **tenerlo hoisteado forzaría** `react@18.3.1`. Ese es el mecanismo que el override pretende usar, pero requiere re-resolución del lockfile — que es justo lo que rompe con el ERESOLVE de expo.
+`expo-app-integrity@0.3.0` declara **peers de Expo SDK-49 obsoletos** (`expo-device ~5.2.1`, `expo-secure-store ~12.1.1`, `expo-build-properties ~0.5.1`) que chocan con las versiones **SDK-53** del proyecto. El bloque en `overrides` del `package.json` raíz los **remapea** a las versiones SDK-53:
 
-> En `main` funciona porque su lockfile **ya tiene** `18.2.0` hoisteado + `19.0.0` anidado, y `npm ci` lo instala tal cual sin re-resolver.
+```json
+"expo-app-integrity": {
+  "expo-build-properties": "~0.14.8",
+  "expo-secure-store": "~14.2.4",
+  "expo-device": "~7.1.4"
+}
+```
 
----
+- **NO removerlo** mientras se siga usando `expo-app-integrity`. Sin él, la resolución se rompe (y `npm@11` ya ERESOLVE incluso con él, por el peer `expo@"*"` en cadena).
+- Son peers de paquetes **`expo-*`**, **ortogonales a react**: el override **se queda** incluso después de unificar react en Next 16.
+- (Nota: `package.json` es JSON y no admite comentarios inline; este doc es el registro. El guard de §6 vigila la salud de la resolución.)
 
-## 3. Lo que SÍ quedó verificado (el bump no era el problema)
+### 2.b — No-determinismo de hoisting (split react 18/19)
 
-Cuando el web resolvió `18.3.1` de forma aislada (antes de que `next` rompiera por el root vacío):
+Con `install-strategy=hoisted` (`.npmrc`) npm aplana a **una sola versión de react** en el root. `apps/web` pide `18.x` exacto y `apps/mobile` `19.0.0` exacto — ninguna satisface a la otra, así que **cuál queda hoisteada depende de la resolución**:
 
-- **`tsc --noEmit` VERDE en `apps/web` y en `packages/ui`.** `packages/ui/dist` recompiló sin errores.
-- **Tipos sin cambios:** la línea 18.2 → 18.3.1 no altera `@types/react`. El scan estático de [`AUD-WEB-01`](./20260713-AUD-WEB-01-react-19-upgrade-assessment.md) queda **confirmado**: cero APIs eliminadas, cero fricción de tipos.
+- **Lockfile committeado:** `18.2.0` hoisteado → `next` (root) y el web comparten `18.2.0`. **Sano.**
+- **Regen fresco (incluso npm 10.9.2):** hoistea **`19.0.0`** → `next` (root) quedaría en 19 mientras el web nestea `18.2.0` → **two Reacts / mismatch next↔app → build roto.**
 
-**El problema nunca fue de tipos ni de compatibilidad — fue puramente de resolución/hoisting del árbol npm.**
-
----
-
-## 4. Por qué el payoff es marginal
-
-El objetivo del hedge era (1) llegar al fin de la línea React 18 y (2) **encender los warnings de deprecación de React 19** (que React 18.3 añade) para catalogar la superficie de migración. Pero:
-
-- El **scan estático de `AUD-WEB-01` ya salió limpio** (cero APIs eliminadas en uso, cero `useRef()` sin arg, cero `JSX.Element`/`React.FC`/`forwardRef`, cero legacy context).
-- `tsc` en 18.3.1 salió **verde**.
-- → El catálogo de warnings en runtime sería **casi seguro vacío**. El valor incremental de forzar el install no compensa el costo (5–7 ediciones coordinadas de lockfile por el requisito de sync de `npm ci`, o desviarse a un override de react).
+**Implicación operativa:** **no regenerar ni commitear un lockfile nuevo** mientras exista el split. El committeado (`18.2.0` hoisteado) es el estado correcto y debe preservarse tal cual. `--legacy-peer-deps` **empeora** las cosas (ignora los peer `^18`, hoistea 19.0.0) y **no debe usarse** en ningún flujo.
 
 ---
 
-## 5. Implicación CRÍTICA para Next 16 (acción futura)
+## 3. Lo verificado del bump 18.3.1 (sigue vigente)
 
-La migración real será a **Next 16** (que trae su propio React canary con View Transitions). Next 16 implica un bump mayor de `next` + `react`/`react-dom`, es decir **una re-resolución completa del árbol**. Esa re-resolución **chocará de frente con el `ERESOLVE` de expo del factor 4.**
-
-> **Prerrequisito duro de Next 16:** resolver el conflicto peer `expo-app-integrity` ↔ `expo-device` **antes** de intentar la migración — actualizar `expo-app-integrity` a una versión cuyo peer acepte `expo-device@~7.1.x`, o reemplazarlo, o coordinar el override de forma que `npm install` desde cero resuelva sin `--legacy-peer-deps`. Sin eso, Next 16 no podrá regenerar el lockfile limpio y se topará con el mismo muro, agravado por el salto simultáneo de `next` y `react`.
+Cuando el web resolvió `18.3.1` aislado: **`tsc --noEmit` verde en `apps/web` y `packages/ui`**, `dist` recompiló, tipos sin cambios. El scan estático de [`AUD-WEB-01`](./20260713-AUD-WEB-01-react-19-upgrade-assessment.md) queda **confirmado**. **El problema del bump nunca fue de tipos ni de compatibilidad — fue de resolución/hoisting (§2.b).**
 
 ---
 
-## 6. Estado y recomendación
+## 4. Estado del bump 18.3.1: PAUSADO
 
-- **Bump 18.3.1: PAUSADO/abandonado.** Rama `chore/react-18-3-1` sin merge. `main` intacto.
-- **`apps/mobile`: sin tocar (19.0.0).** El lockfile **no** se editó a mano.
-- **Siguiente paso (cuando toque):** durante la migración a Next 16, (a) resolver primero el conflicto peer de expo (§5), (b) hacer la re-resolución completa, (c) capturar ahí el catálogo de warnings de React 19 / canary. Los scans de compatibilidad de los docs WEB-01/01b siguen vigentes como insumo.
+- El bump en sí resuelve y tipa limpio, pero **regenerar el lockfile para aplicarlo dispara la no-determinismo (§2.b)** y el payoff es marginal (scan estático limpio + `tsc` verde → catálogo de warnings de React 19 casi seguro vacío).
+- Se deja **pausado**. Rama `chore/react-18-3-1` no mergeada. `main` intacto (18.2.0 hoisteado).
+
+---
+
+## 5. Implicación para Next 16 (corregida)
+
+- **Prereq real de Next 16:** **unificar react a 19** — que **Next 16 hace de por sí** (trae su propio React 19/canary). Al desaparecer el split 18/19, **desaparece la no-determinismo de hoisting** (§2.b): habrá una sola versión de react posible.
+- **El override de expo (§2.a) es ortogonal a react y se queda:** sus peers son de paquetes `expo-*`, no de react; hay que mantenerlo mientras se use `expo-app-integrity`.
+- **Cuidado con el npm de la re-resolución de Next 16:** con `npm@11` la re-resolución completa ERESOLVE por el peer de expo. Hacerla con el `packageManager` declarado (`npm@10.9.2`) o resolver el peer `expo@"*"` de `expo-app-integrity` antes (actualizar/reemplazar la lib) — el guard de §6 lo señalará.
+
+---
+
+## 6. Blindaje aplicado
+
+1. **Este doc** documenta el override load-bearing (§2.a) y la no-determinismo (§2.b).
+2. **Guard de CI** (`.github/workflows/ci.yml` → job `resolution-guard`, **no bloqueante** al inicio): con `npm@10.9.2` regenera el lockfile desde cero (sin flags) y falla si (a) hay ERESOLVE o (b) el web no resuelve `18.x` o mobile no `19.0.0`; además **reporta** la versión hoisteada al root (señala la no-determinismo de §2.b). Convierte cualquier futura ruptura de resolución en señal temprana.
+3. **Ningún flujo depende de `--legacy-peer-deps`** (verificado: no aparece en workflows, scripts ni docs de setup).
