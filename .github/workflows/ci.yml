@@ -69,14 +69,19 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NODE_OPTIONS: "--max-old-space-size=4096"
 
-  # Non-blocking canary for the two monorepo resolution fragilities (react 18/19 split):
-  # regenerates the lockfile from scratch and fails on ERESOLVE or a wrong react split.
-  # Uses npm@10.9.2 (the declared packageManager that generated the committed lockfile);
-  # npm@11 ERESOLVEs on the load-bearing expo-app-integrity peer override.
+  # Blocking guard for the two monorepo resolution fragilities (react 18/19 split):
+  # regenerates the lockfile from scratch and FAILS the PR on ERESOLVE or a wrong
+  # react split (web 18.x / mobile 19.0.0). Uses npm@10.9.2 (the declared
+  # packageManager that generated the committed lockfile); npm@11 ERESOLVEs on the
+  # load-bearing expo-app-integrity peer override. The hoisting-non-determinism WARN
+  # (root != web) stays a non-blocking warning inside the script — the flip only
+  # made the already-passing assertion mandatory; it did not change the failure bar.
+  # Trade-off: the regen step hits the npm registry on every PR, so a transient
+  # network hiccup could go red. If reds ever come from network flakiness (not real
+  # resolution), add a retry to the regen step — do NOT revert to continue-on-error.
   # See docs/auditorias/20260713-AUD-WEB-02-monorepo-resolution-blocker.md.
   resolution-guard:
     runs-on: ubuntu-latest
-    continue-on-error: true # informational at first; flip to blocking once trusted
     steps:
       - uses: actions/checkout@v6
 
