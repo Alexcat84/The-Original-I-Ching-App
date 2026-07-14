@@ -210,6 +210,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260713-AUD-WEB-01 react-19-upgrade-assessment` | 2026-07-13 | Evaluación: upgrade React 18.2 → 19.2 (web) | paused | [20260713-AUD-WEB-01-react-19-upgrade-assessment.md](./20260713-AUD-WEB-01-react-19-upgrade-assessment.md) |
 | `20260713-PLAN-WEB-01 react-19-migration` | 2026-07-13 | Plan: migración React 18.2 → 19.2, paso a paso | paused | [20260713-PLAN-WEB-01-react-19-migration.md](./20260713-PLAN-WEB-01-react-19-migration.md) |
 | `20260713-PLAN-WEB-01b react-19-migration-corrections` | 2026-07-13 | Correcciones y luz verde (revisión externa) al plan de migración | paused | [20260713-PLAN-WEB-01b-react-19-migration-corrections.md](./20260713-PLAN-WEB-01b-react-19-migration-corrections.md) |
+| `20260713-AUD-WEB-02 monorepo-resolution-blocker` | 2026-07-13 | Bloqueo de resolución del monorepo (pausa bump React 18.3.1) | reference | [20260713-AUD-WEB-02-monorepo-resolution-blocker.md](./20260713-AUD-WEB-02-monorepo-resolution-blocker.md) |
 
 ---
 
