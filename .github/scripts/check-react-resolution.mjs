@@ -3,6 +3,18 @@
 // packageManager npm@10.9.2). Fails on gross react-split drift; warns on the hoisting
 // non-determinism. Reads the regenerated package-lock.json — does NOT install node_modules.
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+
+// Attach the resolver's npm version to the report — a version drift here is the
+// first thing to check when this canary changes behaviour (see AUD-WEB-02).
+// execFileSync with an arg array (no shell) — command is a fixed literal anyway.
+let npmVer = "?";
+try {
+  npmVer = execFileSync("npm", ["-v"]).toString().trim();
+} catch {
+  /* npm not resolvable as a bare binary (e.g. Windows npm.cmd) — leave as "?" */
+}
+console.log(`npm (resolver)     : ${npmVer}`);
 
 const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
 const pkgs = lock.packages ?? {};

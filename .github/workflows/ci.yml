@@ -23,8 +23,13 @@ jobs:
       - name: Install yarn without packageManager startup check
         run: npm install -g yarn@1.22.19
 
-      - name: Upgrade npm to match lockfile generator
-        run: npm install -g npm@11.5.1
+      - name: Use npm@10.9.2 (declared packageManager / lockfile generator)
+        run: npm install -g npm@10.9.2
+
+      - name: Report toolchain versions
+        run: |
+          echo "node: $(node -v)"
+          echo "npm:  $(npm -v)"
 
       - name: Install dependencies
         run: npm ci
@@ -84,6 +89,11 @@ jobs:
 
       - name: Use npm@10.9.2 (declared packageManager / lockfile generator)
         run: npm install -g npm@10.9.2
+
+      - name: Report toolchain versions
+        run: |
+          echo "node: $(node -v)"
+          echo "npm:  $(npm -v)"
 
       - name: Regenerate lockfile from scratch (no flags — must resolve without ERESOLVE)
         run: |
