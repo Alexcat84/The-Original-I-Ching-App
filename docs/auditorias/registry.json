@@ -1352,7 +1352,7 @@
     },
     {
       "code": "20260713-AUD-WEB-02 monorepo-resolution-blocker",
-      "title": "Bloqueo de resolución del monorepo — pausa del bump React 18.3.1",
+      "title": "Resolución del monorepo — ground truth + blindaje (split react 18/19)",
       "shortName": "monorepo-resolution-blocker",
       "type": "AUD",
       "family": "WEB",
