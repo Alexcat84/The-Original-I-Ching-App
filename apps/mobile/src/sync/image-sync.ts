@@ -1,4 +1,5 @@
-import * as FileSystem from "expo-file-system";
+// SDK 54+ moved the classic API (documentDirectory, downloadAsync, ...) to /legacy.
+import * as FileSystem from "expo-file-system/legacy";
 import { getPendingImages, setLocalImagePath, markImageError } from "../db/chat-store";
 
 const IMAGE_DIR = `${FileSystem.documentDirectory}iching_images/`;

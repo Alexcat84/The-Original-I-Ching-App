@@ -55,7 +55,9 @@ Con `install-strategy=hoisted` (`.npmrc`) npm aplana a **una sola versión de re
 - **Lockfile committeado:** `18.2.0` hoisteado → `next` (root) y el web comparten `18.2.0`. **Sano.**
 - **Regen fresco (incluso npm 10.9.2):** hoistea **`19.0.0`** → `next` (root) quedaría en 19 mientras el web nestea `18.2.0` → **two Reacts / mismatch next↔app → build roto.**
 
-**Implicación operativa:** **no regenerar ni commitear un lockfile nuevo** mientras exista el split. El committeado (`18.2.0` hoisteado) es el estado correcto y debe preservarse tal cual. `--legacy-peer-deps` **empeora** las cosas (ignora los peer `^18`, hoistea 19.0.0) y **no debe usarse** en ningún flujo.
+**Implicación operativa:** **no regenerar ni commitear un lockfile nuevo a ciegas** mientras exista el split. El committeado (`18.2.0` hoisteado) es el estado correcto y debe preservarse. `--legacy-peer-deps` **empeora** las cosas (ignora los peer `^18`, hoistea la línea 19) y **no debe usarse** en ningún flujo.
+
+> **Nota (2026-07-15, migración Expo SDK 57):** con `apps/mobile` en react **19.2.3** (SDK 57, ver [`20260715-AUD-MOB-01`](./20260715-AUD-MOB-01-expo-sdk57-upgrade-assessment.md)), el split pasa a ser **web 18.2.0 / mobile 19.2.3**. La no-determinismo de este apartado **cambia de forma pero no desaparece** (un regen fresco hoistearía ahora 19.2.3 al root en vez de 19.0.0); desaparece solo cuando el web unifique en react 19 con Next 16. El `resolution-guard` se actualizó para derivar la versión esperada de mobile del propio `apps/mobile/package.json`, de modo que sobrevive los bumps de SDK sin ediciones; la aserción del web en 18.x queda intacta.
 
 ---
 
