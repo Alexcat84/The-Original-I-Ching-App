@@ -119,9 +119,14 @@ grep -rl "absoluteFillObject" node_modules --include="*.js" | head
 
 Motivo (verificado contra el tarball de npm): `StyleSheet.absoluteFillObject` **no existe en NINGUNA parte de react-native 0.86.0** (ni runtime ni tipos). El spread de `undefined` es **silencioso**: cualquier dependencia de terceros que lo use se rompería visualmente sin error. Nuestros 2 usos propios ya se reemplazaron por el valor literal en el dry-run; este grep confirma que ninguna dep del árbol lo referencia. Revisar cada hit que aparezca (hits en el propio `react-native/Libraries` serían del shim de compat si existiera; hits en libs de terceros requieren evaluación caso a caso).
 
+**Gate de bundle (ejecutado 2026-07-15, ANTES del build nativo):** `npx expo export --platform android --no-bytecode` y verificar el bundle con el discriminador `absoluteFillObject` (existe en RN 0.79.6, no existe en 0.86.0). Resultado del dry-run: el primer export contenía la StyleSheet de **0.79.6** (mezcla JS 0.79.6 / nativo 0.86.0, crash garantizado). Causa: el lockfile mantiene un `react-native@0.79.6` huérfano en el root (placeholder del peer `react-native@"*"` de expo hoisteado; 0.86.0 no puede vivir ahí porque su peer `react@^19.2` choca con el `react@18.2.0` del root, que es del web). Los colapsos npm-nativos (update / install+uninstall temporal) no pueden arreglar esa forma. **Fix aplicado:** extender el `resolveRequest` de `metro.config.js` (que ya forzaba `react` singleton) para forzar también `react-native` y `react-native/*` a la copia anidada de mobile. Re-export verificado: discriminador en 0, instancia RN única. El mismo config aplica en EAS.
+
+Nota Windows: el fix de `glob` en `@expo/config-plugins` (CLAUDE.md) quedó **obsoleto** en SDK 57 (config-plugins 10.1.2 lo arregló upstream); `expo prebuild --clean` corre limpio sin él.
+
 ```bash
-# Windows: re-aplicar el fix de glob en @expo/config-plugins tras npm install (CLAUDE.md)
 cd apps/mobile
+npx expo prebuild --platform android --clean   # regenera android/ para SDK 57 (newArch, API 36)
+cd android
 ./gradlew --stop   # el daemon no relee env vars
 ./gradlew assembleRelease
 # salida: android/app/build/outputs/apk/release/app-release.apk
@@ -174,11 +179,14 @@ PR de la rama: job `ci` + `resolution-guard` (actualizado) en verde. El guard ah
 
 ## Checklist de archivos tocados
 
-- [x] `apps/mobile/package.json` (bumps SDK 57 + sentry ~7.11.0)
+- [x] `apps/mobile/package.json` (bumps SDK 57 + sentry ~7.11.0 + @types/react ~19.2.0)
 - [x] `apps/mobile/app.config.js` (newArchEnabled true; sin pins de SDK)
+- [x] `apps/mobile/metro.config.js` (singleton react-native, ver gate de bundle en Fase 5)
+- [x] `apps/mobile/app/index.tsx` + `src/sync/image-sync.ts` (absoluteFillObject literal; expo-file-system/legacy)
 - [x] `package.json` raíz (override expo-app-integrity a ~57.x)
 - [x] `.github/scripts/check-react-resolution.mjs` (mobile derivado de package.json)
 - [x] `package-lock.json` (regenerado por npm@10.9.2, nunca a mano)
+- [x] `CLAUDE.md` (nota: fix de glob obsoleto desde SDK 57)
 - [ ] `apps/mobile` versionCode/version (Fase 7, al preparar el AAB)
 
 **No tocar:** `apps/web/**`, `packages/ui/**`, migraciones DB, product IDs RevenueCat.
