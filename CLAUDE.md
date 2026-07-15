@@ -276,6 +276,8 @@ Herramientas locales de QA (no producción): `npm run generate:together:iching-s
 - Smoke post-migración: hard reload del hilo — texto completo visible, no solo Warp=0.
 - PITR confirmado antes de cualquier migración destructiva.
 
+**OBSOLETO desde Expo SDK 57** (rama `chore/expo-sdk57`): `@expo/config-plugins` 10.1.2 reescribio `getProjectFilePath` con `globSync` + `cwd` y patron forward-slash, el bug quedo arreglado upstream y el parche ya NO aplica (el codigo que se parcheaba no existe). Mantener esta seccion solo mientras main siga en SDK 53.
+
 En Windows, `glob` v10 no resuelve rutas con backslashes combinadas con extglob `@(java|kt)`.
 Después de cualquier `npm install` en el monorepo, re-aplicar estos dos cambios en `node_modules`:
 
