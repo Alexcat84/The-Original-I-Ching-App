@@ -111,6 +111,14 @@ Lección del incidente @types/three: el typecheck corre sobre **cada commit que 
 
 ## Fase 5: build local + smoke en dispositivo físico
 
+**Pre-check obligatorio (auditoría externa 2026-07-15), antes del smoke:**
+
+```bash
+grep -rl "absoluteFillObject" node_modules --include="*.js" | head
+```
+
+Motivo (verificado contra el tarball de npm): `StyleSheet.absoluteFillObject` **no existe en NINGUNA parte de react-native 0.86.0** (ni runtime ni tipos). El spread de `undefined` es **silencioso**: cualquier dependencia de terceros que lo use se rompería visualmente sin error. Nuestros 2 usos propios ya se reemplazaron por el valor literal en el dry-run; este grep confirma que ninguna dep del árbol lo referencia. Revisar cada hit que aparezca (hits en el propio `react-native/Libraries` serían del shim de compat si existiera; hits en libs de terceros requieren evaluación caso a caso).
+
 ```bash
 # Windows: re-aplicar el fix de glob en @expo/config-plugins tras npm install (CLAUDE.md)
 cd apps/mobile

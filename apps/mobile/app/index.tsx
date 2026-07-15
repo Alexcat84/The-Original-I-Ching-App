@@ -1309,7 +1309,9 @@ function OfflineScreen({ onRetry, bottomInset }: { onRetry: () => void; bottomIn
 
 const offlineStyles = StyleSheet.create({
   root: {
-    // RN 0.86 removed StyleSheet.absoluteFillObject from the types; this is its exact value.
+    // RN 0.86.0 removed StyleSheet.absoluteFillObject entirely (runtime AND types; verified
+    // against the npm tarball). Spreading the now-undefined symbol fails silently, hence
+    // this literal replacement with its exact former value.
     position: "absolute" as const,
     top: 0,
     left: 0,
@@ -3283,7 +3285,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#0c0f14",
   },
   loader: {
-    // RN 0.86 removed StyleSheet.absoluteFillObject from the types; this is its exact value.
+    // RN 0.86.0 removed StyleSheet.absoluteFillObject entirely (runtime AND types; verified
+    // against the npm tarball). Spreading the now-undefined symbol fails silently, hence
+    // this literal replacement with its exact former value.
     position: "absolute" as const,
     top: 0,
     left: 0,

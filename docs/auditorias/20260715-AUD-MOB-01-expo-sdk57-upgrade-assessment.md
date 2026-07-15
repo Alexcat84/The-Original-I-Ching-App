@@ -106,7 +106,7 @@ Releases intermedios revisados (changelog oficial de GitHub):
 - **Default del SDK 57:** compile/target **API 36**. Acción: **quitar los pins** `compileSdkVersion: 35` / `targetSdkVersion: 35` / `buildToolsVersion: "35.0.0"` de `expo-build-properties` (dejarlos pisaría el default y anularía la migración). Aplicado en la rama.
 - **Edge-to-edge:** con target 36 es obligatorio y **el opt-out desaparece**. Ya usamos `react-native-edge-to-edge` y el layout ya es edge-to-edge aware (safe areas vía `--rn-safe-area-inset-*`). SDK 57 además trae fixes de edge-to-edge en Android. Riesgo: bajo; entra al smoke (status bar, insets, drawer).
 - **Predictive back:** con target 36 el sistema lo activa por defecto. Nuestro back lo maneja el WebView/nativo (historial del WebView + BackHandler). Entra al smoke: navegación back en chat y docs.
-- **16KB page size:** aplica a libs con código nativo `.so`. Las de nuestro árbol (RN core, sqlite, sentry, reanimated si aplica) van alineadas por el propio SDK 57/RN 0.86, que ya empaqueta soporte 16KB. `play:integrity` es Java puro (sin exposición).
+- **16KB page size:** aplica a libs con código nativo `.so`. Las de nuestro árbol (RN core, sqlite, sentry) van alineadas por el propio SDK 57/RN 0.86, que ya empaqueta soporte 16KB. `play:integrity` es Java puro (sin exposición).
 - **USE_FULL_SCREEN_INTENT:** no usamos full-screen intents. Sin acción.
 
 ---
