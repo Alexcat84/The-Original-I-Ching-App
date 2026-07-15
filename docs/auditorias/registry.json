@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-15",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -1363,6 +1363,22 @@
         "20260713-AUD-WEB-01 react-19-upgrade-assessment",
         "20260713-PLAN-WEB-01 react-19-migration",
         "20260713-PLAN-WEB-01b react-19-migration-corrections"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260715-EXT-SEC-02 full-repo-deep-audit",
+      "title": "Auditoría profunda externa — repo completo (secretos, RLS, API, pagos, móvil, deps)",
+      "shortName": "full-repo-deep-audit",
+      "type": "EXT",
+      "family": "SEC",
+      "date": "2026-07-15",
+      "status": "open",
+      "path": "docs/auditorias/20260715-EXT-SEC-02-full-repo-deep-audit.md",
+      "relatedCodes": [
+        "20260616-AUD-SEC-01 npm-dependencies",
+        "20260704-AUD-FABLE5-01 full-repo-audit",
+        "20260713-AUD-WEB-02 monorepo-resolution-blocker"
       ],
       "relatedTests": []
     }
