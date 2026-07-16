@@ -69,6 +69,52 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NODE_OPTIONS: "--max-old-space-size=4096"
 
+  # RLS cross-user isolation test (Ticket B, PLAN-SEC-01; closes EXT-SEC-02 P1-2).
+  # Runs the *.rls.test.ts suite against a real local Supabase stack (Postgres 17
+  # with the 74 migrations applied), authenticated as two different users.
+  # Non-blocking at first; flip to blocking once trusted (same pattern as
+  # resolution-guard). See docs/auditorias/20260716-GATE-SEC-01.
+  rls-test:
+    runs-on: ubuntu-latest
+    continue-on-error: true # informational at first; flip to blocking once trusted
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Disable corepack
+        run: corepack disable
+
+      - name: Use npm@10.9.2 (declared packageManager / lockfile generator)
+        run: npm install -g npm@10.9.2
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Report toolchain versions
+        run: |
+          echo "node:     $(node -v)"
+          echo "npm:      $(npm -v)"
+          echo "supabase: $(supabase --version)"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start local Supabase stack (applies all migrations)
+        run: supabase start
+
+      - name: Export local stack keys into the test environment
+        run: supabase status -o env | grep -E "^(ANON_KEY|SERVICE_ROLE_KEY|API_URL)=" >> "$GITHUB_ENV"
+
+      - name: Run RLS isolation suite
+        run: npm run test:rls --workspace @iching-oracle/web
+        env:
+          SUPABASE_URL: ${{ env.API_URL }}
+
   # Blocking guard for the two monorepo resolution fragilities (react 18/19 split):
   # regenerates the lockfile from scratch and FAILS the PR on ERESOLVE or a wrong
   # react split (web 18.x / mobile 19.0.0). Uses npm@10.9.2 (the declared

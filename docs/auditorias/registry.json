@@ -1441,6 +1441,21 @@
         "20260713-AUD-WEB-02 monorepo-resolution-blocker"
       ],
       "relatedTests": []
+    },
+    {
+      "code": "20260716-GATE-SEC-01 rls-isolation-test",
+      "title": "Gate: test integración aislamiento RLS cross-user (9 tablas, harness anti-punto-ciego)",
+      "shortName": "rls-isolation-test",
+      "type": "GATE",
+      "family": "SEC",
+      "date": "2026-07-16",
+      "status": "open",
+      "path": "docs/auditorias/20260716-GATE-SEC-01-rls-isolation-test.md",
+      "relatedCodes": [
+        "20260716-PLAN-SEC-01 p1-remediation",
+        "20260715-EXT-SEC-02 full-repo-deep-audit"
+      ],
+      "relatedTests": []
     }
   ]
 }

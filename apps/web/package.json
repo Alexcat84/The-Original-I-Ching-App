@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test:rls": "vitest run --config vitest.rls.config.ts",
     "test": "vitest run",
     "test:overlay-exhaustive": "vitest run --config vitest.exhaustive.config.ts",
     "gen:overlay-e2e-samples": "vitest run --config vitest.overlay-samples.config.ts",
