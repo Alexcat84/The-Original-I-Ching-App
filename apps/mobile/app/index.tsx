@@ -5,7 +5,11 @@ import { syncChats, syncChatThread } from "@/src/sync/sync-service";
 // SDK 54+ moved the classic API (documentDirectory, downloadAsync, ...) to /legacy.
 import * as FileSystem from "expo-file-system/legacy";
 import * as Linking from "expo-linking";
-import * as MediaLibrary from "expo-media-library";
+// SDK 57 split media-library into next (default entry) / legacy: the classic API
+// (saveToLibraryAsync, usePermissions) now lives ONLY in /legacy. The default
+// entry ships next-only at runtime while its .d.ts still advertises the classic
+// API, so tsc passes but the call is undefined at runtime (prod bug 2026-07-16).
+import * as MediaLibrary from "expo-media-library/legacy";
 import * as SecureStore from "expo-secure-store";
 import * as Sharing from "expo-sharing";
 import * as SplashScreen from "expo-splash-screen";

@@ -207,6 +207,8 @@ Registro cronologico de cada problema encontrado, su solucion y evidencia. Compl
 | 12 | El colapso #11 rompio el bundle (`Unable to resolve react-native`) | El target hardcodeado de Metro apuntaba al RN anidado que ya no existia | Targets del singleton resueltos dinamicamente (`require.resolve` desde projectRoot) | Gate de bundle verde; robusto ante re-hoisting |
 | 13 | Version 4.3.0 asignada por habito semver | El esquema del proyecto es CORRELATIVO PURO (4.2.2 -> 4.2.3; solo tras un 9 evoluciona el siguiente digito) | Corregido a 4.2.3 (versionCode 63 reutilizable: nunca se subio); doc [`00000000-OPS-PLAY-02`](../00000000-OPS-PLAY-02-play-store-versioning.md) + memoria | AAB 4.3.0 descartado sin subir |
 
+| 14 | PROD: `No se pudo guardar el archivo` al descargar imagen (post-release 4.2.4) | El entry default de `expo-media-library` en SDK 57 es la API next SOLamente: `saveToLibraryAsync`/`usePermissions` clasicos viven en `/legacy`. tsc NO lo detecta porque los types del entry (`build/index.d.ts`) siguen anunciando la API clasica mientras el runtime (`src/index.ts`) es next-only: los tipos mienten | Import a `expo-media-library/legacy` (mismo patron que expo-file-system, #3). Barrido preventivo: NINGUNA otra lib expo en uso tiene split next/legacy. Evidencia Axiom: `GET /api/image-proxy 200` a las 19:16 UTC exactas del reporte del usuario (backend sano; fallo 100% nativo). Leccion: en libs con split de entries, verificar el RUNTIME export, no solo tsc | Fix en 4.2.5/65; item del checklist "descarga de imagen" quedo sin ejecutar en el smoke de internal (leccion: checklist completo antes de prod) |
+
 ### Registro de builds del dry-run
 
 | Build | Perfil | Version | Proposito | Estado |
@@ -219,6 +221,7 @@ Registro cronologico de cada problema encontrado, su solucion y evidencia. Compl
 | `e18dd705` | internal-staging-aab | 4.2.3/63 | AAB internal staging | finished; superseded por el arbol limpio |
 | `3fd83049` | internal-staging-aab | 4.2.3/63 FINAL | AAB internal testing | finished; artefacto verificado (staging in, prod out, RN 0.86 unico); logs con doctor 20/20; entregado para subir |
 | `9be080ed` | staging-aab | 4.2.4/64 PRODUCCION | release de produccion | finished; verificacion inversa OK (Supabase prod in, staging OUT, RN 0.86 unico); entregado para staged rollout |
+| (pendiente) | staging-aab | 4.2.5/65 | fix descarga imagen (media-library legacy) | en preparacion |
 
 ### Anatomia del tamano del AAB (consulta del owner, 2026-07-16)
 

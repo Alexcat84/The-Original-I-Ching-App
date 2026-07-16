@@ -1,8 +1,19 @@
-<!-- changelog:last-release:e444f596 -->
+<!-- changelog:last-release:add96a40 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.2.5] — 2026-07-16 | versionCode: 65 | Stage: Production
+
+### Docs
+- docs(mobile): close execution log — production AAB 4.2.4/64 built and verified | commit: add96a40
+- docs: correlative table — 63 burned (internal upload), 4.2.4/64 production, next 65 | commit: 22413fcc
+
+### Maintenance
+- chore(mobile): release 4.2.4 / versionCode 64 — Production (SDK 57) | commit: 43d8c0af
+
+---
 
 ## [4.2.4] — 2026-07-16 | versionCode: 64 | Stage: Production
 
@@ -2035,7 +2046,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.2.4 | 64 | 2026-07-16 | Production | 6 | internal-staging-aab EAS profile — staging env pinned explicitly; expo doctor 20/20 — collapse orphan chains, pin bundled versions, inert react…; correct version to 4.2.3 (pure correlative) + versioning ops doc |
+| 4.2.5 | 65 | 2026-07-16 | Production | 3 | — |
+| 4.2.4 | 64 | 2026-07-16 | Production | 0 | — |
 | 4.2.3 | 63 | 2026-07-15 | Internal Testing | 0 | — |
 | 4.2.2 | 62 | 2026-07-04 | Closed Testing | 0 | — |
 | 4.2.1 | 61 | 2026-07-02 | Closed Testing | 0 | — |

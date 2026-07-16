@@ -13,6 +13,7 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
+| 4.2.5 | 65 | 2026-07-16 | Production |
 | 4.2.4 | 64 | 2026-07-16 | Production |
 | 4.2.3 | 63 | 2026-07-16 | Internal Testing (apunta a staging; solo smoke, sin notas) |
 | 4.2.2 | 62 | 2026-07-04 | Production |
@@ -20,6 +21,79 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 | 4.2.0 | 60 | 2026-06-25 | Production |
 | 4.1.9 | 59 | 2026-06-24 | Production |
 | 4.1.8 | 58 | 2026-06-22 | Production |
+
+---
+
+## 4.2.5 (versionCode 65) — 2026-07-16
+
+Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
+order — copy the whole block below in one paste.
+
+<en-US>
+Version 4.2.5: quick fix.
+- Saving images to your gallery works again.
+- Minor stability improvements.
+</en-US>
+
+<ar>
+الإصدار 4.2.5: إصلاح سريع.
+- حفظ الصور في معرض الصور يعمل من جديد.
+- تحسينات طفيفة في الاستقرار.
+</ar>
+
+<de-DE>
+Version 4.2.5: schnelle Korrektur.
+- Das Speichern von Bildern in der Galerie funktioniert wieder.
+- Kleinere Stabilitaetsverbesserungen.
+</de-DE>
+
+<es-419>
+Version 4.2.5: correccion rapida.
+- Guardar imagenes en tu galeria vuelve a funcionar.
+- Mejoras menores de estabilidad.
+</es-419>
+
+<fr-FR>
+Version 4.2.5 : correction rapide.
+- L'enregistrement des images dans la galerie fonctionne a nouveau.
+- Ameliorations mineures de stabilite.
+</fr-FR>
+
+<hi-IN>
+संस्करण 4.2.5: त्वरित सुधार।
+- गैलरी में छवियां सहेजना फिर से काम करता है।
+- मामूली स्थिरता सुधार।
+</hi-IN>
+
+<it-IT>
+Versione 4.2.5: correzione rapida.
+- Il salvataggio delle immagini nella galleria funziona di nuovo.
+- Piccoli miglioramenti di stabilita.
+</it-IT>
+
+<ja-JP>
+バージョン4.2.5: クイック修正。
+- ギャラリーへの画像保存が再び機能するようになりました。
+- 軽微な安定性の改善。
+</ja-JP>
+
+<ko-KR>
+버전 4.2.5: 빠른 수정.
+- 갤러리에 이미지 저장이 다시 작동합니다.
+- 사소한 안정성 개선.
+</ko-KR>
+
+<pt-BR>
+Versao 4.2.5: correcao rapida.
+- Salvar imagens na galeria voltou a funcionar.
+- Pequenas melhorias de estabilidade.
+</pt-BR>
+
+<zh-CN>
+版本4.2.5：快速修复。
+- 保存图片到相册功能恢复正常。
+- 小幅稳定性改进。
+</zh-CN>
 
 ---
 

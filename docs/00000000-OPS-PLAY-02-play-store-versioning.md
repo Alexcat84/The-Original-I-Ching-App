@@ -44,5 +44,6 @@ El 2026-07-15, tras la migración a Expo SDK 57, se asignó `4.3.0` "por ser una
 |---|---|---|---|---|
 | 4.2.2 | 62 | Production | 2026-07 | último release pre-SDK 57 |
 | 4.2.3 | 63 | Internal Testing | 2026-07-16 | migración Expo SDK 57 / target API 36 (apunta a staging; SUBIDO: código 63 quemado; smoke completo OK) |
-| 4.2.4 | 64 | Production | 2026-07-16 | release de producción SDK 57 (mismo código app que 4.2.3; apunta a producción) |
-| (siguiente) | 65 | | | después de 4.2.4 sigue 4.2.5 |
+| 4.2.4 | 64 | Production | 2026-07-16 | release SDK 57 SUBIDO (64 quemado); bug conocido: descarga de imagen (fix en 4.2.5) |
+| 4.2.5 | 65 | Production | 2026-07-16 | fix: import legacy de expo-media-library (descarga de imagen a galería) |
+| (siguiente) | 66 | | | después de 4.2.5 sigue 4.2.6 |
