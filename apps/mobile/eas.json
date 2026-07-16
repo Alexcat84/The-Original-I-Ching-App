@@ -46,6 +46,16 @@
         "buildType": "apk",
         "credentialsSource": "remote"
       }
+    },
+    "internal-staging-aab": {
+      "extends": "staging-aab",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://pjbjpdpgpzwgrellvsor.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_BIvNEGXP-2AiKhRLQ8NmAA_fLLuJVKn",
+        "EXPO_PUBLIC_APP_ENV": "staging",
+        "EXPO_PUBLIC_MOBILE_API_MODE": "account-compat"
+      }
     }
   },
   "submit": {
