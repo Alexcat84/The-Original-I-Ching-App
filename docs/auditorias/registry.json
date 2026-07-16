@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-07-15",
+  "updatedAt": "2026-07-16",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -1409,6 +1409,21 @@
       "relatedCodes": [
         "20260715-AUD-MOB-01 expo-sdk57-upgrade-assessment",
         "20260713-AUD-WEB-02 monorepo-resolution-blocker"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260716-AUD-MOB-02 sdk57-implementation-compliance",
+      "title": "Auditoría: implementación vs doc oficial Expo SDK 57 (43 items, runtime-first)",
+      "shortName": "sdk57-implementation-compliance",
+      "type": "AUD",
+      "family": "MOB",
+      "date": "2026-07-16",
+      "status": "open",
+      "path": "docs/auditorias/20260716-AUD-MOB-02-sdk57-implementation-compliance.md",
+      "relatedCodes": [
+        "20260715-AUD-MOB-01 expo-sdk57-upgrade-assessment",
+        "20260715-PLAN-MOB-01 expo-sdk57-migration"
       ],
       "relatedTests": []
     }

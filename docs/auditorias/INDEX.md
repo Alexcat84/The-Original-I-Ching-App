@@ -156,6 +156,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260619-FIX-MOB-PLAY-01 play-data-safety` | 2026-06-19 | Play Console Data Safety | closed | [20260619-FIX-MOB-PLAY-01-play-data-safety.md](./20260619-FIX-MOB-PLAY-01-play-data-safety.md) |
 | `20260715-AUD-MOB-01 expo-sdk57-upgrade-assessment` | 2026-07-15 | Evaluación migración Expo SDK 57 (API 36, deadline Play 2026-08-31) | open | [20260715-AUD-MOB-01-expo-sdk57-upgrade-assessment.md](./20260715-AUD-MOB-01-expo-sdk57-upgrade-assessment.md) |
 | `20260715-PLAN-MOB-01 expo-sdk57-migration` | 2026-07-15 | Plan migración SDK 57 paso a paso (gates, smoke, rollout) | open | [20260715-PLAN-MOB-01-expo-sdk57-migration.md](./20260715-PLAN-MOB-01-expo-sdk57-migration.md) |
+| `20260716-AUD-MOB-02 sdk57-implementation-compliance` | 2026-07-16 | Implementación vs doc SDK 57: 43 items runtime-first (41 OK, 2 config deprecated) | open | [20260716-AUD-MOB-02-sdk57-implementation-compliance.md](./20260716-AUD-MOB-02-sdk57-implementation-compliance.md) |
 
 ---
 
