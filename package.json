@@ -178,9 +178,9 @@
     "picomatch@<2.3.2": "2.3.2",
     "picomatch@>=3.0.0 <3.0.2": "3.0.2",
     "expo-app-integrity": {
-      "expo-build-properties": "~0.14.8",
-      "expo-secure-store": "~14.2.4",
-      "expo-device": "~7.1.4"
+      "expo-build-properties": "~57.0.5",
+      "expo-secure-store": "~57.0.1",
+      "expo-device": "~57.0.1"
     }
   }
 }

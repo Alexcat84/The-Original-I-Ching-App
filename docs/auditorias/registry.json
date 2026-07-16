@@ -1381,6 +1381,36 @@
         "20260713-AUD-WEB-02 monorepo-resolution-blocker"
       ],
       "relatedTests": []
+    },
+    {
+      "code": "20260715-AUD-MOB-01 expo-sdk57-upgrade-assessment",
+      "title": "Evaluación: migración apps/mobile a Expo SDK 57 (target API 36, deadline Play 2026-08-31)",
+      "shortName": "expo-sdk57-upgrade-assessment",
+      "type": "AUD",
+      "family": "MOB",
+      "date": "2026-07-15",
+      "status": "open",
+      "path": "docs/auditorias/20260715-AUD-MOB-01-expo-sdk57-upgrade-assessment.md",
+      "relatedCodes": [
+        "20260715-PLAN-MOB-01 expo-sdk57-migration",
+        "20260713-AUD-WEB-02 monorepo-resolution-blocker"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260715-PLAN-MOB-01 expo-sdk57-migration",
+      "title": "Plan: migración Expo SDK 57 paso a paso (gates, smoke dispositivo, rollout Play)",
+      "shortName": "expo-sdk57-migration",
+      "type": "PLAN",
+      "family": "MOB",
+      "date": "2026-07-15",
+      "status": "open",
+      "path": "docs/auditorias/20260715-PLAN-MOB-01-expo-sdk57-migration.md",
+      "relatedCodes": [
+        "20260715-AUD-MOB-01 expo-sdk57-upgrade-assessment",
+        "20260713-AUD-WEB-02 monorepo-resolution-blocker"
+      ],
+      "relatedTests": []
     }
   ]
 }

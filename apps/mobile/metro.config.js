@@ -7,11 +7,26 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 
 const config = getSentryExpoConfig(projectRoot);
 
-config.watchFolders = [...(config.watchFolders ?? []), workspaceRoot];
+// Include the REAL paths alongside the logical ones: when building from a
+// `subst` short drive (Windows MAX_PATH workaround for the new-arch C++
+// object paths, see PLAN-MOB-01 Phase 5), workspace-package symlinks
+// (@iching-oracle/* -> packages/*) resolve to their C:\ realpath, which would
+// otherwise fall outside Metro's watchFolders. Harmless when both are equal.
+// .native is required: the JS realpath implementation does NOT resolve subst
+// drive mappings on Windows; GetFinalPathNameByHandle (native) does.
+const workspaceRootReal = fs.realpathSync.native(workspaceRoot);
+config.watchFolders = [
+  ...(config.watchFolders ?? []),
+  workspaceRoot,
+  ...(workspaceRootReal !== workspaceRoot ? [workspaceRootReal] : []),
+];
 config.resolver.unstable_enableTsconfigPaths = true;
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
   path.resolve(workspaceRoot, "node_modules"),
+  ...(workspaceRootReal !== workspaceRoot
+    ? [path.resolve(workspaceRootReal, "node_modules")]
+    : []),
 ];
 
 // Force singleton resolution for React across the entire monorepo bundle.
@@ -30,6 +45,17 @@ const mobileReactMain = path.join(
   mobileReactDir,
   require(path.join(mobileReactDir, "package.json")).main
 );
+// Same singleton problem, react-native flavor (SDK 57 migration): the branch
+// lockfile keeps an orphan react-native@0.79.6 at root/node_modules (npm needs a
+// root placeholder for hoisted expo's `peer react-native@"*"`, and 0.86.0 cannot
+// live there because its react@^19.2 peer clashes with root react@18.2.0, which
+// apps/web owns). Root-hoisted libs (react-native-purchases, edge-to-edge) and
+// parts of the graph then resolve the 0.79.6 JS while the native side builds
+// 0.86.0 → mixed-version bundle (verified: the exported bundle contained the
+// 0.79.6 StyleSheet). Force every `react-native` request to mobile's nested
+// 0.86.0, delegating subpaths to the default resolver so platform extensions
+// (.android.js etc.) keep working.
+const mobileRNDir = path.resolve(projectRoot, "node_modules/react-native");
 const defaultResolveRequest = config.resolver.resolveRequest;
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   if (moduleName.startsWith("@/")) {
@@ -53,6 +79,13 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
       ? path.join(mobileReactDir, path.extname(subpath) ? subpath : `${subpath}.js`)
       : mobileReactMain;
     return { type: "sourceFile", filePath };
+  }
+  if (moduleName === "react-native" || moduleName.startsWith("react-native/")) {
+    const rewritten =
+      moduleName === "react-native"
+        ? mobileRNDir
+        : path.join(mobileRNDir, moduleName.slice("react-native/".length));
+    return context.resolveRequest(context, rewritten, platform);
   }
   return defaultResolveRequest
     ? defaultResolveRequest(context, moduleName, platform)
