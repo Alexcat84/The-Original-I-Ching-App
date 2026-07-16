@@ -149,9 +149,9 @@ Primer build = gate de `expo-app-integrity` (si su Gradle de 2023 fricción con 
 - [ ] Login con PKCE e inyección de sesión (`__rnInjectSession`).
 - [ ] OAuth Google: intercepción a browser externo y retorno por deep link `theoriginaliching://auth/callback`.
 - [ ] Deep link de RevenueCat (`rc-340e77bf41`).
-- [ ] Compra sandbox de un token pack (Billing 8.3.0; verificar acreditación de tokens).
-- [ ] Verificación de integrity token (Play Integrity attest + backend verify).
-- [ ] Consulta completa al oráculo con streaming SSE (texto llega incremental).
+- [ ] Compra sandbox de un token pack (Billing 8.3.0). **Criterio en staging (verificado 2026-07-16):** la acreditación de tokens NO ocurre por diseño (webhook fail-closed, SEC-01 + hardening 2026-07-12; `REVENUECAT_ALLOW_TEST_EVENTS="false"` en Preview). El PASS es el log `webhook_non_production_event_skipped` con `environment=SANDBOX` en Axiom: prueba Billing 8.3 + RC SDK + entrega/auth del webhook + política aplicada. Acreditación real solo con el flag temporal en Preview (decisión del owner) o en producción real.
+- [ ] Verificación de integrity token (Play Integrity attest + backend verify). **Criterio con APK sideloaded (verificado 2026-07-16):** `integrity_check_failed` ES el PASS de seguridad: el APK de smoke no es oficial (debug keystore, no instalado via Play) y el sistema lo rechaza correctamente en staging y producción (el enforcement corre donde llegue `x-integrity-token`; sin relajación por entorno). Ademas valida que `expo-app-integrity` bajo New Architecture obtiene token de Google y lo entrega end-to-end. El verdict PASSED completo se valida en closed testing (instalación via Play, firma oficial).
+- [ ] Consulta completa al oráculo con streaming SSE (texto llega incremental). **Nota:** bloqueada en APK sideloaded por el punto anterior; para probarla pre-Play se requiere `INTEGRITY_FAIL_OPEN=true` temporal en Preview (decisión del owner, revertir al terminar) o validarla en closed testing.
 - [ ] Signout con `rn_signout=1`.
 - [ ] Safe areas y edge-to-edge (status bar, insets, drawer; target 36 sin opt-out).
 - [ ] Navegación back (WebView history + predictive back de Android 16).
