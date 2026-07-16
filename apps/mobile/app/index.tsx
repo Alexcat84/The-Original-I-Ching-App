@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases, { type PurchasesPackage } from "react-native-purchases";
 import { initDb, getCachedChatsForInjection, getPagedThread, getLocalImagePath, softDeleteChat, clearAllData, getSyncMeta, setSyncMeta, deleteSyncMeta, deleteSyncMetaByPrefix, getChatMessageCount, type RnCachedChatEntry } from "@/src/db/chat-store";
 import { syncChats, syncChatThread } from "@/src/sync/sync-service";
-import * as FileSystem from "expo-file-system";
+// SDK 54+ moved the classic API (documentDirectory, downloadAsync, ...) to /legacy.
+import * as FileSystem from "expo-file-system/legacy";
 import * as Linking from "expo-linking";
 import * as MediaLibrary from "expo-media-library";
 import * as SecureStore from "expo-secure-store";
@@ -1308,7 +1309,14 @@ function OfflineScreen({ onRetry, bottomInset }: { onRetry: () => void; bottomIn
 
 const offlineStyles = StyleSheet.create({
   root: {
-    ...StyleSheet.absoluteFillObject,
+    // RN 0.86.0 removed StyleSheet.absoluteFillObject entirely (runtime AND types; verified
+    // against the npm tarball). Spreading the now-undefined symbol fails silently, hence
+    // this literal replacement with its exact former value.
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: "#0c0f14",
   },
   // Semi-transparent dark band at the bottom to ensure text contrast
@@ -3277,7 +3285,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#0c0f14",
   },
   loader: {
-    ...StyleSheet.absoluteFillObject,
+    // RN 0.86.0 removed StyleSheet.absoluteFillObject entirely (runtime AND types; verified
+    // against the npm tarball). Spreading the now-undefined symbol fails silently, hence
+    // this literal replacement with its exact former value.
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#0c0f14",

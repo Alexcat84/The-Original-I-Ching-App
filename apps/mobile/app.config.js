@@ -7,13 +7,15 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "4.2.2",
+  version: "4.2.4",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
   userInterfaceStyle: "dark",
   backgroundColor: "#0c0f14",
-  newArchEnabled: false,
+  // New Architecture is mandatory since RN 0.82 / Expo SDK 55; SDK 57 (RN 0.86)
+  // has no legacy option. See docs/auditorias/20260715-AUD-MOB-01.
+  newArchEnabled: true,
   androidStatusBar: {
     barStyle: "light-content",
   },
@@ -27,7 +29,7 @@ module.exports = ({ config }) => ({
   },
   android: {
     package: "com.theoriginaliching.app",
-    versionCode: 62,
+    versionCode: 64,
     // Prevent restoring stale auth/webview state after reinstall from Android backup.
     allowBackup: false,
     backgroundColor: "#0c0f14",
@@ -87,9 +89,9 @@ module.exports = ({ config }) => ({
       "expo-build-properties",
       {
         android: {
-          compileSdkVersion: 35,
-          targetSdkVersion: 35,
-          buildToolsVersion: "35.0.0",
+          // No SDK pins: Expo SDK 57 defaults to compile/target API 36 (Android 16),
+          // which is the Play requirement for updates from 2026-08-31. Pinning 35
+          // here would silently defeat the whole migration.
           enableProguardInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: true,
         },

@@ -61,6 +61,7 @@
 |--------|--------|-----------|
 | `00000000-SETUP-DB-01 new-db-setup` | Nuevo proyecto Supabase | [00000000-SETUP-DB-01-new-db-setup.md](./setup/00000000-SETUP-DB-01-new-db-setup.md) |
 | `00000000-OPS-PLAY-01 play-store-changelog` | Changelog Play Store | [00000000-OPS-PLAY-01-play-store-changelog.md](./00000000-OPS-PLAY-01-play-store-changelog.md) |
+| `00000000-OPS-PLAY-02 play-store-versioning` | Control de versiones Play Store (correlativos) | [00000000-OPS-PLAY-02-play-store-versioning.md](./00000000-OPS-PLAY-02-play-store-versioning.md) |
 | `20260711-OPS-WEB-01 marketing-site-restructure` | Reestructura web: marketing en `/`, chat en `/chat` | [20260711-OPS-WEB-01-marketing-site-restructure.md](./20260711-OPS-WEB-01-marketing-site-restructure.md) |
 
 ---

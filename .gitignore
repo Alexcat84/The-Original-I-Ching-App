@@ -34,3 +34,6 @@ skills-lock.json
 # Temporary local artifacts (root junk) — never commit
 mis_logs.json
 reportsnpm-audit-raw.json
+
+# Keystore backups (never in the repo; the debug keystore itself is public by design)
+*.keystore.bak

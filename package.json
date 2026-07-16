@@ -169,6 +169,8 @@
   },
   "overrides": {
     "react-dom": "18.2.0",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "4.25.2",
     "@xmldom/xmldom@<=0.8.12": "0.9.10",
     "node-forge@<1.4.0": "1.4.0",
     "lodash@<4.18.0": "4.18.1",
@@ -178,9 +180,9 @@
     "picomatch@<2.3.2": "2.3.2",
     "picomatch@>=3.0.0 <3.0.2": "3.0.2",
     "expo-app-integrity": {
-      "expo-build-properties": "~0.14.8",
-      "expo-secure-store": "~14.2.4",
-      "expo-device": "~7.1.4"
+      "expo-build-properties": "~57.0.5",
+      "expo-secure-store": "~57.0.1",
+      "expo-device": "~57.0.1"
     }
   }
 }
