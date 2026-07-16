@@ -160,6 +160,8 @@ Primer build = gate de `expo-app-integrity` (si su Gradle de 2023 fricción con 
 - [ ] Export PDF, descarga de imagen, zoom modal.
 - [ ] SQLite cache: sidebar instantáneo offline, sync incremental.
 
+**Estado de `expo doctor` (2026-07-16, fase advisory de EAS, no bloquea builds ni la subida a Play):** 19/20 checks. Resuelto en este commit: typescript a ~6.0.3 (lo que el SDK 57 espera; tsc verde) y los orphans de versiones SDK-53 en el root (expo-device 7.1.4, expo-secure-store 14.2.4, expo-build-properties 0.14.8) colapsados a 57.x via `npm update` dirigido (guard verde: web 18.2.0 intacto). El check de duplicados restante es el piso estable hasta Next 16: (a) expo-constants/expo-file-system duplicados en la MISMA version 57.x (anidamiento normal de npm, inofensivo: autolinking resuelve la copia de apps/mobile); (b) react 18.2.0/19.2.3 y react-native 0.79.6/0.86.0 son el split estructural documentado en AUD-WEB-02: el bundle lleva copia unica garantizada por el resolveRequest de metro.config.js (verificado con el discriminador en cada artefacto). `npm dedupe` completo ERESOLVE por el mismo split y no debe usarse.
+
 ## Fase 6: CI
 
 PR de la rama: job `ci` + `resolution-guard` (actualizado) en verde. El guard ahora valida web 18.x + mobile igual a lo declarado (19.2.3).
