@@ -4,7 +4,7 @@
 
 Full project change history.
 
-## [4.3.0] — 2026-07-15 | versionCode: 63 | Stage: Internal Testing
+## [4.2.3] — 2026-07-15 | versionCode: 63 | Stage: Internal Testing
 
 ### New
 - feat(mobile): Expo SDK 57 dry-run + assessment/plan docs (target API 36) | commit: 180f4f89

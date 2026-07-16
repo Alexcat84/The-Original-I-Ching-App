@@ -7,7 +7,7 @@ module.exports = ({ config }) => ({
   ...config,
   name: "The Original I Ching",
   slug: "the-original-i-ching",
-  version: "4.3.0",
+  version: "4.2.3",
   scheme: "theoriginaliching",
   orientation: "portrait",
   platforms: ["android"],
