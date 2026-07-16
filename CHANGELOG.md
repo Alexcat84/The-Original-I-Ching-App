@@ -1,8 +1,26 @@
-<!-- changelog:last-release:93a14b8e -->
+<!-- changelog:last-release:e444f596 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.2.4] — 2026-07-16 | versionCode: 64 | Stage: Production
+
+### New
+- feat(mobile): internal-staging-aab EAS profile — staging env pinned explicitly | commit: b0e3c079
+
+### Fix
+- fix(mobile): expo doctor 20/20 — collapse orphan chains, pin bundled versions, inert react exclude | commit: 2f5fb358
+- fix(mobile): correct version to 4.2.3 (pure correlative) + versioning ops doc | commit: 6043886a
+- fix(mobile): expo doctor cleanup — typescript ~6.0.3 + collapse SDK-53 orphans | commit: 4fe87f4e
+
+### Docs
+- docs(mobile): execution log (13 problems/solutions), build registry, AAB size anatomy, final state | commit: e444f596
+
+### Maintenance
+- chore(mobile): bump version 4.3.0 / versionCode 63 — SDK 57 internal testing | commit: 52223962
+
+---
 
 ## [4.2.3] — 2026-07-15 | versionCode: 63 | Stage: Internal Testing
 
@@ -2017,7 +2035,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.3.0 | 63 | 2026-07-15 | Internal Testing | 63 | Expo SDK 57 dry-run + assessment/plan docs (target API 36); smooth per-navigation page fade; register-free CTA on pricing + new question-led hero subtitle |
+| 4.2.4 | 64 | 2026-07-16 | Production | 6 | internal-staging-aab EAS profile — staging env pinned explicitly; expo doctor 20/20 — collapse orphan chains, pin bundled versions, inert react…; correct version to 4.2.3 (pure correlative) + versioning ops doc |
+| 4.2.3 | 63 | 2026-07-15 | Internal Testing | 0 | — |
 | 4.2.2 | 62 | 2026-07-04 | Closed Testing | 0 | — |
 | 4.2.1 | 61 | 2026-07-02 | Closed Testing | 0 | — |
 | 4.2.0 | 60 | 2026-06-25 | Closed Testing | 0 | — |

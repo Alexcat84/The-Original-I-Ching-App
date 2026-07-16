@@ -13,11 +13,86 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
+| 4.2.4 | 64 | 2026-07-16 | Production |
+| 4.2.3 | 63 | 2026-07-16 | Internal Testing (apunta a staging; solo smoke, sin notas) |
 | 4.2.2 | 62 | 2026-07-04 | Production |
 | 4.2.1 | 61 | 2026-07-02 | Production |
 | 4.2.0 | 60 | 2026-06-25 | Production |
 | 4.1.9 | 59 | 2026-06-24 | Production |
 | 4.1.8 | 58 | 2026-06-22 | Production |
+
+---
+
+## 4.2.4 (versionCode 64) — 2026-07-16
+
+Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
+order — copy the whole block below in one paste.
+
+<en-US>
+Version 4.2.4: ready for Android 16.
+- The app now runs on the latest Android engine: faster startup, smoother animations and full Android 16 compatibility.
+- Performance and stability improvements throughout.
+</en-US>
+
+<ar>
+الإصدار 4.2.4: جاهز لنظام Android 16.
+- يعمل التطبيق الآن على أحدث محرك أندرويد: بدء تشغيل أسرع، وحركات أكثر سلاسة، وتوافق كامل مع Android 16.
+- تحسينات في الأداء والاستقرار في كل أنحاء التطبيق.
+</ar>
+
+<de-DE>
+Version 4.2.4: bereit fuer Android 16.
+- Die App laeuft jetzt auf der neuesten Android-Engine: schnellerer Start, fluessigere Animationen und volle Android-16-Kompatibilitaet.
+- Leistungs- und Stabilitaetsverbesserungen in der gesamten App.
+</de-DE>
+
+<es-419>
+Version 4.2.4: lista para Android 16.
+- La app ahora corre sobre el motor mas reciente de Android: inicio mas rapido, animaciones mas fluidas y compatibilidad total con Android 16.
+- Mejoras de rendimiento y estabilidad en toda la app.
+</es-419>
+
+<fr-FR>
+Version 4.2.4 : prete pour Android 16.
+- L'application fonctionne desormais sur le moteur Android le plus recent : demarrage plus rapide, animations plus fluides et compatibilite totale avec Android 16.
+- Ameliorations de performance et de stabilite dans toute l'application.
+</fr-FR>
+
+<hi-IN>
+संस्करण 4.2.4: Android 16 के लिए तैयार।
+- ऐप अब नवीनतम Android इंजन पर चलता है: तेज़ शुरुआत, अधिक स्मूद एनिमेशन और Android 16 के साथ पूर्ण संगतता।
+- पूरे ऐप में प्रदर्शन और स्थिरता में सुधार।
+</hi-IN>
+
+<it-IT>
+Versione 4.2.4: pronta per Android 16.
+- L'app ora gira sul motore Android piu recente: avvio piu rapido, animazioni piu fluide e piena compatibilita con Android 16.
+- Miglioramenti di prestazioni e stabilita in tutta l'app.
+</it-IT>
+
+<ja-JP>
+バージョン4.2.4: Android 16に対応。
+- アプリが最新のAndroidエンジンで動作するようになりました。起動の高速化、より滑らかなアニメーション、Android 16への完全対応。
+- アプリ全体のパフォーマンスと安定性を改善。
+</ja-JP>
+
+<ko-KR>
+버전 4.2.4: Android 16 지원.
+- 이제 앱이 최신 Android 엔진에서 실행됩니다. 더 빠른 시작, 더 부드러운 애니메이션, Android 16 완벽 호환.
+- 앱 전반의 성능 및 안정성 개선.
+</ko-KR>
+
+<pt-BR>
+Versao 4.2.4: pronta para o Android 16.
+- O app agora roda no mecanismo mais recente do Android: inicio mais rapido, animacoes mais fluidas e compatibilidade total com o Android 16.
+- Melhorias de desempenho e estabilidade em todo o app.
+</pt-BR>
+
+<zh-CN>
+版本4.2.4：支持Android 16。
+- 应用现已运行在最新的Android引擎上：启动更快，动画更流畅，全面兼容Android 16。
+- 全面提升性能与稳定性。
+</zh-CN>
 
 ---
 
