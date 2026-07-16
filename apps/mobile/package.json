@@ -51,6 +51,11 @@
       "exclude": [
         "@sentry/react-native"
       ]
+    },
+    "autolinking": {
+      "exclude": [
+        "react"
+      ]
     }
   },
   "devDependencies": {
