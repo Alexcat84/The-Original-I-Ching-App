@@ -31,7 +31,8 @@ export interface RlsHarness {
 function requireEnv(names: string[], fallback?: string): string {
   for (const n of names) {
     const v = process.env[n];
-    if (v && v.trim()) return v.trim();
+    // `supabase status -o env` quotes its values; strip defensively.
+    if (v && v.trim()) return v.trim().replace(/^["']+|["']+$/g, "");
   }
   if (fallback !== undefined) return fallback;
   throw new Error(
