@@ -169,6 +169,8 @@
   },
   "overrides": {
     "react-dom": "18.2.0",
+    "form-data@4": "^4.0.6",
+    "ws@8": "^8.21.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "4.25.2",
     "@xmldom/xmldom@<=0.8.12": "0.9.10",
@@ -184,5 +186,8 @@
       "expo-secure-store": "~57.0.1",
       "expo-device": "~57.0.1"
     }
+  },
+  "dependencies": {
+    "ws": "^8.21.1"
   }
 }
