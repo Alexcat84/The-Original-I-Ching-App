@@ -1426,6 +1426,21 @@
         "20260715-PLAN-MOB-01 expo-sdk57-migration"
       ],
       "relatedTests": []
+    },
+    {
+      "code": "20260716-PLAN-SEC-01 p1-remediation",
+      "title": "Plan P1 auditoría profunda: overrides CVE (form-data, ws) + test integración RLS",
+      "shortName": "p1-remediation",
+      "type": "PLAN",
+      "family": "SEC",
+      "date": "2026-07-16",
+      "status": "open",
+      "path": "docs/auditorias/20260716-PLAN-SEC-01-p1-remediation.md",
+      "relatedCodes": [
+        "20260715-EXT-SEC-02 full-repo-deep-audit",
+        "20260713-AUD-WEB-02 monorepo-resolution-blocker"
+      ],
+      "relatedTests": []
     }
   ]
 }
