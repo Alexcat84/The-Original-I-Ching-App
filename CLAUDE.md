@@ -179,7 +179,7 @@ two_factor_recovery_codes
 - [x] Eliminación de chats via SecureStore token
 - [x] Sin cookies compartidas (cumple Play Store)
 - [x] privacyPolicyUrl configurado en app.config.js
-- [x] EAS Build configurado (profile: preview / staging-aab)
+- [x] EAS Build configurado. **INVARIANTE (2026-07-15): APK de smoke/staging: SIEMPRE build local (`assembleRelease`, sin `EXPO_PUBLIC_API_URL` en el .env para que caiga al fallback de staging). EAS: solo AAB de producción (release).** El perfil `preview` de EAS NO fija `EXPO_PUBLIC_API_URL` y las variables del dashboard apuntan a producción: un APK de EAS preview sale con la URL de PRODUCCIÓN embebida y no sirve para smoke (riesgo de compras/consultas reales pre-merge). Ver runbook RUN-SUP-03 (instala desde `android/app/build/outputs/apk/release/`).
 - [x] SQLite 3-tier offline cache (sidebar instantáneo, hilos lazy, sync incremental en background)
 - [x] Prewarm de caché SQLite al inicio (todos los chats pre-cargados)
 - [x] UID persistido en SecureStore (previene wipe cruzado entre usuarios)
@@ -347,9 +347,10 @@ npm run dev
 # Build staging
 git push origin staging
 
-# Build APK
-cd apps/mobile
-eas build --platform android --profile preview
+# APK de smoke/staging: SIEMPRE local (fallback a staging URL; ver invariante arriba)
+cd apps/mobile/android && ./gradlew assembleRelease
+# AAB de producción (Play Console): SOLO entonces EAS
+# eas build --platform android --profile staging-aab
 
 # Verificar proyecto mobile
 npx expo doctor
