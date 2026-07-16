@@ -16,12 +16,6 @@ module.exports = ({ config }) => ({
   // New Architecture is mandatory since RN 0.82 / Expo SDK 55; SDK 57 (RN 0.86)
   // has no legacy option. See docs/auditorias/20260715-AUD-MOB-01.
   newArchEnabled: true,
-  androidStatusBar: {
-    barStyle: "light-content",
-  },
-  androidNavigationBar: {
-    barStyle: "light-content",
-  },
   splash: {
     image: "./assets/logo.png",
     backgroundColor: "#0c0f14",
@@ -125,6 +119,10 @@ module.exports = ({ config }) => ({
       {
         savePhotosPermission: "Necesitamos permiso para guardar imágenes en tu galería.",
         isAccessMediaLocationEnabled: false,
+        // Only inject READ_MEDIA_IMAGES (blockedPermissions strips it anyway):
+        // the plugin default photo+video+audio leaked READ_MEDIA_AUDIO into the
+        // merged manifest (AUD-MOB-02 D9).
+        granularPermissions: ["photo"],
       },
     ],
     "expo-secure-store",
