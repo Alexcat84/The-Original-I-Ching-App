@@ -1,8 +1,83 @@
-<!-- changelog:last-release:3d2038c7 -->
+<!-- changelog:last-release:93a14b8e -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
+
+## [4.3.0] — 2026-07-15 | versionCode: 63 | Stage: Internal Testing
+
+### New
+- feat(mobile): Expo SDK 57 dry-run + assessment/plan docs (target API 36) | commit: 180f4f89
+- feat(marketing): smooth per-navigation page fade | commit: 78935366
+- feat(marketing): register-free CTA on pricing + new question-led hero subtitle | commit: c5dbb03d
+- feat(marketing): re-skin doc pages with the marketing shell + SEO touches | commit: 3db3cc7d
+- feat(web)!: move chat to /chat, new marketing homepage at / | commit: da6bd195
+- feat(marketing): design system, i18n and shared nav/footer for the new website | commit: 13f74044
+- feat(auth): implement password reset — /auth/update-password | commit: b0207086
+- feat(seo): add /mutation-explorer to sitemap and robots allow list | commit: cb8b43df
+
+### Fix
+- fix(mobile): force react-native singleton in Metro (SDK 57 mixed-RN bundle) | commit: 257495fd
+- fix(mobile): apply external audit adjustments to SDK 57 dry-run | commit: 84949cbe
+- fix(ci): correct AUD-WEB-02 ground truth + add resolution guard | commit: 884833b0
+- fix(ci): add explicit @types/three (was transitive via @react-three) | commit: 84cde8e2
+- fix(marketing): stop celeste flash in navigation loading fallback | commit: d7cd4016
+- fix(docs): app-adaptive link color in APK + audits date alignment | commit: 21efc6e8
+- fix(apk): restore inter-doc nav row in WebView doc pages | commit: 810671f5
+- fix(marketing): keep app light/dark theme on docs inside the APK WebView | commit: 19874977
+- fix(sentry): suppress benign 'Connection closed.' from APK WebView redirect | commit: 582c89be
+- fix(security): reject non-production (sandbox) purchase events in RevenueCat webhook | commit: 7a4326f2
+- fix(marketing): fix nav anchor race (cross-page + unsettled layout) + debug logging | commit: d7962b78
+- fix(marketing): lock nav underline to clicked item until manual scroll | commit: 5543ec3d
+- fix(marketing): fix hero glyph on RTL (Arabic) language switch | commit: 8336ee9c
+- fix(marketing): robust nav anchor-scroll + on-screen glyph caption | commit: e14b1fb4
+- fix(marketing): enlarge hero glyph further, viewport-scaled to avoid overlap | commit: 9061e5f9
+- fix(marketing): align nav actions, wrap hero title, enlarge hero glyph | commit: ff343ce4
+- fix(marketing): nav scroll-spy + anchor scroll, ink locale picker, softer card motion | commit: 33d7c3fd
+- fix(build): sentinel-file check for build:data instead of directory check | commit: 5e993eab
+- fix(i18n): add missing verifyButton translation for pt/fr/de/it | commit: f8b32897
+- fix(i18n): complete mutation-explorer-ui translations for 9 locales | commit: 599f88c4
+- fix(ci): restore i18n-audit to scripts/ after tools/ gitignore | commit: 605f9c8e
+- fix(ci): resolve typecheck errors in zhouyi 64hex generator test | commit: 1bb0bc97
+- fix(ci): skip build:data unconditionally on CI/Vercel via env-var detection | commit: f3b8b69d
+- fix(ci): align library-data test to Legge englishName source | commit: 64b55dd7
+- fix(ci): align mutation-rules tests to Wilhelm DE 1924 source | commit: d749d54a
+- fix(ci): resolve TS18047 typecheck failure in library-data test | commit: 2581c75f
+
+### Docs
+- docs(mobile): smoke criteria for purchase/integrity items on sideloaded staging APK | commit: 93a14b8e
+- docs(mobile): smoke .env procedure — flip the documented PREVIEW/PRODUCTION pairs | commit: 5a018210
+- docs(mobile): correct build invariant — smoke APK is ALWAYS local, EAS is prod-only | commit: 5ed4b025
+- docs(mobile): record Windows MAX_PATH build blocker; realpath-aware Metro roots | commit: 9cdb089b
+- docs(mobile): record Phase 5 bundle gate + metro singleton fix in PLAN-MOB-01 | commit: 2106e2aa
+- docs(sec): register external deep security audit (EXT-SEC-02) | commit: eb911506
+- docs(web): pause React 18.3.1 hedge — monorepo resolution blocker (AUD-WEB-02) | commit: d074769d
+- docs(web): pause React 19 upgrade — ViewTransition not in stable React | commit: 2a432760
+- docs(web): external-review corrections addendum for React 19 migration plan | commit: e076a9d7
+- docs(web): React 18→19 upgrade assessment + step-by-step migration plan | commit: 68f4fd48
+- docs(inc): INC-OPS-01 — ZIP v1 malformado (regenerado v2) + 6 libros fuente perdidos no recuperables de git | commit: 8fea59b0
+- docs: register 20260711-OPS-WEB-01 (site restructure) + 20260711-INC-OPS-01 (local assets loss/backup) | commit: 964d7035
+- docs(play): add 4.2.2 / versionCode 62 Play Store changelog block | commit: a49cbf88
+
+### Maintenance
+- ci: make resolution-guard blocking (drop continue-on-error) | commit: 2fd3ab1b
+- ci: run the ci job under npm@10.9.2 (lockfile generator) + report toolchain | commit: 16bf3f81
+- chore(web): remove dead @react-three/fiber + drei deps | commit: 80de657d
+- chore(audits): order library-commentary so current entries sit above superseded | commit: 8e5881a2
+- chore: merge staging — Play Store changelog 4.2.2 | commit: d9d0a05e
+- chore: merge staging — CI typecheck + i18n-audit fixes | commit: 215189c8
+- chore: merge staging — fix CI typecheck for zhouyi 64hex test | commit: f13099c3
+- chore: merge staging → main (4.2.2 / versionCode 62) | commit: 377c75ca
+- chore(release): bump 4.2.2 / versionCode 62 — security + auth + marketing | commit: 3113df86
+- chore: merge staging → main | commit: 11fa7e02
+- chore(release): merge staging → main (2026-07-03) | commit: e81632a5
+- merge: staging — W-08 audit completo, Wilhelm DE, Mutation Explorer, bump 4.2.1/61 | commit: d6b9ba25
+- merge: feature/mutation-explorer — auto-run on input, no verify button | commit: 8e9a1411
+- style(mutation-explorer): remove box background/border from oracle blocks | commit: cd490c82
+- merge: staging — mutation-explorer three-tier hierarchy + overlay QA headers | commit: e6255cd5
+- Revert "Merge branch 'feature/wilhelm-de-dataset' — Wilhelm DE 1924 runtime source" | commit: 308fe125
+
+---
 
 ## [4.2.2] — 2026-07-04 | versionCode: 62 | Stage: Closed Testing
 
@@ -1942,7 +2017,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.2.2 | 62 | 2026-07-04 | Closed Testing | 14 | watermark highContrast override + Zhou Yi 64hex promo generator; 2FA gate + security notification for password reset; implement password reset flow — /auth/update-password page |
+| 4.3.0 | 63 | 2026-07-15 | Internal Testing | 63 | Expo SDK 57 dry-run + assessment/plan docs (target API 36); smooth per-navigation page fade; register-free CTA on pricing + new question-led hero subtitle |
+| 4.2.2 | 62 | 2026-07-04 | Closed Testing | 0 | — |
 | 4.2.1 | 61 | 2026-07-02 | Closed Testing | 0 | — |
 | 4.2.0 | 60 | 2026-06-25 | Closed Testing | 0 | — |
 | 4.1.9 | 59 | 2026-06-24 | Closed Testing | 0 | — |
