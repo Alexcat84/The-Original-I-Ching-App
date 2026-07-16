@@ -9,6 +9,9 @@ export default defineConfig({
     // `npm run test:overlay-exhaustive`, wired as its own CI step, not the default suite.
     exclude: [
       "**/node_modules/**",
+      // RLS integration suite needs a live Supabase stack — runs only via
+      // vitest.rls.config.ts / `npm run test:rls` (own CI job), never here.
+      "src/**/*.rls.test.ts",
       "src/lib/__tests__/overlay-title-pango.exhaustive.test.ts",
       "src/lib/__tests__/overlay-title-pango.e2e-samples.test.ts",
       "src/lib/__tests__/overlay-title-pango.random-samples.test.ts",
