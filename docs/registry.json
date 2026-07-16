@@ -309,6 +309,21 @@
         "20260711-INC-OPS-01 local-assets-loss-and-backup"
       ],
       "relatedTests": []
+    },
+    {
+      "code": "00000000-OPS-PLAY-02 play-store-versioning",
+      "title": "Ops: control de versiones Play Store (correlativos, no semver)",
+      "shortName": "play-store-versioning",
+      "type": "OPS",
+      "family": "MOB-PLAY",
+      "collection": "ops",
+      "date": null,
+      "status": "reference",
+      "path": "docs/00000000-OPS-PLAY-02-play-store-versioning.md",
+      "relatedCodes": [
+        "00000000-OPS-PLAY-01 play-store-changelog"
+      ],
+      "relatedTests": []
     }
   ]
 }
