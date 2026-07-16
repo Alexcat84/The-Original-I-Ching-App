@@ -218,6 +218,7 @@ Registro cronologico de cada problema encontrado, su solucion y evidencia. Compl
 | `e20c2274` | internal-staging-aab | 4.3.0/63 | AAB internal staging | finished; descartado sin subir (#13) |
 | `e18dd705` | internal-staging-aab | 4.2.3/63 | AAB internal staging | finished; superseded por el arbol limpio |
 | `3fd83049` | internal-staging-aab | 4.2.3/63 FINAL | AAB internal testing | finished; artefacto verificado (staging in, prod out, RN 0.86 unico); logs con doctor 20/20; entregado para subir |
+| `9be080ed` | staging-aab | 4.2.4/64 PRODUCCION | release de produccion | finished; verificacion inversa OK (Supabase prod in, staging OUT, RN 0.86 unico); entregado para staged rollout |
 
 ### Anatomia del tamano del AAB (consulta del owner, 2026-07-16)
 
@@ -227,7 +228,7 @@ El AAB pesa ~82 MB pero el usuario descarga 24.7 MB (+6.98 vs release anterior, 
 
 - Rama `chore/expo-sdk57` mergeada a staging en cada hito; worktree `C:\\w\\iching-app` sincronizado.
 - PR #7 a main abierto y verde (ci + resolution-guard + Vercel); marcado NO mergear hasta el smoke via Play.
-- Pendiente (usuario): subir AAB `3fd83049` a internal testing, smoke completo via Play; luego merge PR #7 y release de produccion como build nuevo 4.2.4/64 apuntando a produccion (perfil `staging-aab`; NUNCA promocionar el 63, apunta a staging).
+- CERRADO 2026-07-16: internal testing subido (63 quemado), smoke via Play OK (integrity PASS, consulta/SSE OK), **PR #7 mergeado a main** (7674362d), release 4.2.4/64 buildeado desde main y verificado. Pendiente (usuario): subir 4.2.4/64 a Production con staged rollout 10% + pegar notas de los 11 idiomas (OPS-PLAY-01) + monitorear Sentry/pre-launch.
 - Verificacion pendiente menor: entrega de eventos de Sentry 7.x en runtime (se cubre de facto en el smoke de internal testing).
 
 ## Rollback (pre-merge)
