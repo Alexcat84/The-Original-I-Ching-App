@@ -40,7 +40,13 @@ config.resolver.nodeModulesPaths = [
 // FAILS — since root/node_modules/react exists, it's found first and the
 // fallback never triggers. A custom `resolveRequest` is required to truly
 // override resolution for every requester, regardless of where they live.
-const mobileReactDir = path.resolve(projectRoot, "node_modules/react");
+// Resolve the singleton targets the way Node would FROM apps/mobile, instead of
+// hardcoding nested paths: npm is free to hoist react-native (or, post Next 16,
+// react) to the workspace root, and a hardcoded apps/mobile/node_modules path
+// would then point at nothing ("Unable to resolve react-native").
+const mobileReactDir = path.dirname(
+  require.resolve("react/package.json", { paths: [projectRoot] })
+);
 const mobileReactMain = path.join(
   mobileReactDir,
   require(path.join(mobileReactDir, "package.json")).main
@@ -55,7 +61,9 @@ const mobileReactMain = path.join(
 // 0.79.6 StyleSheet). Force every `react-native` request to mobile's nested
 // 0.86.0, delegating subpaths to the default resolver so platform extensions
 // (.android.js etc.) keep working.
-const mobileRNDir = path.resolve(projectRoot, "node_modules/react-native");
+const mobileRNDir = path.dirname(
+  require.resolve("react-native/package.json", { paths: [projectRoot] })
+);
 const defaultResolveRequest = config.resolver.resolveRequest;
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   if (moduleName.startsWith("@/")) {
