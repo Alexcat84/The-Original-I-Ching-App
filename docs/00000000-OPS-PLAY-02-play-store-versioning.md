@@ -43,5 +43,6 @@ El 2026-07-15, tras la migración a Expo SDK 57, se asignó `4.3.0` "por ser una
 | Versión | versionCode | Track | Fecha | Nota |
 |---|---|---|---|---|
 | 4.2.2 | 62 | Production | 2026-07 | último release pre-SDK 57 |
-| 4.2.3 | 63 | Internal Testing | 2026-07-15 | migración Expo SDK 57 / target API 36 (apunta a staging para smoke) |
-| (siguiente) | 64 | | | después de 4.2.3 sigue 4.2.4 |
+| 4.2.3 | 63 | Internal Testing | 2026-07-16 | migración Expo SDK 57 / target API 36 (apunta a staging; SUBIDO: código 63 quemado; smoke completo OK) |
+| 4.2.4 | 64 | Production | 2026-07-16 | release de producción SDK 57 (mismo código app que 4.2.3; apunta a producción) |
+| (siguiente) | 65 | | | después de 4.2.4 sigue 4.2.5 |
