@@ -187,6 +187,49 @@ PR de la rama: job `ci` + `resolution-guard` (actualizado) en verde. El guard ah
 | ~2026-08-20 | Production staged rollout iniciado |
 | 2026-08-31 | Deadline Play (margen real: ~10 días) |
 
+## Bitacora de ejecucion (dry-run + Fases 5-6, 2026-07-15/16)
+
+Registro cronologico de cada problema encontrado, su solucion y evidencia. Complementa las notas por fase.
+
+| # | Problema | Causa | Solucion | Evidencia/estado |
+|---|---|---|---|---|
+| 1 | `expo install --fix` fallo en su npm interno | npm 11 del PATH (ERESOLVE conocido, AUD-WEB-02) | Ignorar el fallo interno (las ediciones de package.json persisten) + install con npm@10.9.2 | Fase 1; gate verde |
+| 2 | `--fix` interrumpido dejo sentry 6.22 y @types/react 19.0 | El multi-paso quedo cortado por #1 | Alinear a mano: sentry ~7.11.0 (bundled), @types/react ~19.2.0 (peer de virtualized-lists 0.86) | tsc verde |
+| 3 | tsc: `StyleSheet.absoluteFillObject` inexistente (2 sitios) y `expo-file-system` clasico (2 imports) | RN 0.86 elimino el simbolo POR COMPLETO (runtime y tipos, verificado contra tarball); SDK 54+ movio la API clasica a `/legacy` | Valor literal en los 2 sitios; imports a `expo-file-system/legacy` | tsc verde; pre-check de terceros en Fase 5 |
+| 4 | Bundle de Metro contenia la StyleSheet de RN 0.79.6 (mezcla JS viejo / nativo nuevo) | Orphan `react-native@0.79.6` en root (placeholder del peer de expo; 0.86 no podia vivir ahi por el react 18 del web); libs hoisteadas resolvian el viejo | `resolveRequest` de metro.config extendido a `react-native` (singleton); luego targets dinamicos (#12) | Discriminador `absoluteFillObject` = 0 en TODO artefacto entregado |
+| 5 | Colapsos npm-nativos del orphan RN fallaron (update / install+uninstall temporal) | `react-native@0.86` peer `react@^19.2` choca con root `react@18.2.0` (del web) | Aceptado + fix de Metro (#4); despues el colapso de la cadena expo-router vieja lo libero solo (#11) | Root RN hoy: 0.86.0 |
+| 6 | `assembleRelease` local: loop `build.ninja still dirty` y luego `Filename longer than 260 characters` | MAX_PATH de Windows: los object paths del codegen new-arch embeben la ruta fuente completa | `subst X:` fallo (symlinks workspace a realpath C:); git worktree en `C:\\w\\iching-app` (ruta corta real, mismo disco) SI funciono | BUILD SUCCESSFUL 7m15s; orden de remediacion en Fase 5 |
+| 7 | Primer APK de smoke crasheaba al abrir | Error del agente: .env del worktree solo con el flag de Metro; `index.tsx` lanza throw sin las vars de Supabase (antes de que Sentry, sin DSN, reporte) | Voltear TODOS los pares PREVIEW/staging del .env (convencion auto-documentada del archivo) | APK v2 verificado: Supabase staging in, prod out, Sentry/RC in |
+| 8 | Compra sandbox sin tokens (2 cuentas) | Politica fail-closed del webhook (SEC-01 + hardening 2026-07-12) + `REVENUECAT_ALLOW_TEST_EVENTS="false"` en Preview | Diseno anti-intrusion funcionando; PASS = log `webhook_non_production_event_skipped` en Axiom (Billing 8.3 + RC SDK + webhook end-to-end probados) | Criterio en checklist Fase 5 |
+| 9 | `integrity_check_failed` en consulta | APK sideloaded con debug keystore = build NO oficial; Play Integrity lo rechaza (enforcement donde llegue el header, staging incluido) | Es el PASS de seguridad; consulta/SSE se desbloquea con instalacion via Play | Criterio en checklist Fase 5 |
+| 10 | Casi-incidente: AAB de EAS preview habria salido apuntando a PRODUCCION | Perfiles sin env pinneado; dashboard EAS + .env local = produccion; causa raiz documental: linea vieja de CLAUDE.md | Build cancelado a tiempo; perfil `internal-staging-aab` (extends staging-aab) con el quinteto staging pinneado en eas.json; invariante corregido en CLAUDE.md/memoria | Nombre REAL del perfil del fallback de Fase 5.3 |
+| 11 | expo doctor 18/20 en logs de EAS | (a) typescript 5.8 vs ~6.0.3; (b) cadenas orphan SDK-53 en root (expo-router 5.1.11 -> expo-linking 7.1.7 -> expo-constants 17.1.8, que retenia al RN 0.79.6); (c) screens/safe-area root en latest vs bundled; (d) react 18/19 estructural | (a) bump ts; (b) `npm update` dirigido colapso las cadenas (y libero RN: root 0.86.0); (c) overrides raiz pinneando bundled (actualizar en cada bump de SDK); (d) `expo.autolinking.exclude: ["react"]`, inerte (react no tiene modulo nativo; verificado con expo config + gate de bundle) | 20/20; detalle en nota pre-Fase 6 |
+| 12 | El colapso #11 rompio el bundle (`Unable to resolve react-native`) | El target hardcodeado de Metro apuntaba al RN anidado que ya no existia | Targets del singleton resueltos dinamicamente (`require.resolve` desde projectRoot) | Gate de bundle verde; robusto ante re-hoisting |
+| 13 | Version 4.3.0 asignada por habito semver | El esquema del proyecto es CORRELATIVO PURO (4.2.2 -> 4.2.3; solo tras un 9 evoluciona el siguiente digito) | Corregido a 4.2.3 (versionCode 63 reutilizable: nunca se subio); doc [`00000000-OPS-PLAY-02`](../00000000-OPS-PLAY-02-play-store-versioning.md) + memoria | AAB 4.3.0 descartado sin subir |
+
+### Registro de builds del dry-run
+
+| Build | Perfil | Version | Proposito | Estado |
+|---|---|---|---|---|
+| local worktree | assembleRelease arm64 | 4.2.2/62 (APK v1) | smoke sideloaded | crasheo (#7), superseded |
+| local worktree | assembleRelease arm64 | 4.2.2/62 (APK v2) | smoke sideloaded | OK; smoke parcial ejecutado (#8, #9) |
+| `19a6241c` | preview (EAS) | 4.2.2/62 | (desvio #10) | conservado SOLO como gate de compilacion Linux SDK 57: finished. NO instalar |
+| `a1bda5d7` | staging-aab (EAS) | 4.3.0/63 | AAB internal (apuntaba a prod) | cancelado a tiempo (#10) |
+| `e20c2274` | internal-staging-aab | 4.3.0/63 | AAB internal staging | finished; descartado sin subir (#13) |
+| `e18dd705` | internal-staging-aab | 4.2.3/63 | AAB internal staging | finished; superseded por el arbol limpio |
+| `3fd83049` | internal-staging-aab | 4.2.3/63 FINAL | AAB internal testing | finished; artefacto verificado (staging in, prod out, RN 0.86 unico); logs con doctor 20/20; entregado para subir |
+
+### Anatomia del tamano del AAB (consulta del owner, 2026-07-16)
+
+El AAB pesa ~82 MB pero el usuario descarga 24.7 MB (+6.98 vs release anterior, esperado): el archivo empaqueta 92.9 MB de simbolos de debug + 73.5 MB de mapas de ofuscacion (BUNDLE-METADATA, solo para Play Console) y las 4 ABIs (~87 MB de nativo). El crecimiento por usuario viene de New Architecture (`libreactnative` con Fabric/TurboModules, `libappmodules.so` 4.1 MB y `react_codegen_*` que no existian en arquitectura vieja), la alineacion 16 KB de API 36 y el core RN 0.86. Proguard/R8 + shrinkResources ya activos; sin optimizacion pendiente.
+
+### Estado final al cierre de la bitacora (2026-07-16)
+
+- Rama `chore/expo-sdk57` mergeada a staging en cada hito; worktree `C:\\w\\iching-app` sincronizado.
+- PR #7 a main abierto y verde (ci + resolution-guard + Vercel); marcado NO mergear hasta el smoke via Play.
+- Pendiente (usuario): subir AAB `3fd83049` a internal testing, smoke completo via Play; luego merge PR #7 y release de produccion como build nuevo 4.2.4/64 apuntando a produccion (perfil `staging-aab`; NUNCA promocionar el 63, apunta a staging).
+- Verificacion pendiente menor: entrega de eventos de Sentry 7.x en runtime (se cubre de facto en el smoke de internal testing).
+
 ## Rollback (pre-merge)
 
 - Todo vive en `chore/expo-sdk57`; si un gate falla, no se mergea.
