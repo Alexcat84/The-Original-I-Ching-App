@@ -7,11 +7,26 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 
 const config = getSentryExpoConfig(projectRoot);
 
-config.watchFolders = [...(config.watchFolders ?? []), workspaceRoot];
+// Include the REAL paths alongside the logical ones: when building from a
+// `subst` short drive (Windows MAX_PATH workaround for the new-arch C++
+// object paths, see PLAN-MOB-01 Phase 5), workspace-package symlinks
+// (@iching-oracle/* -> packages/*) resolve to their C:\ realpath, which would
+// otherwise fall outside Metro's watchFolders. Harmless when both are equal.
+// .native is required: the JS realpath implementation does NOT resolve subst
+// drive mappings on Windows; GetFinalPathNameByHandle (native) does.
+const workspaceRootReal = fs.realpathSync.native(workspaceRoot);
+config.watchFolders = [
+  ...(config.watchFolders ?? []),
+  workspaceRoot,
+  ...(workspaceRootReal !== workspaceRoot ? [workspaceRootReal] : []),
+];
 config.resolver.unstable_enableTsconfigPaths = true;
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
   path.resolve(workspaceRoot, "node_modules"),
+  ...(workspaceRootReal !== workspaceRoot
+    ? [path.resolve(workspaceRootReal, "node_modules")]
+    : []),
 ];
 
 // Force singleton resolution for React across the entire monorepo bundle.
