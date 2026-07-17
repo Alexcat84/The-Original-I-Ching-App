@@ -13,7 +13,7 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
-| 4.2.5 | 65 | 2026-07-16 | Production |
+| 4.2.5 | 65 | 2026-07-17 | Internal Testing -> Production (hotfix bug descarga imagen + privacidad permisos) |
 | 4.2.4 | 64 | 2026-07-16 | Production |
 | 4.2.3 | 63 | 2026-07-16 | Internal Testing (apunta a staging; solo smoke, sin notas) |
 | 4.2.2 | 62 | 2026-07-04 | Production |
@@ -24,74 +24,85 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 ---
 
-## 4.2.5 (versionCode 65) — 2026-07-16
+## 4.2.5 (versionCode 65), 2026-07-16
 
 Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
 order — copy the whole block below in one paste.
 
 <en-US>
-Version 4.2.5: quick fix.
+Version 4.2.5: fixes and privacy.
 - Saving images to your gallery works again.
+- Privacy: the app now asks only for photo access, not audio or video.
 - Minor stability improvements.
 </en-US>
 
 <ar>
-الإصدار 4.2.5: إصلاح سريع.
+الإصدار 4.2.5: إصلاحات وخصوصية.
 - حفظ الصور في معرض الصور يعمل من جديد.
+- الخصوصية: يطلب التطبيق الآن الوصول إلى الصور فقط، وليس الصوت أو الفيديو.
 - تحسينات طفيفة في الاستقرار.
 </ar>
 
 <de-DE>
-Version 4.2.5: schnelle Korrektur.
+Version 4.2.5: Korrekturen und Datenschutz.
 - Das Speichern von Bildern in der Galerie funktioniert wieder.
+- Datenschutz: Die App fragt jetzt nur noch nach Fotozugriff, nicht nach Audio oder Video.
 - Kleinere Stabilitaetsverbesserungen.
 </de-DE>
 
 <es-419>
-Version 4.2.5: correccion rapida.
+Version 4.2.5: correcciones y privacidad.
 - Guardar imagenes en tu galeria vuelve a funcionar.
+- Privacidad: la app ahora solo pide acceso a fotos, no a audio ni video.
 - Mejoras menores de estabilidad.
 </es-419>
 
 <fr-FR>
-Version 4.2.5 : correction rapide.
+Version 4.2.5 : corrections et confidentialite.
 - L'enregistrement des images dans la galerie fonctionne a nouveau.
+- Confidentialite : l'application ne demande plus que l'acces aux photos, pas a l'audio ni a la video.
 - Ameliorations mineures de stabilite.
 </fr-FR>
 
 <hi-IN>
-संस्करण 4.2.5: त्वरित सुधार।
+संस्करण 4.2.5: सुधार और गोपनीयता।
 - गैलरी में छवियां सहेजना फिर से काम करता है।
+- गोपनीयता: ऐप अब केवल फ़ोटो पहुंच मांगता है, ऑडियो या वीडियो नहीं।
 - मामूली स्थिरता सुधार।
 </hi-IN>
 
 <it-IT>
-Versione 4.2.5: correzione rapida.
+Versione 4.2.5: correzioni e privacy.
 - Il salvataggio delle immagini nella galleria funziona di nuovo.
+- Privacy: l'app ora richiede solo l'accesso alle foto, non ad audio o video.
 - Piccoli miglioramenti di stabilita.
 </it-IT>
 
 <ja-JP>
-バージョン4.2.5: クイック修正。
+バージョン4.2.5: 修正とプライバシー。
 - ギャラリーへの画像保存が再び機能するようになりました。
+- プライバシー: アプリは写真へのアクセスのみを求め、音声や動画は求めません。
 - 軽微な安定性の改善。
 </ja-JP>
 
 <ko-KR>
-버전 4.2.5: 빠른 수정.
+버전 4.2.5: 수정 및 개인정보 보호.
 - 갤러리에 이미지 저장이 다시 작동합니다.
+- 개인정보 보호: 이제 앱은 오디오나 동영상이 아닌 사진 접근만 요청합니다.
 - 사소한 안정성 개선.
 </ko-KR>
 
 <pt-BR>
-Versao 4.2.5: correcao rapida.
+Versao 4.2.5: correcoes e privacidade.
 - Salvar imagens na galeria voltou a funcionar.
+- Privacidade: o app agora pede apenas acesso a fotos, nao a audio ou video.
 - Pequenas melhorias de estabilidade.
 </pt-BR>
 
 <zh-CN>
-版本4.2.5：快速修复。
+版本4.2.5：修复与隐私。
 - 保存图片到相册功能恢复正常。
+- 隐私：应用现在仅请求照片访问权限，不再请求音频或视频。
 - 小幅稳定性改进。
 </zh-CN>
 
