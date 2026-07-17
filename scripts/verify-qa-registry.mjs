@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * QA code: VF-DOC-002 qa-registry-integrity · v1.3.0
+ * QA code: VF-DOC-002 qa-registry-integrity · v1.4.0
  * Area: scripts/verify-qa-registry
  * Family: DOC
  */
@@ -12,7 +12,7 @@
  * - mandatory QA header blocks in registered source files
  * - orphan *.test.ts files and unregistered npm gate scripts
  *
- * QA code: VF-DOC-002 qa-registry-integrity · v1.3.0
+ * QA code: VF-DOC-002 qa-registry-integrity · v1.4.0
  * Area: scripts/verify-qa-registry
  * Family: DOC
  */
@@ -155,6 +155,42 @@ for (const testRoot of TEST_ROOTS) {
       errors.push(`orphan test file not in docs/qa/registry.json: ${testPath}`);
     }
   }
+}
+
+// Orphan coded-doc check (added 2026-07-17, docs sweep): every *.md in the doc
+// trees whose FILENAME carries a code prefix (YYYYMMDD-TYPE-FAMILY-...) must be
+// in a registry. Legacy redirect stubs ("(renamed)" marker) and
+// README/CONVENTIONS/INDEX/MEMORY/CHANGELOG are exempt. Closes the gap where a
+// coded doc could sit unregistered and still pass the gate.
+const registeredDocPaths = new Set(
+  [...audits.entries, ...(docs.entries ?? [])]
+    .map((e) => e.path)
+    .filter(Boolean)
+    .map((p) => p.replace(/\\/g, '/')),
+);
+const CODED_FILENAME = /\/(\d{8})-[A-Z]+-[A-Z0-9]+/;
+const DOC_EXEMPT = /(README|CONVENTIONS|INDEX|MEMORY|CHANGELOG)\.md$/i;
+/** @param {string} dir @param {string} base */
+function walkDocFiles(dir, base) {
+  /** @type {string[]} */
+  const out = [];
+  if (!existsSync(dir)) return out;
+  for (const name of readdirSync(dir)) {
+    if (SKIP_DIRS.has(name)) continue;
+    const rel = `${base}/${name}`;
+    const st = statSync(join(root, rel));
+    if (st.isDirectory()) out.push(...walkDocFiles(join(root, rel), rel));
+    else if (name.endsWith('.md')) out.push(rel.replace(/\\/g, '/'));
+  }
+  return out;
+}
+for (const md of walkDocFiles(join(root, 'docs'), 'docs')) {
+  if (DOC_EXEMPT.test(md)) continue;
+  if (!CODED_FILENAME.test('/' + md.split('/').pop())) continue;
+  if (registeredDocPaths.has(md)) continue;
+  const head = readFileSync(join(root, md), 'utf8').slice(0, 300);
+  if (head.includes('(renamed)')) continue; // legacy redirect stub
+  errors.push(`coded doc not in any registry: ${md}`);
 }
 
 const pkg = loadJson('package.json');
