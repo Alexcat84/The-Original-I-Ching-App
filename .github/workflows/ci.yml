@@ -104,8 +104,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Start local Supabase stack (applies all migrations)
+      - name: Start local Supabase stack
         run: supabase start
+
+      - name: Apply the 74 migrations + seed
+        run: supabase db reset
 
       - name: Export local stack keys into the test environment
         run: supabase status -o env | grep -E "^(ANON_KEY|SERVICE_ROLE_KEY|API_URL)=" | tr -d '"' >> "$GITHUB_ENV"
