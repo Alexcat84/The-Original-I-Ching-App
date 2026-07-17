@@ -29,8 +29,12 @@ Contra una base Supabase REAL (Postgres 17 local con las 74 migraciones aplicada
 
 ```bash
 # requiere Docker corriendo
-supabase start          # stack local (aplica migraciones)
-supabase db reset       # opcional: re-aplicar desde cero + seed
+supabase start
+# la CLI solo aplica supabase/migrations, que esta VACIO en el repo: las 74
+# migraciones viven en backend/db/migrations. Stagearlas primero (excluyendo
+# verify_migrations.sql, que es un script de gate, no una migracion):
+mkdir -p supabase/migrations && cp backend/db/migrations/[0-9]*.sql supabase/migrations/
+supabase db reset       # ahora si aplica el schema completo
 eval "$(supabase status -o env | sed 's/^/export /')"   # ANON_KEY / SERVICE_ROLE_KEY / API_URL
 cd apps/web && SUPABASE_URL="$API_URL" npm run test:rls
 ```
