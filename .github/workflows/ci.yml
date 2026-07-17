@@ -107,7 +107,17 @@ jobs:
       - name: Start local Supabase stack
         run: supabase start
 
-      - name: Apply the 74 migrations + seed
+      # The repo keeps its migrations in backend/db/migrations (001..074), but the
+      # Supabase CLI only applies supabase/migrations — which is empty in-repo.
+      # Stage the numbered files there (NOT verify_migrations.sql, a gate script)
+      # so db reset actually applies the schema. Lexicographic order == 001..074.
+      - name: Stage repo migrations where the CLI reads them
+        run: |
+          mkdir -p supabase/migrations
+          cp backend/db/migrations/[0-9]*.sql supabase/migrations/
+          ls supabase/migrations | wc -l
+
+      - name: Apply the migrations
         run: supabase db reset
 
       - name: Export local stack keys into the test environment
