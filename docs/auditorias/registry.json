@@ -845,6 +845,10 @@
       "relatedCodes": [
         "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth",
         "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy",
+        "20260701-EXT-DAT-W-08-RUN-01 wilhelm-de-fidelity-run01",
+        "20260701-EXT-DAT-W-08-RUN-02 wilhelm-de-fidelity-run02",
+        "20260702-EXT-DAT-W-08-RUN-03 wilhelm-de-fidelity-run03",
+        "20260702-EXT-DAT-W-08-RUN-04 wilhelm-de-fidelity-run04",
         "20260623-AUD-DAT-MAESTRO-W-01 wilhelm-txt-maestro"
       ],
       "relatedTests": [
@@ -1485,6 +1489,62 @@
         "20260715-EXT-SEC-02 full-repo-deep-audit",
         "20260716-GATE-SEC-01 rls-isolation-test",
         "20260716-PLAN-SUP-02 migration-chain-replayability"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260701-EXT-DAT-W-08-RUN-01 wilhelm-de-fidelity-run01",
+      "title": "Validación externa W-08 Run 01 (post-remediación ronda 1)",
+      "shortName": "wilhelm-de-fidelity-run01",
+      "type": "EXT",
+      "family": "DAT-W",
+      "date": "2026-07-01",
+      "status": "closed",
+      "path": "docs/auditorias/20260701-EXT-DAT-W-08-run01-validacion-fidelidad.md",
+      "relatedCodes": [
+        "20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260701-EXT-DAT-W-08-RUN-02 wilhelm-de-fidelity-run02",
+      "title": "Validación externa W-08 Run 02 (post-remediación ronda 2)",
+      "shortName": "wilhelm-de-fidelity-run02",
+      "type": "EXT",
+      "family": "DAT-W",
+      "date": "2026-07-01",
+      "status": "closed",
+      "path": "docs/auditorias/20260701-EXT-DAT-W-08-run02-validacion-fidelidad.md",
+      "relatedCodes": [
+        "20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260702-EXT-DAT-W-08-RUN-03 wilhelm-de-fidelity-run03",
+      "title": "Validación externa W-08 Run 03 (re-run lote 9-16)",
+      "shortName": "wilhelm-de-fidelity-run03",
+      "type": "EXT",
+      "family": "DAT-W",
+      "date": "2026-07-02",
+      "status": "closed",
+      "path": "docs/auditorias/20260702-EXT-DAT-W-08-run03-validacion-fidelidad.md",
+      "relatedCodes": [
+        "20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260702-EXT-DAT-W-08-RUN-04 wilhelm-de-fidelity-run04",
+      "title": "Validación externa W-08 Run 04 (cobertura completa 2 hex/lote)",
+      "shortName": "wilhelm-de-fidelity-run04",
+      "type": "EXT",
+      "family": "DAT-W",
+      "date": "2026-07-02",
+      "status": "closed",
+      "path": "docs/auditorias/20260702-EXT-DAT-W-08-run04-validacion-fidelidad.md",
+      "relatedCodes": [
+        "20260701-EXT-DAT-W-08 wilhelm-de-ocr-field-contamination"
       ],
       "relatedTests": []
     }
