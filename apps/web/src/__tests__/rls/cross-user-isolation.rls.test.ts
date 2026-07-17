@@ -77,7 +77,6 @@ const CASES: TableCase[] = [
           primary_hexagram_chinese: "乾",
           changing_lines: [],
           mutation_rule: "none",
-          interpretation: "rls seed interpretation",
         })
         .select()
         .single();
@@ -107,7 +106,6 @@ const CASES: TableCase[] = [
           primary_hexagram_chinese: "坤",
           changing_lines: [],
           mutation_rule: "none",
-          interpretation: "seed",
         })
         .select()
         .single();
