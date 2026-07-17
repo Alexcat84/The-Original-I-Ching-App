@@ -62,7 +62,15 @@ Job `rls-test` en `.github/workflows/ci.yml`: instala la CLI de Supabase (pinnea
 
 **Criterio del flip a bloqueante (fijado por auditoría externa en la aprobación del merge):** primer 9/9 el **2026-07-17** (run 29548233095); el flip va en un **cambio aparte** tras **3-5 corridas verdes en main**, igual que se hizo con resolution-guard.
 
-**FLIP EJECUTADO: 2026-07-17** (criterio cumplido con 4 corridas verdes en main tras el merge del PR #9, pre-aprobado en el veredicto de PLAN-SEC-02). Desde entonces `rls-test` es **bloqueante**: cada PR corre el replay completo de la cadena 001..075 en base vacía + las 36 aserciones de aislamiento, y un rojo real detiene el merge. Demo de que el gate muerde: ver nota al final.
+**FLIP EJECUTADO: 2026-07-17** (PR #12; criterio cumplido con 4 corridas verdes en main tras el merge del PR #9, pre-aprobado en el veredicto de PLAN-SEC-02). Desde entonces `rls-test` es **bloqueante**: cada PR corre el replay completo de la cadena 001..075 en base vacía + las 36 aserciones de aislamiento, y un rojo real detiene el merge.
+
+**Demo "el gate muerde" (2026-07-17, run 29552233430):** una rama descartable añadió una policy abierta (`CREATE POLICY demo_leak ON consultations FOR SELECT TO authenticated USING (true)`) y el `rls-test` **falló como debía**:
+```
+FAIL RLS isolation: 'consultations' > enforces cross-user isolation
+AssertionError: B must receive an empty result for A's consultations:
+  expected [ { …(25) } ] to deeply equal []
+```
+El gate detecta la fuga y bloquea. La rama y su PR (#13) se cerraron y borraron inmediatamente tras capturar la evidencia — la migración de ruptura de RLS (flagged CRITICAL por el review automático de seguridad, correctamente) **nunca persiste**. Si en el futuro se quiere un gate-bite repetible, hacerlo como script fuera de `migrations/` con rollback en la misma transacción (p.ej. `tools/rls-test/break_and_restore.sql`), no como archivo de migración.
 
 ## Estado de ejecución
 

@@ -1449,7 +1449,7 @@
       "type": "GATE",
       "family": "SEC",
       "date": "2026-07-16",
-      "status": "open",
+      "status": "closed",
       "path": "docs/auditorias/20260716-GATE-SEC-01-rls-isolation-test.md",
       "relatedCodes": [
         "20260716-PLAN-SEC-01 p1-remediation",
