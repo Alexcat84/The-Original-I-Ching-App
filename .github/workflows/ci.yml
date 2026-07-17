@@ -93,7 +93,11 @@ jobs:
 
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          # Pinned (matches the verified local CLI): 'latest' resolves via the
+          # GitHub releases API, which rate-limits on shared runners (observed
+          # twice as 22s failures at this step). Toolchain pinning, same
+          # philosophy as npm@10.9.2.
+          version: 2.109.1
 
       - name: Report toolchain versions
         run: |
