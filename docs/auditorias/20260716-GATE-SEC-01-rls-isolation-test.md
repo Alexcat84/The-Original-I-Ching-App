@@ -33,10 +33,16 @@ supabase start
 # la CLI solo aplica supabase/migrations, que esta VACIO en el repo: las 74
 # migraciones viven en backend/db/migrations. Stagearlas primero (excluyendo
 # verify_migrations.sql, que es un script de gate, no una migracion):
-mkdir -p supabase/migrations && cp backend/db/migrations/[0-9]*.sql supabase/migrations/
-# 037 asserta que el usuario admin de PRODUCCION exista: no es replayable en DB
-# vacia (hallazgo de este gate: la cadena de migraciones no es blank-DB-replayable
-# tal cual; 037 es la unica dependiente de datos de produccion detectada).
+mkdir -p supabase/migrations
+# Clase 2 de no-replayabilidad (auditoria externa): pg_cron se habilito por
+# Dashboard en prod, ninguna migracion la crea. 053 tiene guard (NOTICE), pero
+# 059 lanza EXCEPTION por diseno y 064/065 llaman cron.* SIN guard. Preludio
+# 000_ dentro del reset (un psql pre-reset se borraria: reset recrea la base):
+echo "CREATE EXTENSION IF NOT EXISTS pg_cron;" > supabase/migrations/000_ci_enable_pg_cron.sql
+cp backend/db/migrations/[0-9]*.sql supabase/migrations/
+# Clase 1: datos de produccion. 037 asserta que el usuario admin de PRODUCCION
+# exista; unica exclusion (verificado por auditoria externa: ninguna policy RLS
+# usa is_admin, los checks de admin son de codigo de servidor).
 rm supabase/migrations/037_seed_admin_user.sql
 supabase db reset       # ahora si aplica el schema completo
 eval "$(supabase status -o env | sed 's/^/export /')"   # ANON_KEY / SERVICE_ROLE_KEY / API_URL

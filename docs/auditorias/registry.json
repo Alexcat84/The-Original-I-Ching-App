@@ -1456,6 +1456,21 @@
         "20260715-EXT-SEC-02 full-repo-deep-audit"
       ],
       "relatedTests": []
+    },
+    {
+      "code": "20260716-PLAN-SUP-02 migration-chain-replayability",
+      "title": "Deuda DR: cadena de migraciones no replayable en DB vacía (037 datos prod; pg_cron sin migración)",
+      "shortName": "migration-chain-replayability",
+      "type": "PLAN",
+      "family": "SUP",
+      "date": "2026-07-16",
+      "status": "open",
+      "path": "docs/auditorias/20260716-PLAN-SUP-02-migration-chain-replayability.md",
+      "relatedCodes": [
+        "20260716-GATE-SEC-01 rls-isolation-test",
+        "00000000-RUN-SUP-01 migration-data-integrity"
+      ],
+      "relatedTests": []
     }
   ]
 }

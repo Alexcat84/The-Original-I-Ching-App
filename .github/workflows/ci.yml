@@ -114,8 +114,14 @@ jobs:
       - name: Stage repo migrations where the CLI reads them
         run: |
           mkdir -p supabase/migrations
+          # pg_cron was enabled via Dashboard in prod (never by a migration); 059
+          # RAISEs by design and 064/065 call cron.* unguarded on a blank DB.
+          # Enable it as a 000_ prelude INSIDE the reset (db reset recreates the
+          # database, so a pre-reset psql CREATE EXTENSION would be wiped away).
+          # Sorts before 001. See GATE-SEC-01 (two non-replayability classes).
+          echo "CREATE EXTENSION IF NOT EXISTS pg_cron;" > supabase/migrations/000_ci_enable_pg_cron.sql
           cp backend/db/migrations/[0-9]*.sql supabase/migrations/
-          # Production-data-dependent migrations, NOT replayable on a blank DB
+          # Production-data-dependent migration, NOT replayable on a blank DB
           # (037 asserts the owner's auth user exists). Documented in GATE-SEC-01.
           rm supabase/migrations/037_seed_admin_user.sql
           ls supabase/migrations | wc -l
