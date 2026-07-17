@@ -62,4 +62,5 @@ Job `rls-test` en `.github/workflows/ci.yml`: instala la CLI de Supabase, levant
 
 ## Estado de ejecución
 
-- 2026-07-16: suite escrita y tipada (tsc verde). Run local BLOQUEADO en la máquina de desarrollo (Docker Desktop apagado); la validación de ejecución corre en el job de CI del PR y/o local cuando Docker esté activo. La rama queda para auditoría externa con ese estado declarado.
+- 2026-07-16: suite escrita y tipada (tsc verde). Run local bloqueado (Docker apagado); validación vía CI.
+- 2026-07-17: **VERDE — Tests 9 passed (9)** en CI (run 29548233095, job rls-test 3m32s, commit aa43e2e8): las 9 tablas con sus 4 aserciones (control positivo, lectura cruzada vacía, escritura 0 filas + fila intacta verificada, anon sin filas). El camino al verde descubrió y documentó las capas de infra registradas arriba y en PLAN-SUP-02 (staging de migraciones, 037, pg_cron, grants, trigger on_auth_user_created, skip silencioso de prefijos no numéricos, rate-limit de setup-cli "latest" → CLI pinneada 2.109.1). Bonus de fidelidad: el gate rechazó un seed con schema pre-069 (`interpretation` dropeada), prueba de que corre contra el schema real. Pendiente: revisión completa del harness por auditoría externa antes del merge.
