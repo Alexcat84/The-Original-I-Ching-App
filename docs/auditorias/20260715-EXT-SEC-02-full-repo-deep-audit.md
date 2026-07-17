@@ -234,3 +234,12 @@ Anotado al transcribir, para quien lea esto después:
 - **Rec. 1 (deps `high`)** — pendiente. El cambio de `overrides` debe pasar por el `resolution-guard` (ya **bloqueante** en CI desde 2026-07-14) y **no** tocar `apps/mobile` (queda en React 19.0.0). Ver [`AUD-WEB-02`](./20260713-AUD-WEB-02-monorepo-resolution-blocker.md) §2 para las dos fragilidades de resolución a respetar.
 - **Rec. 5 (branch protection)** — decisión conocida y pendiente del owner: `main` no está protegido, por lo que el `resolution-guard` bloqueante pinta rojo pero no impide el merge. Habilitarlo cambiaría el flujo actual de merges directos staging→main.
 - **Rec. 4 (`backup/local-assets-2026-07-11`)** — esa rama es el respaldo de `tools/` y `reports/` desvinculados en la limpieza `732c40b1`; su contenido **no** está en main por diseño. Evaluar antes de borrar.
+
+---
+
+## Cierre (2026-07-17)
+
+Los dos P1 quedaron cerrados via `20260716-PLAN-SEC-01` con verificacion externa en cada paso:
+- **P1-1 (CVEs high):** PR #8 mergeado 2026-07-17 (form-data 4.0.6, ws 8.21.1 via overrides scopeados within-major; audit --omit=dev 0 high/0 critical; 6 moderates restantes documentadas, todas major-downgrade/sin-fix).
+- **P1-2 (test de RLS):** PR #9 mergeado 2026-07-17 (suite de integracion 9 tablas x 4 aserciones, Tests 9 passed (9) en CI contra la base real migrada; job rls-test no bloqueante hasta 3-5 verdes en main, ver GATE-SEC-01).
+Hallazgos derivados registrados: `20260716-PLAN-SUP-02` (replayabilidad de la cadena de migraciones, deuda DR abierta).
