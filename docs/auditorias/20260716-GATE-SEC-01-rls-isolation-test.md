@@ -45,7 +45,7 @@ cp backend/db/migrations/[0-9]*.sql supabase/migrations/
 # usa is_admin, los checks de admin son de codigo de servidor).
 rm supabase/migrations/037_seed_admin_user.sql
 supabase db reset       # ahora si aplica el schema completo
-# Ademas: grants prod-like (archivo zzz_, corre al final): el staging local no
+# Ademas: grants prod-like (archivo 9999_, corre al final; OJO: la CLI ignora en silencio prefijos no numericos como zzz_): el staging local no
 # replica las default privileges de Supabase prod; service_role necesita ALL y
 # authenticated/anon sus grants de tabla (RLS filtra filas). Ver el step del
 # workflow para el contenido exacto (no re-otorga sobre las tablas internas
