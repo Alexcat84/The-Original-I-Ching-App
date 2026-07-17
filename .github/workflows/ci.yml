@@ -74,9 +74,14 @@ jobs:
   # with the 74 migrations applied), authenticated as two different users.
   # Non-blocking at first; flip to blocking once trusted (same pattern as
   # resolution-guard). See docs/auditorias/20260716-GATE-SEC-01.
+  # BLOCKING since 2026-07-17 (flip criterion met: 4 green runs on main after
+  # the PR #9 merge, plus every green on the feature branches — external audit
+  # pre-approved the flip in the PLAN-SEC-02 verdict; same pattern as the
+  # resolution-guard flip in PR #6). If a red ever comes from infra flakiness
+  # (setup-cli download, docker), fix the step (pin/retry) — do NOT revert to
+  # continue-on-error.
   rls-test:
     runs-on: ubuntu-latest
-    continue-on-error: true # informational at first; flip to blocking once trusted
     steps:
       - uses: actions/checkout@v6
 
