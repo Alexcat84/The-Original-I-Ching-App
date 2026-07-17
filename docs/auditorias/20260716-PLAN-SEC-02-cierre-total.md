@@ -17,7 +17,7 @@ Ordenado por lo que de verdad importa, no por número. Cada ticket es independie
 
 ---
 
-## Ticket 1 — Rama `backup/local-assets` (recalibrado: opcional, decisión tomada)
+## Ticket 1 — Rama `backup/local-assets` — HECHO (2026-07-17: Alexis borró backup/local-assets-2026-07-11)
 
 **Contexto.** La rama `backup/local-assets-2026-07-11` contiene obras de terceros con copyright vigente (EPUBs de Wilhelm/Baynes-Bollingen 2011, Zhu Xi/Adler, y un PDF de Shang History; el Legge es dominio público).
 
@@ -37,15 +37,17 @@ La rama no se necesita para el trabajo en curso (la auditoría externa solo lee 
 
 ---
 
-## Ticket 2 — Branch protection en `main` (EXT-SEC-02 P3, CI)
+## Ticket 2 — Branch protection en `main` — NO APLICABLE (cerrado 2026-07-17)
 
 Los checks bloqueantes (`ci`, `resolution-guard`) ya existen pero sin branch protection pintan rojo sin impedir el merge administrativo. Ahora que hay dos gates de seguridad más entrando (`rls-test` tras su flip), vale cerrar el enforcement.
 
-**Acción de Alexis (repo-settings, no código).** Versión ligera:
+**RESULTADO (2026-07-17): NO APLICABLE en el plan actual.** El comando devolvió **403**: "Upgrade to GitHub Pro or make this repository public to enable this feature". Causa verificada: el repo volvió a **privado** y la cuenta es **GitHub Free**; las ramas protegidas están disponibles en repos públicos con Free, y en privados solo con Pro/Team/Enterprise. Los **rulesets NO son workaround** (misma restricción de plan). **Valor real perdido = marginal:** la config acordada llevaba `enforce_admins: false` y Alexis es el único admin, así que podría saltarse la protección igual; **los tres gates (`ci`, `resolution-guard`, `rls-test`) siguen corriendo y pintando rojo en cada PR**, que es donde está el grueso del valor. **Condición de reevaluación:** si entra un colaborador con write, o si se compra GitHub Pro. El comando queda registrado abajo para ese momento.
+
+**Comando para cuando aplique (repo público o plan Pro), ahora con los 3 contexts (rls-test ya bloqueante):**
 ```bash
 gh api -X PUT repos/Alexcat84/The-Original-I-Ching-App/branches/main/protection --input - <<'JSON'
 {
-  "required_status_checks": { "strict": false, "contexts": ["ci", "resolution-guard"] },
+  "required_status_checks": { "strict": false, "contexts": ["ci", "resolution-guard", "rls-test"] },
   "enforce_admins": false,
   "required_pull_request_reviews": null,
   "restrictions": null

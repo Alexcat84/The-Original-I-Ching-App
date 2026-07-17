@@ -1293,7 +1293,7 @@
       "type": "VF",
       "family": "DOC",
       "area": "scripts/verify-qa-registry",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "versionHistory": [
         {
           "version": "1.0.0",
@@ -1314,6 +1314,11 @@
           "version": "1.3.0",
           "date": "2026-06-25",
           "change": "Orphan test files + unregistered npm gate scripts"
+        },
+        {
+          "version": "1.4.0",
+          "date": "2026-07-17",
+          "change": "Orphan coded-doc check (docs sweep): fail on coded *.md not in any registry"
         }
       ],
       "path": "scripts/verify-qa-registry.mjs",

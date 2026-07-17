@@ -253,3 +253,18 @@ El AAB pesa ~82 MB pero el usuario descarga 24.7 MB (+6.98 vs release anterior, 
 - [ ] `apps/mobile` versionCode/version (Fase 7, al preparar el AAB)
 
 **No tocar:** `apps/web/**`, `packages/ui/**`, migraciones DB, product IDs RevenueCat.
+
+### Release 4.2.5/65 — hotfix del bug #14 (retomado 2026-07-17)
+
+El AAB del hotfix (descarga de imagen + cierres D3/D4/D9) quedó huérfano cuando arrancó el sprint de seguridad. Estado real: producción seguía en 4.2.4/64 con el crash activo. Build EAS `6a08bb21` (commit `146bdad9`, perfil staging-aab): **finished**, artefacto disponible. Verificado (no asumido) sobre el AAB real:
+
+| Check | Resultado |
+|---|---|
+| Env inverso: Supabase producción presente / staging ausente | ✓ (wgbo=1, pjbj=0; el hit de staging-vercel es el literal fallback de app.config, inerte) |
+| API prod embebida | ✓ |
+| Permisos D9: READ_MEDIA_AUDIO / READ_MEDIA_VIDEO | ✓ AMBOS AUSENTES en el manifest mergeado |
+| versionName 4.2.5 / versionCode 65 (EAS autoritativo) | ✓ |
+| target/compile API 36 | ✓ |
+| apps/mobile idéntico entre `146bdad9` y main actual | ✓ (el sprint de seguridad fue web/CI/migraciones; el AAB representa main) |
+
+Entregado a Alexis para smoke de 2 ítems (barras del sistema con iconos claros sobre fondo oscuro; descarga de imagen a galería = flujo exacto del bug #14). Con su OK: subir a Production. **Rollout recomendado: escalonado ACELERADO por ser hotfix de crash activo** (ver justificación en el reporte). Pendiente menor: aplicar 075 en prod (no-op idempotente; PLAN-SUP-02).

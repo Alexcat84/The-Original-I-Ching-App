@@ -9182,6 +9182,13 @@ html.iching-rn-webview .oracle-toggle-track {
   min-height: 2.35rem;
 }
 
+/* Invisible header placeholder: reserves the exact header height in a column
+   whose hexagram has no header (no-changing-lines reading), so both line
+   stacks stay aligned. See CastRitualDiagram HeaderSlot. */
+.mutation-explorer-cast-header[data-placeholder="true"] {
+  visibility: hidden;
+}
+
 .mutation-explorer-cast-lines {
   display: flex;
   flex-direction: column;

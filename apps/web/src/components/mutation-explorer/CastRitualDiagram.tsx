@@ -54,6 +54,24 @@ function HexHeader({ header }: { header: CastHexHeader }) {
 }
 
 /**
+ * Header slot for one column. Renders the real header when present; otherwise, if
+ * the OTHER column has a header (`reserve`), renders a structurally-identical but
+ * invisible placeholder so both line stacks start at the same y. Without this, a
+ * no-changing-lines reading (transformedHeader null) left the right hexagram
+ * shifted up by the header height — the misalignment reported on #1/#7/#27/#29.
+ */
+function HeaderSlot({ header, reserve }: { header?: CastHexHeader | null; reserve: boolean }) {
+  if (header) return <HexHeader header={header} />;
+  if (!reserve) return null;
+  return (
+    <header className="mutation-explorer-cast-header" aria-hidden="true" data-placeholder="true">
+      <span className="mutation-explorer-cast-hex-title">&nbsp;</span>
+      <span className="mutation-explorer-cast-hex-sub">&nbsp;</span>
+    </header>
+  );
+}
+
+/**
  * Primary → transformed cast with per-column titles centered above each hex stack.
  */
 export function CastRitualDiagram({ lines, primaryHeader, transformedHeader }: Props) {
@@ -62,10 +80,12 @@ export function CastRitualDiagram({ lines, primaryHeader, transformedHeader }: P
     byPosition.set(index + 1, value);
   });
 
+  const reserveHeader = Boolean(primaryHeader || transformedHeader);
+
   return (
     <div className="mutation-explorer-cast-grid" aria-hidden="true">
       <div className="mutation-explorer-cast-column">
-        {primaryHeader ? <HexHeader header={primaryHeader} /> : null}
+        <HeaderSlot header={primaryHeader} reserve={reserveHeader} />
         <div className="mutation-explorer-cast-lines">
           {LINE_ORDER.map((position) => {
             const value = byPosition.get(position) ?? 7;
@@ -95,7 +115,7 @@ export function CastRitualDiagram({ lines, primaryHeader, transformedHeader }: P
       </div>
 
       <div className="mutation-explorer-cast-column">
-        {transformedHeader ? <HexHeader header={transformedHeader} /> : null}
+        <HeaderSlot header={transformedHeader} reserve={reserveHeader} />
         <div className="mutation-explorer-cast-lines">
           {LINE_ORDER.map((position) => {
             const value = byPosition.get(position) ?? 7;
