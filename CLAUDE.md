@@ -43,7 +43,7 @@ moderna usando Claude AI. Modelo de negocio: tokens consumibles (no suscripción
 ├── backend/
 │   ├── claude/                 # Integración Anthropic API + fallback chain
 │   ├── auth/                   # TOTP, 2FA email, validación de registro
-│   └── db/migrations/          # 74 migraciones SQL (001-074)
+│   └── db/migrations/          # migraciones SQL (001-075; replayable en DB vacía)
 ├── packages/                   # Paquetes compartidos del monorepo
 │   ├── iching-engine/          # Algoritmos de sorteo (tres monedas, yarrow, manual)
 │   ├── oracle-bones-engine/    # Huesos de Oráculo Shang (4 veredictos auténticos)
@@ -276,7 +276,7 @@ Herramientas locales de QA (no producción): `npm run generate:together:iching-s
 - Smoke post-migración: hard reload del hilo — texto completo visible, no solo Warp=0.
 - PITR confirmado antes de cualquier migración destructiva.
 
-**OBSOLETO desde Expo SDK 57** (rama `chore/expo-sdk57`): `@expo/config-plugins` 10.1.2 reescribio `getProjectFilePath` con `globSync` + `cwd` y patron forward-slash, el bug quedo arreglado upstream y el parche ya NO aplica (el codigo que se parcheaba no existe). Mantener esta seccion solo mientras main siga en SDK 53.
+**OBSOLETO — main ya está en Expo SDK 57 (4.2.5/versionCode 65).** `@expo/config-plugins` 10.1.2 reescribio `getProjectFilePath` con `globSync` + `cwd` y patron forward-slash: el bug quedo arreglado upstream y el parche de abajo ya NO aplica (el codigo que se parcheaba no existe). Toda la subseccion del glob-fix se conserva solo como referencia historica; NO ejecutarla en el arbol actual. (El build local de SDK 57 en Windows usa el worktree de ruta corta por MAX_PATH; ver docs/auditorias/20260715-PLAN-MOB-01, Fase 5.)
 
 En Windows, `glob` v10 no resuelve rutas con backslashes combinadas con extglob `@(java|kt)`.
 Después de cualquier `npm install` en el monorepo, re-aplicar estos dos cambios en `node_modules`:

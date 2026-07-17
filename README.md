@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-4.1.7-gold)
+![Version](https://img.shields.io/badge/version-4.2.5-gold)
 ![Platform](https://img.shields.io/badge/platform-Web%20%7C%20Android-brightgreen)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![License](https://img.shields.io/badge/license-Private-red)
@@ -111,8 +111,9 @@ The Android app wraps the web experience in a native shell with extras:
 - 📏 Proper safe area insets and status bar integration
 - 🛡️ App Integrity attestation (Play Protect + App Access Risk checks)
 
-**Current version:** 4.1.7 (versionCode 57) · **Platform:** Android · **Min SDK:** 24
+**Current version:** 4.2.5 (versionCode 65) · **Platform:** Android · **Min SDK:** 24 · **Target SDK:** 36 (Android 16)
 
+> Built on Expo SDK 57 (React Native 0.86, New Architecture) to meet Google Play's target API 36 requirement.
 > The APK loads the production web URL (`theoriginaliching.com`) in a WebView — most feature fixes deploy via Vercel without a new APK.
 
 ---
@@ -125,8 +126,8 @@ The Android app wraps the web experience in a native shell with extras:
 - [Supabase](https://supabase.com/) — Auth + PostgreSQL
 
 **Mobile**
-- [Expo](https://expo.dev/) SDK 53 + React Native WebView
-- EAS Build (APK + App Bundle)
+- [Expo](https://expo.dev/) SDK 57 + React Native 0.86 (New Architecture) + React Native WebView
+- Target API 36 (Android 16); EAS Build (APK + App Bundle)
 
 **AI & Images**
 - [Anthropic Claude](https://anthropic.com/) — oracle interpretations
@@ -147,7 +148,7 @@ The Android app wraps the web experience in a native shell with extras:
 
 ## 🚀 Quick Start (Developers)
 
-**Prerequisites:** Node.js 22+ · npm 10+
+**Prerequisites:** Node.js 22+ · npm 10.9.2 (the declared `packageManager`; the one that resolves the monorepo cleanly; CI installs it explicitly)
 
 ```bash
 git clone https://github.com/Alexcat84/The-Original-I-Ching-App.git iching-oracle
@@ -192,7 +193,7 @@ ANTHROPIC_API_KEY=
 ├── backend/
 │   ├── claude/               # Anthropic API integration + fallback chain
 │   ├── auth/                 # TOTP, email 2FA, registration validation
-│   └── db/migrations/        # 74 ordered SQL migrations (Supabase)
+│   └── db/migrations/        # ordered SQL migrations (Supabase), latest 075
 └── docs/
     ├── auditorias/           # Security, architecture, data integrity audits
     ├── workflows/            # i18n guide, legal flow
@@ -201,9 +202,13 @@ ANTHROPIC_API_KEY=
 
 ### 🗄️ Database
 
-Run migrations in `backend/db/migrations/` **in numeric order** on your Supabase project (74 migrations, 001–074). Use `verify_migrations.sql` to confirm all checks pass after applying.
+Run migrations in `backend/db/migrations/` **in numeric order** on your Supabase project (001–075). Use `verify_migrations.sql` to confirm all checks pass after applying.
 
-Key recent migration: **074** — `consultations.line_reading_system` (`huang` | `zhuxi`, default `huang`).
+Key recent migrations:
+- **075**: codifies the `on_auth_user_created` trigger in the chain (was Dashboard-created; makes the chain blank-DB replayable).
+- **074**: `consultations.line_reading_system` (`huang` | `zhuxi`, default `huang`).
+
+> The chain is blank-DB replayable (037 conditional, pg_cron guards in 059/064/065). A CI job (`rls-test`) replays it from scratch and runs cross-user RLS isolation tests on every PR.
 
 ### 🧪 Developer QA scripts
 
@@ -223,6 +228,8 @@ node scripts/line-reading-system-qa.mjs   # Huang/Zhu Xi line-reading harness
 - 2FA: TOTP + email code
 - Rate limiting on all sensitive endpoints (Upstash Redis)
 - No `.env` files committed to git
+- Row-Level Security enforced by Postgres and **verified in CI**: an integration test (`rls-test`) authenticates as two users against a real local stack and asserts cross-user isolation on every user-scoped table
+- Blocking CI gates: `ci` (typecheck + tests + build), `resolution-guard` (monorepo react-split integrity), `rls-test` (RLS isolation). See [`docs/auditorias/`](docs/auditorias/)
 
 ---
 
