@@ -27,7 +27,7 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 ## 4.2.5 (versionCode 65), 2026-07-16
 
 Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
-order — copy the whole block below in one paste.
+order. Copy the whole block below in one paste.
 
 <en-US>
 Version 4.2.5: fixes and privacy.
