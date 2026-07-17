@@ -37,3 +37,7 @@ reportsnpm-audit-raw.json
 
 # Keystore backups (never in the repo; the debug keystore itself is public by design)
 *.keystore.bak
+
+# AI-assistant caches / merge residues (EXT-SEC-02 P3 hygiene)
+.cache/
+*.orig
