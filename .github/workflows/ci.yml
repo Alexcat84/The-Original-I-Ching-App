@@ -69,6 +69,110 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NODE_OPTIONS: "--max-old-space-size=4096"
 
+  # RLS cross-user isolation test (Ticket B, PLAN-SEC-01; closes EXT-SEC-02 P1-2).
+  # Runs the *.rls.test.ts suite against a real local Supabase stack (Postgres 17
+  # with the 74 migrations applied), authenticated as two different users.
+  # Non-blocking at first; flip to blocking once trusted (same pattern as
+  # resolution-guard). See docs/auditorias/20260716-GATE-SEC-01.
+  rls-test:
+    runs-on: ubuntu-latest
+    continue-on-error: true # informational at first; flip to blocking once trusted
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Disable corepack
+        run: corepack disable
+
+      - name: Use npm@10.9.2 (declared packageManager / lockfile generator)
+        run: npm install -g npm@10.9.2
+
+      - uses: supabase/setup-cli@v1
+        with:
+          # Pinned (matches the verified local CLI): 'latest' resolves via the
+          # GitHub releases API, which rate-limits on shared runners (observed
+          # twice as 22s failures at this step). Toolchain pinning, same
+          # philosophy as npm@10.9.2.
+          version: 2.109.1
+
+      - name: Report toolchain versions
+        run: |
+          echo "node:     $(node -v)"
+          echo "npm:      $(npm -v)"
+          echo "supabase: $(supabase --version)"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start local Supabase stack
+        run: supabase start
+
+      # The repo keeps its migrations in backend/db/migrations (001..074), but the
+      # Supabase CLI only applies supabase/migrations — which is empty in-repo.
+      # Stage the numbered files there (NOT verify_migrations.sql, a gate script)
+      # so db reset actually applies the schema. Lexicographic order == 001..074.
+      - name: Stage repo migrations where the CLI reads them
+        run: |
+          mkdir -p supabase/migrations
+          # pg_cron was enabled via Dashboard in prod (never by a migration); 059
+          # RAISEs by design and 064/065 call cron.* unguarded on a blank DB.
+          # Enable it as a 000_ prelude INSIDE the reset (db reset recreates the
+          # database, so a pre-reset psql CREATE EXTENSION would be wiped away).
+          # Sorts before 001. See GATE-SEC-01 (two non-replayability classes).
+          echo "CREATE EXTENSION IF NOT EXISTS pg_cron;" > supabase/migrations/000_ci_enable_pg_cron.sql
+          cp backend/db/migrations/[0-9]*.sql supabase/migrations/
+          # Production-data-dependent migration, NOT replayable on a blank DB
+          # (037 asserts the owner's auth user exists). Documented in GATE-SEC-01.
+          rm supabase/migrations/037_seed_admin_user.sql
+          # Prod-faithful grants (runs LAST: numeric prefix required — the CLI
+          # SILENTLY SKIPS non-numeric prefixes like zzz_; 9999 sorts after 074): in production,
+          # Supabase's default privileges give service_role full table access and
+          # authenticated/anon their table grants (RLS then filters rows) — the
+          # local staging path may not replicate them. service_role gets ALL;
+          # authenticated/anon only the user-scoped tables under test, so the
+          # explicit REVOKEs on internal tables (018/019/024/027/073) stay intact.
+          cat > supabase/migrations/9999_ci_prod_like_grants.sql <<'SQL'
+          -- Third class-2 finding: on_auth_user_created was created via Dashboard in
+          -- prod and exists in NO migration (029 defines only the function; even
+          -- verify_migrations.sql checks for the trigger). Recreate it so the suite
+          -- exercises the real signup pipeline. Runs after 029 (function exists).
+          DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+          CREATE TRIGGER on_auth_user_created
+            AFTER INSERT ON auth.users
+            FOR EACH ROW EXECUTE FUNCTION public.handle_new_auth_user();
+          GRANT USAGE ON SCHEMA public TO service_role, authenticated, anon;
+          GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
+          GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;
+          GRANT SELECT, INSERT, UPDATE, DELETE ON
+            public.users, public.consultation_sessions, public.consultations,
+            public.consultation_notes, public.pattern_analyses, public.query_credits,
+            public.two_factor_recovery_codes, public.two_factor_attempts,
+            public.two_factor_email_codes
+            TO authenticated;
+          GRANT SELECT ON
+            public.users, public.consultation_sessions, public.consultations,
+            public.consultation_notes, public.pattern_analyses, public.query_credits,
+            public.two_factor_recovery_codes, public.two_factor_attempts,
+            public.two_factor_email_codes
+            TO anon;
+          SQL
+          ls supabase/migrations | wc -l
+
+      - name: Apply the migrations
+        run: supabase db reset
+
+      - name: Export local stack keys into the test environment
+        run: supabase status -o env | grep -E "^(ANON_KEY|SERVICE_ROLE_KEY|API_URL)=" | tr -d '"' >> "$GITHUB_ENV"
+
+      - name: Run RLS isolation suite
+        run: npm run test:rls --workspace @iching-oracle/web
+        env:
+          SUPABASE_URL: ${{ env.API_URL }}
+
   # Blocking guard for the two monorepo resolution fragilities (react 18/19 split):
   # regenerates the lockfile from scratch and FAILS the PR on ERESOLVE or a wrong
   # react split (web 18.x / mobile 19.0.0). Uses npm@10.9.2 (the declared

@@ -2237,6 +2237,25 @@
         "20260625-AUD-IMG-OVR-02 mutation-title-layout"
       ],
       "area": "scripts/generate-zhouyi-64hex-master-together"
+    },
+    {
+      "code": "TS-WEB-016 rls-cross-user-isolation",
+      "area": "apps/web (RLS Supabase, 9 tablas user-scoped)",
+      "title": "RLS cross-user isolation (integración, 9 tablas user-scoped)",
+      "shortName": "rls-cross-user-isolation",
+      "type": "TS",
+      "family": "WEB",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-07-16",
+          "change": "Suite inicial: control positivo + aislamiento lectura/escritura + anon, harness A/B via auth.admin"
+        }
+      ],
+      "path": "apps/web/src/__tests__/rls/cross-user-isolation.rls.test.ts",
+      "npmScript": "npm run test:rls --prefix apps/web (requiere supabase start local)",
+      "relatedAuditCode": "20260716-GATE-SEC-01 rls-isolation-test"
     }
   ]
 }

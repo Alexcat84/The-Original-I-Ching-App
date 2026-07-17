@@ -178,6 +178,8 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260704-AUD-FABLE5-01 full-repo-audit` | SEC | Auditoría completa repo Fable 5 (13 hallazgos) | mitigated | [20260704-AUD-FABLE5-01-full-repo-audit.md](./20260704-AUD-FABLE5-01-full-repo-audit.md) |
 | `20260715-EXT-SEC-02 full-repo-deep-audit` | SEC | Auditoría profunda externa (secretos, RLS, API, pagos, móvil, deps) | open | [20260715-EXT-SEC-02-full-repo-deep-audit.md](./20260715-EXT-SEC-02-full-repo-deep-audit.md) |
 | `20260716-PLAN-SEC-01 p1-remediation` | SEC | Plan P1: CVEs form-data/ws + test integración RLS | open | [20260716-PLAN-SEC-01-p1-remediation.md](./20260716-PLAN-SEC-01-p1-remediation.md) |
+| `20260716-GATE-SEC-01 rls-isolation-test` | SEC | Gate: test integración RLS cross-user (9 tablas) | open | [20260716-GATE-SEC-01-rls-isolation-test.md](./20260716-GATE-SEC-01-rls-isolation-test.md) |
+| `20260716-PLAN-SUP-02 migration-chain-replayability` | SUP | Deuda DR: replayabilidad de la cadena de migraciones (037 + pg_cron) | open | [20260716-PLAN-SUP-02-migration-chain-replayability.md](./20260716-PLAN-SUP-02-migration-chain-replayability.md) |
 | `00000000-RPT-ARCH-01 architecture-fullstack` | ARCH | Arquitectura full-stack | reference | [00000000-RPT-ARCH-01-architecture-fullstack.md](./00000000-RPT-ARCH-01-architecture-fullstack.md) |
 | `00000000-AUD-SYM-01 dynamic-symbols` | SYM | Símbolos dinámicos | closed | [00000000-AUD-SYM-01-dynamic-symbols.md](./00000000-AUD-SYM-01-dynamic-symbols.md) |
 | `00000000-RPT-LEG-01 legacy-general-report` | LEG | Reporte general legacy | reference | [00000000-RPT-LEG-01-legacy-general-report.md](./00000000-RPT-LEG-01-legacy-general-report.md) |
