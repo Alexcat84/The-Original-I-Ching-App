@@ -1,21 +1,55 @@
-<!-- changelog:last-release:add96a40 -->
+<!-- changelog:last-release:34fdd977 -->
 
 # Changelog — The Original I Ching App
 
 Full project change history.
 
-## [4.2.5] — 2026-07-16 | versionCode: 65 | Stage: Production
+## [4.2.5] — 2026-07-17 | versionCode: 65 | Stage: Production
+
+### New
+- feat(db): make the migration chain blank-DB replayable — PLAN-SEC-02 Ticket 3 | commit: f95e12e7
+- feat(sec): RLS cross-user isolation integration test — Ticket B PLAN-SEC-01 | commit: dd6fb9cd
+
+### Fix
+- fix(deps): drop root ws direct dep — override alone holds the tree (external audit) | commit: 2798b6e2
+- fix(rls-test): consultations seed post-069 schema — interpretation column was dropped | commit: aa43e2e8
+- fix(rls-test): pin supabase CLI 2.109.1 — 'latest' resolution rate-limits on shared runners | commit: 9631a371
+- fix(rls-test): recreate on_auth_user_created — third out-of-chain finding | commit: 8806ce84
+- fix(rls-test): numeric prefix for the grants file — CLI silently skips non-numeric | commit: 2147c16a
+- fix(rls-test): rely on the real signup pipeline + prod-like grants for the local stack | commit: b2d44dfd
+- fix(rls-test): enable pg_cron via 000_ prelude inside the reset (external audit) | commit: 0efa706b
+- fix(rls-test): skip 037_seed_admin_user (prod-data assert, not blank-DB replayable) | commit: 9fc6afaf
+- fix(rls-test): stage backend/db/migrations into supabase/migrations before db reset | commit: bddc6682
+- fix(rls-test): apply migrations via supabase db reset (start boots containers only) | commit: 3d451934
+- fix(rls-test): defensively strip quoted env values in harness | commit: bd87c5ac
+- fix(rls-test): exclude .rls.test.ts from default suite; strip quoted env from supabase status | commit: 023d02df
+- fix(deps): close both high CVEs (form-data, ws) + within-major moderates — Ticket A PLAN-SEC-01 | commit: c8f3f4f3
+- fix(mobile): image download crash — import expo-media-library from /legacy (4.2.5/65) | commit: 4ef13902
 
 ### Docs
-- docs(mobile): close execution log — production AAB 4.2.4/64 built and verified | commit: add96a40
-- docs: correlative table — 63 burned (internal upload), 4.2.4/64 production, next 65 | commit: 22413fcc
+- docs(play): fix 4.2.5 changelog — restore diacritics, correct table, document root cause | commit: 34fdd977
+- docs(play): 4.2.5 changelog = copy of 4.2.4 (Android 16), version bumped only | commit: 9a8cfde7
+- docs(play): remove em-dash from 4.2.5 block instruction line (zero em-dash rule) | commit: 48139730
+- docs(play): 4.2.5 changelog — add media-permission privacy line (D9), 11 locales | commit: eec60c10
+- docs(sec): GATE-SEC-01 closed — flip done (PR #12) + gate-bite verified (run 29552233430) | commit: 8b16d98d
+- docs(db): external audit additions — 075 prod transaction note, deviation ratified, DR trade-off recorded | commit: 67a5c3b3
+- docs(sec): register external closure plan PLAN-SEC-02 (Ticket 0 already completed at registration) | commit: 059370ce
+- docs(sec): correct the 6-moderates record — 1 real vuln (postcss) + 5 transitive echoes | commit: 89506c92
+- docs(sec): close EXT-SEC-02 and PLAN-SEC-01 — both P1s merged (PRs #8, #9) | commit: 56b32732
+- docs(sec): GATE-SEC-01 — flip criterion per external audit (3-5 green runs on main) | commit: d863c457
+- docs(sec): GATE-SEC-01 GREEN — Tests 9 passed (9), run 29548233095 | commit: 3c2cc58b
+- docs(sec): GATE-SEC-01 — staging of migrations required for local run | commit: 4a71c47d
+- docs(sec): register external P1 remediation plan (CVE overrides + RLS integration test) | commit: 14e82683
+- docs(mobile): SDK 57 implementation compliance audit — 43 items runtime-first (AUD-MOB-02) | commit: d5663e90
 
 ### Maintenance
-- chore(mobile): release 4.2.4 / versionCode 64 — Production (SDK 57) | commit: 43d8c0af
+- ci: flip rls-test to blocking — PLAN-SEC-02 Ticket 4 | commit: 3a0fd194
+- chore(hygiene): ignore AI-assistant caches and *.orig merge residues — PLAN-SEC-02 Ticket 5 | commit: 6a83313b
+- chore(mobile): config-only maintenance — close AUD-MOB-02 D3/D4/D9 (external audit verified) | commit: 146bdad9
 
 ---
 
-## [4.2.4] — 2026-07-16 | versionCode: 64 | Stage: Production
+## [4.2.4] — 2026-07-16 | versionCode: 64 | Stage: Built, not published (superseded by 4.2.5)
 
 ### New
 - feat(mobile): internal-staging-aab EAS profile — staging env pinned explicitly | commit: b0e3c079
@@ -26,9 +60,12 @@ Full project change history.
 - fix(mobile): expo doctor cleanup — typescript ~6.0.3 + collapse SDK-53 orphans | commit: 4fe87f4e
 
 ### Docs
+- docs(mobile): close execution log — production AAB 4.2.4/64 built and verified | commit: add96a40
+- docs: correlative table — 63 burned (internal upload), 4.2.4/64 production, next 65 | commit: 22413fcc
 - docs(mobile): execution log (13 problems/solutions), build registry, AAB size anatomy, final state | commit: e444f596
 
 ### Maintenance
+- chore(mobile): release 4.2.4 / versionCode 64 — Production (SDK 57) | commit: 43d8c0af
 - chore(mobile): bump version 4.3.0 / versionCode 63 — SDK 57 internal testing | commit: 52223962
 
 ---
@@ -2046,7 +2083,8 @@ Full project change history.
 
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
-| 4.2.5 | 65 | 2026-07-16 | Production | 3 | — |
+| 4.2.5 | 65 | 2026-07-17 | Production | 33 | make the migration chain blank-DB replayable — PLAN-SEC-02 Ticket 3; RLS cross-user isolation integration test — Ticket B PLAN-SEC-01; drop root ws direct dep — override alone holds the tree (external audit) |
+| 4.2.5 | 65 | 2026-07-16 | Production | 0 | — |
 | 4.2.4 | 64 | 2026-07-16 | Production | 0 | — |
 | 4.2.3 | 63 | 2026-07-15 | Internal Testing | 0 | — |
 | 4.2.2 | 62 | 2026-07-04 | Closed Testing | 0 | — |
