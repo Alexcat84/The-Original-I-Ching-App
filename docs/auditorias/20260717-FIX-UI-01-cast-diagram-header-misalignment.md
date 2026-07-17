@@ -27,7 +27,15 @@ Es un bug de layout **determinista** que afecta a **cualquier** tirada sin líne
 
 El `arrow-spacer` compensaba la altura para las flechas, pero **no** para la columna derecha.
 
-## Fix
+## Fix (corregido tras observación del owner: causa de fondo, no síntoma)
+
+**Observación clave del owner:** "si todos los hex tienen su nombre, ¿por qué el derecho sale sin encabezado?". Respuesta: el título de la derecha se tomaba de `transformedHexagram` (el RESULTADO de la mutación), null sin líneas cambiantes; pero las barras de la derecha SÍ se dibujaban (idénticas a la izquierda, porque `toTransformedValue` deja 7/8 sin cambiar). Es decir, se pintaba un hexagrama sin título: un "頤 → 頤" sin sentido que además contradice el pie "solo el dictamen del hexagrama primario".
+
+**Fix correcto:** `CastRitualDiagram` ahora detecta `hasChanging = lines.some(v => v===6 || v===9)`. Sin líneas cambiantes → **un solo hexagrama** (encabezado + barras), sin flechas y sin columna derecha fantasma (grid `--single`, una columna centrada). Con líneas cambiantes → layout de dos columnas + flechas como siempre. Semánticamente honesto en ambos contextos (registro de consulta y explorador interactivo): sin cambios no hay transformación que mostrar.
+
+**Fix intermedio (previo, se conserva como defensivo):** un `HeaderSlot` con placeholder invisible que reserva la altura del encabezado si una columna lo tiene y la otra no. Ya no se dispara en la práctica (con líneas cambiantes ambos encabezados existen), pero queda como salvaguarda.
+
+## Fix (intento inicial, superado)
 
 Un `HeaderSlot` que, cuando una columna no tiene encabezado pero la otra sí (`reserve = primaryHeader || transformedHeader`), renderiza un **placeholder invisible con la misma estructura** del encabezado (`data-placeholder="true"` + `visibility: hidden` en CSS, contenido `&nbsp;`). Reutiliza `.mutation-explorer-cast-header` (misma `min-height: 2.35rem` + `margin-bottom: 0.45rem`), así reserva la altura exacta sin importar el largo del nombre. Ambos stacks arrancan a la misma `y`.
 

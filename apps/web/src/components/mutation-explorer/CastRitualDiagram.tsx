@@ -82,6 +82,38 @@ export function CastRitualDiagram({ lines, primaryHeader, transformedHeader }: P
 
   const reserveHeader = Boolean(primaryHeader || transformedHeader);
 
+  // No changing lines ⇒ no transformation. The "transformed" hexagram would be
+  // identical to the primary (toTransformedValue leaves 7/8 unchanged), so a
+  // right column + arrows would draw a meaningless "頤 → 頤" that contradicts the
+  // "solo el dictamen del hexagrama primario" caption. Render a single hexagram.
+  const hasChanging = lines.some((v) => v === 6 || v === 9);
+
+  if (!hasChanging) {
+    return (
+      <div
+        className="mutation-explorer-cast-grid mutation-explorer-cast-grid--single"
+        aria-hidden="true"
+      >
+        <div className="mutation-explorer-cast-column">
+          {primaryHeader ? <HexHeader header={primaryHeader} /> : null}
+          <div className="mutation-explorer-cast-lines">
+            {LINE_ORDER.map((position) => {
+              const value = byPosition.get(position) ?? 7;
+              return (
+                <div
+                  key={`single-${position}`}
+                  className="ritual-line-slot ritual-line-slot--source is-visible"
+                >
+                  {isYang(value) ? <YangBar /> : <YinBar />}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mutation-explorer-cast-grid" aria-hidden="true">
       <div className="mutation-explorer-cast-column">
