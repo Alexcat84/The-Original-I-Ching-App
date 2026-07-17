@@ -1479,7 +1479,7 @@
       "type": "PLAN",
       "family": "SEC",
       "date": "2026-07-16",
-      "status": "open",
+      "status": "closed",
       "path": "docs/auditorias/20260716-PLAN-SEC-02-cierre-total.md",
       "relatedCodes": [
         "20260715-EXT-SEC-02 full-repo-deep-audit",
