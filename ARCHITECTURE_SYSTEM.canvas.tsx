@@ -66,7 +66,7 @@ type ModuleRow = {
 
 const MODULE_CATALOG: ModuleRow[] = [
   { id: "web", path: "apps/web", role: "Next.js UI + API Routes", depends: "packages/*, backend/claude, Supabase" },
-  { id: "mobile", path: "apps/mobile", role: "Expo WebView shell, SQLite, Play Billing", depends: "web URL, @iching-oracle/i18n" },
+  { id: "mobile", path: "apps/mobile", role: "Expo SDK 57 (RN 0.86, New Arch) WebView shell, SQLite, Play Billing, Play Integrity", depends: "web URL, @iching-oracle/i18n" },
   { id: "iching-engine", path: "packages/iching-engine", role: "Sorteo monedas/varas; reglas Huang/Zhu Xi", depends: "iching-data" },
   { id: "oracle-bones-engine", path: "packages/oracle-bones-engine", role: "Sorteo huesos Shang", depends: "—" },
   { id: "context-engine", path: "packages/context-engine", role: "Límites hilo, contexto sesión", depends: "i18n" },
@@ -82,6 +82,10 @@ const MODULE_CATALOG: ModuleRow[] = [
 ];
 
 const VERSION_ROWS = [
+  { version: "4.2.5", vc: "65", date: "2026-07-17", stage: "Production", note: "Expo SDK 57 + RN 0.86 New Architecture, target API 36 (Android 16); fix descarga imagen (media-library/legacy); D9 granularPermissions photo; diagrama single-hex sin mutación" },
+  { version: "4.2.4", vc: "64", date: "2026-07-16", stage: "Built, not published", note: "Primer SDK 57 (superseded por 4.2.5). New Arch, API 36, expo doctor 20/20, migración 075 replayable" },
+  { version: "4.2.2", vc: "62", date: "2026-07-04", stage: "Production", note: "Último release pre-SDK-57. Security hardening (cuenta, sesión, integridad)" },
+  { version: "4.2.0", vc: "60", date: "2026-06-25", stage: "Production", note: "Biblioteca hexagramas; auditorías page; RLS integration test (rls-test) + resolution-guard como gates" },
   { version: "4.1.7", vc: "57", date: "2026-06-21", stage: "Closed Testing", note: "Selector lectura líneas Huang/Zhu Xi (074); detect-input-language; legal re-accept header; SSE final_ready lineReadingSystem" },
   { version: "4.1.6", vc: "55", date: "2026-06-19", stage: "Closed Testing", note: "Legal consent bootstrap cache; Turnstile sign-in; RN WebView safe-area" },
   { version: "4.1.0", vc: "49", date: "2026-06-17", stage: "Production", note: "Expo SDK 53 + RN 0.79 Release A (16 KB); splash/icon; integrity Gradle 8; Sentry 6" },
@@ -96,12 +100,13 @@ const VERSION_ROWS = [
 ];
 
 const API_GROUPS: { group: string; routes: string }[] = [
-  { group: "Oráculo", routes: "POST /api/consult (SSE stream_ritual + JSON manual)" },
-  { group: "Cuenta", routes: "GET /api/account/bootstrap · GET/DELETE /api/account/chats · GET /api/account/me · PUT /api/account/display-name · POST /api/account/delete · POST /api/account/tour-complete · GET /api/account/sync-billing" },
-  { group: "Auth", routes: "/api/auth/register · legal-consent · /api/auth/2fa/* · /auth/complete-legal" },
-  { group: "Billing", routes: "POST /api/webhooks/revenuecat" },
+  { group: "Oráculo", routes: "POST /api/consult (SSE stream_ritual + JSON manual) · GET /api/mutation-explorer/consultation · GET /api/image-proxy" },
+  { group: "Cuenta", routes: "GET /api/account/bootstrap · GET/DELETE /api/account/chats · GET /api/account/sessions-only · GET /api/account/me · PUT /api/account/display-name · POST /api/account/delete · POST /api/account/tour-complete · GET /api/account/sync-billing · POST /api/account/create-portal-session" },
+  { group: "Auth", routes: "/api/auth/register · legal-consent · change-password · sign-out · notify-password-changed · /api/auth/2fa/* (enroll·verify·disable·challenge·email) · POST /api/auth/verify-turnstile" },
+  { group: "Integridad", routes: "POST /api/integrity/challenge · POST /api/integrity/client-event (Play Integrity attestation)" },
+  { group: "Billing", routes: "POST /api/webhooks/revenuecat (fail-closed: rechaza sandbox/test salvo REVENUECAT_ALLOW_TEST_EVENTS)" },
   { group: "Biblioteca", routes: "GET /api/library/[n] (Bearer+Seeker+) · GET /api/library/access" },
-  { group: "Ops", routes: "GET /api/health · POST /api/feedback · /api/admin/*" },
+  { group: "Ops", routes: "GET /api/health · POST /api/feedback · /api/admin/* · /api/ritual-debug" },
 ];
 
 type DagSpec = { nodes: { id: string; label?: string }[]; edges: { from: string; to: string }[] };
@@ -109,7 +114,7 @@ type DagSpec = { nodes: { id: string; label?: string }[]; edges: { from: string;
 const FLOW_LAYERS: DagSpec = {
   nodes: [
     { id: "browser", label: "Browser" },
-    { id: "apk", label: "APK Android" },
+    { id: "apk", label: "APK Android (SDK 57)" },
     { id: "web", label: "apps/web" },
     { id: "mobile", label: "apps/mobile" },
     { id: "api", label: "API Routes" },
@@ -118,20 +123,33 @@ const FLOW_LAYERS: DagSpec = {
     { id: "db", label: "Supabase" },
     { id: "sqlite", label: "SQLite" },
     { id: "anthropic", label: "Claude API" },
+    { id: "fallback", label: "OpenRouter / Groq (fallback)" },
     { id: "together", label: "Together FLUX" },
+    { id: "r2", label: "Cloudflare R2 (image store)" },
     { id: "rc", label: "RevenueCat" },
+    { id: "redis", label: "Upstash Redis (rate limit)" },
+    { id: "turnstile", label: "Turnstile (CAPTCHA)" },
+    { id: "resend", label: "Resend (email 2FA)" },
+    { id: "integrity", label: "Play Integrity" },
   ],
   edges: [
     { from: "browser", to: "web" },
     { from: "apk", to: "mobile" },
     { from: "mobile", to: "web" },
     { from: "mobile", to: "sqlite" },
+    { from: "mobile", to: "integrity" },
     { from: "web", to: "api" },
     { from: "api", to: "pkg" },
     { from: "api", to: "claude" },
     { from: "api", to: "db" },
+    { from: "api", to: "redis" },
+    { from: "api", to: "turnstile" },
+    { from: "api", to: "resend" },
+    { from: "api", to: "integrity" },
     { from: "claude", to: "anthropic" },
+    { from: "claude", to: "fallback" },
     { from: "api", to: "together" },
+    { from: "together", to: "r2" },
     { from: "rc", to: "api" },
     { from: "mobile", to: "rc" },
   ],
