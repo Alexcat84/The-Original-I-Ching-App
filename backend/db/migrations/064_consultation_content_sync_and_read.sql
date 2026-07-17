@@ -109,16 +109,26 @@ BEGIN
 EXCEPTION WHEN OTHERS THEN NULL;
 END$$;
 
-SELECT cron.schedule(
-  'prewarm-consultation-content',
-  '*/15 * * * *',
-  $$
-    SELECT pg_prewarm('consultation_content'::regclass);
-    SELECT pg_prewarm(c.reltoastrelid)
-    FROM pg_class c
-    JOIN pg_namespace n ON n.oid = c.relnamespace
-    WHERE c.relname = 'consultation_content'
-      AND n.nspname = 'public'
-      AND c.reltoastrelid <> 0;
-  $$
-);
+-- Replayability guard (PLAN-SUP-02): pg_cron is Dashboard-enabled, never by a
+-- migration; on a blank database cron.schedule does not exist. 053 pattern.
+-- Content edits to an applied migration never re-execute (version-tracked).
+DO $do$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    RAISE NOTICE 'pg_cron not enabled — skipping prewarm scheduling';
+    RETURN;
+  END IF;
+  PERFORM cron.schedule(
+    'prewarm-consultation-content',
+    '*/15 * * * *',
+    $$
+      SELECT pg_prewarm('consultation_content'::regclass);
+      SELECT pg_prewarm(c.reltoastrelid)
+      FROM pg_class c
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE c.relname = 'consultation_content'
+        AND n.nspname = 'public'
+        AND c.reltoastrelid <> 0;
+    $$
+  );
+END $do$;

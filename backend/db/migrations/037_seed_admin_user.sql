@@ -18,7 +18,13 @@ BEGIN
    WHERE au.email = 'alexcatbaster@gmail.com';
 
   IF rec IS NULL THEN
-    RAISE EXCEPTION 'Migration 037: user alexcatbaster@gmail.com not found in auth.users / public.users';
+    -- Replayability (PLAN-SUP-02 / PLAN-SEC-02 Ticket 3): on a blank database
+    -- (fresh replay, DR, local stack) the owner user does not exist yet — skip
+    -- with a NOTICE instead of failing the whole chain (053 pattern). In every
+    -- deployed environment this migration already ran with the user present;
+    -- content edits to an applied migration never re-execute (version-tracked).
+    RAISE NOTICE 'Migration 037: owner user not found (blank database?) — skipping admin seed';
+    RETURN;
   END IF;
 
   IF rec.is_admin IS NOT TRUE THEN
