@@ -58,7 +58,9 @@ cd apps/web && SUPABASE_URL="$API_URL" npm run test:rls
 
 ## CI
 
-Job `rls-test` en `.github/workflows/ci.yml`: instala la CLI de Supabase, levanta el stack (`supabase start`), exporta las claves del stack local al entorno y corre la suite. **No bloqueante al inicio** (`continue-on-error: true`, mismo patrón que `resolution-guard`); se hace bloqueante en un cambio aparte cuando haya corrido verde varias veces (decisión del owner).
+Job `rls-test` en `.github/workflows/ci.yml`: instala la CLI de Supabase (pinneada 2.109.1), levanta el stack, stagea migraciones + preludio/grants efímeros, y corre la suite. **No bloqueante al inicio** (`continue-on-error: true`, mismo patrón que `resolution-guard`).
+
+**Criterio del flip a bloqueante (fijado por auditoría externa en la aprobación del merge):** primer 9/9 el **2026-07-17** (run 29548233095); el flip va en un **cambio aparte** tras **3-5 corridas verdes en main**, igual que se hizo con resolution-guard.
 
 ## Estado de ejecución
 
