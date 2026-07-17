@@ -34,6 +34,10 @@ supabase start
 # migraciones viven en backend/db/migrations. Stagearlas primero (excluyendo
 # verify_migrations.sql, que es un script de gate, no una migracion):
 mkdir -p supabase/migrations && cp backend/db/migrations/[0-9]*.sql supabase/migrations/
+# 037 asserta que el usuario admin de PRODUCCION exista: no es replayable en DB
+# vacia (hallazgo de este gate: la cadena de migraciones no es blank-DB-replayable
+# tal cual; 037 es la unica dependiente de datos de produccion detectada).
+rm supabase/migrations/037_seed_admin_user.sql
 supabase db reset       # ahora si aplica el schema completo
 eval "$(supabase status -o env | sed 's/^/export /')"   # ANON_KEY / SERVICE_ROLE_KEY / API_URL
 cd apps/web && SUPABASE_URL="$API_URL" npm run test:rls

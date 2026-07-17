@@ -115,6 +115,9 @@ jobs:
         run: |
           mkdir -p supabase/migrations
           cp backend/db/migrations/[0-9]*.sql supabase/migrations/
+          # Production-data-dependent migrations, NOT replayable on a blank DB
+          # (037 asserts the owner's auth user exists). Documented in GATE-SEC-01.
+          rm supabase/migrations/037_seed_admin_user.sql
           ls supabase/migrations | wc -l
 
       - name: Apply the migrations
