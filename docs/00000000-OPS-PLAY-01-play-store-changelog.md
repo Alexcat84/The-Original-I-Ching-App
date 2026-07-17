@@ -4,7 +4,11 @@
 
 Release notes copy for the Google Play Store listing ("What's new" / notas de la versión).
 Keep each entry short, punchy, and user facing — lead with a hook, not a feature list. Use a
-leading hyphen as the bullet. Do not use em-dash or en-dash. Play Console caps this field at
+leading hyphen as the bullet. Do not use em-dash or en-dash. **This rule is ONLY about em-dash
+(—) and en-dash (–): NEVER strip accents/diacritics or non-Latin scripts. Each locale must be
+correct, fully-accented native text (Versión, prête, für, più, Versão; Arabic/Hindi/Japanese/
+Korean/Chinese intact). Blocks 4.2.1..4.2.5 drifted to ASCII by over-extending the em-dash
+rule to "avoid non-ASCII" — that was a process error, not a rule.** Play Console caps this field at
 **500 characters per locale** — stay well under it so the text doesn't get cut off.
 Play Console asks for all **11 locales** the app supports (en-US, ar, de-DE, es-419, fr-FR,
 hi-IN, it-IT, ja-JP, ko-KR, pt-BR, zh-CN) — every release entry below must cover all 11, not
@@ -13,8 +17,8 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 | Version | versionCode | Date | Stage |
 |---|---|---|---|
-| 4.2.5 | 65 | 2026-07-17 | Internal Testing -> Production (hotfix bug descarga imagen + privacidad permisos) |
-| 4.2.4 | 64 | 2026-07-16 | Production |
+| 4.2.5 | 65 | 2026-07-17 | Internal Testing -> Production (salto a Android 16 / SDK 57; primer SDK 57 que reciben los usuarios, que vienen del 4.2.2/62) |
+| 4.2.4 | 64 | 2026-07-16 | Built, not published (superseded by 4.2.5) |
 | 4.2.3 | 63 | 2026-07-16 | Internal Testing (apunta a staging; solo smoke, sin notas) |
 | 4.2.2 | 62 | 2026-07-04 | Production |
 | 4.2.1 | 61 | 2026-07-02 | Production |
@@ -27,7 +31,7 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 ## 4.2.5 (versionCode 65), 2026-07-17
 
 Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
-order — copy the whole block below in one paste.
+order. Copy the whole block below in one paste.
 
 <en-US>
 Version 4.2.5: ready for Android 16.
@@ -42,21 +46,21 @@ Version 4.2.5: ready for Android 16.
 </ar>
 
 <de-DE>
-Version 4.2.5: bereit fuer Android 16.
-- Die App laeuft jetzt auf der neuesten Android-Engine: schnellerer Start, fluessigere Animationen und volle Android-16-Kompatibilitaet.
-- Leistungs- und Stabilitaetsverbesserungen in der gesamten App.
+Version 4.2.5: bereit für Android 16.
+- Die App läuft jetzt auf der neuesten Android-Engine: schnellerer Start, flüssigere Animationen und volle Android-16-Kompatibilität.
+- Leistungs- und Stabilitätsverbesserungen in der gesamten App.
 </de-DE>
 
 <es-419>
-Version 4.2.5: lista para Android 16.
-- La app ahora corre sobre el motor mas reciente de Android: inicio mas rapido, animaciones mas fluidas y compatibilidad total con Android 16.
+Versión 4.2.5: lista para Android 16.
+- La app ahora corre sobre el motor más reciente de Android: inicio más rápido, animaciones más fluidas y compatibilidad total con Android 16.
 - Mejoras de rendimiento y estabilidad en toda la app.
 </es-419>
 
 <fr-FR>
-Version 4.2.5 : prete pour Android 16.
-- L'application fonctionne desormais sur le moteur Android le plus recent : demarrage plus rapide, animations plus fluides et compatibilite totale avec Android 16.
-- Ameliorations de performance et de stabilite dans toute l'application.
+Version 4.2.5 : prête pour Android 16.
+- L'application fonctionne désormais sur le moteur Android le plus récent : démarrage plus rapide, animations plus fluides et compatibilité totale avec Android 16.
+- Améliorations de performance et de stabilité dans toute l'application.
 </fr-FR>
 
 <hi-IN>
@@ -67,8 +71,8 @@ Version 4.2.5 : prete pour Android 16.
 
 <it-IT>
 Versione 4.2.5: pronta per Android 16.
-- L'app ora gira sul motore Android piu recente: avvio piu rapido, animazioni piu fluide e piena compatibilita con Android 16.
-- Miglioramenti di prestazioni e stabilita in tutta l'app.
+- L'app ora gira sul motore Android più recente: avvio più rapido, animazioni più fluide e piena compatibilità con Android 16.
+- Miglioramenti di prestazioni e stabilità in tutta l'app.
 </it-IT>
 
 <ja-JP>
@@ -84,8 +88,8 @@ Versione 4.2.5: pronta per Android 16.
 </ko-KR>
 
 <pt-BR>
-Versao 4.2.5: pronta para o Android 16.
-- O app agora roda no mecanismo mais recente do Android: inicio mais rapido, animacoes mais fluidas e compatibilidade total com o Android 16.
+Versão 4.2.5: pronta para o Android 16.
+- O app agora roda no mecanismo mais recente do Android: início mais rápido, animações mais fluidas e compatibilidade total com o Android 16.
 - Melhorias de desempenho e estabilidade em todo o app.
 </pt-BR>
 
@@ -101,6 +105,9 @@ Versao 4.2.5: pronta para o Android 16.
 
 Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
 order — copy the whole block below in one paste.
+
+
+> NOTA (2026-07-17): este AAB se construyó y verificó pero **nunca se publicó a usuarios** (lo enterró el sprint de seguridad; superseded por 4.2.5). Estas notas NO son registro de nada que un usuario haya visto. El contenido queda tal cual como referencia; el 4.2.5 lleva las mismas notas de Android 16 y es el que efectivamente llega a producción.
 
 <en-US>
 Version 4.2.4: ready for Android 16.
