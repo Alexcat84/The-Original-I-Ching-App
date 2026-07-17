@@ -62,6 +62,8 @@ Job `rls-test` en `.github/workflows/ci.yml`: instala la CLI de Supabase (pinnea
 
 **Criterio del flip a bloqueante (fijado por auditoría externa en la aprobación del merge):** primer 9/9 el **2026-07-17** (run 29548233095); el flip va en un **cambio aparte** tras **3-5 corridas verdes en main**, igual que se hizo con resolution-guard.
 
+**FLIP EJECUTADO: 2026-07-17** (criterio cumplido con 4 corridas verdes en main tras el merge del PR #9, pre-aprobado en el veredicto de PLAN-SEC-02). Desde entonces `rls-test` es **bloqueante**: cada PR corre el replay completo de la cadena 001..075 en base vacía + las 36 aserciones de aislamiento, y un rojo real detiene el merge. Demo de que el gate muerde: ver nota al final.
+
 ## Estado de ejecución
 
 - 2026-07-16: suite escrita y tipada (tsc verde). Run local bloqueado (Docker apagado); validación vía CI.
