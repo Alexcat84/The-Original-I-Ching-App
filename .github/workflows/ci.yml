@@ -132,6 +132,14 @@ jobs:
           # authenticated/anon only the user-scoped tables under test, so the
           # explicit REVOKEs on internal tables (018/019/024/027/073) stay intact.
           cat > supabase/migrations/9999_ci_prod_like_grants.sql <<'SQL'
+          -- Third class-2 finding: on_auth_user_created was created via Dashboard in
+          -- prod and exists in NO migration (029 defines only the function; even
+          -- verify_migrations.sql checks for the trigger). Recreate it so the suite
+          -- exercises the real signup pipeline. Runs after 029 (function exists).
+          DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+          CREATE TRIGGER on_auth_user_created
+            AFTER INSERT ON auth.users
+            FOR EACH ROW EXECUTE FUNCTION public.handle_new_auth_user();
           GRANT USAGE ON SCHEMA public TO service_role, authenticated, anon;
           GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
           GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;
