@@ -45,6 +45,13 @@ cp backend/db/migrations/[0-9]*.sql supabase/migrations/
 # usa is_admin, los checks de admin son de codigo de servidor).
 rm supabase/migrations/037_seed_admin_user.sql
 supabase db reset       # ahora si aplica el schema completo
+# Ademas: grants prod-like (archivo zzz_, corre al final): el staging local no
+# replica las default privileges de Supabase prod; service_role necesita ALL y
+# authenticated/anon sus grants de tabla (RLS filtra filas). Ver el step del
+# workflow para el contenido exacto (no re-otorga sobre las tablas internas
+# revocadas por 018/019/024/027/073). Hallazgo asociado: public.users y
+# query_credits se AUTO-siembran por handle_new_auth_user + init_free_user
+# (029): el harness verifica el pipeline real en vez de insertar a mano.
 eval "$(supabase status -o env | sed 's/^/export /')"   # ANON_KEY / SERVICE_ROLE_KEY / API_URL
 cd apps/web && SUPABASE_URL="$API_URL" npm run test:rls
 ```

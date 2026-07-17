@@ -139,21 +139,18 @@ const CASES: TableCase[] = [
   {
     table: "query_credits",
     scopeCol: "user_id",
+    // Row is auto-created by the REAL pipeline: handle_new_auth_user ->
+    // init_free_user seeds the free-tier credits on signup. Verify it exists
+    // instead of inserting (a hand insert would collide with the PK).
     seed: async (ownerId) => {
-      const now = new Date();
-      const end = new Date(now.getTime() + 365 * 24 * 3600 * 1000);
       const { data, error } = await h.admin
         .from("query_credits")
-        .insert({
-          user_id: ownerId,
-          tier: "free",
-          credits_total: 2,
-          cycle_start: now.toISOString(),
-          cycle_end: end.toISOString(),
-        })
-        .select()
+        .select("*")
+        .eq("user_id", ownerId)
         .single();
-      if (error) throw new Error(`seed query_credits: ${error.message}`);
+      if (error || !data) {
+        throw new Error(`query_credits not auto-seeded by init_free_user: ${error?.message}`);
+      }
       return data;
     },
     updatePatch: { credits_total: 999999 }, // the attack that matters: minting tokens

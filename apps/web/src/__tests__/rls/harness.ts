@@ -66,15 +66,21 @@ export async function createRlsHarness(): Promise<RlsHarness> {
   const a = await mkUser("a");
   const b = await mkUser("b");
 
-  // public.users rows are NOT auto-created on signup (only a delete trigger
-  // exists); seed them via service role so FK-scoped tables can reference them.
-  const { error: usersErr } = await admin
+  // public.users rows ARE auto-created: handle_new_auth_user (migration 029,
+  // SECURITY DEFINER, trigger on auth.users) inserts public.users AND calls
+  // init_free_user (which seeds query_credits). Relying on it exercises the
+  // real production pipeline instead of a hand insert (which service_role's
+  // PostgREST grants may not even allow). Verify both rows landed:
+  const { data: seededUsers, error: usersErr } = await admin
     .from("users")
-    .insert([
-      { id: a.id, email: a.email },
-      { id: b.id, email: b.email },
-    ]);
-  if (usersErr) throw new Error(`seed public.users: ${usersErr.message}`);
+    .select("id")
+    .in("id", [a.id, b.id]);
+  if (usersErr) throw new Error(`verify public.users trigger seed: ${usersErr.message}`);
+  if ((seededUsers?.length ?? 0) !== 2) {
+    throw new Error(
+      `handle_new_auth_user trigger did not seed public.users (found ${seededUsers?.length ?? 0}/2)`,
+    );
+  }
 
   const signIn = async (creds: { email: string; password: string }) => {
     const client = createClient(url, anonKey, noPersist);

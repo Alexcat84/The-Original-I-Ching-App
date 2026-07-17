@@ -124,6 +124,29 @@ jobs:
           # Production-data-dependent migration, NOT replayable on a blank DB
           # (037 asserts the owner's auth user exists). Documented in GATE-SEC-01.
           rm supabase/migrations/037_seed_admin_user.sql
+          # Prod-faithful grants (runs LAST, zzz sorts after 074): in production,
+          # Supabase's default privileges give service_role full table access and
+          # authenticated/anon their table grants (RLS then filters rows) — the
+          # local staging path may not replicate them. service_role gets ALL;
+          # authenticated/anon only the user-scoped tables under test, so the
+          # explicit REVOKEs on internal tables (018/019/024/027/073) stay intact.
+          cat > supabase/migrations/zzz_ci_prod_like_grants.sql <<'SQL'
+          GRANT USAGE ON SCHEMA public TO service_role, authenticated, anon;
+          GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
+          GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;
+          GRANT SELECT, INSERT, UPDATE, DELETE ON
+            public.users, public.consultation_sessions, public.consultations,
+            public.consultation_notes, public.pattern_analyses, public.query_credits,
+            public.two_factor_recovery_codes, public.two_factor_attempts,
+            public.two_factor_email_codes
+            TO authenticated;
+          GRANT SELECT ON
+            public.users, public.consultation_sessions, public.consultations,
+            public.consultation_notes, public.pattern_analyses, public.query_credits,
+            public.two_factor_recovery_codes, public.two_factor_attempts,
+            public.two_factor_email_codes
+            TO anon;
+          SQL
           ls supabase/migrations | wc -l
 
       - name: Apply the migrations
