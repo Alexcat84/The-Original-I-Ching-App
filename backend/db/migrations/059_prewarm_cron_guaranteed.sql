@@ -6,7 +6,13 @@
 DO $do$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
-    RAISE EXCEPTION 'pg_cron extension is not enabled — enable it in Dashboard › Extensions before running this migration';
+    -- Replayability (PLAN-SUP-02): pg_cron is enabled via Dashboard, never by a
+    -- migration, so a blank-database replay dies here by design. Aligned to the
+    -- 053 NOTICE+skip pattern (decision recorded in PLAN-SUP-02: the EXCEPTION
+    -- was intentional for prod, where the extension was present and this ran
+    -- fine; content edits to an applied migration never re-execute).
+    RAISE NOTICE 'pg_cron not enabled — skipping prewarm scheduling (enable via Dashboard > Extensions)';
+    RETURN;
   END IF;
 
   BEGIN
@@ -32,6 +38,14 @@ BEGIN
 END;
 $do$;
 
-SELECT jobid, schedule, command, active
-FROM   cron.job
-WHERE  jobname = 'prewarm-consultations-toast';
+-- Verification echo, guarded for blank-database replay (cron schema absent).
+DO $$
+DECLARE r RECORD;
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    RETURN;
+  END IF;
+  FOR r IN SELECT jobid, schedule, active FROM cron.job WHERE jobname = 'prewarm-consultations-toast' LOOP
+    RAISE NOTICE 'prewarm job: id=% schedule=% active=%', r.jobid, r.schedule, r.active;
+  END LOOP;
+END $$;

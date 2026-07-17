@@ -22,20 +22,30 @@ BEGIN
 EXCEPTION WHEN OTHERS THEN NULL;
 END$$;
 
-SELECT cron.schedule(
-  'prewarm-consultation-content',
-  '*/15 * * * *',
-  $$
-    SELECT pg_prewarm('consultation_content'::regclass);
-    SELECT pg_prewarm(c.reltoastrelid)
-    FROM pg_class c
-    JOIN pg_namespace n ON n.oid = c.relnamespace
-    WHERE c.relname = 'consultation_content'
-      AND n.nspname = 'public'
-      AND c.reltoastrelid <> 0;
-  $$
-);
-
-SELECT jobid, jobname, schedule, active, command
-FROM cron.job
-WHERE jobname = 'prewarm-consultation-content';
+-- Replayability guard (PLAN-SUP-02): pg_cron is Dashboard-enabled, never by a
+-- migration; on a blank database cron.schedule / cron.job do not exist. 053
+-- pattern. Content edits to an applied migration never re-execute.
+DO $do$
+DECLARE r RECORD;
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+    RAISE NOTICE 'pg_cron not enabled — skipping prewarm scheduling';
+    RETURN;
+  END IF;
+  PERFORM cron.schedule(
+    'prewarm-consultation-content',
+    '*/15 * * * *',
+    $$
+      SELECT pg_prewarm('consultation_content'::regclass);
+      SELECT pg_prewarm(c.reltoastrelid)
+      FROM pg_class c
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE c.relname = 'consultation_content'
+        AND n.nspname = 'public'
+        AND c.reltoastrelid <> 0;
+    $$
+  );
+  FOR r IN SELECT jobid, jobname, schedule, active FROM cron.job WHERE jobname = 'prewarm-consultation-content' LOOP
+    RAISE NOTICE 'prewarm job: id=% name=% schedule=% active=%', r.jobid, r.jobname, r.schedule, r.active;
+  END LOOP;
+END $do$;

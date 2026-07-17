@@ -460,6 +460,15 @@ FROM (
     )
 
   UNION ALL
+  -- 075 · on_auth_user_created trigger now provided BY THE CHAIN (was Dashboard-only;
+  -- PLAN-SUP-02 finding 2b). The generic '029' trigger check above stays as-is.
+  SELECT '075', 'on_auth_user_created trigger codified in chain (075)',
+    EXISTS (
+      SELECT 1 FROM pg_trigger t JOIN pg_proc p ON p.oid = t.tgfoid
+      WHERE t.tgname = 'on_auth_user_created' AND p.proname = 'handle_new_auth_user'
+    )
+
+  UNION ALL
   -- CONTENT · P0 gate — fails on mass wipe; allows ≤2 irrecoverable post-PITR gaps
   SELECT 'CONTENT', 'consultation_content full text (≤2 empty rows allowed for known PITR gaps)',
     (

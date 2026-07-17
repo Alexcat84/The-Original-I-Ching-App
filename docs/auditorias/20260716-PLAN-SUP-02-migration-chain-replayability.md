@@ -31,3 +31,11 @@ La cadena de 74 migraciones **no es replayable en una base vacía** tal cual. Do
 - Son migraciones YA APLICADAS en prod/staging: el fix va como **migraciones nuevas** (075+) que no alteran el historial, o como edición de archivos históricos SOLO si se confirma que ningún entorno las tiene pendientes (regla: jamás editar migraciones ya aplicadas sin esa verificación).
 - Actualizar `verify_migrations.sql` en el mismo commit (regla del proyecto).
 - Smoke de replay: correr el staging del gate SIN exclusiones y confirmar 074/74 aplicadas.
+
+## Ejecución (2026-07-17, rama chore/migrations-replayable — PLAN-SEC-02 Ticket 3)
+
+- 037: condicional (NOTICE+skip si el owner no existe). **Edición in-place justificada:** una migración posterior no puede impedir que una anterior falle en replay fresco; las 4 están aplicadas en TODOS los entornos (prod y staging corren la app sobre 074) y Supabase registra por versión, así que la edición de contenido jamás re-ejecuta.
+- 059: alineada al patrón 053 (decisión que este plan dejó abierta: NOTICE+skip; en prod corrió con pg_cron presente, comportamiento histórico intacto). Echo de verificación sobre cron.job también guardeado.
+- 064/065: cron.schedule y verificación envueltos en guard pg_cron (los unschedule ya eran tolerantes via EXCEPTION WHEN OTHERS).
+- 075 (NUEVA): codifica on_auth_user_created en la cadena (hallazgo 2b cerrado). verify_migrations.sql con entrada '075' en el mismo commit.
+- Gate de CI simplificado: SIN preludio pg_cron y SIN exclusión de 037 — el staging del rls-test es ahora un replay completo 001..075 en base vacía en cada corrida. El archivo 9999 queda solo con los grants prod-like (artefacto del stack local, no defecto de la cadena).
