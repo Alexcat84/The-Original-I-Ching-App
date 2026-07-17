@@ -39,3 +39,11 @@ La cadena de 74 migraciones **no es replayable en una base vacía** tal cual. Do
 - 064/065: cron.schedule y verificación envueltos en guard pg_cron (los unschedule ya eran tolerantes via EXCEPTION WHEN OTHERS).
 - 075 (NUEVA): codifica on_auth_user_created en la cadena (hallazgo 2b cerrado). verify_migrations.sql con entrada '075' en el mismo commit.
 - Gate de CI simplificado: SIN preludio pg_cron y SIN exclusión de 037 — el staging del rls-test es ahora un replay completo 001..075 en base vacía en cada corrida. El archivo 9999 queda solo con los grants prod-like (artefacto del stack local, no defecto de la cadena).
+
+## Veredicto de auditoría externa (2026-07-17): APROBADO, desviación RATIFICADA
+
+- Las 4 ediciones in-place verificadas contra los diffs: quirúrgicas, solo el brazo de fallo cambia (EXCEPTION -> NOTICE+RETURN, guards pg_cron, SELECT final de 059 envuelto); comportamiento byte-idéntico donde las precondiciones se cumplen (todo entorno desplegado). El registro histórico de lo que corrió en producción se preserva.
+- **La letra original de este plan ("jamás editar aplicadas; migraciones 075+ para los fixes") queda SUSTITUIDA en este punto por ratificación del auditor: era mecánicamente imposible** — una migración 075 no puede impedir que la 037 reviente durante un replay secuencial, porque la 037 corre primero. La edición justificada de archivos aplicados era la única vía.
+- Sobre el hallazgo 2b (el más grave del plan): cualquier disaster recovery real anterior a esta rama habría producido una base que arranca, migra "bien" y rompe silenciosamente cada signup (auth.users sin fila en public.users, sin créditos free). El gate RLS lo desenterró antes de que existiera ese día.
+- **Nota de ejecución en producción de la 075:** aplicarla dentro de UNA transacción (BEGIN/COMMIT o el SQL Editor de Supabase, que ya envuelve el script) para cerrar la ventana de milisegundos sin trigger entre el DROP y el CREATE. Anotado también en el header del archivo.
+- **Trade-off consciente registrado:** sin el preludio 000_, el replay de CI corre sin pg_cron — los bloques de cron se saltan con NOTICE en vez de ejecutarse. El gate testea el escenario DR más duro (base virgen, sin extensión), a cambio de que el SQL interno de scheduling ya no se ejercita en CI. Aceptado.

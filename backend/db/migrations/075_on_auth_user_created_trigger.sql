@@ -10,6 +10,12 @@
 --
 -- Idempotent in every deployed environment: the trigger already exists there
 -- with this exact definition; DROP + CREATE re-establishes it unchanged.
+--
+-- PRODUCTION EXECUTION NOTE (external audit): run this file inside ONE
+-- transaction (BEGIN; ... COMMIT; — the Supabase SQL Editor already wraps the
+-- script). Statement-by-statement execution would leave a milliseconds-wide
+-- window with no trigger between the DROP and the CREATE; a signup landing in
+-- that exact window is extremely unlikely, but closing it costs nothing.
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 
