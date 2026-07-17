@@ -156,6 +156,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `00000000-AUD-MOB-HYD-02 sqlite-chat-hydration` | — | Caché SQLite mobile | closed | [00000000-AUD-MOB-HYD-02-sqlite-chat-hydration.md](./00000000-AUD-MOB-HYD-02-sqlite-chat-hydration.md) |
 | `20260613-AUD-MOB-HYD-03 hydration-gate` | 2026-06-13 | Hydration gate per-session | closed | [20260613-AUD-MOB-HYD-03-hydration-gate.md](./20260613-AUD-MOB-HYD-03-hydration-gate.md) |
 | `20260618-AUD-MOB-UI-01 webview-bottom-gap` | 2026-06-18 | Gap negro bajo composer APK | closed | [20260618-AUD-MOB-UI-01-webview-bottom-gap.md](./20260618-AUD-MOB-UI-01-webview-bottom-gap.md) |
+| `20260717-FIX-UI-01 cast-diagram-header-misalignment` | 2026-07-17 | Fix desalineamiento diagrama de tirada (sin mutación) | closed | [20260717-FIX-UI-01-cast-diagram-header-misalignment.md](./20260717-FIX-UI-01-cast-diagram-header-misalignment.md) |
 | `20260619-AUD-MOB-NAV-01 router-navigate-race` | 2026-06-19 | Race `__rnNavigateTo` × Router | closed | [20260619-AUD-MOB-NAV-01-router-navigate-race.md](./20260619-AUD-MOB-NAV-01-router-navigate-race.md) |
 | `20260619-FIX-MOB-PLAY-01 play-data-safety` | 2026-06-19 | Play Console Data Safety | closed | [20260619-FIX-MOB-PLAY-01-play-data-safety.md](./20260619-FIX-MOB-PLAY-01-play-data-safety.md) |
 | `20260715-AUD-MOB-01 expo-sdk57-upgrade-assessment` | 2026-07-15 | Evaluación migración Expo SDK 57 (API 36, deadline Play 2026-08-31) | open | [20260715-AUD-MOB-01-expo-sdk57-upgrade-assessment.md](./20260715-AUD-MOB-01-expo-sdk57-upgrade-assessment.md) |
