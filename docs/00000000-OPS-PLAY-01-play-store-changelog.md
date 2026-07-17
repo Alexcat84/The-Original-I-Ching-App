@@ -24,86 +24,75 @@ Newest version on top. The internal engineering changelog lives in `CHANGELOG.md
 
 ---
 
-## 4.2.5 (versionCode 65), 2026-07-16
+## 4.2.5 (versionCode 65), 2026-07-17
 
 Play Console's bulk paste box expects each locale wrapped in its own tag, in this exact
-order. Copy the whole block below in one paste.
+order — copy the whole block below in one paste.
 
 <en-US>
-Version 4.2.5: fixes and privacy.
-- Saving images to your gallery works again.
-- Privacy: the app now asks only for photo access, not audio or video.
-- Minor stability improvements.
+Version 4.2.5: ready for Android 16.
+- The app now runs on the latest Android engine: faster startup, smoother animations and full Android 16 compatibility.
+- Performance and stability improvements throughout.
 </en-US>
 
 <ar>
-الإصدار 4.2.5: إصلاحات وخصوصية.
-- حفظ الصور في معرض الصور يعمل من جديد.
-- الخصوصية: يطلب التطبيق الآن الوصول إلى الصور فقط، وليس الصوت أو الفيديو.
-- تحسينات طفيفة في الاستقرار.
+الإصدار 4.2.5: جاهز لنظام Android 16.
+- يعمل التطبيق الآن على أحدث محرك أندرويد: بدء تشغيل أسرع، وحركات أكثر سلاسة، وتوافق كامل مع Android 16.
+- تحسينات في الأداء والاستقرار في كل أنحاء التطبيق.
 </ar>
 
 <de-DE>
-Version 4.2.5: Korrekturen und Datenschutz.
-- Das Speichern von Bildern in der Galerie funktioniert wieder.
-- Datenschutz: Die App fragt jetzt nur noch nach Fotozugriff, nicht nach Audio oder Video.
-- Kleinere Stabilitaetsverbesserungen.
+Version 4.2.5: bereit fuer Android 16.
+- Die App laeuft jetzt auf der neuesten Android-Engine: schnellerer Start, fluessigere Animationen und volle Android-16-Kompatibilitaet.
+- Leistungs- und Stabilitaetsverbesserungen in der gesamten App.
 </de-DE>
 
 <es-419>
-Version 4.2.5: correcciones y privacidad.
-- Guardar imagenes en tu galeria vuelve a funcionar.
-- Privacidad: la app ahora solo pide acceso a fotos, no a audio ni video.
-- Mejoras menores de estabilidad.
+Version 4.2.5: lista para Android 16.
+- La app ahora corre sobre el motor mas reciente de Android: inicio mas rapido, animaciones mas fluidas y compatibilidad total con Android 16.
+- Mejoras de rendimiento y estabilidad en toda la app.
 </es-419>
 
 <fr-FR>
-Version 4.2.5 : corrections et confidentialite.
-- L'enregistrement des images dans la galerie fonctionne a nouveau.
-- Confidentialite : l'application ne demande plus que l'acces aux photos, pas a l'audio ni a la video.
-- Ameliorations mineures de stabilite.
+Version 4.2.5 : prete pour Android 16.
+- L'application fonctionne desormais sur le moteur Android le plus recent : demarrage plus rapide, animations plus fluides et compatibilite totale avec Android 16.
+- Ameliorations de performance et de stabilite dans toute l'application.
 </fr-FR>
 
 <hi-IN>
-संस्करण 4.2.5: सुधार और गोपनीयता।
-- गैलरी में छवियां सहेजना फिर से काम करता है।
-- गोपनीयता: ऐप अब केवल फ़ोटो पहुंच मांगता है, ऑडियो या वीडियो नहीं।
-- मामूली स्थिरता सुधार।
+संस्करण 4.2.5: Android 16 के लिए तैयार।
+- ऐप अब नवीनतम Android इंजन पर चलता है: तेज़ शुरुआत, अधिक स्मूद एनिमेशन और Android 16 के साथ पूर्ण संगतता।
+- पूरे ऐप में प्रदर्शन और स्थिरता में सुधार।
 </hi-IN>
 
 <it-IT>
-Versione 4.2.5: correzioni e privacy.
-- Il salvataggio delle immagini nella galleria funziona di nuovo.
-- Privacy: l'app ora richiede solo l'accesso alle foto, non ad audio o video.
-- Piccoli miglioramenti di stabilita.
+Versione 4.2.5: pronta per Android 16.
+- L'app ora gira sul motore Android piu recente: avvio piu rapido, animazioni piu fluide e piena compatibilita con Android 16.
+- Miglioramenti di prestazioni e stabilita in tutta l'app.
 </it-IT>
 
 <ja-JP>
-バージョン4.2.5: 修正とプライバシー。
-- ギャラリーへの画像保存が再び機能するようになりました。
-- プライバシー: アプリは写真へのアクセスのみを求め、音声や動画は求めません。
-- 軽微な安定性の改善。
+バージョン4.2.5: Android 16に対応。
+- アプリが最新のAndroidエンジンで動作するようになりました。起動の高速化、より滑らかなアニメーション、Android 16への完全対応。
+- アプリ全体のパフォーマンスと安定性を改善。
 </ja-JP>
 
 <ko-KR>
-버전 4.2.5: 수정 및 개인정보 보호.
-- 갤러리에 이미지 저장이 다시 작동합니다.
-- 개인정보 보호: 이제 앱은 오디오나 동영상이 아닌 사진 접근만 요청합니다.
-- 사소한 안정성 개선.
+버전 4.2.5: Android 16 지원.
+- 이제 앱이 최신 Android 엔진에서 실행됩니다. 더 빠른 시작, 더 부드러운 애니메이션, Android 16 완벽 호환.
+- 앱 전반의 성능 및 안정성 개선.
 </ko-KR>
 
 <pt-BR>
-Versao 4.2.5: correcoes e privacidade.
-- Salvar imagens na galeria voltou a funcionar.
-- Privacidade: o app agora pede apenas acesso a fotos, nao a audio ou video.
-- Pequenas melhorias de estabilidade.
+Versao 4.2.5: pronta para o Android 16.
+- O app agora roda no mecanismo mais recente do Android: inicio mais rapido, animacoes mais fluidas e compatibilidade total com o Android 16.
+- Melhorias de desempenho e estabilidade em todo o app.
 </pt-BR>
 
 <zh-CN>
-版本4.2.5：修复与隐私。
-- 保存图片到相册功能恢复正常。
-- 隐私：应用现在仅请求照片访问权限，不再请求音频或视频。
-- 小幅稳定性改进。
+版本4.2.5：支持Android 16。
+- 应用现已运行在最新的Android引擎上：启动更快，动画更流畅，全面兼容Android 16。
+- 全面提升性能与稳定性。
 </zh-CN>
 
 ---
