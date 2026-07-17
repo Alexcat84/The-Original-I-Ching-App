@@ -2084,8 +2084,7 @@ Full project change history.
 | Version | versionCode | Date | Stage | Commits | Notable changes |
 |---------|-------------|------|-------|---------|-----------------|
 | 4.2.5 | 65 | 2026-07-17 | Production | 33 | make the migration chain blank-DB replayable — PLAN-SEC-02 Ticket 3; RLS cross-user isolation integration test — Ticket B PLAN-SEC-01; drop root ws direct dep — override alone holds the tree (external audit) |
-| 4.2.5 | 65 | 2026-07-16 | Production | 0 | — |
-| 4.2.4 | 64 | 2026-07-16 | Production | 0 | — |
+| 4.2.4 | 64 | 2026-07-16 | Built, not published (superseded by 4.2.5) | 9 | — |
 | 4.2.3 | 63 | 2026-07-15 | Internal Testing | 0 | — |
 | 4.2.2 | 62 | 2026-07-04 | Closed Testing | 0 | — |
 | 4.2.1 | 61 | 2026-07-02 | Closed Testing | 0 | — |
