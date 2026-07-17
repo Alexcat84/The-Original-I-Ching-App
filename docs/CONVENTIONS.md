@@ -49,7 +49,7 @@ Sin pasos 2–3 el documento **no se considera registrado**.
 
 ## Redirects legacy
 
-Tras renombrar, el **archivo antiguo** queda como stub `(renamed)` con enlace al canónico. No editar stubs; actualizar solo el path codificado.
+Tras renombrar, el **archivo antiguo** queda como stub `(renamed)` con enlace al canónico, **solo mientras algo lo referencie** (backward-compat de enlaces). No editar stubs; actualizar solo el path codificado. **Un stub sin ninguna referencia en el repo se retira** (git preserva el historial): su único propósito es resolver enlaces vivos, y sin ellos es duplicación. El gate `verify:qa-registry` rechaza cualquier doc con código de archivo que no esté en un registry (los stubs `(renamed)` y README/INDEX/CONVENTIONS quedan exentos).
 
 ---
 
