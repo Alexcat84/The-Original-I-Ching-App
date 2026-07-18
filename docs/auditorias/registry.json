@@ -1559,6 +1559,20 @@
       "path": "docs/auditorias/20260717-FIX-UI-01-cast-diagram-header-misalignment.md",
       "relatedCodes": [],
       "relatedTests": []
+    },
+    {
+      "code": "00000000-RPT-ARCH-02 system-canvas",
+      "title": "Mapa de arquitectura del sistema (canvas project-native, Mermaid, independiente de Cursor)",
+      "shortName": "system-canvas",
+      "type": "RPT",
+      "family": "ARCH",
+      "date": null,
+      "status": "reference",
+      "path": "docs/auditorias/00000000-RPT-ARCH-02-system-canvas.md",
+      "relatedCodes": [
+        "00000000-RPT-ARCH-01 architecture-fullstack"
+      ],
+      "relatedTests": []
     }
   ]
 }

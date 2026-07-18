@@ -241,7 +241,7 @@ node scripts/line-reading-system-qa.mjs   # Huang/Zhu Xi line-reading harness
 | 🧪 Staging | [Vercel preview URL](https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app) |
 | 📱 EAS Builds | [expo.dev/accounts/alexcat84](https://expo.dev/accounts/alexcat84/projects/the-original-i-ching/builds) |
 | 🎮 Play Console | [Google Play Console](https://play.google.com/console/u/0/developers/7735925863707716505) |
-| 🗺️ Architecture canvas | `ARCHITECTURE_SYSTEM.canvas.tsx` (interactive module map in Cursor) |
+| 🗺️ Architecture map | [`docs/auditorias/00000000-RPT-ARCH-02-system-canvas.md`](docs/auditorias/00000000-RPT-ARCH-02-system-canvas.md) (Mermaid, renders on GitHub) · `ARCHITECTURE_SYSTEM.canvas.tsx` = optional Cursor view |
 
 ---
 

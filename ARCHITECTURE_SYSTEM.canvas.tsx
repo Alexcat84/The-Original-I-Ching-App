@@ -1,12 +1,17 @@
 /**
  * ARCHITECTURE_SYSTEM.canvas.tsx
- * The Original I Ching App — mapa interactivo por módulos.
+ * The Original I Ching App — mapa interactivo por módulos (VISTA de Cursor).
+ *
+ * CANONICAL SOURCE: docs/auditorias/00000000-RPT-ARCH-02-system-canvas.md
+ *   That registered Mermaid doc is the project-owned, Cursor-independent source
+ *   of truth (renders on GitHub / VS Code / any Markdown viewer). This .tsx is an
+ *   OPTIONAL interactive mirror for Cursor; when the two differ, the .md wins, and
+ *   any architecture change updates the .md in the same commit (QMS registered).
  *
  * AGENT INSTRUCTIONS (keep in sync with repo):
- * - Update CURRENT_RELEASE when apps/mobile/app.config.js changes.
- * - Add architecture notes via useCanvasState key "archNotes" (persisted in .canvas.data.json).
+ * - Update CURRENT_RELEASE + the canonical .md when apps/mobile/app.config.js changes.
  * - Full release history: CHANGELOG.md at repo root (npm run changelog:update).
- * - Deep reference: docs/auditorias/00000000-RPT-ARCH-01-architecture-fullstack.md, CLAUDE.md, AGENTS.md.
+ * - Deep reference: docs/auditorias/00000000-RPT-ARCH-01-architecture-fullstack.md, CLAUDE.md.
  * - Do not add fetch() or external imports; only cursor/canvas.
  */
 import {
@@ -39,12 +44,12 @@ import {
 
 // --- Release snapshot (update on each mobile bump) ---
 const CURRENT_RELEASE = {
-  versionName: "4.1.7",
-  versionCode: 57,
+  versionName: "4.2.5",
+  versionCode: 65,
   webHost: "https://theoriginaliching.com",
   stagingHost:
     "https://the-original-i-ching-app-git-staging-alexs-projects-e8bf95b4.vercel.app",
-  updatedAt: "2026-06-21",
+  updatedAt: "2026-07-17",
 };
 
 type ViewId =

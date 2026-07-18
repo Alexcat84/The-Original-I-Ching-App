@@ -187,6 +187,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260716-GATE-SEC-01 rls-isolation-test` | SEC | Gate: test integración RLS cross-user (9 tablas) | open | [20260716-GATE-SEC-01-rls-isolation-test.md](./20260716-GATE-SEC-01-rls-isolation-test.md) |
 | `20260716-PLAN-SUP-02 migration-chain-replayability` | SUP | Deuda DR: replayabilidad de la cadena de migraciones (037 + pg_cron) | open | [20260716-PLAN-SUP-02-migration-chain-replayability.md](./20260716-PLAN-SUP-02-migration-chain-replayability.md) |
 | `00000000-RPT-ARCH-01 architecture-fullstack` | ARCH | Arquitectura full-stack | reference | [00000000-RPT-ARCH-01-architecture-fullstack.md](./00000000-RPT-ARCH-01-architecture-fullstack.md) |
+| `00000000-RPT-ARCH-02 system-canvas` | (evergreen) | Mapa de arquitectura del sistema (Mermaid, project-native) | reference | [00000000-RPT-ARCH-02-system-canvas.md](./00000000-RPT-ARCH-02-system-canvas.md) |
 | `00000000-AUD-SYM-01 dynamic-symbols` | SYM | Símbolos dinámicos | closed | [00000000-AUD-SYM-01-dynamic-symbols.md](./00000000-AUD-SYM-01-dynamic-symbols.md) |
 | `00000000-RPT-LEG-01 legacy-general-report` | LEG | Reporte general legacy | reference | [00000000-RPT-LEG-01-legacy-general-report.md](./00000000-RPT-LEG-01-legacy-general-report.md) |
 
