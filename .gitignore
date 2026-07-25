@@ -41,3 +41,6 @@ reportsnpm-audit-raw.json
 # AI-assistant caches / merge residues (EXT-SEC-02 P3 hygiene)
 .cache/
 *.orig
+
+# Marketing assets: keep the guiones (posts.md/README) in git; images are local-only (~171 MB)
+marketing/**/images/
