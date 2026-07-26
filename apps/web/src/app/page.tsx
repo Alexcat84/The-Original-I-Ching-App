@@ -9,6 +9,11 @@ import { MarketingPageFade } from "@/components/marketing/MarketingPageFade";
 import { MarketingPricingCards } from "@/components/marketing/MarketingPricingCards";
 import { MarketingReveal } from "@/components/marketing/MarketingReveal";
 import { resolveDocLocale } from "@/lib/doc-locale";
+import {
+  RESEARCH_LINKS,
+  RESEARCH_PAPER_AUTHOR,
+  RESEARCH_PAPER_TITLE,
+} from "@/lib/marketing/research-links";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const m = getMarketingUiMessages(locale);
   return {
     title: "The Original I Ching App",
-    description: m.hero.subtitle,
+    // Mentions the open research so the SERP snippet carries it too.
+    description: m.research.metaDescription,
     ...buildCanonicalMetadata("/"),
   };
 }
@@ -35,13 +41,65 @@ const rnWebViewGuardScript = `(function(){try{if(document.documentElement.classL
 
 const STALK_ANGLES = [-26, -19, -12, -5, 2, 9, 16, 23];
 
+const SITE_URL = "https://theoriginaliching.com";
+
 export default async function MarketingHomePage() {
   const locale = await resolveDocLocale();
   const m = getMarketingUiMessages(locale);
   const nonce = (await headers()).get("x-nonce") ?? "";
 
+  // Brand chain for search engines: the Organization's sameAs claims both
+  // research subdomains, and the WebSite lists them as hasPart with a short
+  // localized description. Rendered server-side so crawlers always see it.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "The Original I Ching",
+        url: SITE_URL,
+        logo: `${SITE_URL}/brand/logo.png`,
+        sameAs: [RESEARCH_LINKS.experiments, RESEARCH_LINKS.paper, PLAY_STORE_URL],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        name: "The Original I Ching",
+        url: SITE_URL,
+        publisher: { "@id": `${SITE_URL}/#organization` },
+        inLanguage: locale,
+        hasPart: [
+          {
+            "@type": "CreativeWork",
+            name: "The Original I Ching Experiments",
+            url: RESEARCH_LINKS.experiments,
+            description: m.research.experimentsDesc,
+            inLanguage: ["en", "es"],
+          },
+          {
+            "@type": "ScholarlyArticle",
+            name: RESEARCH_PAPER_TITLE,
+            url: RESEARCH_LINKS.paper,
+            description: m.research.paperDesc,
+            author: { "@type": "Person", name: RESEARCH_PAPER_AUTHOR },
+            inLanguage: "en",
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="mk-root">
+      {/* JSON-LD (schema.org). type="application/ld+json" is a data block, not
+          executable JS, but we carry the CSP nonce anyway; `<` is escaped so a
+          value can never break out of the <script>. */}
+      <script
+        type="application/ld+json"
+        nonce={nonce}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       {/* suppressHydrationWarning: browsers hide the nonce attribute from the DOM,
           so the client sees "" vs the SSR value — same pattern as the root layout. */}
       <script
@@ -342,6 +400,48 @@ export default async function MarketingHomePage() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* ================= RESEARCH ================= */}
+      <div id="research" className="mk-section">
+        <div className="mk-section-head">
+          <div>
+            <p className="mk-eyebrow">{m.research.eyebrow}</p>
+            <h2 className="mk-h2">{m.research.title}</h2>
+          </div>
+          <span className="mk-section-head-glyphs">數 · 理</span>
+        </div>
+        <p className="mk-research-sub">{m.research.subtitle}</p>
+        <MarketingReveal className="mk-research-grid">
+          <a
+            href={RESEARCH_LINKS.experiments}
+            target="_blank"
+            rel="noopener"
+            className="mk-research-card"
+          >
+            <div className="mk-research-card-top">
+              <span className="mk-research-card-name">{m.research.experimentsName}</span>
+              <span className="mk-research-card-arrow" aria-hidden="true">↗</span>
+            </div>
+            <h3 className="mk-research-card-title">{m.research.experimentsTitle}</h3>
+            <p className="mk-research-card-desc">{m.research.experimentsDesc}</p>
+            <span className="mk-research-card-host">experiments.theoriginaliching.com</span>
+          </a>
+          <a
+            href={RESEARCH_LINKS.paper}
+            target="_blank"
+            rel="noopener"
+            className="mk-research-card"
+          >
+            <div className="mk-research-card-top">
+              <span className="mk-research-card-name">{m.research.paperName}</span>
+              <span className="mk-research-card-arrow" aria-hidden="true">↗</span>
+            </div>
+            <h3 className="mk-research-card-title">{m.research.paperTitle}</h3>
+            <p className="mk-research-card-desc">{m.research.paperDesc}</p>
+            <span className="mk-research-card-host">paper.theoriginaliching.com</span>
+          </a>
+        </MarketingReveal>
       </div>
 
       {/* ================= PRECIOS ================= */}

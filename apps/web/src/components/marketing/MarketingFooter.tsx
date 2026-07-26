@@ -2,6 +2,7 @@
 
 import { getMarketingUiMessages } from "@iching-oracle/i18n";
 import Link from "next/link";
+import { RESEARCH_LINKS } from "@/lib/marketing/research-links";
 import { useAppLocale } from "@/lib/use-app-locale";
 
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.theoriginaliching.app";
@@ -38,6 +39,16 @@ export function MarketingFooter() {
             <Link href="/notes">{m.footer.sources}</Link>
             <br />
             <Link href="/audits">{m.footer.audits}</Link>
+          </div>
+          <div>
+            <p>{m.research.footerHeading}</p>
+            <a href={RESEARCH_LINKS.experiments} target="_blank" rel="noopener">
+              {m.research.experimentsName}
+            </a>
+            <br />
+            <a href={RESEARCH_LINKS.paper} target="_blank" rel="noopener">
+              {m.research.paperName}
+            </a>
           </div>
           <div>
             <p>{m.footer.supportHeading}</p>

@@ -146,6 +146,27 @@ export type MarketingUiMessages = {
     registerCta: string;
     freeLine: string;
   };
+  /**
+   * "Research" section + nav/footer entries. Links the two brand research
+   * subdomains (experiments. / paper.) from the main site. `navLabel`,
+   * `footerHeading`, `experimentsName` and `paperName` are brand proper nouns
+   * kept in English across locales; the rest is translated.
+   */
+  research: {
+    navLabel: string;
+    footerHeading: string;
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    experimentsName: string;
+    experimentsTitle: string;
+    experimentsDesc: string;
+    paperName: string;
+    paperTitle: string;
+    paperDesc: string;
+    /** <meta name="description"> for the Home page (mentions the open research). */
+    metaDescription: string;
+  };
 };
 
 const ES: MarketingUiMessages = {
@@ -292,6 +313,20 @@ const ES: MarketingUiMessages = {
     subtitle: "Tres mil años de sabiduría, leídos para tu situación. Empieza sin compromiso.",
     registerCta: "Regístrate",
     freeLine: "Recibe dos consultas gratis",
+  },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "Investigación abierta",
+    title: "Con el respaldo de investigación abierta y verificable",
+    subtitle: "El oráculo se apoya en investigación abierta: cada cifra publicada es reproducible y verificada por máquina.",
+    experimentsName: "Experiments",
+    experimentsTitle: "Explora 45 experimentos reproducibles sobre los 64 hexagramas",
+    experimentsDesc: "Un laboratorio bilingüe de 45 experimentos reproducibles sobre la estructura binaria de los 64 hexagramas, con una suite de 61 secciones que congela cada cifra publicada.",
+    paperName: "Paper",
+    paperTitle: "Lee el estudio estadístico de los ordenamientos históricos",
+    paperDesc: "Un estudio estadístico de los ordenamientos históricos (regla de pares, gradiente de familias), con un paquete de replicación que reproduce cada figura con un comando.",
+    metaDescription: "Oráculo del I Ching guiado por IA y respaldado por investigación abierta: 45 experimentos reproducibles sobre los 64 hexagramas y un estudio estadístico de sus ordenamientos históricos.",
   },
 };
 
@@ -440,6 +475,20 @@ const EN: MarketingUiMessages = {
     registerCta: "Sign up",
     freeLine: "Get two free consultations",
   },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "Open research",
+    title: "Backed by open, verifiable research",
+    subtitle: "The oracle rests on open research: every published figure is reproducible and machine-verified.",
+    experimentsName: "Experiments",
+    experimentsTitle: "Explore 45 reproducible experiments on the 64 hexagrams",
+    experimentsDesc: "A bilingual lab of 45 reproducible experiments on the binary structure of the 64 hexagrams, with a 61-section suite that freezes every published figure.",
+    paperName: "Paper",
+    paperTitle: "Read the statistical study of the historical orderings",
+    paperDesc: "A statistical study of the historical orderings (pair rule, family gradient), with a replication package that reproduces every figure with one command.",
+    metaDescription: "An AI-guided I Ching oracle backed by open, reproducible research: 45 verifiable experiments on the 64 hexagrams and a statistical study of their historical orderings.",
+  },
 };
 
 const PT: MarketingUiMessages = {
@@ -585,6 +634,20 @@ const PT: MarketingUiMessages = {
     subtitle: "Três mil anos de sabedoria, lidos para a sua situação. Comece sem compromisso.",
     registerCta: "Cadastre-se",
     freeLine: "Receba duas consultas grátis",
+  },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "Pesquisa aberta",
+    title: "Com o respaldo de pesquisa aberta e verificável",
+    subtitle: "O oráculo apoia-se em pesquisa aberta: cada número publicado é reproduzível e verificado por máquina.",
+    experimentsName: "Experiments",
+    experimentsTitle: "Explore 45 experimentos reproduzíveis sobre os 64 hexagramas",
+    experimentsDesc: "Um laboratório bilíngue de 45 experimentos reproduzíveis sobre a estrutura binária dos 64 hexagramas, com uma suíte de 61 seções que congela cada número publicado.",
+    paperName: "Paper",
+    paperTitle: "Leia o estudo estatístico dos ordenamentos históricos",
+    paperDesc: "Um estudo estatístico dos ordenamentos históricos (regra de pares, gradiente de famílias), com um pacote de replicação que reproduz cada figura com um comando.",
+    metaDescription: "Oráculo de I Ching guiado por IA e respaldado por pesquisa aberta: 45 experimentos reproduzíveis sobre os 64 hexagramas e um estudo estatístico dos seus ordenamentos históricos.",
   },
 };
 
@@ -735,6 +798,20 @@ const FR: MarketingUiMessages = {
     registerCta: "Inscrivez-vous",
     freeLine: "Recevez deux consultations gratuites",
   },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "Recherche ouverte",
+    title: "Adossé à une recherche ouverte et vérifiable",
+    subtitle: "L'oracle repose sur une recherche ouverte : chaque chiffre publié est reproductible et vérifié par la machine.",
+    experimentsName: "Experiments",
+    experimentsTitle: "Explorez 45 expériences reproductibles sur les 64 hexagrammes",
+    experimentsDesc: "Un laboratoire bilingue de 45 expériences reproductibles sur la structure binaire des 64 hexagrammes, avec une suite de 61 sections qui fige chaque chiffre publié.",
+    paperName: "Paper",
+    paperTitle: "Lisez l'étude statistique des ordonnancements historiques",
+    paperDesc: "Une étude statistique des ordonnancements historiques (règle des paires, gradient des familles), avec un paquet de réplication qui reproduit chaque figure en une commande.",
+    metaDescription: "Oracle du I Ching guidé par IA, adossé à une recherche ouverte et reproductible : 45 expériences vérifiables sur les 64 hexagrammes et une étude statistique de leurs ordonnancements historiques.",
+  },
 };
 
 const DE: MarketingUiMessages = {
@@ -884,6 +961,20 @@ const DE: MarketingUiMessages = {
     registerCta: "Registrieren",
     freeLine: "Erhalte zwei kostenlose Befragungen",
   },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "Offene Forschung",
+    title: "Gestützt auf offene, überprüfbare Forschung",
+    subtitle: "Das Orakel stützt sich auf offene Forschung: Jede veröffentlichte Zahl ist reproduzierbar und maschinell verifiziert.",
+    experimentsName: "Experiments",
+    experimentsTitle: "Entdecke 45 reproduzierbare Experimente zu den 64 Hexagrammen",
+    experimentsDesc: "Ein zweisprachiges Labor mit 45 reproduzierbaren Experimenten zur binären Struktur der 64 Hexagramme, mit einer Suite aus 61 Abschnitten, die jede veröffentlichte Zahl festschreibt.",
+    paperName: "Paper",
+    paperTitle: "Lies die statistische Studie der historischen Anordnungen",
+    paperDesc: "Eine statistische Studie der historischen Anordnungen (Paarregel, Familiengradient) mit einem Replikationspaket, das jede Abbildung mit einem Befehl reproduziert.",
+    metaDescription: "KI-gestütztes I-Ching-Orakel, untermauert von offener, reproduzierbarer Forschung: 45 überprüfbare Experimente zu den 64 Hexagrammen und eine statistische Studie ihrer historischen Anordnungen.",
+  },
 };
 
 const IT: MarketingUiMessages = {
@@ -1031,6 +1122,20 @@ const IT: MarketingUiMessages = {
     registerCta: "Registrati",
     freeLine: "Ricevi due consultazioni gratuite",
   },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "Ricerca aperta",
+    title: "Sostenuto da ricerca aperta e verificabile",
+    subtitle: "L'oracolo si fonda su ricerca aperta: ogni dato pubblicato è riproducibile e verificato dalla macchina.",
+    experimentsName: "Experiments",
+    experimentsTitle: "Esplora 45 esperimenti riproducibili sui 64 esagrammi",
+    experimentsDesc: "Un laboratorio bilingue di 45 esperimenti riproducibili sulla struttura binaria dei 64 esagrammi, con una suite di 61 sezioni che fissa ogni dato pubblicato.",
+    paperName: "Paper",
+    paperTitle: "Leggi lo studio statistico degli ordinamenti storici",
+    paperDesc: "Uno studio statistico degli ordinamenti storici (regola delle coppie, gradiente delle famiglie), con un pacchetto di replica che riproduce ogni figura con un comando.",
+    metaDescription: "Oracolo dell'I Ching guidato dall'IA e sostenuto da ricerca aperta e riproducibile: 45 esperimenti verificabili sui 64 esagrammi e uno studio statistico dei loro ordinamenti storici.",
+  },
 };
 
 const JA: MarketingUiMessages = {
@@ -1177,6 +1282,20 @@ const JA: MarketingUiMessages = {
     registerCta: "登録する",
     freeLine: "無料で2回の占いを受け取る",
   },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "オープンな研究",
+    title: "検証可能なオープンリサーチに基づく",
+    subtitle: "この託宣はオープンな研究に基づいています。公開されたすべての数値は再現可能で、機械的に検証されています。",
+    experimentsName: "Experiments",
+    experimentsTitle: "64卦に関する45の再現可能な実験を見る",
+    experimentsDesc: "64卦の二進構造に関する45の再現可能な実験を集めたバイリンガルのラボ。公開された各数値を固定する61セクションの検証スイートを備えています。",
+    paperName: "Paper",
+    paperTitle: "歴史的な卦の配列の統計的研究を読む",
+    paperDesc: "歴史的な卦の配列（対の規則、家族勾配）に関する統計的研究。すべての図表を1つのコマンドで再現する複製パッケージ付き。",
+    metaDescription: "AIが導くI Chingの託宣。オープンで再現可能な研究に裏打ちされ、64卦に関する45の検証可能な実験と、その歴史的な配列の統計的研究を備えています。",
+  },
 };
 
 const ZH: MarketingUiMessages = {
@@ -1316,6 +1435,20 @@ const ZH: MarketingUiMessages = {
     subtitle: "三千年的智慧，为您的处境而读。无需承诺，即刻开始。",
     registerCta: "注册",
     freeLine: "获得两次免费占卜",
+  },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "开放研究",
+    title: "以开放、可验证的研究为支撑",
+    subtitle: "此神谕建立在开放研究之上：每一个公开的数据都可复现，并经机器验证。",
+    experimentsName: "Experiments",
+    experimentsTitle: "探索关于64卦的45项可复现实验",
+    experimentsDesc: "一个双语实验室，包含45项关于64卦二进制结构的可复现实验，并配有冻结每一项公开数据的61节验证套件。",
+    paperName: "Paper",
+    paperTitle: "阅读历史卦序的统计研究",
+    paperDesc: "一项关于历史卦序（成对规则、家族梯度）的统计研究，附带可用一条命令复现每张图表的复制包。",
+    metaDescription: "由AI引导的易经神谕，以开放、可复现的研究为支撑：关于64卦的45项可验证实验，以及对其历史卦序的统计研究。",
   },
 };
 
@@ -1459,6 +1592,20 @@ const KO: MarketingUiMessages = {
     subtitle: "삼천 년의 지혜를 당신의 상황에 맞게. 부담 없이 시작하세요.",
     registerCta: "가입하기",
     freeLine: "무료 점 2회 받기",
+  },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "공개 연구",
+    title: "검증 가능한 공개 연구에 기반합니다",
+    subtitle: "이 신탁은 공개 연구에 기반합니다. 공개된 모든 수치는 재현 가능하며 기계로 검증됩니다.",
+    experimentsName: "Experiments",
+    experimentsTitle: "64괘에 관한 45개의 재현 가능한 실험 살펴보기",
+    experimentsDesc: "64괘의 이진 구조에 관한 45개의 재현 가능한 실험을 담은 이중 언어 실험실로, 공개된 모든 수치를 고정하는 61개 섹션의 검증 스위트를 갖추고 있습니다.",
+    paperName: "Paper",
+    paperTitle: "역사적 괘 배열에 관한 통계 연구 읽기",
+    paperDesc: "역사적 괘 배열(쌍 규칙, 가족 기울기)에 관한 통계 연구로, 모든 도표를 명령어 하나로 재현하는 복제 패키지가 포함됩니다.",
+    metaDescription: "AI가 안내하는 주역 신탁. 공개적이고 재현 가능한 연구에 기반하여 64괘에 관한 45개의 검증 가능한 실험과 그 역사적 배열에 대한 통계 연구를 제공합니다.",
   },
 };
 
@@ -1605,6 +1752,20 @@ const AR: MarketingUiMessages = {
     subtitle: "ثلاثة آلاف عام من الحكمة، تُقرأ لحالتك. ابدأ دون التزام.",
     registerCta: "سجّل",
     freeLine: "احصل على استشارتين مجانيتين",
+  },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "بحث مفتوح",
+    title: "مدعوم ببحث مفتوح وقابل للتحقق",
+    subtitle: "يستند هذا العرّاف إلى بحث مفتوح: كل رقم منشور قابل لإعادة الإنتاج وموثّق آليًا.",
+    experimentsName: "Experiments",
+    experimentsTitle: "استكشف 45 تجربة قابلة لإعادة الإنتاج حول الرموز السداسية الـ64",
+    experimentsDesc: "مختبر ثنائي اللغة يضم 45 تجربة قابلة لإعادة الإنتاج حول البنية الثنائية للرموز السداسية الـ64، مع مجموعة تحقق من 61 قسمًا تثبّت كل رقم منشور.",
+    paperName: "Paper",
+    paperTitle: "اقرأ الدراسة الإحصائية للترتيبات التاريخية",
+    paperDesc: "دراسة إحصائية للترتيبات التاريخية (قاعدة الأزواج، تدرّج العائلات)، مع حزمة تكرار تعيد إنتاج كل شكل بأمر واحد.",
+    metaDescription: "عرّاف الإيتشينغ الموجَّه بالذكاء الاصطناعي، مدعوم ببحث مفتوح وقابل لإعادة الإنتاج: 45 تجربة قابلة للتحقق حول الرموز السداسية الـ64 ودراسة إحصائية لترتيباتها التاريخية.",
   },
 };
 
@@ -1753,6 +1914,20 @@ const HI: MarketingUiMessages = {
       "तीन हज़ार वर्षों का ज्ञान, आपकी स्थिति के लिए पढ़ा गया। बिना किसी प्रतिबद्धता के शुरू करें।",
     registerCta: "पंजीकरण करें",
     freeLine: "दो निःशुल्क परामर्श पाएँ",
+  },
+  research: {
+    navLabel: "Research",
+    footerHeading: "RESEARCH",
+    eyebrow: "मुक्त शोध",
+    title: "मुक्त और सत्यापन-योग्य शोध पर आधारित",
+    subtitle: "यह ओरैकल मुक्त शोध पर टिका है: प्रकाशित प्रत्येक आँकड़ा पुनरुत्पाद्य है और मशीन द्वारा सत्यापित है।",
+    experimentsName: "Experiments",
+    experimentsTitle: "64 हेक्साग्राम पर 45 पुनरुत्पाद्य प्रयोग देखें",
+    experimentsDesc: "64 हेक्साग्राम की द्विआधारी संरचना पर 45 पुनरुत्पाद्य प्रयोगों की एक द्विभाषी प्रयोगशाला, जिसमें प्रत्येक प्रकाशित आँकड़े को स्थिर करने वाली 61 खंडों की सत्यापन सूट शामिल है।",
+    paperName: "Paper",
+    paperTitle: "ऐतिहासिक क्रमों का सांख्यिकीय अध्ययन पढ़ें",
+    paperDesc: "ऐतिहासिक क्रमों (युग्म नियम, कुल प्रवणता) का एक सांख्यिकीय अध्ययन, जिसके साथ एक प्रतिकृति पैकेज है जो हर आकृति को एक ही कमांड से पुनरुत्पन्न करता है।",
+    metaDescription: "AI द्वारा निर्देशित I Ching ओरैकल, मुक्त और पुनरुत्पाद्य शोध पर आधारित: 64 हेक्साग्राम पर 45 सत्यापन-योग्य प्रयोग और उनके ऐतिहासिक क्रमों का सांख्यिकीय अध्ययन।",
   },
 };
 

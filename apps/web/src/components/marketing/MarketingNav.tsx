@@ -8,9 +8,10 @@ import {
 } from "@iching-oracle/i18n";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { AuthLocalePicker } from "@/components/AuthLocalePicker";
 import { setAppLocale } from "@/lib/set-app-locale";
+import { RESEARCH_LINKS } from "@/lib/marketing/research-links";
 import { NAV_HEADER_OFFSET, navLog, scrollToSection } from "@/lib/marketing/scroll-to-section";
 import { useAppLocale } from "@/lib/use-app-locale";
 
@@ -20,7 +21,7 @@ const LOCALE_SELECT_ORDER: AppLocale[] = [
   ...SUPPORTED_LOCALES.filter((code): code is AppLocale => code !== "en"),
 ];
 
-type NavKey = "oracle" | "guide" | "library" | "sources" | "pricing" | "faqs";
+type NavKey = "oracle" | "guide" | "library" | "sources" | "research" | "pricing" | "faqs";
 
 /** Nav item: `anchor` links scroll within the home page; the rest are routes. */
 type NavItem = { key: NavKey; label: string; anchor?: string; route?: string };
@@ -29,6 +30,7 @@ type NavItem = { key: NavKey; label: string; anchor?: string; route?: string };
 const SPY_SECTIONS: Array<{ id: string; key: NavKey }> = [
   { id: "oraculo", key: "oracle" },
   { id: "biblioteca", key: "library" },
+  { id: "research", key: "research" },
   { id: "precios", key: "pricing" },
 ];
 
@@ -160,6 +162,51 @@ export function MarketingNav({ active }: { active?: NavKey }) {
   /** On home the active item is driven by the scroll-spy; elsewhere by `active`. */
   const activeKey: NavKey | null = isHome ? spyKey : (active ?? null);
 
+  /**
+   * "Research" dropdown. The trigger behaves like the other anchor items
+   * (scrolls to #research on home, /#research elsewhere). The two destinations
+   * are our own subdomains: normal dofollow links, always present in the SSR
+   * HTML (CSS-only reveal on hover/focus-within, so crawlers always see them).
+   */
+  const researchDropdown = (
+    <div className="mk-nav-research">
+      {isHome ? (
+        <a
+          href="#research"
+          className="mk-nav-research-trigger"
+          aria-current={activeKey === "research" ? "true" : undefined}
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToAnchor("research", "research");
+            history.replaceState(null, "", "#research");
+          }}
+        >
+          {m.research.navLabel}
+          <span className="mk-nav-research-caret" aria-hidden="true">▾</span>
+        </a>
+      ) : (
+        <Link
+          href="/#research"
+          className="mk-nav-research-trigger"
+          aria-current={active === "research" ? "true" : undefined}
+        >
+          {m.research.navLabel}
+          <span className="mk-nav-research-caret" aria-hidden="true">▾</span>
+        </Link>
+      )}
+      <div className="mk-nav-research-menu">
+        <a href={RESEARCH_LINKS.experiments} target="_blank" rel="noopener">
+          <span className="mk-nav-research-menu-name">{m.research.experimentsName}</span>
+          <span className="mk-nav-research-menu-host">experiments.theoriginaliching.com</span>
+        </a>
+        <a href={RESEARCH_LINKS.paper} target="_blank" rel="noopener">
+          <span className="mk-nav-research-menu-name">{m.research.paperName}</span>
+          <span className="mk-nav-research-menu-host">paper.theoriginaliching.com</span>
+        </a>
+      </div>
+    </div>
+  );
+
   const renderItem = (item: NavItem, onNavigate?: () => void) => {
     const isActive = activeKey === item.key;
     const current = isActive ? "true" : undefined;
@@ -196,7 +243,14 @@ export function MarketingNav({ active }: { active?: NavKey }) {
           <img src="/marketing/logo-v3.jpg" alt="The Original I Ching" />
           <span>THE ORIGINAL I CHING</span>
         </Link>
-        <nav className="mk-nav-links">{items.map((it) => renderItem(it))}</nav>
+        <nav className="mk-nav-links">
+          {items.map((it) => (
+            <Fragment key={it.key}>
+              {renderItem(it)}
+              {it.key === "sources" ? researchDropdown : null}
+            </Fragment>
+          ))}
+        </nav>
         <div className="mk-nav-actions">
           <AuthLocalePicker
             locale={locale}
@@ -222,7 +276,32 @@ export function MarketingNav({ active }: { active?: NavKey }) {
       </header>
       {menuOpen ? (
         <nav className="mk-nav-mobile">
-          {items.map((it) => renderItem(it, () => setMenuOpen(false)))}
+          {items.map((it) => (
+            <Fragment key={it.key}>
+              {renderItem(it, () => setMenuOpen(false))}
+              {it.key === "sources" ? (
+                <div className="mk-nav-mobile-research">
+                  <span className="mk-nav-mobile-research-label">{m.research.navLabel}</span>
+                  <a
+                    href={RESEARCH_LINKS.experiments}
+                    target="_blank"
+                    rel="noopener"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {m.research.experimentsName}
+                  </a>
+                  <a
+                    href={RESEARCH_LINKS.paper}
+                    target="_blank"
+                    rel="noopener"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {m.research.paperName}
+                  </a>
+                </div>
+              ) : null}
+            </Fragment>
+          ))}
         </nav>
       ) : null}
     </>
