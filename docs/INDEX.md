@@ -66,6 +66,14 @@
 
 ---
 
+## Referencia de marca (`RPT-BRAND-*`)
+
+| Código | Título | Documento |
+|--------|--------|-----------|
+| `00000000-RPT-BRAND-01 brand-spec` | Inventario de marca (paleta, tipografía, escalas, assets, i18n) | [brand-spec.md](../brand-spec.md) |
+
+---
+
 ## Trazabilidad cruzada
 
 - Auditoría ↔ test: campos `relatedTests` / `relatedAuditCodes` en registros JSON.

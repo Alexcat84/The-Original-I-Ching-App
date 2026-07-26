@@ -5,6 +5,24 @@ html.oracle-fonts-ci-stub {
   --font-oracle-serif: Georgia, "Times New Roman", ui-serif, serif;
 }
 
+/*
+ * CJK + monospace stacks. These were referenced (via var(--font-oracle-cjk) /
+ * var(--font-oracle-mono)) but never defined, so they silently resolved to each
+ * rule's own fallback. Defined here explicitly:
+ *   --font-oracle-cjk  -> the CJK serifs already loaded via @fontsource in
+ *                         layout.tsx (Noto Serif SC 400/700/900 + TC 700).
+ *   --font-oracle-mono -> a system monospace stack. No monospace webfont is
+ *                         loaded; the single use only needs true monospacing,
+ *                         so this maps to the platform's best mono face.
+ * Not theme-dependent, so defined once on <html>. next/font sets the other
+ * --font-oracle-* vars via rootFontClassName; these two are not from next/font.
+ */
+html {
+  --font-oracle-cjk: "Noto Serif SC", "Noto Serif TC", "Noto Sans CJK TC", serif;
+  --font-oracle-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
 /* Theme tokens: html[data-theme] (customizable UI pattern; sync with @/lib/theme + layout Script) */
 html[data-theme="light"],
 html:not([data-theme]) {
@@ -20,6 +38,12 @@ html:not([data-theme]) {
   --fg-muted: #4a6573;
   --accent: #2a9d8f;
   --accent-hover: #238a7e;
+  /* Status tokens (light). Distinct from --accent so positive/caution/neutral
+     states read as status, not chrome. Success is a green sibling of the teal
+     accent; warning amber; info blue. */
+  --success: #1f9d6b;
+  --warning: #b7791f;
+  --info: #2b7cb3;
   /* Library scholarly-commentary accent: same cyan family as --accent / chrome. */
   --commentary-accent: var(--accent);
   --commentary-accent-bg: color-mix(in srgb, var(--accent) 14%, transparent);
@@ -134,6 +158,10 @@ html[data-theme="dark"] {
   --fg-muted: #8ca5b3;
   --accent: #4ecdc4;
   --accent-hover: #3db9b0;
+  /* Status tokens (dark). Brighter for contrast on the near-black canvas. */
+  --success: #4ecda0;
+  --warning: #e6b34d;
+  --info: #5aa9e6;
   --commentary-accent: var(--accent);
   --commentary-accent-bg: color-mix(in srgb, var(--accent) 16%, transparent);
   --commentary-accent-border: color-mix(in srgb, var(--accent) 38%, transparent);
@@ -2351,14 +2379,14 @@ html:not([data-theme]) .feedback-picker-menu__row {
   max-width: 560px;
   padding: 1.5rem;
   border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--bar-border));
-  background: color-mix(in srgb, var(--accent) 6%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--success) 30%, var(--bar-border));
+  background: color-mix(in srgb, var(--success) 6%, var(--input-bg));
 }
 
 .feedback-success h2 {
   margin: 0;
   font-size: 1.15rem;
-  color: var(--accent);
+  color: var(--success);
 }
 
 .feedback-success p {
@@ -3551,7 +3579,7 @@ button:disabled {
 }
 
 .meta-line.tier-hint-line--success {
-  color: var(--quick-fg);
+  color: var(--success);
   font-weight: 600;
 }
 

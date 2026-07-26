@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-07-11",
+  "updatedAt": "2026-07-26",
   "conventions": "./CONVENTIONS.md",
   "subRegistries": [
     {
@@ -322,6 +322,21 @@
       "path": "docs/00000000-OPS-PLAY-02-play-store-versioning.md",
       "relatedCodes": [
         "00000000-OPS-PLAY-01 play-store-changelog"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RPT-BRAND-01 brand-spec",
+      "title": "Brand spec: inventario de marca (paleta, tipografía, escalas, assets, i18n)",
+      "shortName": "brand-spec",
+      "type": "RPT",
+      "family": "BRAND",
+      "collection": "root",
+      "date": null,
+      "status": "reference",
+      "path": "brand-spec.md",
+      "relatedCodes": [
+        "00000000-RPT-ARCH-02 system-canvas"
       ],
       "relatedTests": []
     }

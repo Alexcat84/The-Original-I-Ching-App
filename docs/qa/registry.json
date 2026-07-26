@@ -2261,6 +2261,25 @@
       "path": "apps/web/src/__tests__/rls/cross-user-isolation.rls.test.ts",
       "npmScript": "npm run test:rls --prefix apps/web (requiere supabase start local)",
       "relatedAuditCode": "20260716-GATE-SEC-01 rls-isolation-test"
+    },
+    {
+      "code": "TS-WEB-017 locale-negotiate",
+      "title": "Accept-Language first-visit locale negotiation (11 locales)",
+      "shortName": "locale-negotiate",
+      "type": "TS",
+      "family": "WEB",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-07-26",
+          "change": "Matcher: pt-BR->pt, zh-TW->zh, en-US->en, unsupported->en; q-value ranking"
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/negotiate-locale.test.ts",
+      "npmScript": "npm run test --prefix apps/web -- negotiate-locale",
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/lib/negotiate-locale"
     }
   ]
 }

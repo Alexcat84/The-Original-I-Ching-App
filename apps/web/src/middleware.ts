@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAxiom } from "next-axiom";
+import { UI_LOCALE_COOKIE } from "@/lib/doc-locale-cookies";
+import { negotiateLocale } from "@/lib/negotiate-locale";
 import { rateLimitByKey } from "@/lib/rate-limit";
 
 function generateNonce(): string {
@@ -80,6 +82,23 @@ export const middleware = withAxiom(async function middlewareFn(req: NextRequest
   const reqHeaders = new Headers(req.headers);
   reqHeaders.set("x-nonce", nonce);
 
+  // First visit only: no `iching_ui_locale` cookie yet. Negotiate the best
+  // match from Accept-Language among the 11 supported locales, pin it as a
+  // cookie, and inject it into THIS request so the RSC render (resolveDocLocale)
+  // already sees it. The cookie is authoritative on every later visit. Skip API
+  // routes — the locale cookie only affects page renders.
+  let negotiatedLocale: string | null = null;
+  if (!pathname.startsWith("/api") && !req.cookies.get(UI_LOCALE_COOKIE)) {
+    negotiatedLocale = negotiateLocale(req.headers.get("accept-language"));
+    const existingCookie = req.headers.get("cookie");
+    reqHeaders.set(
+      "cookie",
+      existingCookie
+        ? `${existingCookie}; ${UI_LOCALE_COOKIE}=${negotiatedLocale}`
+        : `${UI_LOCALE_COOKIE}=${negotiatedLocale}`,
+    );
+  }
+
   // [SUPABASE SLOT] When Supabase SSR session refresh is needed:
   // const supabaseRes = await applySupabaseSession(req, reqHeaders);
   // if (supabaseRes) {
@@ -89,6 +108,13 @@ export const middleware = withAxiom(async function middlewareFn(req: NextRequest
 
   const res = NextResponse.next({ request: { headers: reqHeaders } });
   res.headers.set("content-security-policy", buildCsp(nonce));
+  if (negotiatedLocale) {
+    res.cookies.set(UI_LOCALE_COOKIE, negotiatedLocale, {
+      path: "/",
+      maxAge: 31536000,
+      sameSite: "lax",
+    });
+  }
   return res;
 });
 

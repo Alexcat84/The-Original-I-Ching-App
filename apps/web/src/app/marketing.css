@@ -24,6 +24,12 @@
   --mk-gold: #c9a24b;
   --mk-gold-soft: #ecd9a8;
   --mk-gold-dim: #8a7a5c;
+  /* Status tokens (marketing / tinta): muted so they sit inside the dark,
+     warm palette. Success is a soft jade, warning stays in the gold family,
+     info a desaturated blue. */
+  --mk-success: #7fc59a;
+  --mk-warning: #d9a441;
+  --mk-info: #86b3c9;
   --mk-link: #d9cfc0;
   --mk-line: rgba(255, 255, 255, 0.07);
   --mk-line-soft: rgba(255, 255, 255, 0.09);
@@ -1202,12 +1208,13 @@ html.iching-rn-webview .mk-page-fade {
 .mk-audit-status {
   justify-self: end;
   padding: 4px 12px;
-  border: 1px solid rgba(201, 162, 75, 0.4);
+  /* Positive "current/vigente" status now reads as success (was gold chrome). */
+  border: 1px solid color-mix(in srgb, var(--mk-success) 40%, transparent);
   border-radius: 100px;
   font-family: var(--mk-font-ui);
   font-size: 10.5px;
   letter-spacing: 0.1em;
-  color: var(--mk-gold);
+  color: var(--mk-success);
   white-space: nowrap;
 }
 

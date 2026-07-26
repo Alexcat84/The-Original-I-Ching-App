@@ -24,17 +24,33 @@ export async function generateMetadata(): Promise<Metadata> {
     title: m.title,
     description: m.description,
     keywords: ["I Ching", "I Ching AI", "Book of Changes", "hexagram reading", "oracle app", "I Ching chat", "Bones oracle", "oráculo I Ching"],
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      ],
+      apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+    },
     openGraph: {
       title: "The Original I Ching App",
       description: "Ancient oracle. AI conversation. No subscriptions. 11 languages.",
       url: "https://theoriginaliching.com",
       siteName: "The Original I Ching App",
       type: "website",
+      images: [
+        {
+          url: "https://theoriginaliching.com/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: "The Original I Ching",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: "The Original I Ching App",
       description: "Ancient oracle. AI conversation. No subscriptions. 11 languages.",
+      images: ["https://theoriginaliching.com/og-image.png"],
     },
     robots: {
       index: true,
