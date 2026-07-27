@@ -159,12 +159,28 @@ export type MarketingUiMessages = {
     title: string;
     subtitle: string;
     experimentsName: string;
+    /**
+     * CROSS-REPO DEPENDENCY, and nothing detects it automatically.
+     *
+     * These three strings state the number of experiments in the lab ("45"). That
+     * number is not ours: it is the length of EXPERIMENTOS_ACTIVOS in the registry
+     * `web/lib/experimentos.ts` of the iching-experiments repository, which has its own
+     * suite asserting it there. Nothing on this side can see that registry, so when an
+     * experiment is born the copy has to be updated HERE, by hand, in all 11 locales.
+     *
+     * If you are reading this because the number looks stale: count the slugs in that
+     * registry, do not guess. And prefer removing a figure to maintaining it — the
+     * section count that used to sit in experimentsDesc aged twice before it went.
+     */
     experimentsTitle: string;
     experimentsDesc: string;
     paperName: string;
     paperTitle: string;
     paperDesc: string;
-    /** <meta name="description"> for the Home page (mentions the open research). */
+    /**
+     * <meta name="description"> for the Home page (mentions the open research).
+     * Carries the experiment count too: see the note on experimentsTitle.
+     */
     metaDescription: string;
   };
 };
