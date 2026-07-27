@@ -12,7 +12,9 @@ import { resolveDocLocale } from "@/lib/doc-locale";
 import {
   RESEARCH_LINKS,
   RESEARCH_PAPER_AUTHOR,
+  RESEARCH_PAPER_DOI,
   RESEARCH_PAPER_TITLE,
+  RESEARCH_PAPER_ZENODO,
 } from "@/lib/marketing/research-links";
 import { buildCanonicalMetadata } from "@/lib/seo-canonical";
 
@@ -83,6 +85,8 @@ export default async function MarketingHomePage() {
             url: RESEARCH_LINKS.paper,
             description: m.research.paperDesc,
             author: { "@type": "Person", name: RESEARCH_PAPER_AUTHOR },
+            identifier: RESEARCH_PAPER_DOI,
+            sameAs: RESEARCH_PAPER_ZENODO,
             inLanguage: "en",
           },
         ],
