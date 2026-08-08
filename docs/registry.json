@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-07-26",
+  "updatedAt": "2026-08-08",
   "conventions": "./CONVENTIONS.md",
   "subRegistries": [
     {
@@ -338,6 +338,19 @@
       "relatedCodes": [
         "00000000-RPT-ARCH-02 system-canvas"
       ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-RUN-AI-OPS-01 model-cost-comparison",
+      "title": "Runbook: comparacion de costo real entre modelos Anthropic (scripts/compare-model-cost.mjs)",
+      "shortName": "model-cost-comparison",
+      "type": "RUN",
+      "family": "AI-OPS",
+      "collection": "root",
+      "date": null,
+      "status": "reference",
+      "path": "docs/00000000-RUN-AI-OPS-01-model-cost-comparison.md",
+      "relatedCodes": [],
       "relatedTests": []
     }
   ]
