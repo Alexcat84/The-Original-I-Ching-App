@@ -34,12 +34,22 @@ function isSealRed(r, g, b) {
   return r > 100 && r - g > 55 && r - b > 45 && g < 130 && b < 130;
 }
 
+/**
+ * SEAL_PATH_FILTER is a regex applied to each file path, so a subset of a large
+ * pool can be screened without scanning it whole (e.g. only the newly generated
+ * variants before they are uploaded).
+ */
+const PATH_FILTER = process.env.SEAL_PATH_FILTER ? new RegExp(process.env.SEAL_PATH_FILTER) : null;
+
 function walkImages(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
     const p = path.join(dir, name);
     if (statSync(p).isDirectory()) out.push(...walkImages(p));
-    else if (/\.(png|jpe?g|webp)$/i.test(name)) out.push(p);
+    else if (/\.(png|jpe?g|webp)$/i.test(name)) {
+      const norm = p.replace(/\\/g, "/");
+      if (!PATH_FILTER || PATH_FILTER.test(norm)) out.push(p);
+    }
   }
   return out;
 }
@@ -104,8 +114,20 @@ async function analyzeSeals(file) {
   const MIN_FILL = Number(process.env.SEAL_MIN_FILL ?? 0.65);
   const MAX_ASPECT = Number(process.env.SEAL_MAX_ASPECT ?? 1.6);
   const MIN_EDGE = Number(process.env.SEAL_MIN_EDGE ?? 0.6);
+  // A seal carries glyphs, so it cannot be a few pixels across: below ~12px on
+  // the analysis grid there is no room for a character and the blob is a red
+  // leaf or a highlight. Without this floor the screen fires on tiny 6x7px
+  // specks, which is what it did on the first full-pool scan.
+  const MIN_SIDE = Number(process.env.SEAL_MIN_SIDE ?? 12);
+  const MIN_AREA = Number(process.env.SEAL_MIN_AREA ?? 0.05);
   const suspects = blobs.filter(
-    (b) => b.areaPct >= 0.02 && b.areaPct <= 3 && b.fill >= MIN_FILL && b.aspect <= MAX_ASPECT && b.edginess >= MIN_EDGE,
+    (b) =>
+      b.areaPct >= MIN_AREA &&
+      b.areaPct <= 3 &&
+      Math.min(b.bw, b.bh) >= MIN_SIDE &&
+      b.fill >= MIN_FILL &&
+      b.aspect <= MAX_ASPECT &&
+      b.edginess >= MIN_EDGE,
   );
   suspects.sort((a, b) => b.areaPct - a.areaPct);
   return { suspects, totalRed: blobs.reduce((s, b) => s + b.areaPct, 0) };
@@ -134,7 +156,7 @@ for (const dir of dirs) {
     for (const h of hits) {
       const t = h.top;
       console.log(
-        `     - ${path.basename(h.file)}  blob ${t.areaPct.toFixed(3)}% ` +
+        `     - ${path.relative(dir, h.file).replace(/\\/g, "/")}  blob ${t.areaPct.toFixed(3)}% ` +
         `fill=${t.fill.toFixed(2)} aspect=${t.aspect.toFixed(2)} borde=${t.edginess.toFixed(2)} (${t.bw}x${t.bh}px)`,
       );
     }
