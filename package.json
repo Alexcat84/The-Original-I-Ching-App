@@ -151,7 +151,9 @@
     "clean": "turbo run clean",
     "generate:fallbacks:together": "node tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs",
     "generate:together:iching-samples": "node tools/fallback-tools/generate-together-iching-samples.mjs",
-    "security:scan": "trivy fs --scanners secret,vuln --severity HIGH,CRITICAL --skip-files .env --skip-files apps/web/.env.local --skip-dirs apps/mobile/android/app/build --ignorefile .trivyignore --format json -o security/trivy-report.json . && semgrep --config p/typescript --config p/nextjs --config p/owasp-top-ten --json -o security/semgrep-report.json apps/web/src"
+    "security:scan": "trivy fs --scanners secret,vuln --severity HIGH,CRITICAL --skip-files .env --skip-files apps/web/.env.local --skip-dirs apps/mobile/android/app/build --ignorefile .trivyignore --format json -o security/trivy-report.json . && semgrep --config p/typescript --config p/nextjs --config p/owasp-top-ten --json -o security/semgrep-report.json apps/web/src",
+    "verify:r2-fallback-coverage": "node scripts/verify-r2-fallback-coverage.mjs",
+    "compare:image-models": "node tools/fallback-tools/compare-together-image-models.mjs"
   },
   "optionalDependencies": {
     "@img/sharp-linux-x64": "0.33.5",

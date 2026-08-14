@@ -326,7 +326,14 @@ export function buildImagePrompt(
   const seed = `${consultationId ?? "na"}:${primary.number}:t${transformed?.number ?? 0}:${category}`;
   const h = hashToUint(seed);
   /** XOR-mix bits so opener vs composition vs light decorrelate (reduces synchronized repetition). */
-  const openerIdx = (h ^ (h >>> 11)) % OPENER_VARIANTS.length;
+  // `^` yields a SIGNED int32, and this is the only axis that mixes the raw `h`
+  // (every other axis shifts first, so its top bit is already clear). When h's
+  // top bit was set the index came out negative, OPENER_VARIANTS[-n] was
+  // undefined, and the trailing .filter(Boolean) dropped the opening line
+  // without a trace: 46.6% of prompts shipped with no scene-setting opener at
+  // all, silently disabling one of the eight variation axes. `>>> 0` forces the
+  // unsigned reading before the modulo.
+  const openerIdx = ((h ^ (h >>> 11)) >>> 0) % OPENER_VARIANTS.length;
   const compIdx = ((h >>> 7) ^ (h >>> 19)) % COMPOSITION_VARIANTS.length;
   const lightIdx = ((h >>> 14) ^ (h >>> 5)) % ATMOSPHERE_ROTATIONS.length;
   const focalIdx = ((h >>> 21) ^ (h >>> 9)) % FOCAL_DIVERSITY_HINTS.length;

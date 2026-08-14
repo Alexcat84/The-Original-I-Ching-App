@@ -2280,6 +2280,25 @@
       "npmScript": "npm run test --prefix apps/web -- negotiate-locale",
       "relatedAuditCodes": [],
       "area": "apps/web/src/lib/negotiate-locale"
+    },
+    {
+      "code": "VF-IMG-001 r2-fallback-coverage",
+      "title": "Cobertura completa del pool de contingencia en R2 (2720 objetos)",
+      "shortName": "r2-fallback-coverage",
+      "type": "VF",
+      "family": "IMG",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-08-13",
+          "change": "Barrido de 64 hexagramas x 10 variantes x 4 tamanos + 4 veredictos de huesos; distingue 429 (throttle) de objeto ausente"
+        }
+      ],
+      "path": "scripts/verify-r2-fallback-coverage.mjs",
+      "npmScript": "npm run verify:r2-fallback-coverage",
+      "relatedAuditCodes": [],
+      "area": "scripts/verify-r2-fallback-coverage"
     }
   ]
 }

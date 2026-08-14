@@ -26,6 +26,14 @@
 
 ---
 
+## Runbooks (`RUN-AI-OPS-*`)
+
+| Código | Título | Documento |
+|--------|--------|-----------|
+| `00000000-RUN-AI-OPS-01 model-cost-comparison` | Comparación de costo real entre modelos Anthropic (`scripts/compare-model-cost.mjs`) | [00000000-RUN-AI-OPS-01-model-cost-comparison.md](./00000000-RUN-AI-OPS-01-model-cost-comparison.md) |
+
+---
+
 ## Planes (`PLAN-SUP-*`)
 
 | Código | Título | Documento |
