@@ -1,0 +1,57 @@
+Fallback Tools: Together prebuilt image generator
+===============================================
+
+Tool file
+- tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs
+
+Purpose
+- Generate prebuilt fallback image pools for runtime failures of Together API.
+- Output path:
+  apps/web/public/fallbacks/prebuilt/{iching|bones}/{tier}/{width}x{height}/01..10.png
+
+Default generation matrix
+- I Ching: 4 tiers x 10 images = 40
+- Bones: 4 tiers x 10 images = 40
+- Total: 80 images
+
+Tiers and resolutions
+- free: 1024x768
+- seeker: 1024x1024
+- practitioner: 1184x1184
+- master: 1504x1504
+
+Run commands (root package.json pins npm — use npm run, not pnpm run)
+- npm run generate:fallbacks:together
+- or explicitly with env file:
+  node --env-file="apps/web/.env.local" tools/fallback-tools/generate-prebuilt-fallbacks-together.mjs
+
+Required env
+- TOGETHER_API_KEY
+
+Optional env
+- TOGETHER_IMAGE_MODEL (default: black-forest-labs/FLUX.1-schnell)
+- TOGETHER_IMAGE_STEPS (default: 10, clamped to 1..12)
+- TOGETHER_GUIDANCE_SCALE (Together API; omit for provider default ~3.5; try 7–9 to tighten prompt adherence)
+- TOGETHER_IMAGE_SEED (integer; reproducible generations)
+- TOGETHER_OUTPUT_FORMAT (jpeg | png)
+- TOGETHER_DELAY_MS (default: 1000)
+- TOGETHER_MAX_RETRIES (default: 4)
+- FALLBACKS_PER_BUCKET (default: 10)
+- OVERWRITE=1 to regenerate existing files
+- TARGET_FILES (optional, ';' separated absolute paths to regenerate only specific assets)
+
+Prerequisite
+- npm run build -w @iching-oracle/image-engine  (fallback script imports dist for prompt compaction + production negative prompt)
+
+I Ching production prompt samples (hallucination QA)
+- npm run generate:together:iching-samples
+- Requires TOGETHER_API_KEY — merged apps/web/.env.local → apps/web/.env → root .env.local → root .env (later overrides); root `.env` wins over stale apps/web copies; shell-exported non-empty vars win
+- Outputs under tools/output/together-iching-samples/ (gitignored)
+- See header in tools/fallback-tools/generate-together-iching-samples.mjs for SAMPLE_* env vars
+
+Notes
+- Script applies one request pacing (delay) per generated image.
+- Retries are automatic for 429 and 5xx responses.
+- Runtime fallback selector already routes by type+tier+resolution.
+- Production prompts: positive landscape-first variants in `buildImagePrompt`; anti-glyph/seal lines only in `buildTogetherNegativePrompt` (Together API). Product watermark is applied later by the compositor, not by FLUX.
+- The iching-samples script may save multiple files per run (SAMPLE_COUNT); the live app still requests one image per consultation (`n: 1`).

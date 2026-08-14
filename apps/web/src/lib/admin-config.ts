@@ -22,12 +22,13 @@ const ADMIN_CONFIG_ROW_ID = "default";
 
 function applySafePatch(base: AdminConfig, next: Partial<AdminConfig>): AdminConfig {
   const safePatch: Partial<AdminConfig> = {};
+  // "pollinations" and "gpt-image" are no longer accepted: their generation
+  // paths were removed, so storing them as the default would leave the app
+  // pointing at a provider that cannot produce an image.
   if (
     next.imageProviderDefault === "auto" ||
     next.imageProviderDefault === "mock" ||
-    next.imageProviderDefault === "pollinations" ||
     next.imageProviderDefault === "fal" ||
-    next.imageProviderDefault === "gpt-image" ||
     next.imageProviderDefault === "together"
   ) {
     safePatch.imageProviderDefault = next.imageProviderDefault;

@@ -25,7 +25,22 @@ apps/mobile/dist
 .vercel
 # tools/ and reports/ are local-only auxiliaries — not part of the deployable app.
 # They remain on disk but are not committed to git.
-tools/
+#
+# EXCEPTION: tools/fallback-tools/*.mjs. These generate and maintain the R2
+# contingency image pool and carry real production logic (the prompt rotation is
+# duplicated there, so the opener bug had to be fixed in both copies). Losing
+# them to a disk failure would mean losing the ability to rebuild the pool, so
+# the scripts are versioned. Their output/, node_modules/ and progress files are
+# not. Note git cannot re-include a path whose parent directory is excluded,
+# which is why this is `tools/*` and not `tools/`.
+tools/*
+!tools/fallback-tools/
+tools/fallback-tools/*
+!tools/fallback-tools/*.mjs
+!tools/fallback-tools/package.json
+!tools/fallback-tools/package-lock.json
+!tools/fallback-tools/README.md
+!tools/fallback-tools/USAGE.txt
 reports/
 # Claude Code / agent runtime state — never commit
 .agents/

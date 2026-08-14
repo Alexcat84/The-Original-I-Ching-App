@@ -4,7 +4,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type AdminImageProvider = "auto" | "mock" | "pollinations" | "fal" | "gpt-image" | "together";
+// pollinations/gpt-image removed: their generation paths no longer exist.
+type AdminImageProvider = "auto" | "mock" | "fal" | "together";
 type DefaultResponseMode = "directo" | "ritual" | "profundizar";
 
 interface AdminConfig {
@@ -136,9 +137,7 @@ export default function AdminPage() {
             onChange={(e) => setConfig((prev) => ({ ...prev, imageProviderDefault: e.target.value as AdminImageProvider }))}
           >
             <option value="auto">auto (Together si hay TOGETHER_API_KEY, etc.)</option>
-            <option value="pollinations">pollinations</option>
             <option value="fal">fal (Flux)</option>
-            <option value="gpt-image">gpt-image</option>
             <option value="together">together (FLUX · Together.ai)</option>
             <option value="mock">mock</option>
           </select>
