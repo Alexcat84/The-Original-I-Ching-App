@@ -99,6 +99,22 @@ async function main() {
     }
   }
 
+  // Orphan prefixes: keys that were deliberately deleted from the bucket and
+  // must not come back. This uploader syncs whatever is on disk, so old output
+  // left over from a previous run WILL resurrect a pruned prefix (it already
+  // did once: the 40 bones/silence objects were re-uploaded minutes after
+  // prune-r2-orphans.mjs removed them). The oracle-bones engine has no
+  // "silence" verdict any more, so nothing can ever serve those images.
+  const ORPHAN_PREFIXES = ["bones/silence/"];
+  const before = allFiles.length;
+  allFiles = allFiles.filter((f) => {
+    const key = path.relative(OUTPUT_DIR, f).split(path.sep).join("/");
+    return !ORPHAN_PREFIXES.some((p) => key.startsWith(p));
+  });
+  if (before !== allFiles.length) {
+    console.warn(`⚠️  ${before - allFiles.length} archivo(s) omitido(s) por prefijo huérfano: ${ORPHAN_PREFIXES.join(", ")}`);
+  }
+
   if (allFiles.length === 0) {
     console.error("❌ No images found in output/iching/ or output/bones/");
     console.error("   Run generate-fallbacks.mjs first.");
