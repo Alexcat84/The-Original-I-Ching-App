@@ -302,6 +302,20 @@ function indexProbeOrder(seedIndex: number, count: number): number[] {
 }
 
 /**
+ * Variants per key in the R2 fallback bucket (`/iching/{n}/{variant}/...`).
+ * Read from R2_VARIANTS_PER_KEY so the pool can be grown without a deploy, but
+ * ONLY raise it after the new objects are uploaded and
+ * `npm run verify:r2-fallback-coverage` passes: the picker hands the URL to the
+ * client without checking that the object exists, so a premature bump shows up
+ * as broken images. Two users drawing the same hexagram collide with
+ * probability 1/N, which is the reason to grow it at all.
+ */
+const R2_VARIANTS_PER_KEY = (() => {
+  const raw = Number(process.env.R2_VARIANTS_PER_KEY);
+  return Number.isFinite(raw) && raw >= 1 ? Math.floor(raw) : 10;
+})();
+
+/**
  * Constructs a Cloudflare R2 fallback URL for a precomputed landscape image.
  * Variant (1–10) is derived deterministically from the seed via FNV1a32.
  * Returns null when R2_PUBLIC_URL is not configured.
@@ -321,9 +335,14 @@ function pickR2FallbackImageUrl(params: {
 }): string | null {
   const base = process.env.R2_PUBLIC_URL?.trim().replace(/\/$/, "");
   if (!base) return null;
+  // How many variants exist per key in the bucket. Raising this WITHOUT first
+  // uploading the new variants produces 404s for a share of users, so the order
+  // is always: generate -> upload -> verify coverage -> raise this number.
+  // `npm run verify:r2-fallback-coverage` checks the whole address space this
+  // implies, so it is the gate for a bump.
   const variant = params.seed
-    ? (fnv1a32(params.seed) % 10) + 1
-    : Math.floor(Math.random() * 10) + 1;
+    ? (fnv1a32(params.seed) % R2_VARIANTS_PER_KEY) + 1
+    : Math.floor(Math.random() * R2_VARIANTS_PER_KEY) + 1;
   const { width: w, height: h } = params;
   if (params.kind === "iching") {
     return `${base}/iching/${params.hexagramNumber}/${variant}/${w}x${h}.webp`;
@@ -386,9 +405,17 @@ function resolveTogetherImageSize(lastPack?: string): { width: number; height: n
   }
 }
 
-const TOGETHER_DIMENSION_MULTIPLE = 32;
+// Juggernaut (and the FLUX serving stack behind it) rejects any dimension that
+// is not a multiple of 64 between 128 and 2048:
+//   "Image width must be an integer value between 128 and 2048, in multiples of '64'."
+// 64 is a multiple of 32, so this stays valid for models that only require 32.
+// This normalization applies to the REQUEST only: the R2 fallback pool is keyed
+// by the canonical tier size from resolveTogetherImageSize, so the 2720
+// prebuilt objects keep resolving (practitioner 1184 and master 1504 are NOT
+// multiples of 64 and would otherwise 400).
+const TOGETHER_DIMENSION_MULTIPLE = 64;
 const TOGETHER_MIN_DIMENSION = 256;
-const TOGETHER_MAX_DIMENSION = 4096;
+const TOGETHER_MAX_DIMENSION = 2048;
 // Allow up to ~4 MP; tier pricing margins justify higher resolutions.
 const TOGETHER_MAX_PIXELS = 4_194_304; // 4 MP
 
@@ -547,10 +574,21 @@ async function generateWithTogether(
     };
   }
   debugLog("together: generating image", { model: process.env.TOGETHER_IMAGE_MODEL, width, height });
+  // Default model: Rundiffusion/Juggernaut-Lightning-Flux (a FLUX fine-tune).
+  // black-forest-labs/FLUX.1-schnell was deprecated from Together's serverless
+  // platform on 2026-08-19. Chosen on measured evidence over both Together's own
+  // recommendation (Qwen/Qwen-Image: persistent 429s, ~3.6x slower) and its
+  // sibling Juggernaut-pro. Across 9 samples with rotating categories, Lightning
+  // scored the highest scene diversity of every candidate INCLUDING the outgoing
+  // schnell (67.3 vs 64.5; Juggernaut-pro collapsed to 41.9, i.e. it answers very
+  // different prompts with the same alpine-lake picture), with 0/9 framing
+  // artifacts, exact tier sizes, ~3.2s per image, and the lowest price of the
+  // catalog ($0.0017/image). See `npm run compare:image-models`.
   const model =
-    process.env.TOGETHER_IMAGE_MODEL ?? "black-forest-labs/FLUX.1-schnell";
+    process.env.TOGETHER_IMAGE_MODEL ?? "Rundiffusion/Juggernaut-Lightning-Flux";
   // FLUX.1-schnell: 12 steps (max) for best negative-prompt adherence and anti-contamination.
-  // FLUX.1-dev / FLUX.2-dev: 20 default (max 50) — only viable if time budget allows.
+  // Juggernaut / FLUX.1-dev / FLUX.2-dev: 20 default (max 50) — verified within the
+  // 65s abort budget at ~3.2s per image, and they DO accept negative_prompt.
   const isSchnell = model.toLowerCase().includes("schnell");
   const defaultSteps = isSchnell ? 12 : 20;
   const maxSteps = isSchnell ? 12 : 50;
