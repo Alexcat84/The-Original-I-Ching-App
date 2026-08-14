@@ -37,6 +37,9 @@ export type TogetherDebug = {
   retried?: boolean;
 };
 
+/** Same shape as TogetherDebug: the fal fallback reports failures identically. */
+export type FalDebug = TogetherDebug;
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -47,6 +50,7 @@ export type ImageProviderDebug = {
   imageProviderEnv?: string | null;
   sumiOnlyMode: boolean;
   together?: TogetherDebug;
+  fal?: FalDebug;
 };
 
 type PrebuiltFallbackKind = "iching" | "bones";
@@ -219,25 +223,32 @@ function svgStringToDataUrl(svg: string): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
+/** Providers that can still generate. Anything else resolves as if unset. */
+const GENERATING_PROVIDERS = new Set<ResolvedImageProvider>(["together", "fal", "mock", "svg-art"]);
+
 function resolveProvider(override?: ImageProvider): ResolvedImageProvider {
-  if (override && override !== "auto") return override;
+  // A stale override can still arrive from admin_runtime_config, which may hold
+  // "pollinations" or "gpt-image" from before those paths were removed. Ignore
+  // it rather than resolving to a provider with no implementation behind it.
+  if (override && override !== "auto" && GENERATING_PROVIDERS.has(override)) return override;
   const raw = (process.env.IMAGE_PROVIDER ?? "").trim().toLowerCase();
 
-  // Explicit choices (user forces a backend)
+  // Explicit choices (operator forces a backend). "pollinations" and
+  // "gpt-image" are intentionally NOT selectable any more: their generation
+  // paths were removed as untested, so honouring them would resolve to a
+  // provider that can no longer produce anything.
   if (raw === "mock") return "mock";
-  if (raw === "pollinations") return "pollinations";
-  if (raw === "fal") return "fal";
-  if (raw === "gpt-image") return "gpt-image";
+  if (raw === "fal") return process.env.FAL_AI_KEY ? "fal" : "mock";
   if (raw === "together") {
     return process.env.TOGETHER_API_KEY ? "together" : "mock";
   }
 
-  // Unset, "auto", or unknown: spend paid keys when present (Together first)
+  // Unset, "auto", or unknown: spend paid keys when present. Together is the
+  // primary; fal is the paid fallback and also the primary if Together has no
+  // key at all. Nothing free/unvalidated is reachable, in dev or in prod.
   if (!raw || raw === "auto") {
     if (process.env.TOGETHER_API_KEY) return "together";
     if (process.env.FAL_AI_KEY) return "fal";
-    if (process.env.OPENAI_API_KEY) return "gpt-image";
-    if (process.env.NODE_ENV !== "production") return "pollinations";
     return "mock";
   }
 
@@ -419,14 +430,27 @@ const TOGETHER_MAX_DIMENSION = 2048;
 // Allow up to ~4 MP; tier pricing margins justify higher resolutions.
 const TOGETHER_MAX_PIXELS = 4_194_304; // 4 MP
 
+/**
+ * Rounds a tier dimension to a size the provider accepts, going UP.
+ *
+ * Up rather than down because the Juggernaut/FLUX family bills a FLAT rate per
+ * image regardless of resolution, so the extra pixels are free: master asks for
+ * 1536 instead of 1504 (down would have been 1472) and practitioner 1216
+ * instead of 1184. The paying tiers get slightly MORE than the spec rather than
+ * slightly less, at identical cost. Capped at TOGETHER_MAX_DIMENSION and by the
+ * 4MP ceiling in normalizeTogetherSize.
+ */
 function normalizeTogetherDimension(value: number): number {
   const clamped = Math.max(
     TOGETHER_MIN_DIMENSION,
     Math.min(TOGETHER_MAX_DIMENSION, Math.trunc(value)),
   );
   const rounded =
-    clamped - (clamped % TOGETHER_DIMENSION_MULTIPLE);
-  return Math.max(TOGETHER_MIN_DIMENSION, rounded);
+    Math.ceil(clamped / TOGETHER_DIMENSION_MULTIPLE) * TOGETHER_DIMENSION_MULTIPLE;
+  return Math.max(
+    TOGETHER_MIN_DIMENSION,
+    Math.min(TOGETHER_MAX_DIMENSION, rounded),
+  );
 }
 
 function normalizeTogetherSize(width: number, height: number): { width: number; height: number } {
@@ -463,63 +487,118 @@ function normalizeTogetherSize(width: number, height: number): { width: number; 
   return { width: safeWidth, height: safeHeight };
 }
 
-async function generateWithFal(prompt: string, width: number, height: number): Promise<string | null> {
+/**
+ * fal.ai running black-forest-labs FLUX.1-schnell: the FALLBACK provider.
+ *
+ * This is deliberately the SAME model the app used until Together deprecated it
+ * from their serverless platform on 2026-08-19 (fal still serves it, at
+ * $0.003/megapixel). So when the primary provider fails, the image the user
+ * gets is the art direction this product shipped with for months, not a
+ * different-looking substitute.
+ *
+ * Brought up to parity with the primary path, which the previous stub lacked:
+ * deterministic seed from the consultation, the schnell step count, an abort
+ * budget, one retry on 5xx/429, and structured debug instead of a silent null.
+ *
+ * FLUX schnell is a distilled, guidance-free model: it has no CFG and therefore
+ * ignores negative prompts, which is exactly why the Together path never sent
+ * one for schnell either. The anti-text instructions live in the positive
+ * prompt for this reason.
+ */
+async function generateWithFal(
+  prompt: string,
+  width: number,
+  height: number,
+  seedBase?: string,
+  tier?: string,
+): Promise<{ url: string | null; debug: FalDebug; size?: { width: number; height: number } }> {
   const key = process.env.FAL_AI_KEY;
-  if (!key) return null;
-  try {
-    const res = await fetch("https://fal.run/fal-ai/flux/schnell", {
-      method: "POST",
-      headers: {
-        Authorization: `Key ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt,
-        image_size: { width, height },
-        num_images: 1,
-        enable_safety_checker: true,
-      }),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as { images?: Array<{ url?: string }> };
-    return data.images?.[0]?.url ?? null;
-  } catch {
-    return null;
+  if (!key) return { url: null, debug: { attempted: true, hasKey: false } };
+
+  // fal wants dimensions on the same 64px grid; reuse the shared normalizer so
+  // the two providers cannot drift apart on sizing.
+  const { width: safeWidth, height: safeHeight } = normalizeTogetherSize(width, height);
+  const model = process.env.FAL_IMAGE_MODEL?.trim() || "fal-ai/flux/schnell";
+  const stepsRaw = Number(process.env.FAL_IMAGE_STEPS ?? 12);
+  const steps = Math.min(12, Math.max(1, Number.isFinite(stepsRaw) ? stepsRaw : 12));
+
+  const body: Record<string, unknown> = {
+    prompt: compactTogetherFluxPromptSegment(prompt, TOGETHER_FLUX_PROMPT_MAX_CHARS),
+    image_size: { width: safeWidth, height: safeHeight },
+    num_images: 1,
+    num_inference_steps: steps,
+    enable_safety_checker: true,
+  };
+  if (seedBase) body.seed = fnv1a32(seedBase) % 2_147_483_647;
+
+  let retried = false;
+  for (let attempt = 0; attempt <= 1; attempt++) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 65_000);
+    try {
+      const res = await fetch(`https://fal.run/${model}`, {
+        method: "POST",
+        headers: { Authorization: `Key ${key}`, "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        const snippet = await res.text().catch(() => "");
+        if ((res.status === 429 || res.status >= 500) && attempt === 0) {
+          retried = true;
+          await sleep(600);
+          continue;
+        }
+        debugLog("fal: request failed", { status: res.status, snippet: snippet.slice(0, 200) });
+        Sentry.captureException(new Error(`fal.ai API Error: ${res.status}`), {
+          tags: { provider: "fal_ai", tier: tier || "unknown" },
+          extra: { status: res.status, snippet: snippet.slice(0, 300), retried },
+        });
+        return {
+          url: null,
+          debug: { attempted: true, hasKey: true, status: res.status, errorSnippet: snippet.slice(0, 300), retried },
+        };
+      }
+
+      const data = (await res.json()) as { images?: Array<{ url?: string }> };
+      const url = data.images?.[0]?.url ?? null;
+      if (!url) {
+        return { url: null, debug: { attempted: true, hasKey: true, errorSnippet: "response had no image url", retried } };
+      }
+      return {
+        url,
+        debug: { attempted: true, hasKey: true, retried },
+        size: { width: safeWidth, height: safeHeight },
+      };
+    } catch (err) {
+      clearTimeout(timeoutId);
+      const isAbort = err instanceof Error && err.name === "AbortError";
+      if (!isAbort && attempt === 0) {
+        retried = true;
+        await sleep(600);
+        continue;
+      }
+      debugLog("fal: fetch threw", { isAbort, err: String(err).slice(0, 200) });
+      Sentry.captureException(err, { tags: { provider: "fal_ai", tier: tier || "unknown" }, extra: { isAbort, retried } });
+      return {
+        url: null,
+        debug: {
+          attempted: true,
+          hasKey: true,
+          reason: isAbort ? "abort_timeout" : "fetch_threw",
+          errorSnippet: isAbort ? "fal timeout (65s)" : String(err).slice(0, 300),
+          retried,
+        },
+      };
+    }
   }
+  return { url: null, debug: { attempted: true, hasKey: true, reason: "retries_exhausted", retried } };
 }
 
-async function generateWithGptImage(prompt: string, width: number, height: number): Promise<string | null> {
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) return null;
-  const supported = new Set(["1024x1024", "1536x1024", "1024x1536"]);
-  const candidate = `${width}x${height}`;
-  const size = supported.has(candidate) ? candidate : "1536x1024";
-  try {
-    const res = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-1",
-        prompt,
-        size,
-        quality: "high",
-        n: 1,
-      }),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as { data?: Array<{ b64_json?: string; url?: string }> };
-    const first = data.data?.[0];
-    if (!first) return null;
-    if (first.url) return first.url;
-    if (first.b64_json) return `data:image/png;base64,${first.b64_json}`;
-    return null;
-  } catch {
-    return null;
-  }
-}
+// generateWithGptImage removed: the gpt-image provider was never validated in
+// this product and is no longer part of the fallback chain.
 
 function togetherImageGenerationOptionalFields(seedBase?: string): {
   guidance_scale?: number;
@@ -562,7 +641,12 @@ async function generateWithTogether(
   seedBase?: string,
   tier?: string,
   hexagramNumber?: number
-): Promise<{ url: string | null; debug: TogetherDebug }> {
+): Promise<{
+  url: string | null;
+  debug: TogetherDebug;
+  /** Size actually requested after rounding to the provider's 64px grid. */
+  size?: { width: number; height: number };
+}> {
   const key = process.env.TOGETHER_API_KEY;
   if (!key) {
     return {
@@ -714,6 +798,10 @@ async function generateWithTogether(
         attempted: true,
         hasKey: true,
       },
+      // Report the size actually requested, so the caller can build the overlay
+      // at the real image size instead of the canonical tier size (they differ
+      // whenever the tier is not a multiple of 64).
+      size: { width: safeWidth, height: safeHeight },
     };
   }
   if (first.b64_json) {
@@ -724,6 +812,7 @@ async function generateWithTogether(
         attempted: true,
         hasKey: true,
       },
+      size: { width: safeWidth, height: safeHeight },
     };
   }
   debugLog("together: unexpected response shape", { keys: Object.keys(first ?? {}) });
@@ -868,50 +957,39 @@ export async function buildImageAsset(params: {
     transformedChinese: params.transformedHexagram?.chineseName ?? null,
   };
 
-  if (provider === "pollinations") {
-    const model = process.env.POLLINATIONS_MODEL ?? "flux";
-    const width = Number(process.env.POLLINATIONS_WIDTH ?? String(tierWidth));
-    const height = Number(process.env.POLLINATIONS_HEIGHT ?? String(tierHeight));
-    const seed = Math.floor(Math.random() * 1_000_000_000);
-    const encoded = encodeURIComponent(promptForRemote);
-    const imageUrl =
-      `https://image.pollinations.ai/prompt/${encoded}` +
-      `?model=${encodeURIComponent(model)}&width=${width}&height=${height}&seed=${seed}&nologo=true`;
-    const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
-      ...overlayBase,
-      outputWidth: width,
-      outputHeight: height,
-    });
-    return { provider, imageUrl, fallbackImageUrl, debug, overlaySvgDataUrl };
-  }
+  // NOTE: the "pollinations" and "gpt-image" generation paths were removed.
+  // Pollinations is a free, unauthenticated endpoint we never validated for
+  // quality, seals or uptime, and gpt-image was never exercised either; keeping
+  // untested providers wired into a paid product only creates ways to serve a
+  // user something nobody has ever looked at. The live chain is now
+  // Together -> fal (same FLUX.1-schnell as before) -> R2 pool -> prebuilt -> SVG.
+  // Their names survive in session-store's imageProviderFromUrl so historical
+  // consultations generated back then still label correctly.
 
   if (provider === "fal") {
-    const falImage = await generateWithFal(promptForRemote, tierWidth, tierHeight);
-    if (falImage) {
+    // Explicitly selected as the primary provider (IMAGE_PROVIDER=fal).
+    const fal = await generateWithFal(
+      promptForRemote,
+      tierWidth,
+      tierHeight,
+      params.consultationId ??
+        `${params.primaryHexagram}:${params.transformedHexagram?.number ?? "none"}:${params.category}`,
+      params.tier,
+    );
+    debug.fal = fal.debug;
+    if (fal.url) {
       const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
         ...overlayBase,
-        outputWidth: tierWidth,
-        outputHeight: tierHeight,
+        outputWidth: fal.size?.width ?? tierWidth,
+        outputHeight: fal.size?.height ?? tierHeight,
       });
-      return { provider, imageUrl: falImage, fallbackImageUrl, debug, overlaySvgDataUrl };
-    }
-  }
-
-  if (provider === "gpt-image") {
-    const gptImage = await generateWithGptImage(promptForRemote, tierWidth, tierHeight);
-    if (gptImage) {
-      const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
-        ...overlayBase,
-        outputWidth: tierWidth,
-        outputHeight: tierHeight,
-      });
-      return { provider, imageUrl: gptImage, fallbackImageUrl, debug, overlaySvgDataUrl };
+      return { provider, imageUrl: fal.url, fallbackImageUrl, debug, overlaySvgDataUrl };
     }
   }
 
   if (provider === "together") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
-    const { url, debug: togetherDebug } = await generateWithTogether(
+    const { url, debug: togetherDebug, size: actualSize } = await generateWithTogether(
       promptForRemote,
       tw,
       th,
@@ -922,16 +1000,42 @@ export async function buildImageAsset(params: {
     );
     debug.together = togetherDebug;
     if (url) {
+      // Overlay must match the image that was actually produced: the request is
+      // rounded up to a multiple of 64, so master is 1536 while the tier says
+      // 1504. Sizing the overlay to the tier would scale it against the art.
       const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
         ...overlayBase,
-        outputWidth: tw,
-        outputHeight: th,
+        outputWidth: actualSize?.width ?? tw,
+        outputHeight: actualSize?.height ?? th,
       });
       return { provider, imageUrl: url, fallbackImageUrl, debug, overlaySvgDataUrl };
     }
+
+    // FALLBACK 1: fal.ai serving the same FLUX.1-schnell this product ran on
+    // before Together deprecated it. A live regeneration keeps the image unique
+    // to the consultation, which the precomputed R2 pool below cannot do, so it
+    // is worth one more provider call before falling back to stock art.
+    const fal = await generateWithFal(
+      promptForRemote,
+      tw,
+      th,
+      params.consultationId ??
+        `${params.primaryHexagram}:${params.transformedHexagram?.number ?? "none"}:${params.category}`,
+      params.tier,
+    );
+    debug.fal = fal.debug;
+    if (fal.url) {
+      debugLog("buildImageAsset: together failed, served by fal fallback");
+      const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
+        ...overlayBase,
+        outputWidth: fal.size?.width ?? tw,
+        outputHeight: fal.size?.height ?? th,
+      });
+      return { provider: "fal", imageUrl: fal.url, fallbackImageUrl, debug, overlaySvgDataUrl };
+    }
   }
 
-  // Together failed — cascade: R2 → local prebuilt → sumi SVG
+  // Both live providers failed — cascade: R2 → local prebuilt → sumi SVG
   if (r2FallbackUrl) {
     debugLog("buildImageAsset: together failed, using R2 fallback", { r2FallbackUrl });
     const overlaySvgDataUrl = await buildSumiHexagramOverlaySvgDataUrl({
@@ -1030,50 +1134,31 @@ export async function buildOracleBonesImageAsset(params: {
   }
   let fallbackImageUrl: string = r2BonesFallbackUrl ?? localBonesFallbackUrl ?? svgFallbackUrl;
 
-  if (provider === "pollinations") {
-    const model = process.env.POLLINATIONS_MODEL ?? "flux";
-    const width = Number(process.env.POLLINATIONS_WIDTH ?? String(tierWidth));
-    const height = Number(process.env.POLLINATIONS_HEIGHT ?? String(tierHeight));
-    const seed = Math.floor(Math.random() * 1_000_000_000);
-    const encoded = encodeURIComponent(promptForRemote);
-    const imageUrl =
-      `https://image.pollinations.ai/prompt/${encoded}` +
-      `?model=${encodeURIComponent(model)}&width=${width}&height=${height}&seed=${seed}&nologo=true`;
-    const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
-      verdict: params.verdict,
-      outputWidth: width,
-      outputHeight: height,
-    });
-    return { provider, imageUrl, fallbackImageUrl, overlaySvgDataUrl };
-  }
+  // pollinations path removed here too: free, unauthenticated and never validated.
 
   if (provider === "fal") {
-    const falImage = await generateWithFal(promptForRemote, tierWidth, tierHeight);
-    if (falImage) {
+    const fal = await generateWithFal(
+      promptForRemote,
+      tierWidth,
+      tierHeight,
+      params.consultationId ??
+        `${params.patternId}:${params.verdict}:${params.medium}:${params.tier ?? "free"}`,
+      params.tier,
+    );
+    if (fal.url) {
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
         verdict: params.verdict,
-        outputWidth: tierWidth,
-        outputHeight: tierHeight,
+        outputWidth: fal.size?.width ?? tierWidth,
+        outputHeight: fal.size?.height ?? tierHeight,
       });
-      return { provider, imageUrl: falImage, fallbackImageUrl, overlaySvgDataUrl };
+      return { provider, imageUrl: fal.url, fallbackImageUrl, overlaySvgDataUrl };
     }
   }
-
-  if (provider === "gpt-image") {
-    const gptImage = await generateWithGptImage(promptForRemote, tierWidth, tierHeight);
-    if (gptImage) {
-      const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
-        verdict: params.verdict,
-        outputWidth: tierWidth,
-        outputHeight: tierHeight,
-      });
-      return { provider, imageUrl: gptImage, fallbackImageUrl, overlaySvgDataUrl };
-    }
-  }
+  // gpt-image path removed with pollinations: never validated, never used.
 
   if (provider === "together") {
     const { width: tw, height: th } = resolveTogetherImageSize(params.tier);
-    const { url } = await generateWithTogether(
+    const { url, size: actualSize } = await generateWithTogether(
       promptForRemote,
       tw,
       th,
@@ -1081,10 +1166,12 @@ export async function buildOracleBonesImageAsset(params: {
         `${params.patternId}:${params.verdict}:${params.medium}:${params.tier ?? "free"}`,
     );
     if (url) {
+      // Same as the I Ching branch: size the overlay to the image that was
+      // actually produced, not to the canonical tier size.
       const overlaySvgDataUrl = buildOracleBonesSymbolOverlaySvgDataUrl({
         verdict: params.verdict,
-        outputWidth: tw,
-        outputHeight: th,
+        outputWidth: actualSize?.width ?? tw,
+        outputHeight: actualSize?.height ?? th,
       });
       return { provider, imageUrl: url, fallbackImageUrl, overlaySvgDataUrl };
     }
