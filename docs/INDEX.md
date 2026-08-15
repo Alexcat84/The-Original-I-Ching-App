@@ -34,6 +34,14 @@
 
 ---
 
+## Proveedores de imagen (`PLAN-IMG-PROV-*`)
+
+| Código | Título | Documento |
+|--------|--------|-----------|
+| `20260814-PLAN-IMG-PROV-01 image-fallback-providers-deferred` | Activación diferida de fal.ai y Runware: qué hay construido y cómo encenderlo | [20260814-PLAN-IMG-PROV-01-image-fallback-providers-deferred.md](./20260814-PLAN-IMG-PROV-01-image-fallback-providers-deferred.md) |
+
+---
+
 ## Planes (`PLAN-SUP-*`)
 
 | Código | Título | Documento |

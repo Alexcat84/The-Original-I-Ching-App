@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-08-08",
+  "updatedAt": "2026-08-14",
   "conventions": "./CONVENTIONS.md",
   "subRegistries": [
     {
@@ -351,6 +351,21 @@
       "status": "reference",
       "path": "docs/00000000-RUN-AI-OPS-01-model-cost-comparison.md",
       "relatedCodes": [],
+      "relatedTests": []
+    },
+    {
+      "code": "20260814-PLAN-IMG-PROV-01 image-fallback-providers-deferred",
+      "title": "Plan: activacion diferida de fal.ai y Runware como proveedores de respaldo de imagen",
+      "shortName": "image-fallback-providers-deferred",
+      "type": "PLAN",
+      "family": "IMG-PROV",
+      "collection": "root",
+      "date": "2026-08-14",
+      "status": "deferred",
+      "path": "docs/20260814-PLAN-IMG-PROV-01-image-fallback-providers-deferred.md",
+      "relatedCodes": [
+        "00000000-RUN-AI-OPS-01 model-cost-comparison"
+      ],
       "relatedTests": []
     }
   ]
