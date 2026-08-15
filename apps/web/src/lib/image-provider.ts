@@ -1015,6 +1015,14 @@ export async function buildImageAsset(params: {
     // before Together deprecated it. A live regeneration keeps the image unique
     // to the consultation, which the precomputed R2 pool below cannot do, so it
     // is worth one more provider call before falling back to stock art.
+    //
+    // DORMANT ON PURPOSE (2026-08-14): no FAL_AI_KEY is set, so this returns
+    // immediately and the chain continues to the R2 pool. That is a product
+    // decision, not an oversight: the pool covers all 64 hexagrams at 20
+    // variants and 4 sizes (5440 objects, verified), which was judged enough
+    // contingency for now. Setting FAL_AI_KEY in Vercel activates this with no
+    // code change. Rationale, trade-off and activation steps:
+    // docs/20260814-PLAN-IMG-PROV-01-image-fallback-providers-deferred.md
     const fal = await generateWithFal(
       promptForRemote,
       tw,
