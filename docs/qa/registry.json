@@ -381,12 +381,17 @@
       "shortName": "response-clean",
       "type": "TS",
       "family": "WEB",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "versionHistory": [
         {
           "version": "1.0.0",
           "date": "2026-05-01",
           "change": "SSE text normalization"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-08-17",
+          "change": "Trailing signature clause suppression: display-only, safety-bounded (never removes real reading content)"
         }
       ],
       "path": "apps/web/src/lib/__tests__/response-clean.test.ts",
@@ -2716,25 +2721,6 @@
       "npmScript": "npm run verify:r2-fallback-coverage",
       "relatedAuditCodes": [],
       "area": "scripts/verify-r2-fallback-coverage"
-    },
-    {
-      "code": "TS-WEB-018 rights-line-paragraph-length-gate",
-      "title": "isRightsReservedParagraph never demotes a substantial content paragraph",
-      "shortName": "rights-line-paragraph-length-gate",
-      "type": "TS",
-      "family": "WEB",
-      "version": "1.0.0",
-      "versionHistory": [
-        {
-          "version": "1.0.0",
-          "date": "2026-08-15",
-          "change": "Regression for the justify-loss bug: a >140-char paragraph must stay justified even when a trailing copyright/site mention is glued onto it with no blank line"
-        }
-      ],
-      "path": "apps/web/src/components/__tests__/OracleInterpretationMarkdown.test.ts",
-      "npmScript": "npm run test --prefix apps/web -- OracleInterpretationMarkdown",
-      "relatedAuditCodes": [],
-      "area": "apps/web/src/components/OracleInterpretationMarkdown"
     }
   ]
 }

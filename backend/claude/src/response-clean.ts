@@ -31,6 +31,20 @@ function stripMutationRuleCodes(text: string): string {
   return t;
 }
 
+/**
+ * Deliberately does NOT strip a trailing copyright/rights/domain signature here. This
+ * function's output is what gets PERSISTED to the database (see the cleanText assignments
+ * in interpretation.ts / oracle-bones-interpretation.ts, which feed straight into
+ * upsertSessionAndConsultation): any removal here is permanent, with no raw copy kept
+ * anywhere to recover from a misclassification. The prompt now explicitly forbids the model
+ * from adding this text at all (see the ABSOLUTE RULES in interpretation.ts and
+ * ORACLE_BONES_SYSTEM), which is the real fix. If it still slips through, suppression
+ * happens at DISPLAY time only, non-destructively, in
+ * apps/web/src/lib/response-clean.ts (stripTrailingSignatureClause): every surface that
+ * shows a reading (chat, PDF export, public share pages) runs the text through that
+ * before rendering, so the stored text is never touched and nothing is ever lost.
+ */
+
 /** Remove model-added boilerplate and trailing asterisk disclaimers from oracle text. */
 export function stripInterpretationFluff(text: string): string {
   let t = text.trim();

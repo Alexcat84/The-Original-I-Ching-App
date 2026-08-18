@@ -2,6 +2,16 @@ import type { OracleBonesVerdict } from "@iching-oracle/oracle-bones-engine";
 import type { Metadata } from "next";
 import { getConsultationByPublicId } from "@/lib/session-store";
 import { oracleBonesVerdictChinese } from "@/lib/oracle-bones-verdict-glyph";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
+
+/**
+ * Display-only cleanup, same as the live chat (InterpretationBody) and the PDF export path.
+ * The stored `interpretation` is never modified: this only affects what gets rendered here,
+ * so a stray disclaimer the model appended never reaches this public page either.
+ */
+function cleanForDisplay(text: string): string {
+  return normalizeInterpretationPunctuation(stripInterpretationFluff(text));
+}
 
 interface ReadingPageProps {
   params: Promise<{ id: string }>;
@@ -17,7 +27,7 @@ export async function generateMetadata({ params }: ReadingPageProps): Promise<Me
     row.oracleType === "oracle_bones"
       ? `甲骨文 · ${row.primaryHexagramName}`
       : `I Ching ${row.primaryHexagram}: ${row.primaryHexagramName}`;
-  const description = row.interpretation.slice(0, 180);
+  const description = cleanForDisplay(row.interpretation).slice(0, 180);
   return {
     title,
     description,
@@ -57,7 +67,7 @@ export default async function ReadingPage({ params }: ReadingPageProps) {
             <p className="meta-line">Patrón {row.oracleBones.pattern_id} · {row.oracleBones.verdict}</p>
           </div>
         ) : null}
-        <p>{row.interpretation}</p>
+        <p>{cleanForDisplay(row.interpretation)}</p>
         <img src={row.imageUrl} alt={`Imagen de ${row.primaryHexagramName}`} className="oracle-image" />
         <div className="session-actions">
           <a className="secondary-btn" href={row.imageUrl} target="_blank" rel="noreferrer" download>

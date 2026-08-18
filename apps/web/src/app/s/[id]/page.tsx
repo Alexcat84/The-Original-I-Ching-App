@@ -1,5 +1,15 @@
 import type { Metadata } from "next";
 import { getSessionByPublicId } from "@/lib/session-store";
+import { normalizeInterpretationPunctuation, stripInterpretationFluff } from "@/lib/response-clean";
+
+/**
+ * Display-only cleanup, same as the live chat (InterpretationBody) and the PDF export path.
+ * The stored `interpretation` is never modified: this only affects what gets rendered here,
+ * so a stray disclaimer the model appended never reaches this public page either.
+ */
+function cleanForDisplay(text: string): string {
+  return normalizeInterpretationPunctuation(stripInterpretationFluff(text));
+}
 
 interface SessionPageProps {
   params: Promise<{ id: string }>;
@@ -58,7 +68,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
           <article key={row.consultationId} className="oracle-panel" data-testid="session-consultation">
             <h3>{row.sessionPosition}. {row.primaryHexagram}. {row.primaryHexagramName}</h3>
             <p>{row.question}</p>
-            <p>{row.interpretation}</p>
+            <p>{cleanForDisplay(row.interpretation)}</p>
           </article>
         ))}
       </section>

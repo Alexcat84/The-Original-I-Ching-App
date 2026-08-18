@@ -6774,14 +6774,6 @@ html[data-theme="dark"] .library-mutation__link {
   text-align: justify;
 }
 
-/* Copyright / reserved-rights one-liner (often last paragraph from the model); keep left-aligned. */
-.oracle-md-p.oracle-md-p--rights-line {
-  text-align: start;
-  text-justify: auto;
-  hyphens: none;
-  -webkit-hyphens: none;
-}
-
 .oracle-md-hr {
   border: none;
   border-top: 1px solid var(--bar-border);
