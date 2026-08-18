@@ -18,10 +18,21 @@ function textFromNodes(node: unknown): string {
   return "";
 }
 
-/** Model often appends a one-line copyright; keep left-aligned while body stays justified. */
-function isRightsReservedParagraph(plain: string): boolean {
+/**
+ * Model often appends a one-line copyright; keep left-aligned while body stays justified.
+ *
+ * Gated to SHORT paragraphs only (a real standalone copyright line is always well under
+ * this length). Without the length gate, if the model ever glues that line onto the end
+ * of a real paragraph with no blank line in between (which does happen, especially on
+ * the long free-form closing paragraph in Master Combined mode), the trigger phrase
+ * (e.g. "theoriginaliching.com") gets matched against the WHOLE merged paragraph, and the
+ * entire visible reading loses justification, not just the disclaimer clause. A length
+ * gate cannot mis-fire on substantial content: a paragraph over ~140 chars is never just
+ * a copyright line, so it must stay justified regardless of what substring it contains.
+ */
+export function isRightsReservedParagraph(plain: string): boolean {
   const t = plain.replace(/\s+/g, " ").trim();
-  if (!t) return false;
+  if (!t || t.length > 140) return false;
   if (t.includes("©")) return true;
   if (
     /rights reserved|derechos reservados|tous droits|r[eé]serv[eé]s|rechte vorbehalten|diritti riservati|판권|保留所有|無断複写|転載を禁/i.test(

@@ -249,10 +249,18 @@
       "type": "TS",
       "family": "DATA",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "DE canonical labels + Baynes/OCR aliases" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "DE canonical labels + Baynes/OCR aliases"
+        }
+      ],
       "path": "packages/iching-data/src/trigrams.test.ts",
       "npmScript": "npm run test --prefix packages/iching-data",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "packages/iching-data/src/trigrams"
     },
     {
@@ -586,10 +594,18 @@
       "type": "TS",
       "family": "WEB-LIB",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "DE titles + trigram filter join" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "DE titles + trigram filter join"
+        }
+      ],
       "path": "apps/web/src/lib/library/__tests__/library-data.test.ts",
       "npmScript": "npm run test --prefix apps/web -- library-data",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "apps/web/src/lib/library"
     },
     {
@@ -1500,10 +1516,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Initial DE stitch" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Initial DE stitch"
+        }
+      ],
       "path": "scripts/stitch-wilhelm-de-txt.mjs",
       "npmScript": "npm run stitch:wilhelm-de-txt",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/stitch-wilhelm-de-txt.mjs"
     },
     {
@@ -1513,10 +1537,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Initial DE 64hex parse" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Initial DE 64hex parse"
+        }
+      ],
       "path": "scripts/parse-wilhelm-de-64hex-txt.mjs",
       "npmScript": "npm run parse:wilhelm-de-64hex-txt",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/parse-wilhelm-de-64hex-txt.mjs"
     },
     {
@@ -1526,10 +1558,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Dual-pass merge" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Dual-pass merge"
+        }
+      ],
       "path": "scripts/merge-wilhelm-de-dual-pass.mjs",
       "npmScript": "npm run merge:wilhelm-de-dual-pass",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/merge-wilhelm-de-dual-pass.mjs"
     },
     {
@@ -1539,10 +1579,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Translation module sync" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Translation module sync"
+        }
+      ],
       "path": "scripts/sync-wilhelm-de-translation-module.mjs",
       "npmScript": "npm run sync:wilhelm-de-translation-module",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/sync-wilhelm-de-translation-module.mjs"
     },
     {
@@ -1552,10 +1600,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "DE all gates" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "DE all gates"
+        }
+      ],
       "path": "tools/verify-wilhelm-de-all-gates.mjs",
       "npmScript": "npm run verify:wilhelm-de-all-gates",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "tools/verify-wilhelm-de-all-gates.mjs"
     },
     {
@@ -1565,10 +1621,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "Post-build overlay/library runtime smoke" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "Post-build overlay/library runtime smoke"
+        }
+      ],
       "path": "tools/wilhelm-de-runtime-smoke.mjs",
       "npmScript": "node tools/wilhelm-de-runtime-smoke.mjs",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "tools/wilhelm-de-runtime-smoke.mjs"
     },
     {
@@ -1578,10 +1642,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Triangulation report" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Triangulation report"
+        }
+      ],
       "path": "scripts/wilhelm-de-triangulation-report.mjs",
       "npmScript": "npm run audit:wilhelm-de-triangulation",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/wilhelm-de-triangulation-report.mjs"
     },
     {
@@ -1592,12 +1664,22 @@
       "family": "FID-W",
       "version": "2.0.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-28", "change": "DE vs Baynes oracle + Ten Wings" },
-        { "version": "2.0.0", "date": "2026-06-29", "change": "EN-base structural comparison" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "DE vs Baynes oracle + Ten Wings"
+        },
+        {
+          "version": "2.0.0",
+          "date": "2026-06-29",
+          "change": "EN-base structural comparison"
+        }
       ],
       "path": "scripts/wilhelm-de-baynes-comparison-report.mjs",
       "npmScript": "npm run audit:wilhelm-de-baynes-comparison",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/wilhelm-de-baynes-comparison-report.mjs"
     },
     {
@@ -1608,12 +1690,22 @@
       "family": "FID-W",
       "version": "2.0.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-29", "change": "DE + MT EN + Baynes + quality column" },
-        { "version": "2.0.0", "date": "2026-06-29", "change": "Baynes EN base + blank fill progress" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "DE + MT EN + Baynes + quality column"
+        },
+        {
+          "version": "2.0.0",
+          "date": "2026-06-29",
+          "change": "Baynes EN base + blank fill progress"
+        }
       ],
       "path": "scripts/export-wilhelm-de-baynes-comparison-viewer.mjs",
       "npmScript": "npm run export:wilhelm-de-baynes-comparison-viewer",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/export-wilhelm-de-baynes-comparison-viewer.mjs"
     },
     {
@@ -1624,12 +1716,22 @@
       "family": "FID-W",
       "version": "2.0.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-29", "change": "Jaccard + structure + contamination notes" },
-        { "version": "2.0.0", "date": "2026-06-29", "change": "Direct EN↔DE without MT" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "Jaccard + structure + contamination notes"
+        },
+        {
+          "version": "2.0.0",
+          "date": "2026-06-29",
+          "change": "Direct EN↔DE without MT"
+        }
       ],
       "path": "scripts/lib/wilhelm-en-de-quality-compare.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-en-de-quality-compare.test.mjs",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/lib/wilhelm-en-de-quality-compare.mjs"
     },
     {
@@ -1639,10 +1741,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "64 hex × 33 fields Baynes parity" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "64 hex × 33 fields Baynes parity"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-blank-maestro.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-de-blank-maestro.test.mjs",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/lib/wilhelm-de-blank-maestro.mjs"
     },
     {
@@ -1652,10 +1762,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "Blank scaffold CSV export" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "Blank scaffold CSV export"
+        }
+      ],
       "path": "scripts/export-wilhelm-de-64hex-audit-csv.mjs",
       "npmScript": "npm run export:wilhelm-de-64hex-audit-csv",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/export-wilhelm-de-64hex-audit-csv.mjs"
     },
     {
@@ -1665,10 +1783,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "Blank JSON generator" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "Blank JSON generator"
+        }
+      ],
       "path": "scripts/init-wilhelm-de-blank-maestro.mjs",
       "npmScript": "npm run init:wilhelm-de-blank-maestro",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/init-wilhelm-de-blank-maestro.mjs"
     },
     {
@@ -1678,10 +1804,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "German marker split tests" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "German marker split tests"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-commentary-split.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-de-commentary-split.test.mjs",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/lib/wilhelm-de-commentary-split.test.mjs"
     },
     {
@@ -1691,10 +1825,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "Pilot hex 1/2/8 gold merge" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "Pilot hex 1/2/8 gold merge"
+        }
+      ],
       "path": "scripts/apply-wilhelm-de-manual-gold.mjs",
       "npmScript": "npm run apply:wilhelm-de-manual-gold",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/apply-wilhelm-de-manual-gold.mjs"
     },
     {
@@ -1704,10 +1846,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "Parser v2 vs pilot gold TSV" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "Parser v2 vs pilot gold TSV"
+        }
+      ],
       "path": "scripts/lib/validate-wilhelm-de-field-split-g2.test.mjs",
       "npmScript": "node scripts/lib/validate-wilhelm-de-field-split-g2.test.mjs",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/lib/validate-wilhelm-de-field-split-g2.mjs"
     },
     {
@@ -1717,10 +1867,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-29", "change": "G2 + fill progress + EN↔DE summary" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-29",
+          "change": "G2 + fill progress + EN↔DE summary"
+        }
+      ],
       "path": "scripts/promote-wilhelm-de-parsed-v2.mjs",
       "npmScript": "npm run promote:wilhelm-de-parsed-v2",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/promote-wilhelm-de-parsed-v2.mjs"
     },
     {
@@ -1730,10 +1888,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "JPG anchors + pass03 v2 gold TSV" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "JPG anchors + pass03 v2 gold TSV"
+        }
+      ],
       "path": "scripts/extract-wilhelm-de-from-jpg.mjs",
       "npmScript": "npm run extract:wilhelm-de-from-jpg",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/extract-wilhelm-de-from-jpg.mjs"
     },
     {
@@ -1743,10 +1909,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "64 hex JPG ranges + path resolve" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "64 hex JPG ranges + path resolve"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-jpg-page-map.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-de-jpg-page-map.test.mjs",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/lib/wilhelm-de-jpg-page-map.mjs"
     },
     {
@@ -1756,10 +1930,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "64 hex + Zweites Buch crawl" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "64 hex + Zweites Buch crawl"
+        }
+      ],
       "path": "scripts/extract-wilhelm-de-from-zeno.mjs",
       "npmScript": "npm run extract:wilhelm-de-from-zeno:all",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/extract-wilhelm-de-from-zeno.mjs"
     },
     {
@@ -1769,10 +1951,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "33-field parse + encoding fix" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "33-field parse + encoding fix"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-zeno-parse.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-de-zeno-parse.test.mjs",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/lib/wilhelm-de-zeno-parse.mjs"
     },
     {
@@ -1782,10 +1972,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Zeno + Zhou Yi symbols → merged.json" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Zeno + Zhou Yi symbols → merged.json"
+        }
+      ],
       "path": "scripts/promote-wilhelm-de-zeno-to-merged.mjs",
       "npmScript": "npm run promote:wilhelm-de-zeno-to-merged",
-      "relatedAuditCodes": ["20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"],
+      "relatedAuditCodes": [
+        "20260628-AUD-DAT-W-02 wilhelm-de-source-of-truth"
+      ],
       "area": "scripts/promote-wilhelm-de-zeno-to-merged.mjs"
     },
     {
@@ -1795,10 +1993,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "DE→MT EN vs Baynes Jaccard per field" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "DE→MT EN vs Baynes Jaccard per field"
+        }
+      ],
       "path": "scripts/wilhelm-de-baynes-mt-quality-report.mjs",
       "npmScript": "npm run audit:wilhelm-de-baynes-mt-quality",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/wilhelm-de-baynes-mt-quality-report.mjs"
     },
     {
@@ -1808,10 +2014,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Oracle slot contamination + editorial tags" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Oracle slot contamination + editorial tags"
+        }
+      ],
       "path": "scripts/audit-wilhelm-de-contamination.mjs",
       "npmScript": "npm run audit:wilhelm-de-contamination",
-      "relatedAuditCodes": ["20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"],
+      "relatedAuditCodes": [
+        "20260630-AUD-DAT-W-04 wilhelm-de-fidelity-policy"
+      ],
       "area": "scripts/audit-wilhelm-de-contamination.mjs"
     },
     {
@@ -1821,10 +2035,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Flat + by-hex dispute TSV + pilot 1/2/8" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Flat + by-hex dispute TSV + pilot 1/2/8"
+        }
+      ],
       "path": "scripts/export-wilhelm-de-comments-anna-au-tsv.mjs",
       "npmScript": "npm run export:wilhelm-de-comments-anna-au-tsv",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/export-wilhelm-de-comments-anna-au-tsv.mjs"
     },
     {
@@ -1834,10 +2056,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "64×37 pilot → wilhelm-de-64hex-comments-au-gold.json" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "64×37 pilot → wilhelm-de-64hex-comments-au-gold.json"
+        }
+      ],
       "path": "scripts/apply-wilhelm-de-comments-au-gold.mjs",
       "npmScript": "npm run apply:wilhelm-de-comments-au-gold",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/apply-wilhelm-de-comments-au-gold.mjs"
     },
     {
@@ -1847,10 +2077,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "2368 fields + dispute closure gate" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "2368 fields + dispute closure gate"
+        }
+      ],
       "path": "scripts/validate-wilhelm-de-comments-au-gold.mjs",
       "npmScript": "npm run validate:wilhelm-de-comments-au-gold",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/validate-wilhelm-de-comments-au-gold.mjs"
     },
     {
@@ -1860,10 +2098,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "37-field gate + au_estado" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "37-field gate + au_estado"
+        }
+      ],
       "path": "scripts/verify-wilhelm-de-comments-au-pilot.mjs",
       "npmScript": "npm run verify:wilhelm-de-comments-au-pilot",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/verify-wilhelm-de-comments-au-pilot.mjs"
     },
     {
@@ -1873,10 +2119,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Generic + hex 1–3 dedicated builders" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Generic + hex 1–3 dedicated builders"
+        }
+      ],
       "path": "scripts/fill-wilhelm-de-comments-au-pilot.mjs",
       "npmScript": "npm run fill:wilhelm-de-comments-au-pilot",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/fill-wilhelm-de-comments-au-pilot.mjs"
     },
     {
@@ -1886,10 +2140,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "coincide_ninguno + diff_pass04 report" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "coincide_ninguno + diff_pass04 report"
+        }
+      ],
       "path": "scripts/spot-check-wilhelm-de-comments-au-pilot.mjs",
       "npmScript": "npm run spot-check:wilhelm-de-comments-au-pilot",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/spot-check-wilhelm-de-comments-au-pilot.mjs"
     },
     {
@@ -1899,10 +2161,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "pilot≠expected + ninguno list" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "pilot≠expected + ninguno list"
+        }
+      ],
       "path": "scripts/jpg-audit-wilhelm-de-comments-au-pilot.mjs",
       "npmScript": "npm run jpg-audit:wilhelm-de-comments-au-pilot",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/jpg-audit-wilhelm-de-comments-au-pilot.mjs"
     },
     {
@@ -1912,10 +2182,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Back-matter, CJK bleed, orphan tails" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Back-matter, CJK bleed, orphan tails"
+        }
+      ],
       "path": "scripts/scan-wilhelm-de-pilot-real-artifacts.mjs",
       "npmScript": "npm run scan:wilhelm-de-pilot-artifacts",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/scan-wilhelm-de-pilot-real-artifacts.mjs"
     },
     {
@@ -1925,10 +2203,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Batch pilot/disputes + markHexComplete + report" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Batch pilot/disputes + markHexComplete + report"
+        }
+      ],
       "path": "scripts/run-wilhelm-de-jpg-literal-batch.mjs",
       "npmScript": "node scripts/run-wilhelm-de-jpg-literal-batch.mjs",
-      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "relatedAuditCodes": [
+        "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"
+      ],
       "area": "scripts/run-wilhelm-de-jpg-literal-batch.mjs"
     },
     {
@@ -1938,10 +2224,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "FIXERS + pilot read → hex49-53 module" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "FIXERS + pilot read → hex49-53 module"
+        }
+      ],
       "path": "scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs",
       "npmScript": "node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex49-53.mjs",
-      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "relatedAuditCodes": [
+        "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"
+      ],
       "area": "scripts/lib/wilhelm-de-jpg-literal-corrections-hex49-53.mjs"
     },
     {
@@ -1951,10 +2245,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Auto rules + FIXERS → hex54-64-1-2-8 module" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Auto rules + FIXERS → hex54-64-1-2-8 module"
+        }
+      ],
       "path": "scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs",
       "npmScript": "node scripts/lib/generate-wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs",
-      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "relatedAuditCodes": [
+        "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"
+      ],
       "area": "scripts/lib/wilhelm-de-jpg-literal-corrections-hex54-64-1-2-8.mjs"
     },
     {
@@ -1964,10 +2266,18 @@
       "type": "AU",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Ledger promote + attestationIssued flag" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Ledger promote + attestationIssued flag"
+        }
+      ],
       "path": "scripts/finalize-wilhelm-de-jpg-literal-attestation.mjs",
       "npmScript": "npm run finalize:wilhelm-de-jpg-literal-attestation",
-      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"],
+      "relatedAuditCodes": [
+        "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation"
+      ],
       "area": "scripts/finalize-wilhelm-de-jpg-literal-attestation.mjs"
     },
     {
@@ -1978,12 +2288,23 @@
       "family": "FID-W",
       "version": "1.1.0",
       "versionHistory": [
-        { "version": "1.0.0", "date": "2026-06-30", "change": "Pilot/gold/merged/ledger cross-check" },
-        { "version": "1.1.0", "date": "2026-06-30", "change": "Exclude meta overlay keys from merged diff" }
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Pilot/gold/merged/ledger cross-check"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-06-30",
+          "change": "Exclude meta overlay keys from merged diff"
+        }
       ],
       "path": "scripts/reverify-wilhelm-de-comments-au.mjs",
       "npmScript": "npm run reverify:wilhelm-de-comments-au",
-      "relatedAuditCodes": ["20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation", "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases"],
+      "relatedAuditCodes": [
+        "20260630-AUD-DAT-W-07 wilhelm-de-jpg-literal-attestation",
+        "20260630-PLAN-DAT-W-06 wilhelm-de-ten-wings-jpg-phases"
+      ],
       "area": "scripts/reverify-wilhelm-de-comments-au.mjs"
     },
     {
@@ -1992,10 +2313,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Wipe OCR comments; book-one Zeno-only" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Wipe OCR comments; book-one Zeno-only"
+        }
+      ],
       "path": "scripts/clean-wilhelm-de-zeno-dataset.mjs",
       "npmScript": "npm run clean:wilhelm-de-zeno-dataset",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/clean-wilhelm-de-zeno-dataset.mjs"
     },
     {
@@ -2005,10 +2334,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "37-field comments blank + G0" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "37-field comments blank + G0"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-blank-comments-maestro.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-de-blank-comments-maestro.test.mjs",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/lib/wilhelm-de-blank-comments-maestro.mjs"
     },
     {
@@ -2018,10 +2355,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Zeno probe + extraction plan report" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Zeno probe + extraction plan report"
+        }
+      ],
       "path": "scripts/extract-wilhelm-de-comments-from-zeno.mjs",
       "npmScript": "npm run extract:wilhelm-de-comments-from-zeno",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/extract-wilhelm-de-comments-from-zeno.mjs"
     },
     {
@@ -2031,10 +2376,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Lock file + assert guard on OCR parse/merge" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Lock file + assert guard on OCR parse/merge"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-ocr-ingest-lock.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-de-ocr-ingest-lock.test.mjs",
-      "relatedAuditCodes": ["20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"],
+      "relatedAuditCodes": [
+        "20260629-PLAN-DAT-W-03 wilhelm-de-blank-maestro-au"
+      ],
       "area": "scripts/lib/wilhelm-de-ocr-ingest-lock.mjs"
     },
     {
@@ -2044,10 +2397,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Anna pass02/04 → comments/anna/ sandbox" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Anna pass02/04 → comments/anna/ sandbox"
+        }
+      ],
       "path": "scripts/extract-wilhelm-de-comments-from-anna.mjs",
       "npmScript": "npm run extract:wilhelm-de-comments-from-anna",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/extract-wilhelm-de-comments-from-anna.mjs"
     },
     {
@@ -2057,10 +2418,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Coverage + G0 + pass02 vs pass04 diff" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Coverage + G0 + pass02 vs pass04 diff"
+        }
+      ],
       "path": "scripts/validate-wilhelm-de-comments-anna-gate.mjs",
       "npmScript": "npm run validate:wilhelm-de-comments-anna-gate",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/validate-wilhelm-de-comments-anna-gate.mjs"
     },
     {
@@ -2070,10 +2439,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "Zone start, sequence order, header anchor" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "Zone start, sequence order, header anchor"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-64hex-comments-txt.test.mjs",
       "npmScript": "node scripts/lib/wilhelm-de-64hex-comments-txt.test.mjs",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/lib/wilhelm-de-64hex-comments-txt.mjs"
     },
     {
@@ -2083,10 +2460,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "37-field heuristic merge + dispute report" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "37-field heuristic merge + dispute report"
+        }
+      ],
       "path": "scripts/lib/wilhelm-de-comments-anna-reconcile.test.mjs",
       "npmScript": "npm run reconcile:wilhelm-de-comments-from-anna",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/lib/wilhelm-de-comments-anna-reconcile.mjs"
     },
     {
@@ -2096,10 +2481,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-28", "change": "37×64 compare table in sandbox" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-28",
+          "change": "37×64 compare table in sandbox"
+        }
+      ],
       "path": "scripts/export-wilhelm-de-comments-anna-comparison-viewer.mjs",
       "npmScript": "npm run export:wilhelm-de-comments-anna-comparison-viewer",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/export-wilhelm-de-comments-anna-comparison-viewer.mjs"
     },
     {
@@ -2109,10 +2502,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "AU JPG gold → comments-merged + G0" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "AU JPG gold → comments-merged + G0"
+        }
+      ],
       "path": "scripts/promote-wilhelm-de-comments-au-to-merged.mjs",
       "npmScript": "npm run promote:wilhelm-de-comments-au-to-merged",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/promote-wilhelm-de-comments-au-to-merged.mjs"
     },
     {
@@ -2122,10 +2523,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "Patch 64 pilot TSV meta from merged book-one" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "Patch 64 pilot TSV meta from merged book-one"
+        }
+      ],
       "path": "scripts/sync-wilhelm-de-comments-meta-from-erstes.mjs",
       "npmScript": "npm run sync:wilhelm-de-comments-meta-from-erstes",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/sync-wilhelm-de-comments-meta-from-erstes.mjs"
     },
     {
@@ -2135,10 +2544,18 @@
       "type": "VF",
       "family": "FID-W",
       "version": "1.0.0",
-      "versionHistory": [{ "version": "1.0.0", "date": "2026-06-30", "change": "EN Baynes vs DE vacío/lleno per field×hex" }],
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-06-30",
+          "change": "EN Baynes vs DE vacío/lleno per field×hex"
+        }
+      ],
       "path": "scripts/verify-wilhelm-de-en-structure-parity.mjs",
       "npmScript": "npm run verify:wilhelm-de-en-structure-parity",
-      "relatedAuditCodes": ["20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"],
+      "relatedAuditCodes": [
+        "20260628-PLAN-DAT-W-05 wilhelm-de-comments-anna-extract"
+      ],
       "area": "scripts/verify-wilhelm-de-en-structure-parity.mjs"
     },
     {
@@ -2299,6 +2716,25 @@
       "npmScript": "npm run verify:r2-fallback-coverage",
       "relatedAuditCodes": [],
       "area": "scripts/verify-r2-fallback-coverage"
+    },
+    {
+      "code": "TS-WEB-018 rights-line-paragraph-length-gate",
+      "title": "isRightsReservedParagraph never demotes a substantial content paragraph",
+      "shortName": "rights-line-paragraph-length-gate",
+      "type": "TS",
+      "family": "WEB",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-08-15",
+          "change": "Regression for the justify-loss bug: a >140-char paragraph must stay justified even when a trailing copyright/site mention is glued onto it with no blank line"
+        }
+      ],
+      "path": "apps/web/src/components/__tests__/OracleInterpretationMarkdown.test.ts",
+      "npmScript": "npm run test --prefix apps/web -- OracleInterpretationMarkdown",
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/components/OracleInterpretationMarkdown"
     }
   ]
 }
