@@ -1745,7 +1745,11 @@ export default function HomePage() {
       ctx.font = `700 24px ${cjkFont}`;
       ctx.fillText(pdfUi.reading, 84, panelY + 44);
 
-      const blocks = interpretationMarkdownToPdfBlocks(entry.interpretation);
+      // Same display-only cleanup the live chat bubble applies (InterpretationBody): the
+      // stored consultation text is never touched, only what gets drawn into this PDF.
+      const blocks = interpretationMarkdownToPdfBlocks(
+        normalizeInterpretationPunctuation(stripInterpretationFluff(entry.interpretation)),
+      );
       const styledLines = buildCanvasReadingLines(
         ctx,
         blocks,

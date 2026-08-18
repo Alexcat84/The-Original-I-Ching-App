@@ -1,50 +1,23 @@
 "use client";
 
-import { isValidElement } from "react";
 import ReactMarkdown from "react-markdown";
 
 type Props = {
   text: string;
 };
 
-function textFromNodes(node: unknown): string {
-  if (node == null || typeof node === "boolean") return "";
-  if (typeof node === "string" || typeof node === "number" || typeof node === "bigint") return String(node);
-  if (Array.isArray(node)) return node.map(textFromNodes).join("");
-  if (isValidElement(node)) {
-    const props = node.props as { children?: unknown };
-    return textFromNodes(props.children);
-  }
-  return "";
-}
-
 /**
- * Model often appends a one-line copyright; keep left-aligned while body stays justified.
- *
- * Gated to SHORT paragraphs only (a real standalone copyright line is always well under
- * this length). Without the length gate, if the model ever glues that line onto the end
- * of a real paragraph with no blank line in between (which does happen, especially on
- * the long free-form closing paragraph in Master Combined mode), the trigger phrase
- * (e.g. "theoriginaliching.com") gets matched against the WHOLE merged paragraph, and the
- * entire visible reading loses justification, not just the disclaimer clause. A length
- * gate cannot mis-fire on substantial content: a paragraph over ~140 chars is never just
- * a copyright line, so it must stay justified regardless of what substring it contains.
+ * A trailing copyright/rights/domain signature the model occasionally appends is removed
+ * BEFORE this component ever sees the text (InterpretationBody -> stripInterpretationFluff
+ * in apps/web/src/lib/response-clean.ts), non-destructively and display-only. This
+ * component used to carry a duplicate per-paragraph classifier for that same signature
+ * (`isRightsReservedParagraph`) that left-aligned whichever paragraph matched; it was
+ * removed together with the upstream string-level fix rather than kept as a second,
+ * redundant layer, since it was also the direct cause of a real bug (2026-08): if the
+ * model glued the disclaimer onto the SAME paragraph as real content with no blank line
+ * in between, the classifier matched the trigger phrase against the whole merged
+ * paragraph and left-aligned the entire visible reading, not just the disclaimer clause.
  */
-export function isRightsReservedParagraph(plain: string): boolean {
-  const t = plain.replace(/\s+/g, " ").trim();
-  if (!t || t.length > 140) return false;
-  if (t.includes("©")) return true;
-  if (
-    /rights reserved|derechos reservados|tous droits|r[eé]serv[eé]s|rechte vorbehalten|diritti riservati|판권|保留所有|無断複写|転載を禁/i.test(
-      t,
-    )
-  ) {
-    return true;
-  }
-  if (/theoriginaliching\.com/i.test(t)) return true;
-  return false;
-}
-
 export function OracleInterpretationMarkdown({ text }: Props) {
   return (
     <ReactMarkdown
@@ -52,13 +25,7 @@ export function OracleInterpretationMarkdown({ text }: Props) {
       components={{
         h2: ({ children }) => <h2 className="oracle-md-h2">{children}</h2>,
         h3: ({ children }) => <h3 className="oracle-md-h3">{children}</h3>,
-        p: ({ children }) => {
-          const plain = textFromNodes(children);
-          const rightsLine = isRightsReservedParagraph(plain);
-          return (
-            <p className={rightsLine ? "oracle-md-p oracle-md-p--rights-line" : "oracle-md-p"}>{children}</p>
-          );
-        },
+        p: ({ children }) => <p className="oracle-md-p">{children}</p>,
         strong: ({ children }) => <strong className="oracle-md-strong">{children}</strong>,
         em: ({ children }) => <em className="oracle-md-em">{children}</em>,
         blockquote: ({ children }) => <blockquote className="oracle-md-quote">{children}</blockquote>,
