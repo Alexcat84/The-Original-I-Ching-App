@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-23 (auditoría de la checklist de lanzamiento de `CLAUDE.md`)
+**Última revisión:** 2026-08-23 (alta de P-06: VACUUM semanal roto en producción)
 
 ---
 
@@ -30,6 +30,7 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 | [P-03](#p-03) | fal.ai desplegado pero dormido (sin `FAL_AI_KEY`) | P2 | 2026-08-14 |
 | [P-04](#p-04) | `apps/mobile` no tiene runner de tests | P2 | 2026-08-23 |
 | [P-05](#p-05) | traceId de integridad repetido a 38 minutos, sin explicar | P3 | 2026-08-23 |
+| [P-06](#p-06) | Migración 076 sin aplicar en Supabase (VACUUM semanal roto) | P1 | 2026-08-23 |
 
 ---
 
@@ -116,6 +117,26 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 **Por qué no es crítico:** es una anomalía de correlación de telemetría. No afecta al usuario ni a la verificación.
 
 **Qué lo vuelve urgente:** si empieza a repetirse, porque significaría que hay un camino de refresco que no está mapeado.
+
+---
+
+### P-06
+
+**Migración 076 sin aplicar en Supabase: el VACUUM semanal lleva 11 semanas fallando**
+
+- **Detectado:** 2026-08-23, en los logs de Postgres de Supabase (proyecto `wgborqkfnxfarkdaotsd`, **producción**).
+- **Error:** `VACUUM cannot run inside a transaction block`, SQLSTATE `25001`, cada domingo a las 04:00 UTC.
+- **Causa raíz:** la migración `070` agendó el job con **tres sentencias** separadas por punto y coma. pg_cron manda el comando por el protocolo de consulta simple, y Postgres envuelve un comando multi-sentencia en un bloque de transacción implícito, donde `VACUUM` no puede correr. Falla desde el 2026-06-10 (commit `44c36f6a`), o sea unas once ejecuciones consecutivas, todas fallidas.
+- **Arreglo:** migración `076_fix_scheduled_vacuum.sql`, ya en el repo. `VACUUM` acepta lista de tablas, así que el mismo trabajo cabe en **una sola sentencia**, que no se envuelve en bloque de transacción.
+- **Falta:** aplicarla en Supabase (producción y staging). Es un paso manual.
+
+**Por qué no fue crítico:** el autovacuum de Postgres sigue corriendo. Además la migración `052` afinó autovacuum agresivamente sobre `consultations` (1% de churn contra el 20% por defecto). Con el volumen actual de producción (4 consultas en 30 días) prácticamente no hay bloat que limpiar. El job semanal era refuerzo, no la única defensa.
+
+**Matiz que sí importa:** ese afinado de `052` cubre **solo `consultations`**. `consultation_content` y `consultation_sessions` dependen del autovacuum por defecto, y para esas dos el job semanal sí era cobertura adicional real. Con el tráfico de hoy no pasa nada; con volumen alto, sí.
+
+**Qué lo vuelve urgente:** que suba el volumen de escritura, sobre todo en `consultation_content`, que es la fuente de verdad del texto del oráculo.
+
+**Lección, más valiosa que el bug:** el gate de `verify_migrations.sql` para la `070` solo comprobaba que el job estuviera **registrado**, nunca que corriera. Se quedó en verde once semanas mientras el job moría cada domingo. El check nuevo de la `076` valida la **forma del comando** (una sola sentencia), que es lo que realmente causa el fallo. Verificado replicando la semántica de `btrim` contra la cadena exacta del log: rechaza la de la `070` y acepta la de la `076`.
 
 ---
 

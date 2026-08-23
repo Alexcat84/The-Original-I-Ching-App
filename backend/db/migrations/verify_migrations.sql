@@ -398,6 +398,8 @@ FROM (
 
   UNION ALL
   -- 070 · Weekly VACUUM pg_cron job registered
+  -- NOTE: registration alone proves nothing about the job working. This check
+  -- stayed green for eleven weeks while every run failed. See the 076 check.
   SELECT '070', 'cron job weekly-vacuum-iching registered',
     EXISTS (
       SELECT 1 FROM cron.job WHERE jobname = 'weekly-vacuum-iching'
@@ -466,6 +468,24 @@ FROM (
     EXISTS (
       SELECT 1 FROM pg_trigger t JOIN pg_proc p ON p.oid = t.tgfoid
       WHERE t.tgname = 'on_auth_user_created' AND p.proname = 'handle_new_auth_user'
+    )
+
+  UNION ALL
+  -- 076 · The weekly VACUUM job must be ONE statement over the three tables.
+  -- pg_cron wraps a multi-statement command in a transaction block and VACUUM
+  -- cannot run there (SQLSTATE 25001). That is exactly how 070 shipped, and it
+  -- failed every Sunday from 2026-06-10 while the '070' check above stayed
+  -- green, because that check only asked whether the job existed.
+  SELECT '076', 'weekly-vacuum-iching is a single VACUUM statement (no 25001)',
+    EXISTS (
+      SELECT 1 FROM cron.job
+      WHERE jobname = 'weekly-vacuum-iching'
+        AND command LIKE '%consultation_content%'
+        AND command LIKE '%consultation_sessions%'
+        AND command LIKE '%consultations%'
+        -- Trim the outer wrapping, then reject any remaining separator: a
+        -- leftover ';' means more than one statement, which is the bug.
+        AND btrim(command, E' \t\r\n;') NOT LIKE '%;%'
     )
 
   UNION ALL
