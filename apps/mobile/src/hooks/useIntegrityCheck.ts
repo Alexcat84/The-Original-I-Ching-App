@@ -17,7 +17,15 @@ const INTEGRITY_TRACE_HEADER = "x-integrity-trace-id";
 
 const REFRESH_MARGIN_MS = 5 * 60 * 1000;
 const CHALLENGE_TTL_S = 600;
-const CHALLENGE_FETCH_TIMEOUT_MS = 15_000;
+/**
+ * Must stay well under the WebView bridge's 15s wait, because a consult POST is
+ * held until this round trip answers. Measured over 30 days of production the
+ * whole cycle (challenge plus attestation) runs p50 2.2s, p95 4.6s, max 8.5s,
+ * and the challenge leg alone is the fast part at well under a second. Eight
+ * seconds is far above anything healthy while still leaving the bridge room to
+ * get a stale-token answer instead of making the user wait out its own timeout.
+ */
+const CHALLENGE_FETCH_TIMEOUT_MS = 8_000;
 
 /**
  * Bounded backoff after a failed refresh. Before this existed, a single failure
@@ -29,11 +37,13 @@ const CHALLENGE_FETCH_TIMEOUT_MS = 15_000;
 const RETRY_BACKOFF_MS = [30_000, 120_000, 300_000];
 
 /**
- * Safety valve for the in-flight guard: if a refresh somehow never settles (a
- * hung attestation call), a later caller may start a fresh one instead of
- * awaiting a promise that will never resolve.
+ * How old a running refresh may be for a new caller to join it instead of
+ * starting its own. Deliberately tight: a consult POST blocks on this, so it
+ * must never be parked behind a refresh that is already stuck. Measured max for
+ * a healthy cycle is 8.5s, so anything older than this is not going to finish,
+ * and the caller is better off starting fresh than waiting on it.
  */
-const IN_FLIGHT_MAX_MS = 90_000;
+const IN_FLIGHT_JOIN_WINDOW_MS = 10_000;
 
 /** Same shape the sync service uses: abort a request that never comes back. */
 function fetchWithTimeout(
@@ -244,12 +254,13 @@ export function useIntegrityCheck(isAuthenticated: boolean) {
    * Collapses concurrent refreshes into one. The shell can ask for a token from
    * two places at once (the auth effect on cold start and the WebView bridge),
    * which previously fired two challenges milliseconds apart and burned two
-   * slots of the endpoint's rate limit for a single token.
+   * slots of the endpoint's rate limit for a single token. Joining only happens
+   * inside a short window so a caller is never parked behind a stalled refresh.
    */
   const fetchAndStore = useCallback(
     (traceId?: string): Promise<string | null> => {
       const inFlight = inFlightRef.current;
-      if (inFlight && Date.now() - inFlight.startedAt < IN_FLIGHT_MAX_MS) {
+      if (inFlight && Date.now() - inFlight.startedAt < IN_FLIGHT_JOIN_WINDOW_MS) {
         return inFlight.promise;
       }
       const startedAt = Date.now();
