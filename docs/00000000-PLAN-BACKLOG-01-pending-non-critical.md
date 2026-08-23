@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-23
+**Última revisión:** 2026-08-23 (auditoría de la checklist de lanzamiento de `CLAUDE.md`)
 
 ---
 
@@ -121,13 +121,27 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 
 ## Requiere revisión (no verificado, no asumir)
 
-**La checklist "Pendiente para Lanzamiento" de `CLAUDE.md` está probablemente desactualizada.**
+_(vacío)_
 
-Marca como pendientes la verificación de identidad en Play Console y el Data Safety Form, pero la evidencia dice que la app **ya está distribuida por Play Store**: el evento de Sentry del 2026-08-21 muestra `is_split_apks: true` con splits de AAB (`config.arm64_v8a`, `config.en`, `config.es`, `config.xxhdpi`), que es una instalación desde Play, y hay 6 usuarios reales en tres regiones.
+---
 
-No se corrigió `CLAUDE.md` porque hace falta confirmarlo en Play Console, no deducirlo. **Acción:** revisar esa lista y marcar lo que ya esté hecho.
+## Revisión de la checklist de lanzamiento de `CLAUDE.md` (2026-08-23)
 
-Los ítems de Fase 2 de esa misma lista (next-intl, app Expo nativa completa, animación de hueso con Three.js) son trabajo de producto post-lanzamiento y viven bien ahí; no se duplican en este documento.
+La sección "Pendiente para Lanzamiento" de `CLAUDE.md` estaba desactualizada y se corrigió. Auditoría ítem por ítem, con la evidencia usada:
+
+| Ítem | Veredicto | Evidencia |
+|------|-----------|-----------|
+| Verificación de identidad Play Console | **Hecho** | `CHANGELOG.md`: `[4.2.5] 2026-07-17, Stage: Production`. Es requisito bloqueante de Google para publicar en cualquier track |
+| Assets de tienda (icon, feature graphic, screenshots) | **Hecho** | Idem: la ficha de tienda es bloqueante para publicar |
+| Data Safety Form | **Hecho** | Idem: bloqueante para cualquier actualización desde 2022 |
+| APK final verificado en dispositivo | **Hecho** | 4.2.5 / versionCode 65 publicado en Production |
+| Animación ritual de hueso (Three.js) | **Hecho** | `three@^0.183.2` instalado y `BoneRitualAnimation.tsx` importado desde `apps/web/src/app/chat/page.tsx:5122`, el flujo real, no solo el preview |
+| i18n formal con next-intl | **Obsoleto, no hacer** | `next-intl` no está instalado y la guía oficial ([`WF-I18N-01`](./workflows/00000000-WF-I18N-01-i18n-guide.md)) dice literalmente "**No** usar `next-intl`". El proyecto se estandarizó en `@iching-oracle/i18n` |
+| App Expo nativa completa (Fase 2) | **Sigue pendiente** | `apps/mobile/app/index.tsx` sigue siendo un shell WebView. Decisión de producto abierta, no se traslada a este documento |
+
+También se corrigió la tabla de servicios de `CLAUDE.md`, que decía "cuenta creada, verificación pendiente" para Play Console, contradiciendo el estado Production.
+
+**Corolario:** la progresión completa quedó registrada en el changelog como Internal Testing, luego Closed Testing, luego Production. La app está lanzada desde el 2026-07-17; la sección se renombró a "Estado de Lanzamiento".
 
 ---
 
