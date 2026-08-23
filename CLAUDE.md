@@ -43,7 +43,7 @@ moderna usando Claude AI. Modelo de negocio: tokens consumibles (no suscripción
 ├── backend/
 │   ├── claude/                 # Integración Anthropic API + fallback chain
 │   ├── auth/                   # TOTP, 2FA email, validación de registro
-│   └── db/migrations/          # migraciones SQL (001-075; replayable en DB vacía)
+│   └── db/migrations/          # migraciones SQL (001-076; replayable en DB vacía)
 ├── packages/                   # Paquetes compartidos del monorepo
 │   ├── iching-engine/          # Algoritmos de sorteo (tres monedas, yarrow, manual)
 │   ├── oracle-bones-engine/    # Huesos de Oráculo Shang (4 veredictos auténticos)
@@ -235,7 +235,7 @@ Herramientas locales de QA (no producción): `npm run generate:together:iching-s
 
 ## Historial de Cambios Importantes
 
-### Migraciones DB (074 total — selección de hitos)
+### Migraciones DB (076 total — selección de hitos)
 - `021_consumable_tokens.sql` — modelo consumible, consume_token, grant_tokens
 - `022_user_trial_log.sql` — blindaje free trial lifetime con backfill
 - `027_user_legal_acceptances.sql` — registro de aceptación de términos
@@ -253,6 +253,7 @@ Herramientas locales de QA (no producción): `npm run generate:together:iching-s
 - `071_bootstrap_summary_rpc.sql` — RPC resumen para `GET /api/account/bootstrap`
 - `072_refund_token.sql` — refund automático post-cargo fallido
 - `074_line_reading_system.sql` — columna `consultations.line_reading_system` (`huang` | `zhuxi`)
+- `076_fix_scheduled_vacuum.sql`: arregla el job semanal de VACUUM roto desde la 070 (multi-statement bajo pg_cron falla con 25001)
 
 ### Fixes Críticos Realizados
 1. **Bug display de tokens** — panel opciones ahora refresca post-consulta via evento `iching:account-refresh`
