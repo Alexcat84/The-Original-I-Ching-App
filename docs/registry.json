@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-08-14",
+  "updatedAt": "2026-08-23",
   "conventions": "./CONVENTIONS.md",
   "subRegistries": [
     {
@@ -365,6 +365,23 @@
       "path": "docs/20260814-PLAN-IMG-PROV-01-image-fallback-providers-deferred.md",
       "relatedCodes": [
         "00000000-RUN-AI-OPS-01 model-cost-comparison"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "00000000-PLAN-BACKLOG-01 pending-non-critical",
+      "title": "Pendientes conocidos: no criticos hoy, pero hay que hacerlos",
+      "shortName": "pending-non-critical",
+      "type": "PLAN",
+      "family": "BACKLOG",
+      "collection": "root",
+      "date": "2026-08-23",
+      "status": "open",
+      "path": "docs/00000000-PLAN-BACKLOG-01-pending-non-critical.md",
+      "relatedCodes": [
+        "20260814-PLAN-IMG-PROV-01 image-fallback-providers-deferred",
+        "00000000-OPS-PLAY-02 play-store-versioning",
+        "00000000-OPS-PLAY-01 play-store-changelog"
       ],
       "relatedTests": []
     }
