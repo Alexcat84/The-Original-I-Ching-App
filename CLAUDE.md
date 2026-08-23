@@ -210,7 +210,7 @@ two_factor_recovery_codes
 | Cloudflare Turnstile | CAPTCHA login/register | ✅ |
 | Vercel | Deploy web | ✅ |
 | EAS Build | Build APK | ✅ cuenta alexcat84 |
-| Google Play Console | Distribución Android | ✅ cuenta creada, verificación pendiente |
+| Google Play Console | Distribución Android | ✅ publicando en Production (4.2.5/65 desde 2026-07-17) |
 | Google OAuth | Login social | ✅ staging + producción |
 
 ## Resoluciones de Imagen (Together AI FLUX.1 Schnell)
@@ -375,7 +375,13 @@ vercel env pull .env.staging
 - EAS builds: https://expo.dev/accounts/alexcat84/projects/the-original-i-ching/builds
 - Play Console: https://play.google.com/console/u/0/developers/7735925863707716505
 
-## Pendiente para Lanzamiento
+## Estado de Lanzamiento
+
+> **LANZADO.** `4.2.5` / versionCode 65 en **Production** desde el 2026-07-17 (ver `CHANGELOG.md`).
+> Progresión completa registrada: Internal Testing → Closed Testing → Production.
+> Esta sección era una checklist de pre-lanzamiento y quedó desactualizada; revisada y
+> corregida el 2026-08-23 contra el changelog, las dependencias y el código.
+> Pendientes reales vigentes: [`docs/00000000-PLAN-BACKLOG-01-pending-non-critical.md`](docs/00000000-PLAN-BACKLOG-01-pending-non-critical.md)
 
 ### ✅ CI GitHub Actions — actualizado (2026-05-31)
 Actualizados a `actions/checkout@v6` y `actions/setup-node@v6` (ambos en v6 al 31 mayo 2026).
@@ -383,12 +389,12 @@ Compatibles con Node.js 24 — deadline del 2 junio 2026 cubierto.
 
 - [x] Merge staging → main (flujo continuo desde mayo 2026)
 - [x] Upgrade Supabase a Pro ($25/mes) — activo en ambos entornos
-- [ ] Verificación de identidad Google Play Console (1-3 días hábiles)
-- [ ] Assets para Play Store: icon 512×512, feature graphic 1024×500, screenshots
-- [ ] Data Safety Form en Play Console
-- [ ] APK final con todos los fixes verificados en dispositivo
-- [ ] i18n formal con next-intl (post-lanzamiento, Fase 2)
+- [x] Verificación de identidad Google Play Console (requisito bloqueante para publicar: la app está en Production)
+- [x] Assets para Play Store: icon 512×512, feature graphic 1024×500, screenshots (ficha de tienda bloqueante para publicar)
+- [x] Data Safety Form en Play Console (bloqueante para cualquier actualización desde 2022)
+- [x] APK final con todos los fixes verificados en dispositivo (4.2.5/65 publicado)
+- [x] Animación ritual de hueso (Three.js + fuego): integrada en el flujo real, `BoneRitualAnimation.tsx` desde `chat/page.tsx`. Banco de pruebas manual en `/ritual-preview`
+- ~~i18n formal con next-intl~~ **OBSOLETO, no hacer.** El proyecto se estandarizó en `@iching-oracle/i18n`; la guía oficial dice literalmente "**No** usar `next-intl`". Ver el workflow de i18n abajo
 - **Expansión de idiomas (hoy):** seguir checklist operativo en [`docs/workflows/00000000-WF-I18N-01-i18n-guide.md`](docs/workflows/00000000-WF-I18N-01-i18n-guide.md) — `@iching-oracle/i18n` + `Record<AppLocale, …>`, no `apps/web/messages/*.json`
 - **Actualizar contenido de FAQ/guía/notas existente (no agregar idioma):** seguir [`docs/workflows/00000000-WF-DOC-01-docs-content-update-guide.md`](docs/workflows/00000000-WF-DOC-01-docs-content-update-guide.md) — fuentes citables reales (nunca "PDF"), nivel de detalle por canal, y el chequeo de paridad de `id` de FAQ entre los 11 locales (`npm run i18n:audit`)
-- [ ] App Expo nativa completa (post-lanzamiento, Fase 2)
-- [ ] Animación ritual de hueso (Three.js + fuego) — pendiente integración
+- [ ] App Expo nativa completa (Fase 2): sigue siendo shell WebView, decisión de producto abierta
