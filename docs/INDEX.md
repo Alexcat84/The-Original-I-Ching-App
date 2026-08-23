@@ -34,6 +34,14 @@
 
 ---
 
+## Pendientes (`PLAN-BACKLOG-*`)
+
+| Código | Título | Documento |
+|--------|--------|-----------|
+| `00000000-PLAN-BACKLOG-01 pending-non-critical` | **Pendientes conocidos: no críticos hoy, pero hay que hacerlos** | [00000000-PLAN-BACKLOG-01-pending-non-critical.md](./00000000-PLAN-BACKLOG-01-pending-non-critical.md) |
+
+---
+
 ## Proveedores de imagen (`PLAN-IMG-PROV-*`)
 
 | Código | Título | Documento |
