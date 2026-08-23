@@ -27,12 +27,10 @@ const bodySchema = z.object({
 export async function POST(req: NextRequest) {
   const api = createApiLogger("api/integrity/client-event", req, "/api/integrity/client-event");
 
-  const authUser = await getAuthenticatedUser(req);
-  if (!authUser) {
-    await api.log.flush();
-    return NextResponse.json({ error: "auth_required" }, { status: 401 });
-  }
-
+  // Rate limit BEFORE authenticating. The shell reports a failure using the very
+  // bearer token that just failed, so the reports we most need to see are exactly
+  // the ones that arrive unauthenticated; limiting first is what makes it safe to
+  // do any work (including logging) on a request we have not authenticated yet.
   const ip =
     req.headers.get("x-vercel-forwarded-for") ??
     req.headers.get("x-real-ip") ??
@@ -45,6 +43,32 @@ export async function POST(req: NextRequest) {
   if (!rl.ok) {
     await api.log.flush();
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
+  const authUser = await getAuthenticatedUser(req);
+  if (!authUser) {
+    // Still record that a device tried to report something. Without this the
+    // failure is invisible everywhere except Sentry: the request is rejected
+    // before any logging happens, so Axiom only ever saw successful phases.
+    // The body is echoed as UNVERIFIED (schema-bounded, never sent to Sentry)
+    // because nothing about this caller has been authenticated.
+    let unverified: z.infer<typeof bodySchema> | null = null;
+    try {
+      unverified = bodySchema.parse(await req.json());
+    } catch {
+      unverified = null;
+    }
+    api.log.warn("integrity_client_event_denied", {
+      requestId: api.requestId,
+      reason: "auth_required",
+      authenticated: false,
+      traceId: unverified?.traceId ?? null,
+      phase: unverified?.phase ?? null,
+      clientReason: unverified?.reason ?? null,
+      ok: unverified?.ok ?? null,
+    });
+    await api.log.flush();
+    return NextResponse.json({ error: "auth_required" }, { status: 401 });
   }
 
   let body: z.infer<typeof bodySchema>;

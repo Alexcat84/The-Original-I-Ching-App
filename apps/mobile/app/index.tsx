@@ -2909,7 +2909,11 @@ export default function WebViewScreen() {
                   }),
                 }).catch(() => undefined);
               }
-              const resolvedTraceId = freshToken ? traceId : integrityTraceIdRef.current ?? traceId;
+              // Prefer the id the attestation actually ran under. Concurrent refreshes
+              // are collapsed into one, so a fresh token may legitimately carry a
+              // different trace id than the one generated here; the ref holds the real
+              // one. Falls back to ours only when no refresh has ever succeeded.
+              const resolvedTraceId = integrityTraceIdRef.current ?? traceId;
               const escapedReqId = JSON.stringify(msg.reqId);
               const escapedToken = JSON.stringify(token);
               const escapedTraceId = JSON.stringify(resolvedTraceId);

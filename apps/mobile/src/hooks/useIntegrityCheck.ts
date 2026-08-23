@@ -17,6 +17,36 @@ const INTEGRITY_TRACE_HEADER = "x-integrity-trace-id";
 
 const REFRESH_MARGIN_MS = 5 * 60 * 1000;
 const CHALLENGE_TTL_S = 600;
+const CHALLENGE_FETCH_TIMEOUT_MS = 15_000;
+
+/**
+ * Bounded backoff after a failed refresh. Before this existed, a single failure
+ * left the shell with no attestation until something else happened to trigger a
+ * refresh: the periodic timer is only armed on the success path, so nothing
+ * retried. Past the last entry we stop rather than poll, because a session still
+ * rejected after ~7 minutes needs a real auth change, not more requests.
+ */
+const RETRY_BACKOFF_MS = [30_000, 120_000, 300_000];
+
+/**
+ * Safety valve for the in-flight guard: if a refresh somehow never settles (a
+ * hung attestation call), a later caller may start a fresh one instead of
+ * awaiting a promise that will never resolve.
+ */
+const IN_FLIGHT_MAX_MS = 90_000;
+
+/** Same shape the sync service uses: abort a request that never comes back. */
+function fetchWithTimeout(
+  url: string,
+  options: RequestInit,
+  timeoutMs: number,
+): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() =>
+    clearTimeout(timer),
+  );
+}
 
 interface TokenState {
   token: string;
@@ -77,13 +107,51 @@ export function useIntegrityCheck(isAuthenticated: boolean) {
   const currentTokenRef = useRef<string | null>(null);
   const currentTraceIdRef = useRef<string | null>(null);
   const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inFlightRef = useRef<{ promise: Promise<string | null>; startedAt: number } | null>(null);
+  const failureCountRef = useRef(0);
+  /**
+   * False until mounted and again once unmounted, so a pending timer never fires
+   * into a torn-down hook. It stays true while signed out on purpose: the WebView
+   * bridge may still ask for a token, and that path must be able to arm the
+   * periodic refresh if it succeeds.
+   */
+  const activeRef = useRef(false);
+  const fetchAndStoreRef = useRef<(traceId?: string) => Promise<string | null>>(
+    async () => null,
+  );
 
-  const fetchAndStore = useCallback(async (traceId?: string): Promise<string | null> => {
-    const activeTraceId =
-      traceId ?? `itr_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  const clearTimers = useCallback(() => {
+    if (refreshTimerRef.current) {
+      clearTimeout(refreshTimerRef.current);
+      refreshTimerRef.current = null;
+    }
+    if (retryTimerRef.current) {
+      clearTimeout(retryTimerRef.current);
+      retryTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleRetry = useCallback(() => {
+    if (!activeRef.current) return;
+    if (failureCountRef.current >= RETRY_BACKOFF_MS.length) return; // exhausted: stop, do not poll
+    const delay = RETRY_BACKOFF_MS[failureCountRef.current];
+    failureCountRef.current += 1;
+    if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+    retryTimerRef.current = setTimeout(() => {
+      retryTimerRef.current = null;
+      if (!activeRef.current) return;
+      void fetchAndStoreRef.current();
+    }, delay);
+  }, []);
+
+  const runRefresh = useCallback(async (traceId?: string): Promise<string | null> => {
+    const activeTraceId = traceId ?? createIntegrityTraceId();
+    const attempt = failureCountRef.current + 1;
+    let bearerToken: string | null = null;
 
     try {
-      const bearerToken = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
+      bearerToken = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
       if (!bearerToken) return null;
 
       void reportIntegrityClientEvent(bearerToken, {
@@ -92,13 +160,17 @@ export function useIntegrityCheck(isAuthenticated: boolean) {
         ok: true,
       });
 
-      const res = await fetch(`${BASE_URL}/api/integrity/challenge`, {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          [INTEGRITY_TRACE_HEADER]: activeTraceId,
+      const res = await fetchWithTimeout(
+        `${BASE_URL}/api/integrity/challenge`,
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            [INTEGRITY_TRACE_HEADER]: activeTraceId,
+          },
+          cache: "no-store",
         },
-        cache: "no-store",
-      });
+        CHALLENGE_FETCH_TIMEOUT_MS,
+      );
 
       if (!res.ok) {
         void reportIntegrityClientEvent(bearerToken, {
@@ -106,7 +178,9 @@ export function useIntegrityCheck(isAuthenticated: boolean) {
           phase: "challenge_http",
           ok: false,
           reason: `http_${res.status}`,
+          detail: `attempt_${attempt}`,
         });
+        scheduleRetry();
         return null;
       }
 
@@ -138,42 +212,82 @@ export function useIntegrityCheck(isAuthenticated: boolean) {
       currentTraceIdRef.current = activeTraceId;
       setTokenState({ token, expiresAt, traceId: activeTraceId });
 
-      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+      failureCountRef.current = 0;
+      clearTimers();
       const msUntilRefresh = Math.max(0, expiresAt - Date.now() - REFRESH_MARGIN_MS);
       refreshTimerRef.current = setTimeout(() => {
-        void fetchAndStore();
+        refreshTimerRef.current = null;
+        if (!activeRef.current) return;
+        void fetchAndStoreRef.current();
       }, msUntilRefresh);
 
       return token;
     } catch (err) {
-      const bearerToken = await SecureStore.getItemAsync(SECURE_TOKEN_KEY);
-      if (bearerToken) {
-        void reportIntegrityClientEvent(bearerToken, {
+      const reportToken = bearerToken ?? (await SecureStore.getItemAsync(SECURE_TOKEN_KEY));
+      if (reportToken) {
+        void reportIntegrityClientEvent(reportToken, {
           traceId: activeTraceId,
           phase: "attest_error",
           ok: false,
           reason: err instanceof Error ? err.message.slice(0, 120) : "unknown",
+          detail: `attempt_${attempt}`,
         });
       }
       currentTokenRef.current = null;
       currentTraceIdRef.current = null;
+      scheduleRetry();
       return null;
     }
-  }, []);
+  }, [clearTimers, scheduleRetry]);
+
+  /**
+   * Collapses concurrent refreshes into one. The shell can ask for a token from
+   * two places at once (the auth effect on cold start and the WebView bridge),
+   * which previously fired two challenges milliseconds apart and burned two
+   * slots of the endpoint's rate limit for a single token.
+   */
+  const fetchAndStore = useCallback(
+    (traceId?: string): Promise<string | null> => {
+      const inFlight = inFlightRef.current;
+      if (inFlight && Date.now() - inFlight.startedAt < IN_FLIGHT_MAX_MS) {
+        return inFlight.promise;
+      }
+      const startedAt = Date.now();
+      const promise: Promise<string | null> = runRefresh(traceId).finally(() => {
+        if (inFlightRef.current?.promise === promise) {
+          inFlightRef.current = null;
+        }
+      });
+      inFlightRef.current = { promise, startedAt };
+      return promise;
+    },
+    [runRefresh],
+  );
+
+  fetchAndStoreRef.current = fetchAndStore;
 
   useEffect(() => {
+    activeRef.current = true;
+
     if (!isAuthenticated) {
       currentTokenRef.current = null;
       currentTraceIdRef.current = null;
       setTokenState(null);
-      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
-      return;
+      failureCountRef.current = 0;
+      clearTimers();
+      return () => {
+        activeRef.current = false;
+        clearTimers();
+      };
     }
+
+    failureCountRef.current = 0;
     void fetchAndStore();
     return () => {
-      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+      activeRef.current = false;
+      clearTimers();
     };
-  }, [isAuthenticated, fetchAndStore]);
+  }, [isAuthenticated, fetchAndStore, clearTimers]);
 
   return {
     currentTokenRef,

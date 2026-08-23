@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-06-25",
+  "updatedAt": "2026-08-23",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -2702,6 +2702,25 @@
       "npmScript": "npm run test --prefix apps/web -- negotiate-locale",
       "relatedAuditCodes": [],
       "area": "apps/web/src/lib/negotiate-locale"
+    },
+    {
+      "code": "TS-WEB-018 integrity-client-event-route",
+      "title": "Integrity client-event endpoint: rate limit before auth, denials stay observable",
+      "shortName": "integrity-client-event-route",
+      "type": "TS",
+      "family": "AUTH",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-08-23",
+          "change": "Rate limit evaluated before authentication; unauthenticated integrity reports logged as unverified instead of dropped"
+        }
+      ],
+      "path": "apps/web/src/app/api/integrity/client-event/__tests__/route.test.ts",
+      "npmScript": "npm run test --prefix apps/web",
+      "relatedAuditCodes": [],
+      "area": "apps/web/src/app/api/integrity/client-event"
     },
     {
       "code": "VF-IMG-001 r2-fallback-coverage",
