@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-24 (alta de P-08: mismatches de hidratación restantes en `/chat`)
+**Última revisión:** 2026-08-24 (alta de P-09: Sentry sin sourcemaps en los errores web)
 
 ---
 
@@ -32,6 +32,7 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 | [P-05](#p-05) | traceId de integridad repetido a 38 minutos, sin explicar | P3 | 2026-08-23 |
 | [P-07](#p-07) | Endurecimiento opcional: exigir integridad a clientes que se declaran Android | P3 | 2026-06-13 |
 | [P-08](#p-08) | Dos preferencias de `/chat` siguen leyendo `localStorage` durante la hidratación | P2 | 2026-08-24 |
+| [P-09](#p-09) | Sentry no puede desminificar los errores web (sourcemaps sin subir) | P2 | 2026-08-24 |
 
 ---
 
@@ -162,6 +163,30 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 **Cómo cerrarlo bien:** hace falta un guardia de hidratación, no solo mover la lectura. El patrón: un `useRef` que marque "ya leí el storage", que el efecto de escritura consulte para no grabar nada antes de esa lectura. Es un cambio pequeño pero necesita su propia verificación, porque el modo de fallo es pérdida de datos del usuario.
 
 **Qué lo vuelve urgente:** que aparezcan más `removeChild` o mismatches en `/chat` después de que el arreglo de `cachedAuthEmail` esté desplegado. Si siguen, estos dos son los siguientes sospechosos.
+
+---
+
+### P-09
+
+**Sentry no puede desminificar los errores web: los sourcemaps nunca se suben**
+
+- **Detectado:** 2026-08-24, investigando el `NotFoundError: removeChild` de `/chat`.
+- **Evidencia directa del propio evento:** `"errors": [{"type": "js_no_source", "symbolicator_type": "missing_source"}]` y `"symbolicated_in_app": false`.
+- **Causa:** en `apps/web/next.config.mjs`, la subida de sourcemaps depende de `SENTRY_AUTH_TOKEN`. Sin ese token, `withSentryConfig` queda en modo silencioso y `widenClientFileUpload` en `false`, así que no sube nada.
+
+**Los tres costos, todos pagados hoy en un caso real:**
+
+1. **Stacks inservibles.** El error llegó como `ud`, `ug`, `uv` dentro de `chunks/87c73c54-...js`. No dice nada. El diagnóstico salió del breadcrumb, de leer el código y de reproducir el render del servidor en local, no del stack.
+2. **La señal "es nuevo" no es fiable.** Sin símbolos, Sentry agrupa por nombres minificados, que cambian entre builds. "Primera aparición hoy" puede ser un artefacto de agrupación, no un hecho sobre el bug.
+3. **Induce conclusiones causales equivocadas, y esto es lo más caro.** Sentry mostró las 6 ocurrencias bajo el release `aa248380` y de ahí salió la lectura de que "fue introducido en ese deploy". Es falso y se puede probar: ese commit cambió **un solo archivo markdown**, y se desplegó a las 18:24:49 UTC mientras los errores ocurrieron entre las 20:16 y las 20:18 UTC, casi dos horas después. "Todas del mismo release" solo significa "todas mientras ese release estuvo vivo". Sin sourcemaps no hay forma de contrastar esa inferencia con el código real que falló.
+
+**Por qué no es crítico hoy:** el volumen de errores web es bajísimo y el caso concreto sí se pudo diagnosticar por otras vías. Es una brecha de observabilidad, no una falla de producto.
+
+**Qué lo vuelve urgente:** el primer error web cuyo breadcrumb no alcance para explicarlo. Ahí, sin stack legible, la investigación se queda sin salida.
+
+**Cómo cerrarlo:** crear un auth token en Sentry con permiso de releases y definir `SENTRY_AUTH_TOKEN` en Vercel (confirmar de paso que `SENTRY_ORG` y `SENTRY_PROJECT` también estén). El código ya está preparado y los consume: no hace falta cambiar nada en el repo. Después, verificar en un error de prueba que el stack llegue con nombres de función y archivo reales.
+
+**Nota relacionada:** conviene vigilar si el `removeChild` de `/chat` reaparece tras el arreglo `cd5c91de`. Las 6 ocurrencias fueron de una sola sesión de usuario en dos minutos y no se repitieron, así que la ausencia por sí sola todavía no prueba que el arreglo lo eliminó.
 
 ---
 
