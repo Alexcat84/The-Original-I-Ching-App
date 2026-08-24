@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-23 (alta de P-07: endurecimiento opcional de Play Integrity)
+**Última revisión:** 2026-08-24 (alta de P-08: mismatches de hidratación restantes en `/chat`)
 
 ---
 
@@ -31,6 +31,7 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 | [P-04](#p-04) | `apps/mobile` no tiene runner de tests | P2 | 2026-08-23 |
 | [P-05](#p-05) | traceId de integridad repetido a 38 minutos, sin explicar | P3 | 2026-08-23 |
 | [P-07](#p-07) | Endurecimiento opcional: exigir integridad a clientes que se declaran Android | P3 | 2026-06-13 |
+| [P-08](#p-08) | Dos preferencias de `/chat` siguen leyendo `localStorage` durante la hidratación | P2 | 2026-08-24 |
 
 ---
 
@@ -142,6 +143,25 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 **Por qué no es crítico:** el modelo de negocio cubre el flanco caro. Cualquier cliente, modificado o no, necesita cuenta autenticada y saldo (`credits_total > 0`) para consultar. No se sacan consultas gratis, se pagan. El vector de abuso realista es crear cuentas en masa para cosechar los 2 tokens gratuitos, y contra eso ya hay Turnstile, `user_trial_log`, `trial_email_log` por hash de email y rate limiting fail-closed.
 
 **Qué lo vuelve urgente:** dos cosas concretas. Que aparezca evidencia real de abuso desde clientes Android manipulados (hoy: cero `integrity_check_failed` en 90 días, ver P-01). O que los caminos web y Android dejen de tener el mismo privilegio: si alguna vez existe una capacidad exclusiva de Android, el argumento de "cae en el modelo web" deja de sostenerse y esto sube de prioridad de inmediato.
+
+---
+
+### P-08
+
+**Dos preferencias de `/chat` siguen leyendo `localStorage` durante la hidratación**
+
+- **Detectado:** 2026-08-24, investigando un `NotFoundError: removeChild` en producción.
+- **Estado:** el caso grave (`cachedAuthEmail`) ya se arregló. Estos dos quedaron **deliberadamente sin tocar**.
+
+**Qué son:** en `apps/web/src/app/chat/page.tsx`, `ichingCastingMethod` (línea ~663) e `ichingLineReadingSystem` (línea ~688) se inicializan con un `useState` perezoso que lee `localStorage`. El servidor no tiene `localStorage`, así que devuelve el default (`three-coins`, `huang`) mientras el cliente puede devolver otro valor (`yarrow-stalks`, `zhuxi`). Eso desalinea el primer render del cliente con el HTML del servidor y produce un mismatch de hidratación de React.
+
+**Por qué NO se arreglaron junto con el otro:** cada uno tiene un `useEffect` que **reescribe el valor en `localStorage` al montar**, con `[valor]` como dependencia. Si se inicializan con el default y se lee después, ese efecto puede dispararse con el default todavía puesto y **sobrescribir la preferencia guardada del usuario**. Perder una preferencia real del usuario es peor que el mismatch que se estaría arreglando, así que el cambio ingenuo está descartado.
+
+**Por qué es menos grave que el que sí se arregló:** estos dos afectan atributos (`checked`, `className`) y etiquetas, no la estructura del árbol. React parchea diferencias de atributos sin desmontar nada. `cachedAuthEmail` en cambio intercambiaba ramas enteras de JSX, que es el mismatch estructural que termina en `removeChild`.
+
+**Cómo cerrarlo bien:** hace falta un guardia de hidratación, no solo mover la lectura. El patrón: un `useRef` que marque "ya leí el storage", que el efecto de escritura consulte para no grabar nada antes de esa lectura. Es un cambio pequeño pero necesita su propia verificación, porque el modo de fallo es pérdida de datos del usuario.
+
+**Qué lo vuelve urgente:** que aparezcan más `removeChild` o mismatches en `/chat` después de que el arreglo de `cachedAuthEmail` esté desplegado. Si siguen, estos dos son los siguientes sospechosos.
 
 ---
 

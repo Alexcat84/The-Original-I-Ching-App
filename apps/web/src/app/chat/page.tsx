@@ -559,12 +559,28 @@ export default function HomePage() {
   accessTokenRef.current = accessToken;
   const [authReady, setAuthReady] = useState(false);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
-  // Synchronous read on mount — eliminates the blank-bar flash while Supabase resolves.
-  // Populated by the effect below whenever authReady resolves with a real session.
-  const [cachedAuthEmail] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("_rnAuthEmail");
-  });
+  // Eliminates the blank-bar flash while Supabase resolves: the strip below shows the
+  // last known email immediately instead of waiting seconds for a session.
+  //
+  // Read in a LAYOUT effect, never in a lazy useState initializer. The server has no
+  // localStorage, so an initializer returns null there and the real email here, which
+  // makes the very first client render disagree with the server HTML and trips a React
+  // hydration mismatch (error #418). That matters because this value swaps whole JSX
+  // branches further down, not just text, and React recovers from a structural mismatch
+  // by tearing the subtree down and rebuilding it.
+  //
+  // The flash stays fixed. Layout effects are flushed synchronously before the browser
+  // paints, so the email is in the DOM by the first post-hydration paint, exactly as it
+  // was with the initializer. The server HTML is byte-identical either way, since it
+  // always rendered the signed-out branch. Same pattern the locale hydration below uses.
+  const [cachedAuthEmail, setCachedAuthEmail] = useState<string | null>(null);
+  useLayoutEffect(() => {
+    try {
+      setCachedAuthEmail(localStorage.getItem("_rnAuthEmail"));
+    } catch {
+      /* private mode / storage blocked */
+    }
+  }, []);
   const [authUserId, setAuthUserId] = useState<string | null>(null);
   /** Last known Supabase user id (for clearing per-user sessionStorage on sign-out). */
   const lastSignedInUserIdForStorageRef = useRef<string | null>(null);
