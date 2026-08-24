@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-23 (P-06 resuelto: migración 076 aplicada y verificada contra Postgres real)
+**Última revisión:** 2026-08-23 (alta de P-07: endurecimiento opcional de Play Integrity)
 
 ---
 
@@ -30,6 +30,7 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 | [P-03](#p-03) | fal.ai desplegado pero dormido (sin `FAL_AI_KEY`) | P2 | 2026-08-14 |
 | [P-04](#p-04) | `apps/mobile` no tiene runner de tests | P2 | 2026-08-23 |
 | [P-05](#p-05) | traceId de integridad repetido a 38 minutos, sin explicar | P3 | 2026-08-23 |
+| [P-07](#p-07) | Endurecimiento opcional: exigir integridad a clientes que se declaran Android | P3 | 2026-06-13 |
 
 ---
 
@@ -116,6 +117,31 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 **Por qué no es crítico:** es una anomalía de correlación de telemetría. No afecta al usuario ni a la verificación.
 
 **Qué lo vuelve urgente:** si empieza a repetirse, porque significaría que hay un camino de refresco que no está mapeado.
+
+---
+
+### P-07
+
+**Endurecimiento opcional: exigir integridad a los clientes que se declaran Android**
+
+- **Detectado:** 2026-06-13, auditoría de pre-producción, hallazgo `SEC-02`.
+- **Clasificación original:** **Info**, resuelto **por diseño**. No es una vulnerabilidad abierta y nunca se catalogó como tal.
+- **Referencias:** [`20260613-AUD-PRD-01`](./auditorias/20260613-AUD-PRD-01-pre-production-jun13.md) §5.2, y el comentario en `apps/web/src/app/api/consult/route.ts:400-408`.
+
+**La situación:** la verificación de Play Integrity corre solo si llega la cabecera `x-integrity-token` (`if (integrityToken)`). Un APK modificado que la omita se salta la comprobación.
+
+**Por qué se aceptó por diseño, y el argumento sigue siendo válido:** las consultas desde navegador web ya se permiten sin integridad, protegidas por Turnstile en el registro. Quitar la cabecera **no otorga escalada de privilegio**: el atacante simplemente cae en el modelo "web", que ya es un camino legítimo. Los gates que de verdad cuestan (autenticación, rate limit y saldo de créditos) siguen activos en todos los caminos. La auditoría externa profunda [`20260715-EXT-SEC-02`](./auditorias/20260715-EXT-SEC-02-full-repo-deep-audit.md) tampoco lo marcó como vulnerabilidad, y describe Play Integrity entre los mecanismos correctos del proyecto.
+
+**Qué protege hoy:** scraping pasivo y emuladores sin modificar. No pretende detener a alguien decidido, y nunca pretendió hacerlo.
+
+**El endurecimiento disponible, en dos variantes:**
+
+1. La de la auditoría: que el shell nativo inyecte una cabecera de plataforma, y exigir integridad de forma obligatoria cuando esa cabecera esté presente. Detecta clientes Android manipulados que **aun así se identifican como Android**. Barato, pero eludible quitando también esa cabecera.
+2. La del comentario en el código, más fuerte: atar la clase de dispositivo a la sesión de Supabase en el login mediante un claim HMAC en `user_metadata`, para que el backend pueda exigir el token de forma incondicional a cualquier sesión marcada como Android. No se elude desde el cliente, porque la marca viaja firmada en la sesión.
+
+**Por qué no es crítico:** el modelo de negocio cubre el flanco caro. Cualquier cliente, modificado o no, necesita cuenta autenticada y saldo (`credits_total > 0`) para consultar. No se sacan consultas gratis, se pagan. El vector de abuso realista es crear cuentas en masa para cosechar los 2 tokens gratuitos, y contra eso ya hay Turnstile, `user_trial_log`, `trial_email_log` por hash de email y rate limiting fail-closed.
+
+**Qué lo vuelve urgente:** dos cosas concretas. Que aparezca evidencia real de abuso desde clientes Android manipulados (hoy: cero `integrity_check_failed` en 90 días, ver P-01). O que los caminos web y Android dejen de tener el mismo privilegio: si alguna vez existe una capacidad exclusiva de Android, el argumento de "cae en el modelo web" deja de sostenerse y esto sube de prioridad de inmediato.
 
 ---
 
