@@ -186,6 +186,7 @@ Consulta aquí el **código**, **nombre completo**, **fecha**, **estado** y **tr
 | `20260716-PLAN-SEC-02 cierre-total` | SEC | Plan cierre total (P2/P3, flip, replayabilidad, protection, higiene) | open | [20260716-PLAN-SEC-02-cierre-total.md](./20260716-PLAN-SEC-02-cierre-total.md) |
 | `20260716-GATE-SEC-01 rls-isolation-test` | SEC | Gate: test integración RLS cross-user (9 tablas) | open | [20260716-GATE-SEC-01-rls-isolation-test.md](./20260716-GATE-SEC-01-rls-isolation-test.md) |
 | `20260716-PLAN-SUP-02 migration-chain-replayability` | SUP | Deuda DR: replayabilidad de la cadena de migraciones (037 + pg_cron) | open | [20260716-PLAN-SUP-02-migration-chain-replayability.md](./20260716-PLAN-SUP-02-migration-chain-replayability.md) |
+| `20260824-PLAN-OPS-01 backlog-remediation` | OPS | **Plan de remediación del backlog no crítico (8 tickets, para auditoría)** | open | [20260824-PLAN-OPS-01-backlog-remediation.md](./20260824-PLAN-OPS-01-backlog-remediation.md) |
 | `00000000-RPT-ARCH-01 architecture-fullstack` | ARCH | Arquitectura full-stack | reference | [00000000-RPT-ARCH-01-architecture-fullstack.md](./00000000-RPT-ARCH-01-architecture-fullstack.md) |
 | `00000000-RPT-ARCH-02 system-canvas` | (evergreen) | Mapa de arquitectura del sistema (Mermaid, project-native) | reference | [00000000-RPT-ARCH-02-system-canvas.md](./00000000-RPT-ARCH-02-system-canvas.md) |
 | `00000000-AUD-SYM-01 dynamic-symbols` | SYM | Símbolos dinámicos | closed | [00000000-AUD-SYM-01-dynamic-symbols.md](./00000000-AUD-SYM-01-dynamic-symbols.md) |
