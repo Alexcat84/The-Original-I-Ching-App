@@ -12,11 +12,15 @@
 | T-02 | Pendiente, **acción del propietario** | Requiere buscar el issue #418 en Sentry |
 | T-03 | Abierto | Sigue como P-08 en el backlog |
 | T-04 | **CERRADO** | `2fbfea78`, refactor humble-object, 16 tests, CI verde en `bbd5bd52` |
-| T-05.0 | **CERRADO** | `2e194880`, entorno de producción fijado en ambos perfiles de bundle |
+| T-05.0 | **CERRADO y aprobado** | `2e194880`, entorno fijado en ambos perfiles de bundle; auditoría verificó de forma independiente que `wgborqkfnxfarkdaotsd` es el proyecto de producción vigente |
 | T-05 | **DESBLOQUEADO**, acción del propietario | Sus dos bloqueantes cerrados; el release en sí es manual |
 | T-06 a T-08 | Abiertos | Sin cambios |
 
 Además, fuera del alcance original del plan y como respuesta directa al incidente de §4bis: **CI ahora corre también en `staging`**, de modo que el veredicto de los gates llega antes del merge a `main` y no después.
+
+**Nota de la auditoría sobre el ref de Supabase:** el ref distinto que citaba `20260715-EXT-SEC-02` correspondía al proyecto **anterior al incidente P0**, ya difunto. Esa nota **no se corrige**: es registro histórico correcto para su fecha, y reescribirla falsearía el estado que el auditor observó entonces.
+
+**Verificación del artefacto añadida a `OPS-PLAY-02`:** el procedimiento de release incorpora ahora el chequeo del AAB construido (chequeo inverso de la URL embebida más `aapt dump badging`), no solo el de la configuración. Los comandos están documentados pero **aún no ejecutados contra un AAB real**, y así está marcado en el propio documento.
 **Verificado contra `main` (`754b4198`)** antes de escribir: cada estado declarado aquí se comprobó en el repo real, en Axiom o en Sentry. Las afirmaciones que no se pudieron verificar están marcadas como tales.
 **Origen:** [`00000000-PLAN-BACKLOG-01`](../00000000-PLAN-BACKLOG-01-pending-non-critical.md), registro vivo de pendientes.
 **Destinatario:** auditoría externa.
