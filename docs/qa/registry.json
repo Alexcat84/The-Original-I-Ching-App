@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-08-24",
+  "updatedAt": "2026-08-23",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -2740,27 +2740,6 @@
       "npmScript": "npm run verify:r2-fallback-coverage",
       "relatedAuditCodes": [],
       "area": "scripts/verify-r2-fallback-coverage"
-    },
-    {
-      "code": "TS-MOB-001 integrity-check-hook",
-      "title": "Hook de atestacion: backoff acotado, guarda de concurrencia y limpieza de timers",
-      "shortName": "integrity-check-hook",
-      "type": "TS",
-      "family": "MOB",
-      "version": "1.0.0",
-      "versionHistory": [
-        {
-          "version": "1.0.0",
-          "date": "2026-08-24",
-          "change": "Primer test de apps/mobile. Cobertura exigida por la auditoria externa (T-04, bloqueante de T-05)"
-        }
-      ],
-      "path": "apps/mobile/src/hooks/useIntegrityCheck.test.ts",
-      "npmScript": "npm run test --prefix apps/mobile",
-      "relatedAuditCodes": [
-        "20260824-PLAN-OPS-01 backlog-remediation"
-      ],
-      "area": "apps/mobile/src/hooks/useIntegrityCheck"
     }
   ]
 }
