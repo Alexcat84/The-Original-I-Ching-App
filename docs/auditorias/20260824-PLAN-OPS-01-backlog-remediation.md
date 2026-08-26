@@ -3,6 +3,20 @@
 **Código:** `20260824-PLAN-OPS-01 backlog-remediation` · **Familia:** OPS · **Estado:** open
 **Fecha:** 2026-08-24 · **Revisión 2** (incorpora la auditoría externa del 2026-08-24, ver §9)
 **Estado de aprobación:** aprobado por auditoría externa con una corrección y tres precisiones, las cuatro incorporadas. **Luz verde para ejecutar en el orden de olas de §4.**
+
+**Progreso de ejecución (2026-08-26):**
+
+| Ticket | Estado | Evidencia |
+|--------|--------|-----------|
+| T-01 | Pendiente, **acción del propietario** | Requiere crear el auth token en Sentry y definirlo en Vercel |
+| T-02 | Pendiente, **acción del propietario** | Requiere buscar el issue #418 en Sentry |
+| T-03 | Abierto | Sigue como P-08 en el backlog |
+| T-04 | **CERRADO** | `2fbfea78`, refactor humble-object, 16 tests, CI verde en `bbd5bd52` |
+| T-05.0 | **CERRADO** | `2e194880`, entorno de producción fijado en ambos perfiles de bundle |
+| T-05 | **DESBLOQUEADO**, acción del propietario | Sus dos bloqueantes cerrados; el release en sí es manual |
+| T-06 a T-08 | Abiertos | Sin cambios |
+
+Además, fuera del alcance original del plan y como respuesta directa al incidente de §4bis: **CI ahora corre también en `staging`**, de modo que el veredicto de los gates llega antes del merge a `main` y no después.
 **Verificado contra `main` (`754b4198`)** antes de escribir: cada estado declarado aquí se comprobó en el repo real, en Axiom o en Sentry. Las afirmaciones que no se pudieron verificar están marcadas como tales.
 **Origen:** [`00000000-PLAN-BACKLOG-01`](../00000000-PLAN-BACKLOG-01-pending-non-critical.md), registro vivo de pendientes.
 **Destinatario:** auditoría externa.
