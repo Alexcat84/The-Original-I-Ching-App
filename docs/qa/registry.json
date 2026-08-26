@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-08-23",
+  "updatedAt": "2026-08-26",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -2740,6 +2740,32 @@
       "npmScript": "npm run verify:r2-fallback-coverage",
       "relatedAuditCodes": [],
       "area": "scripts/verify-r2-fallback-coverage"
+    },
+    {
+      "code": "TS-MOB-001 integrity-controller",
+      "title": "Controladora de atestacion: backoff acotado, guarda de concurrencia y limpieza de timers",
+      "shortName": "integrity-controller",
+      "type": "TS",
+      "family": "MOB",
+      "version": "2.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-08-24",
+          "change": "Primer test de apps/mobile via react-dom. REVERTIDO: rompio el install de Vercel (ERESOLVE por el override react-dom 18.2.0)"
+        },
+        {
+          "version": "2.0.0",
+          "date": "2026-08-26",
+          "change": "Refactor humble-object: la logica se extrae a IntegrityController y se prueba sin React ni dependencias nuevas"
+        }
+      ],
+      "path": "apps/mobile/src/hooks/integrity-controller.test.ts",
+      "npmScript": "npm run test --prefix apps/mobile",
+      "relatedAuditCodes": [
+        "20260824-PLAN-OPS-01 backlog-remediation"
+      ],
+      "area": "apps/mobile/src/hooks/integrity-controller"
     }
   ]
 }

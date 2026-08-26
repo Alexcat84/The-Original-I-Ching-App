@@ -380,6 +380,42 @@ El segundo disparador es el importante: hoy el diseño se sostiene por una simet
 
 ---
 
+## 4bis. Incidente del 2026-08-26 durante la ejecución de T-04, y decisiones que fija
+
+El primer intento de T-04 añadió `react-dom@19` a `apps/mobile` para poder montar el hook en los tests. **Rompió el install de Vercel** con `ERESOLVE` y hubo que revertir (`48901ccf`). Tres decisiones salen de ahí, todas ratificadas por la auditoría externa.
+
+### a) El override `"react-dom": "18.2.0"` de la raíz no se investiga ni se toca
+
+Es **protección deliberada** del mundo react-dom del web; mobile no usa react-dom en runtime. El `ERESOLVE` fue el árbol defendiéndose, no un obstáculo a rodear.
+
+Motivo para no tocarlo: cualquier cambio ahí re-resuelve el árbol del web con el no-determinismo documentado en `AUD-WEB-02`, y **el `resolution-guard` no verifica react-dom**, así que un flip pasaría en silencio. Se retira de forma natural al migrar a Next 16.
+
+**Corolario operativo:** no se añade `react-dom` a `apps/mobile` bajo ningún pretexto. Probar hooks del shell nativo se hace extrayendo la lógica, no importando un reconciliador.
+
+### b) Hallazgo sobre el `resolution-guard` (investigación pedida por la auditoría)
+
+La pregunta era si el guard salió rojo y se mergeó igual, o si pasó en verde. **Respuesta: salió rojo, y correctamente.**
+
+Evidencia, run `32926463795` sobre el commit `d60d558f`:
+
+| Job | Resultado |
+|-----|-----------|
+| `resolution-guard` | **failure** |
+| `ci` | success |
+| `rls-test` | success |
+
+El guard detectó exactamente el problema que existe para detectar. **El hueco es de proceso, no del guard.** CI se dispara solo en `push` y `pull_request` sobre `main`; los push a `staging` no disparan nada. Al mergear staging→main en local y pushear, el veredicto del guard llega **después** de que el código ya está en `main` y Vercel ya arrancó el deploy. No hubo PR donde el guard pudiera bloquear.
+
+Sin branch protection disponible, el control compensatorio es disciplina, y quedó escrito como invariante en `CLAUDE.md`: **guard rojo igual a revertir de inmediato**, nunca arreglar hacia adelante con producción rota.
+
+### c) Criterio de cierre de T-04, enmendado por la auditoría
+
+Refactor **humble-object**: la lógica sale del hook a una controladora plana (`IntegrityController`) dueña de timers, backoff y guarda de concurrencia, con dependencias inyectables. El hook queda como envoltorio delgado cuyo cleanup llama a `dispose()`. Los tests prueban la controladora, sin React, **cero dependencias nuevas** más allá de vitest.
+
+Restricción: el refactor debe ser **preservador de conducta**, por ser código móvil de producción recién liberado.
+
+---
+
 ## 5. Invariantes que aplican a todos los tickets
 
 Estas reglas son del proyecto y no se relajan por conveniencia de este plan:
