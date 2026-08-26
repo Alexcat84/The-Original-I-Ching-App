@@ -96,6 +96,11 @@ import {
   normalizeInterpretationPunctuation,
   stripInterpretationFluff,
 } from "@/lib/response-clean";
+import {
+  browserPreferenceStorage,
+  readStoredPreference,
+  writeStoredPreference,
+} from "@/lib/persisted-preference";
 import { buildPlansCheckoutUrl } from "@/lib/plans-checkout";
 import {
   fetchWithAuthResilience,
@@ -145,6 +150,9 @@ const DEFAULT_BONES_MEDIUM: "turtle" | "ox" = "turtle";
 const ICHING_CAST_MODE_STORAGE_KEY = "iching_cast_mode_v1";
 const ICHING_CASTING_METHOD_STORAGE_KEY = "iching_casting_method_v1";
 const ICHING_LINE_READING_SYSTEM_STORAGE_KEY = "iching_line_reading_system_v1";
+/** Valores aceptados al leer de storage: cualquier otra cosa cae al default. */
+const ICHING_CASTING_METHODS = ["three-coins", "yarrow-stalks"] as const;
+const ICHING_LINE_READING_SYSTEMS = ["huang", "zhuxi"] as const;
 
 // Action 4: stage floor timers (ms). Override via NEXT_PUBLIC_* env vars.
 const ICHING_FINALE_MIN_MS = Math.max(
@@ -676,53 +684,62 @@ export default function HomePage() {
     setTranslatorId(id);
   };
 
-  const [ichingCastingMethod, setIchingCastingMethod] = useState<CastingMethod>(
-    () => {
-      if (typeof window === "undefined") return "three-coins";
-      try {
-        return window.localStorage.getItem(
-          ICHING_CASTING_METHOD_STORAGE_KEY,
-        ) === "yarrow-stalks"
-          ? "yarrow-stalks"
-          : "three-coins";
-      } catch {
-        return "three-coins";
-      }
-    },
-  );
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(
+  /**
+   * Preferencias persistidas: se inicializan con el DEFAULT, igual que el
+   * servidor, y se leen de `localStorage` en un layout effect. Nunca en un
+   * inicializador perezoso de `useState`, que hacía discrepar el primer render
+   * del cliente con el HTML del servidor (mismatch de hidratación, error #418).
+   *
+   * La escritura vive en el setter, no en un efecto. El patrón anterior
+   * reescribía el valor en un `useEffect` con `[valor]` de dependencia, que corre
+   * al montar: combinado con inicializar al default, ese efecto podía pisar la
+   * preferencia guardada del usuario. Sacando la escritura de los efectos, esa
+   * pérdida deja de ser un riesgo a esquivar con guardas y pasa a ser imposible.
+   *
+   * Ver `@/lib/persisted-preference` y su test, que es el gate de esta garantía.
+   */
+  const [ichingCastingMethod, setIchingCastingMethodState] =
+    useState<CastingMethod>("three-coins");
+  const [ichingLineReadingSystem, setIchingLineReadingSystemState] =
+    useState<LineReadingSystem>("huang");
+
+  useLayoutEffect(() => {
+    const storage = browserPreferenceStorage();
+    setIchingCastingMethodState(
+      readStoredPreference(
+        storage,
         ICHING_CASTING_METHOD_STORAGE_KEY,
-        ichingCastingMethod,
-      );
-    } catch {
-      /* ignore */
-    }
-  }, [ichingCastingMethod]);
-  const [ichingLineReadingSystem, setIchingLineReadingSystem] =
-    useState<LineReadingSystem>(() => {
-      if (typeof window === "undefined") return "huang";
-      try {
-        return window.localStorage.getItem(
-          ICHING_LINE_READING_SYSTEM_STORAGE_KEY,
-        ) === "zhuxi"
-          ? "zhuxi"
-          : "huang";
-      } catch {
-        return "huang";
-      }
-    });
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(
+        ICHING_CASTING_METHODS,
+        "three-coins",
+      ),
+    );
+    setIchingLineReadingSystemState(
+      readStoredPreference(
+        storage,
         ICHING_LINE_READING_SYSTEM_STORAGE_KEY,
-        ichingLineReadingSystem,
-      );
-    } catch {
-      /* ignore */
-    }
-  }, [ichingLineReadingSystem]);
+        ICHING_LINE_READING_SYSTEMS,
+        "huang",
+      ),
+    );
+  }, []);
+
+  const setIchingCastingMethod = useCallback((next: CastingMethod) => {
+    setIchingCastingMethodState(next);
+    writeStoredPreference(
+      browserPreferenceStorage(),
+      ICHING_CASTING_METHOD_STORAGE_KEY,
+      next,
+    );
+  }, []);
+
+  const setIchingLineReadingSystem = useCallback((next: LineReadingSystem) => {
+    setIchingLineReadingSystemState(next);
+    writeStoredPreference(
+      browserPreferenceStorage(),
+      ICHING_LINE_READING_SYSTEM_STORAGE_KEY,
+      next,
+    );
+  }, []);
   const [manualWizardOpen, setManualWizardOpen] = useState(false);
   const [manualWizardQuestionSnapshot, setManualWizardQuestionSnapshot] =
     useState<string | null>(null);

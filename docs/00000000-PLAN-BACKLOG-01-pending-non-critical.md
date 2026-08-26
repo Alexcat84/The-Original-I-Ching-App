@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-26 (alta de P-10; T-04 rediseñado tras el incidente de Vercel)
+**Última revisión:** 2026-08-26 (P-08 resuelto por T-03; alta de P-11)
 
 ---
 
@@ -31,9 +31,9 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 | [P-04](#p-04) | `apps/mobile` no tiene runner de tests | P2 | 2026-08-23 |
 | [P-05](#p-05) | traceId de integridad repetido a 38 minutos, sin explicar | P3 | 2026-08-23 |
 | [P-07](#p-07) | Endurecimiento opcional: exigir integridad a clientes que se declaran Android | P3 | 2026-06-13 |
-| [P-08](#p-08) | Dos preferencias de `/chat` siguen leyendo `localStorage` durante la hidratación | P2 | 2026-08-24 |
 | [P-09](#p-09) | Sentry no puede desminificar los errores web (sourcemaps sin subir) | P2 | 2026-08-24 |
 | [P-10](#p-10) | `turbo run test` muere en Windows, la suite completa no corre en local | P3 | 2026-08-25 |
+| [P-11](#p-11) | `ichingCastMode` escribe en un efecto de montaje y compite con su lectura | P3 | 2026-08-26 |
 
 ---
 
@@ -153,25 +153,6 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 
 ---
 
-### P-08
-
-**Dos preferencias de `/chat` siguen leyendo `localStorage` durante la hidratación**
-
-- **Detectado:** 2026-08-24, investigando un `NotFoundError: removeChild` en producción.
-- **Estado:** el caso grave (`cachedAuthEmail`) ya se arregló. Estos dos quedaron **deliberadamente sin tocar**.
-
-**Qué son:** en `apps/web/src/app/chat/page.tsx`, `ichingCastingMethod` (línea ~663) e `ichingLineReadingSystem` (línea ~688) se inicializan con un `useState` perezoso que lee `localStorage`. El servidor no tiene `localStorage`, así que devuelve el default (`three-coins`, `huang`) mientras el cliente puede devolver otro valor (`yarrow-stalks`, `zhuxi`). Eso desalinea el primer render del cliente con el HTML del servidor y produce un mismatch de hidratación de React.
-
-**Por qué NO se arreglaron junto con el otro:** cada uno tiene un `useEffect` que **reescribe el valor en `localStorage` al montar**, con `[valor]` como dependencia. Si se inicializan con el default y se lee después, ese efecto puede dispararse con el default todavía puesto y **sobrescribir la preferencia guardada del usuario**. Perder una preferencia real del usuario es peor que el mismatch que se estaría arreglando, así que el cambio ingenuo está descartado.
-
-**Por qué es menos grave que el que sí se arregló:** estos dos afectan atributos (`checked`, `className`) y etiquetas, no la estructura del árbol. React parchea diferencias de atributos sin desmontar nada. `cachedAuthEmail` en cambio intercambiaba ramas enteras de JSX, que es el mismatch estructural que termina en `removeChild`.
-
-**Cómo cerrarlo bien:** hace falta un guardia de hidratación, no solo mover la lectura. El patrón: un `useRef` que marque "ya leí el storage", que el efecto de escritura consulte para no grabar nada antes de esa lectura. Es un cambio pequeño pero necesita su propia verificación, porque el modo de fallo es pérdida de datos del usuario.
-
-**Qué lo vuelve urgente:** que aparezcan más `removeChild` o mismatches en `/chat` después de que el arreglo de `cachedAuthEmail` esté desplegado. Si siguen, estos dos son los siguientes sospechosos.
-
----
-
 ### P-09
 
 **Sentry no puede desminificar los errores web: los sourcemaps nunca se suben**
@@ -214,6 +195,25 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 
 ---
 
+### P-11
+
+**`ichingCastMode` escribe en un efecto de montaje y compite con su lectura**
+
+- **Detectado:** 2026-08-26, al ejecutar T-03. Es un hallazgo **adyacente**, no parte de ese ticket, y se registra en vez de ampliar el alcance en silencio.
+- **Dónde:** `apps/web/src/app/chat/page.tsx`, estado `ichingCastMode`.
+
+**Qué tiene y qué no.** **No** tiene mismatch de hidratación: se inicializa con `"auto"` fijo, así que servidor y cliente coinciden. Ese era el defecto de P-08 y aquí no aplica.
+
+Lo que sí conserva es la otra mitad del patrón viejo: un `useEffect` con `[valor]` de dependencia que escribe en `localStorage` al montar, mientras la lectura vive en un layout effect aparte. El efecto pasivo del primer commit conserva `"auto"` en su clausura, así que puede escribir `"auto"` encima de un `"manual"` guardado antes de que la lectura se aplique.
+
+**Por qué no es urgente:** en el camino normal se autocorrige. Tras la lectura el estado pasa a `"manual"`, cambia la dependencia del efecto y este vuelve a escribir `"manual"`. El resultado final es correcto; lo que hay es una escritura transitoria equivocada.
+
+**Qué lo vuelve urgente:** que la pestaña se cierre entre ambas escrituras, dejando la preferencia en `"auto"`. Probabilidad baja, consecuencia real: el usuario pierde su modo manual.
+
+**Cómo cerrarlo:** ya existe la herramienta. Aplicar el mismo patrón de T-03 con `@/lib/persisted-preference`: leer en el layout effect y mover la escritura al setter, eliminando el efecto. Son pocas líneas y el gate de `TS-WEB-019` ya cubre las primitivas.
+
+---
+
 ## Requiere revisión (no verificado, no asumir)
 
 _(vacío)_
@@ -241,6 +241,38 @@ También se corrigió la tabla de servicios de `CLAUDE.md`, que decía "cuenta c
 ---
 
 ## Resueltos
+
+### P-08 · Mismatches de hidratación de preferencias en `/chat`
+
+**Dos preferencias de `/chat` siguen leyendo `localStorage` durante la hidratación**
+
+- **Detectado:** 2026-08-24, investigando un `NotFoundError: removeChild` en producción.
+- **Estado:** el caso grave (`cachedAuthEmail`) ya se arregló. Estos dos quedaron **deliberadamente sin tocar**.
+
+**Qué son:** en `apps/web/src/app/chat/page.tsx`, `ichingCastingMethod` (línea ~663) e `ichingLineReadingSystem` (línea ~688) se inicializan con un `useState` perezoso que lee `localStorage`. El servidor no tiene `localStorage`, así que devuelve el default (`three-coins`, `huang`) mientras el cliente puede devolver otro valor (`yarrow-stalks`, `zhuxi`). Eso desalinea el primer render del cliente con el HTML del servidor y produce un mismatch de hidratación de React.
+
+**Por qué NO se arreglaron junto con el otro:** cada uno tiene un `useEffect` que **reescribe el valor en `localStorage` al montar**, con `[valor]` como dependencia. Si se inicializan con el default y se lee después, ese efecto puede dispararse con el default todavía puesto y **sobrescribir la preferencia guardada del usuario**. Perder una preferencia real del usuario es peor que el mismatch que se estaría arreglando, así que el cambio ingenuo está descartado.
+
+**Por qué es menos grave que el que sí se arregló:** estos dos afectan atributos (`checked`, `className`) y etiquetas, no la estructura del árbol. React parchea diferencias de atributos sin desmontar nada. `cachedAuthEmail` en cambio intercambiaba ramas enteras de JSX, que es el mismatch estructural que termina en `removeChild`.
+
+**Cómo cerrarlo bien:** hace falta un guardia de hidratación, no solo mover la lectura. El patrón: un `useRef` que marque "ya leí el storage", que el efecto de escritura consulte para no grabar nada antes de esa lectura. Es un cambio pequeño pero necesita su propia verificación, porque el modo de fallo es pérdida de datos del usuario.
+
+**Qué lo vuelve urgente:** que aparezcan más `removeChild` o mismatches en `/chat` después de que el arreglo de `cachedAuthEmail` esté desplegado. Si siguen, estos dos son los siguientes sospechosos.
+
+---
+
+**RESUELTO** el 2026-08-26 (T-03 del plan de remediación).
+
+**El arreglo, y por qué no lleva guardas.** No se añadió un `ref` de "ya hidraté" al efecto de escritura, porque no habría bastado: el efecto pasivo del primer commit conserva el valor viejo en su clausura y habría escrito el default de todos modos. En su lugar **la escritura sale de los efectos** y pasa al setter, que solo corre ante una elección explícita del usuario. La pérdida de la preferencia deja de ser un riesgo a esquivar y pasa a ser estructuralmente imposible: no queda ningún `setItem` de estas claves en un camino de render.
+
+**Verificado:**
+- Gate obligatorio cumplido, `TS-WEB-019`: montar con un valor no-default lo lee y **nunca escribe**, con espía sobre el almacenamiento. Incluye un test que reproduce la secuencia vieja y demuestra que sí destruía la preferencia, para documentar el daño a quien quiera reintroducirla.
+- El HTML del servidor quedó **idéntico**, 33155 bytes de markup antes y después, con la única diferencia de un número de línea dentro de un stack trace de modo desarrollo.
+- El nuevo layout effect **no** introduce advertencia de SSR de React: ninguna de las dos capturas menciona `useLayoutEffect`.
+- 153 tests de web en verde, typecheck limpio.
+
+---
+
 
 ### P-06 · VACUUM semanal roto desde la migración 070
 
