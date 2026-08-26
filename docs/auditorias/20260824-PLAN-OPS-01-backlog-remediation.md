@@ -10,7 +10,7 @@
 |--------|--------|-----------|
 | T-01 | Pendiente, **acción del propietario** | Requiere crear el auth token en Sentry y definirlo en Vercel |
 | T-02 | Pendiente, **acción del propietario** | Requiere buscar el issue #418 en Sentry |
-| T-03 | Abierto | Sigue como P-08 en el backlog |
+| T-03 | **CERRADO** | `42ee2ea0`, escritura fuera de los efectos; gate `TS-WEB-019` cumplido; markup del servidor idéntico |
 | T-04 | **CERRADO** | `2fbfea78`, refactor humble-object, 16 tests, CI verde en `bbd5bd52` |
 | T-05.0 | **CERRADO y aprobado** | `2e194880`, entorno fijado en ambos perfiles de bundle; auditoría verificó de forma independiente que `wgborqkfnxfarkdaotsd` es el proyecto de producción vigente |
 | T-05 | **DESBLOQUEADO**, acción del propietario | Sus dos bloqueantes cerrados; el release en sí es manual |
