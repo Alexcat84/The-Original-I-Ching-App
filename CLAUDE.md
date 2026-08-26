@@ -61,6 +61,45 @@ moderna usando Claude AI. Modelo de negocio: tokens consumibles (no suscripción
 - `staging` — desarrollo y pruebas activas
 - `main` — producción (se mergea desde staging continuamente; nunca commit directo a main)
 
+## ⚠️ Invariantes de integración (no negociables)
+
+**1. Guard rojo = no merge. Sin excepciones.**
+No hay branch protection disponible en este repo, así que este es el control
+compensatorio y depende de la disciplina de quien mergea. CI corre solo en
+`push`/`pull_request` sobre `main`: los push a `staging` **no disparan nada**.
+Eso significa que mergear staging→main en local y pushear entrega el código a
+producción **antes** de que ningún gate opine. Si tras el push `resolution-guard`
+(o cualquier job) sale rojo, se revierte de inmediato, no se "arregla hacia
+adelante" con producción rota.
+*Precedente: el 2026-08-26 un merge a main rompió el install de Vercel. El
+`resolution-guard` lo detectó correctamente, pero su veredicto llegó después del
+merge porque no hubo PR. El hueco fue de proceso, no del guard.*
+
+**2. `npm install --dry-run` obligatorio antes de commitear cambios de dependencias.**
+Una instalación incremental local puede resolver bien y aun así romper el install
+limpio de Vercel: npm no re-resuelve el árbol completo si ya existe
+`node_modules`. Antes de commitear cualquier cambio de `package.json` o del
+lockfile, correr el dry-run **y** el chequeo de resolución:
+```bash
+npx npm@10.9.2 install --dry-run          # no debe salir ERESOLVE
+node .github/scripts/check-react-resolution.mjs
+```
+> **NUNCA commitear un `package-lock.json` regenerado desde cero en Windows.**
+> `rm package-lock.json && npm install` en Windows **borra** las dependencias
+> opcionales de otras plataformas (`@next/swc-linux-*`, `@rollup/rollup-linux-*`)
+> y rompe el build de Vercel. El `resolution-guard` regenera el lockfile solo para
+> comprobar la resolución, en Linux, y no lo commitea. Para añadir una dependencia
+> usar install incremental y verificar que el diff del lockfile sea pequeño.
+
+**3. El override `"react-dom": "18.2.0"` de la raíz NO se toca.**
+Es protección deliberada del mundo react-dom del web; mobile no usa react-dom en
+runtime. Cambiarlo re-resuelve el árbol del web con el no-determinismo de
+`AUD-WEB-02`, y el `resolution-guard` **no verifica react-dom**, así que un flip
+pasaría en silencio. Se retira de forma natural al migrar a Next 16. Corolario
+práctico: **no añadir `react-dom` como dependencia de `apps/mobile`** (rompe el
+install con ERESOLVE). Para probar hooks del shell nativo, extraer la lógica a una
+controladora plana y probarla sin React; ver `src/hooks/integrity-controller.ts`.
+
 ## Entornos y Variables
 
 ### Web (Vercel)

@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-24 (auditoría externa: dos bloqueantes nuevos en P-01)
+**Última revisión:** 2026-08-26 (alta de P-10; T-04 rediseñado tras el incidente de Vercel)
 
 ---
 
@@ -33,6 +33,7 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 | [P-07](#p-07) | Endurecimiento opcional: exigir integridad a clientes que se declaran Android | P3 | 2026-06-13 |
 | [P-08](#p-08) | Dos preferencias de `/chat` siguen leyendo `localStorage` durante la hidratación | P2 | 2026-08-24 |
 | [P-09](#p-09) | Sentry no puede desminificar los errores web (sourcemaps sin subir) | P2 | 2026-08-24 |
+| [P-10](#p-10) | `turbo run test` muere en Windows, la suite completa no corre en local | P3 | 2026-08-25 |
 
 ---
 
@@ -192,6 +193,24 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 **Cómo cerrarlo:** crear un auth token en Sentry con permiso de releases y definir `SENTRY_AUTH_TOKEN` en Vercel (confirmar de paso que `SENTRY_ORG` y `SENTRY_PROJECT` también estén). El código ya está preparado y los consume: no hace falta cambiar nada en el repo. Después, verificar en un error de prueba que el stack llegue con nombres de función y archivo reales.
 
 **Nota relacionada:** conviene vigilar si el `removeChild` de `/chat` reaparece tras el arreglo `cd5c91de`. Las 6 ocurrencias fueron de una sola sesión de usuario en dos minutos y no se repitieron, así que la ausencia por sí sola todavía no prueba que el arreglo lo eliminó.
+
+---
+
+### P-10
+
+**`turbo run test` muere en Windows: la suite completa no corre en local**
+
+- **Detectado:** 2026-08-25, ejecutando T-04.
+- **Sintoma:** `npx turbo run test` falla en ~300 ms sin llegar a compilar nada, en un paquete **distinto en cada corrida** (`sharing`, `ui`, `oracle-bones-engine`, `iching-data`). El error es siempre `npm-cli.js run <task> exited (1)` sin salida. Los mismos paquetes compilan sin problema ejecutados de forma individual.
+- **Verificado como PREEXISTENTE:** se revirtieron los archivos rastreados a HEAD y se reprodujo igual, asi que no lo introdujo el trabajo de T-04. Tampoco depende del paralelismo: falla igual con `--concurrency=1`.
+
+**Por que no es critico:** CI corre en Linux (`ubuntu-latest`) y no esta afectado; los gates siguen protegiendo `main`. Cada paquete se puede correr por separado (`npm run test --prefix apps/web`, etc.), que es como se valido todo el trabajo reciente.
+
+**Que se pierde mientras tanto:** no hay forma de correr la suite completa del monorepo en local antes de pushear. Eso empuja a validar paquete por paquete y aumenta la probabilidad de que algo entre a `main` sin haber pasado por todas las compuertas de golpe.
+
+**Que lo vuelve urgente:** que alguien necesite validar un cambio que cruce varios paquetes a la vez, o que CI empiece a atrapar cosas que un local sano habria detectado antes.
+
+**Pista para investigarlo:** el patron (paquete distinto cada vez, ~300 ms, sin salida) sugiere que turbo invoca `npm` de una forma que muere de inmediato en Windows. El proyecto declara `npm@10.9.2` pero la maquina corre npm 11.5.1; vale la pena descartar primero esa combinacion turbo 2.9.18 mas npm 11 en Windows.
 
 ---
 
