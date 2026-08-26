@@ -1,7 +1,8 @@
 # Plan de remediación del backlog de pendientes no críticos
 
 **Código:** `20260824-PLAN-OPS-01 backlog-remediation` · **Familia:** OPS · **Estado:** open
-**Fecha:** 2026-08-24
+**Fecha:** 2026-08-24 · **Revisión 2** (incorpora la auditoría externa del 2026-08-24, ver §9)
+**Estado de aprobación:** aprobado por auditoría externa con una corrección y tres precisiones, las cuatro incorporadas. **Luz verde para ejecutar en el orden de olas de §4.**
 **Verificado contra `main` (`754b4198`)** antes de escribir: cada estado declarado aquí se comprobó en el repo real, en Axiom o en Sentry. Las afirmaciones que no se pudieron verificar están marcadas como tales.
 **Origen:** [`00000000-PLAN-BACKLOG-01`](../00000000-PLAN-BACKLOG-01-pending-non-critical.md), registro vivo de pendientes.
 **Destinatario:** auditoría externa.
@@ -14,7 +15,7 @@
 
 - **`apps/web`**: Next.js 15 App Router en Vercel. Es donde vive toda la lógica de negocio: motor del I Ching, prompts, generación de imágenes, créditos.
 - **`apps/mobile`**: shell Expo/React Native que carga la web en un WebView. Publicado en Google Play (`4.2.5` / versionCode 65, en Production desde el 2026-07-17).
-- **`backend/db/migrations`**: cadena de 76 migraciones SQL sobre Supabase, replayable en base vacía, con un gate de verificación propio.
+- **`backend/db/migrations`**: cadena de **69 migraciones SQL numeradas** sobre Supabase (la más alta es la `076`; la numeración tiene 7 huecos: 9, 14, 15, 20, 56, 57, 58). Replayable en base vacía, con un gate de verificación propio (`verify_migrations.sql`, que no es una migración y no cuenta).
 
 Modelo de negocio: tokens consumibles, sin suscripción. El acceso a consultar depende de `credits_total > 0`.
 
@@ -61,11 +62,12 @@ Ola 1 (desbloquea el resto)
 
 Ola 2 (correctitud, requiere cuidado)
   T-03  Mismatches de hidratación restantes   riesgo de pérdida de datos
-  T-04  Runner de tests en mobile             habilita T-05 con red
+  T-04  Runner de tests en mobile             BLOQUEA T-05
 
 Ola 3 (entrega y capacidad)
-  T-05  Release móvil con el arreglo de integridad
-  T-06  Anomalía de traceId sin explicar
+  T-05.0  Pinnear la URL de API del AAB de Play    BLOQUEA T-05
+  T-05    Release móvil con el arreglo de integridad
+  T-06    Anomalía de traceId sin explicar
 
 Ola 4 (opcional, sin urgencia)
   T-07  Proveedores de imagen de respaldo
@@ -73,8 +75,10 @@ Ola 4 (opcional, sin urgencia)
 ```
 
 **Dependencias reales:**
-- T-02 depende de T-01. Sin símbolos no se puede confirmar si un `removeChild` que reaparezca es el mismo bug u otro.
-- T-05 se beneficia de T-04. El código que va en ese release toca concurrencia y timers, y se escribió sin cobertura automatizada.
+
+- **T-02 depende de T-01.** Sin símbolos no se puede confirmar si un `removeChild` que reaparezca es el mismo bug u otro.
+- **T-05 depende de T-04** (requisito, no preferencia). El código que va en ese release toca concurrencia, timers y limpieza de refs, se escribió **sin cobertura automatizada**, y su reversión es cara: una vez publicado en Play, revertir significa publicar otro versionCode o detener el rollout, con la latencia de revisión de Google de por medio. El propio plan da el argumento en T-04. Alcance mínimo exigido: backoff acotado, guarda de concurrencia y limpieza de timers de `useIntegrityCheck`.
+- **T-05 depende de T-05.0.** No se genera un AAB de Play mientras la URL embebida dependa de estado no versionado del dashboard de EAS.
 - El resto son independientes.
 
 ---
@@ -140,12 +144,16 @@ Seguridad del arreglo, verificada y no supuesta: se comparó el markup emitido p
 ### Pasos
 
 1. Completar T-01 primero.
-2. Vigilar Sentry 30 días buscando reaparición de `removeChild` en `/chat`.
-3. Buscar además si existe un issue separado de **"Minified React error #418"** y con qué fecha de primera aparición. Si existe y es anterior al 2026-08-24, confirma que el mismatch llevaba semanas activo y que solo la escalada a `removeChild` era nueva.
+2. **Buscar en Sentry el issue de "Minified React error #418" y anotar su fecha de primera aparición.** Este paso es **obligatorio y va primero**, no condicionado a que el `removeChild` reaparezca. Es evidencia barata (una búsqueda) que responde directamente la pregunta que este plan deja abierta:
+   - Si existe con fecha **anterior** al 2026-08-24, confirma que el mismatch llevaba semanas activo y que solo la escalada a `removeChild` era nueva. El diagnóstico queda cerrado.
+   - Si **no** existe, el diagnóstico necesita revisión: significaría que el mismatch no se estaba reportando, y habría que entender por qué antes de dar por bueno el arreglo.
+3. Vigilar Sentry 30 días buscando reaparición de `removeChild` en `/chat`.
 
 ### Criterio de cierre
 
-30 días sin reaparición **con sourcemaps activos**, de forma que un error nuevo sea atribuible con certeza.
+Las dos cosas, no una: **(a)** la fecha de primera aparición del issue #418 documentada y consistente con el diagnóstico, y **(b)** 30 días sin reaparición del `removeChild` **con sourcemaps activos**, de forma que un error nuevo sea atribuible con certeza.
+
+Cerrar solo con (b) repetiría el error metodológico de §3: ausencia de señal tomada como prueba de funcionamiento.
 
 ---
 
@@ -245,6 +253,31 @@ Qué arregla:
 
 La mitad servidor **ya está viva** en producción desde el 2026-08-23: las denegaciones ahora aparecen en Axiom como `integrity_client_event_denied`.
 
+### Prerrequisitos bloqueantes
+
+**T-05.0 · Pinnear la URL de API en el perfil que genera el AAB de Play** (hallazgo de la auditoría externa del 2026-08-24, verificado).
+
+Estado verificado en `apps/mobile/eas.json`:
+
+| Perfil | `buildType` | `credentialsSource` | `EXPO_PUBLIC_API_URL` |
+|--------|-------------|---------------------|------------------------|
+| `staging-aab` (el que va a Play) | `app-bundle` | `remote` | **no fijada** |
+| `production` | `app-bundle` | `local` | **no fijada** |
+| `internal-staging-aab` (extiende `staging-aab`) | heredado | heredado | **fijada** a staging, junto con Supabase URL/anon key, `APP_ENV` y `MOBILE_API_MODE` |
+
+El perfil que produce el AAB de Play **no fija ninguna variable de entorno**, así que la URL embebida depende de las variables del dashboard de EAS: **estado no versionado, invisible en revisión de código y sin trazabilidad en git**. Es la misma clase de fragilidad del incidente de julio, donde el perfil `preview` salía con la URL de producción embebida porque su dashboard apuntaba allí.
+
+`internal-staging-aab` ya demuestra el patrón correcto para staging. Falta el equivalente para producción.
+
+**Acciones, antes de cualquier build de release:**
+
+1. Fijar `EXPO_PUBLIC_API_URL` (producción) de forma explícita en el perfil que genere el AAB de Play, junto con el par de Supabase de producción, `EXPO_PUBLIC_APP_ENV` y `EXPO_PUBLIC_MOBILE_API_MODE`, replicando lo que `internal-staging-aab` hace con staging.
+2. Documentar en [`00000000-OPS-PLAY-02`](../00000000-OPS-PLAY-02-play-store-versioning.md) **por qué el AAB de Play sale de `staging-aab` (`credentialsSource: remote`) y no de `production` (`credentialsSource: local`)**. Hoy esa elección no está escrita en ninguna parte, y sin ella el nombre del perfil sugiere lo contrario de lo que hace.
+
+**Criterio de verificación:** que la URL de producción sea legible en `eas.json` bajo control de versiones, sin consultar el dashboard de EAS.
+
+**T-05.1 · Cobertura de tests de `useIntegrityCheck`** (ver T-04). Requisito, no recomendación: ver la justificación en la sección de secuencia.
+
 ### Pasos
 
 Seguir el procedimiento documentado del proyecto, sin desviarse:
@@ -252,7 +285,7 @@ Seguir el procedimiento documentado del proyecto, sin desviarse:
 1. Bump correlativo de versión y `versionCode` +1 sobre el último **subido** (no sobre el del repo si difieren). Ver [`00000000-OPS-PLAY-02`](../00000000-OPS-PLAY-02-play-store-versioning.md).
 2. Actualizar changelog. Ver [`00000000-OPS-PLAY-01`](../00000000-OPS-PLAY-01-play-store-changelog.md).
 3. Commit a `staging`, merge a `main`.
-4. AAB de producción con el perfil `staging-aab` de EAS. **Nunca el perfil `preview` para Play Console.**
+4. AAB de producción con el perfil que va a Play, **ya con la URL pinneada según T-05.0**. **Nunca el perfil `preview` para Play Console.**
 5. Smoke previo con APK **local** (`assembleRelease`) apuntando a staging, según el invariante del proyecto.
 
 ### Criterio de cierre
@@ -373,18 +406,34 @@ Para que el auditor no lo lea como omisión:
 
 ## 7. Trazabilidad
 
-| Ticket | Backlog | Prioridad | Esfuerzo | Riesgo del cambio | Bloquea |
-|--------|---------|-----------|----------|-------------------|---------|
-| T-01 | P-09 | P2 | 30-60 min | Ninguno | T-02 |
-| T-02 | seguimiento `cd5c91de` | P2 | Observación | Ninguno | - |
-| T-03 | P-08 | P2 | Medio día | **Alto si es ingenuo** | - |
-| T-04 | P-04 | P2 | 1-2 días | Bajo | - |
-| T-05 | P-01 | P1 | Medio día | Medio (release) | - |
-| T-06 | P-05 | P3 | 2-4 h | Ninguno | - |
-| T-07 | P-02, P-03 | P2 | Medio día c/u | Bajo | - |
-| T-08 | P-07 | P3 | 1-2 días | Medio | - |
+| Ticket | Backlog | Prioridad | Esfuerzo | Riesgo del cambio | Bloquea | Bloqueado por |
+|--------|---------|-----------|----------|-------------------|---------|---------------|
+| T-01 | P-09 | P2 | 30-60 min | Ninguno | T-02 | - |
+| T-02 | seguimiento `cd5c91de` | P2 | Observación | Ninguno | - | T-01 |
+| T-03 | P-08 | P2 | Medio día | **Alto si es ingenuo** | - | - |
+| T-04 | P-04 | P2 | 1-2 días | Bajo | **T-05** | - |
+| T-05.0 | auditoría 2026-08-24 | P1 | 1-2 h | Bajo | **T-05** | - |
+| T-05 | P-01 | P1 | Medio día | Medio (release) | - | **T-04, T-05.0** |
+| T-06 | P-05 | P3 | 2-4 h | Ninguno | - | - |
+| T-07 | P-02, P-03 | P2 | Medio día c/u | Bajo | - | - |
+| T-08 | P-07 | P3 | 1-2 días | Medio | - | - |
 
 **Cerrado antes de este plan:** P-06, migración 076, commits `4503adff` y `84a1e4cb`.
+
+---
+
+## 9. Respuesta a la auditoría externa del 2026-08-24
+
+Veredicto recibido: **aprobado** con una corrección y tres precisiones. Las cuatro se incorporaron. Cada afirmación de la auditoría se verificó contra el repo antes de aplicarla, con el mismo criterio que la auditoría aplicó a este documento.
+
+| # | Observación | Estado | Verificación realizada |
+|---|-------------|--------|------------------------|
+| 1 | `staging-aab` no fija `EXPO_PUBLIC_API_URL`; depende del dashboard de EAS | **Incorporada** como T-05.0, prerrequisito bloqueante | **Confirmada.** En `eas.json`, `staging-aab` no declara `env`, usa `credentialsSource: remote`; `production` usa `local`; `internal-staging-aab` extiende `staging-aab` y sí fija API URL, Supabase URL/anon key, `APP_ENV` y `MOBILE_API_MODE` |
+| 2 | T-04 pasa de "se beneficia" a requisito de T-05 | **Incorporada.** Elevado a dependencia dura en §4 y en la tabla, con alcance mínimo explícito | Aceptada. El argumento de la reversión cara de un release de Play es correcto y el propio plan lo daba |
+| 3 | La cadena son "70 archivos numerados hasta 076", no 76 migraciones | **Incorporada con una precisión adicional** | **Parcialmente confirmada.** Hay 70 archivos `.sql` en el directorio, pero uno es `verify_migrations.sql`, que es el gate y no una migración. Los archivos **numerados** son **69**, con la numeración llegando a 076 y 7 huecos (9, 14, 15, 20, 56, 57, 58). El documento ahora dice 69 y enumera los huecos |
+| 4 | Buscar el issue de "React error #418" aunque el `removeChild` no reaparezca | **Incorporada.** Pasó a ser el paso 1 de T-02, obligatorio e incondicional, con los dos desenlaces posibles escritos | Aceptada. Es evidencia barata que responde la pregunta que §8 deja abierta |
+
+Sobre el punto 3: se corrige el número de la auditoría, no para discutirlo, sino porque un plan que va a ejecución no debe llevar un conteo aproximado de la cadena de migraciones. El comando que lo resuelve es `ls backend/db/migrations/*.sql | grep -cE '/[0-9]{3}_'`.
 
 ---
 

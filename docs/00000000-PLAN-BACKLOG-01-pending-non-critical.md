@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-24 (alta de P-09: Sentry sin sourcemaps en los errores web)
+**Última revisión:** 2026-08-24 (auditoría externa: dos bloqueantes nuevos en P-01)
 
 ---
 
@@ -52,7 +52,12 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 
 **Qué lo vuelve urgente:** que aparezca un `integrity_check_failed` real, o que suba la frecuencia de `integrity_challenge_denied` (base actual: 7 en 30 días sobre 71 intentos, 9.9%).
 
-**Cómo cerrarlo:** viaja en el próximo release normal. Bump correlativo de versión y `versionCode` +1 sobre el último **subido** (actual en repo: 4.2.5 / 65), changelog, y AAB con perfil `staging-aab`. Ver [`00000000-OPS-PLAY-02`](./00000000-OPS-PLAY-02-play-store-versioning.md) y [`00000000-OPS-PLAY-01`](./00000000-OPS-PLAY-01-play-store-changelog.md).
+**Cómo cerrarlo:** viaja en el próximo release normal. Bump correlativo de versión y `versionCode` +1 sobre el último **subido** (actual en repo: 4.2.5 / 65), changelog, y AAB con el perfil que va a Play. Ver [`00000000-OPS-PLAY-02`](./00000000-OPS-PLAY-02-play-store-versioning.md) y [`00000000-OPS-PLAY-01`](./00000000-OPS-PLAY-01-play-store-changelog.md).
+
+**Dos bloqueantes duros antes de generar el AAB** (auditoría externa del 2026-08-24, ver [`20260824-PLAN-OPS-01`](./auditorias/20260824-PLAN-OPS-01-backlog-remediation.md) T-05.0 y T-05.1):
+
+1. **Pinnear `EXPO_PUBLIC_API_URL` de producción en `eas.json`.** Verificado: el perfil `staging-aab`, que es el que va a Play, **no fija ninguna variable de entorno**, así que la URL embebida depende del dashboard de EAS, estado no versionado e invisible en revisión de código. `internal-staging-aab` ya demuestra el patrón correcto para staging. Falta el equivalente de producción, y documentar por qué el AAB sale de `staging-aab` (`credentialsSource: remote`) y no de `production` (`credentialsSource: local`).
+2. **Cobertura de tests de `useIntegrityCheck`** (ver P-04): backoff acotado, guarda de concurrencia y limpieza de timers. La auditoría lo elevó de recomendación a requisito, porque el código toca concurrencia y timers, salió sin cobertura, y revertir un release de Play es caro.
 
 **Nota:** la mitad servidor de ese arreglo **ya está viva** en producción. Desde el 2026-08-23 las denegaciones aparecen en Axiom como `integrity_client_event_denied`; antes eran invisibles fuera de Sentry.
 
