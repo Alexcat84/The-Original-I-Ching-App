@@ -6,14 +6,16 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "lint": "node -e \"process.exit(0)\"",
+    "lint": "tsc --noEmit",
     "postinstall": "node ./scripts/fix-expo-app-integrity-gradle.js",
     "eas-build-pre-install": "rm -rf android ios",
     "android:prebuild": "expo prebuild --platform android",
     "android:sync-native": "expo prebuild --platform android --no-install",
     "android:apk:release": "node ./scripts/assemble-android-release.js",
     "android:run:release": "expo run:android --variant release --no-bundler",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@iching-oracle/i18n": "file:../../packages/i18n",
@@ -61,7 +63,11 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@types/react": "~19.2.0",
+    "@types/react-dom": "~19.2.0",
+    "jsdom": "^26.1.0",
     "patch-package": "^8.0.1",
-    "typescript": "~6.0.3"
+    "react-dom": "^19.2.3",
+    "typescript": "~6.0.3",
+    "vitest": "^3.2.7"
   }
 }
