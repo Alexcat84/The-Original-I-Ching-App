@@ -2723,6 +2723,27 @@
       "area": "apps/web/src/app/api/integrity/client-event"
     },
     {
+      "code": "TS-WEB-019 persisted-preference",
+      "title": "Preferencias persistidas: el montaje nunca destruye lo guardado",
+      "shortName": "persisted-preference",
+      "type": "TS",
+      "family": "CHAT",
+      "version": "1.0.0",
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "date": "2026-08-26",
+          "change": "Gate obligatorio de T-03: montaje con valor no-default lo lee sin escribir, asi que sobrevive"
+        }
+      ],
+      "path": "apps/web/src/lib/__tests__/persisted-preference.test.ts",
+      "npmScript": "npm run test --prefix apps/web",
+      "relatedAuditCodes": [
+        "20260824-PLAN-OPS-01 backlog-remediation"
+      ],
+      "area": "apps/web/src/lib/persisted-preference"
+    },
+    {
       "code": "VF-IMG-001 r2-fallback-coverage",
       "title": "Cobertura completa del pool de contingencia en R2 (2720 objetos)",
       "shortName": "r2-fallback-coverage",
