@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-07-16",
+  "updatedAt": "2026-08-24",
   "conventions": "./CONVENTIONS.md",
   "entries": [
     {
@@ -1571,6 +1571,22 @@
       "path": "docs/auditorias/00000000-RPT-ARCH-02-system-canvas.md",
       "relatedCodes": [
         "00000000-RPT-ARCH-01 architecture-fullstack"
+      ],
+      "relatedTests": []
+    },
+    {
+      "code": "20260824-PLAN-OPS-01 backlog-remediation",
+      "title": "Plan de remediacion del backlog de pendientes no criticos (8 tickets)",
+      "shortName": "backlog-remediation",
+      "type": "PLAN",
+      "family": "OPS",
+      "date": "2026-08-24",
+      "status": "open",
+      "path": "docs/auditorias/20260824-PLAN-OPS-01-backlog-remediation.md",
+      "relatedCodes": [
+        "20260613-AUD-PRD-01 pre-production-jun13",
+        "20260715-EXT-SEC-02 full-repo-deep-audit",
+        "20260814-PLAN-IMG-PROV-01 image-fallback-providers-deferred"
       ],
       "relatedTests": []
     }
