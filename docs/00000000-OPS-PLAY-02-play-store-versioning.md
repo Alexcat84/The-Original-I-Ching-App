@@ -77,6 +77,36 @@ for (const n of ["staging-aab","production"]) console.log(n, j.build[n].env.EXPO
 ```
 Debe imprimir `https://theoriginaliching.com` en ambos, **leído de `eas.json`**, sin consultar el dashboard de EAS.
 
+### Verificación del artefacto, después de construir y antes de subir
+
+Lo de arriba comprueba la **configuración**. Esto comprueba el **artefacto**, que es lo que de verdad se instala. La distinción no es pedante: un gate que pregunta "¿está bien configurado?" no prueba "¿salió bien?", y este proyecto ya pagó once semanas de un job de `VACUUM` muerto con el gate en verde por confundir las dos cosas.
+
+Un AAB es un zip. El bundle de JS vive en `base/assets/index.android.bundle`, y las cadenas de las variables `EXPO_PUBLIC_*` quedan embebidas ahí.
+
+**1. Chequeo inverso, que es el que importa.** No basta con confirmar que la URL de producción está: hay que confirmar que **la de staging NO está**. Ese es el error que un dashboard mal configurado produce, y el único que un chequeo positivo deja pasar.
+
+```bash
+# Extraer el bundle del AAB
+unzip -p <ruta>.aab base/assets/index.android.bundle > /tmp/bundle.hbc
+
+# DEBE aparecer:
+grep -c "theoriginaliching.com" /tmp/bundle.hbc
+
+# DEBE dar CERO. Si da otra cosa, el AAB apunta a staging: NO subir.
+grep -c "git-staging" /tmp/bundle.hbc
+grep -c "pjbjpdpgpzwgrellvsor" /tmp/bundle.hbc
+```
+
+**2. Versión y versionCode reales del manifiesto**, no los del `app.config.js`:
+
+```bash
+aapt dump badging <ruta>.aab | head -1
+```
+
+Debe coincidir con el bump planificado, y el `versionCode` ser +1 sobre el último **subido**.
+
+> Estos comandos están documentados pero **no se han ejecutado todavía contra un AAB real**, porque no había artefacto cuando se escribieron. La primera vez que se corran, ajustar aquí lo que difiera (rutas dentro del zip, disponibilidad de `aapt`) y quitar esta nota.
+
 ### Pendiente conocido
 
 `EXPO_PUBLIC_APP_ENV` y `EXPO_PUBLIC_MOBILE_API_MODE` **siguen sin fijarse** en los perfiles de bundle y aún dependen del dashboard. Quedan fuera del alcance autorizado en su momento; conviene fijarlas también en el próximo cambio de este archivo.
