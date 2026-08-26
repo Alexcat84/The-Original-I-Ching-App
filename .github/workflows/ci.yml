@@ -2,7 +2,14 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    # `staging` está aquí a propósito, no por simetría. El flujo del proyecto es
+    # mergear staging→main en local y pushear, así que sin esta línea el primer
+    # gate que opina lo hace cuando el código YA está en main y Vercel ya arrancó
+    # el deploy. Fue exactamente lo que pasó el 2026-08-26: resolution-guard
+    # detectó correctamente un ERESOLVE que rompía el install de Vercel, pero su
+    # veredicto llegó después del merge. Corriendo en staging, el mismo commit se
+    # evalúa antes de llegar a producción.
+    branches: [main, staging]
   pull_request:
     branches: [main]
 

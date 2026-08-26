@@ -22,13 +22,21 @@
       "android": {
         "buildType": "app-bundle",
         "credentialsSource": "remote"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://theoriginaliching.com",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://wgborqkfnxfarkdaotsd.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnYm9ycWtmbnhmYXJrZGFvdHNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNTk0MjAsImV4cCI6MjA5MjczNTQyMH0.bFvpVpl6NwnSc4MA8Xvz-fE9QfLmMO55NES7m7YRwWs"
       }
     },
     "production": {
       "env": {
         "NODE_OPTIONS": "--max-old-space-size=8192",
         "METRO_MAX_WORKERS": "2",
-        "EAS_BUILD_NO_EXPO_GO_WARNING": "true"
+        "EAS_BUILD_NO_EXPO_GO_WARNING": "true",
+        "EXPO_PUBLIC_API_URL": "https://theoriginaliching.com",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://wgborqkfnxfarkdaotsd.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnYm9ycWtmbnhmYXJrZGFvdHNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNTk0MjAsImV4cCI6MjA5MjczNTQyMH0.bFvpVpl6NwnSc4MA8Xvz-fE9QfLmMO55NES7m7YRwWs"
       },
       "android": {
         "buildType": "app-bundle",

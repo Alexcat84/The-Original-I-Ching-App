@@ -47,3 +47,36 @@ El 2026-07-15, tras la migración a Expo SDK 57, se asignó `4.3.0` "por ser una
 | 4.2.4 | 64 | Production | 2026-07-16 | release SDK 57 SUBIDO (64 quemado); bug conocido: descarga de imagen (fix en 4.2.5) |
 | 4.2.5 | 65 | Production | 2026-07-16 | fix: import legacy de expo-media-library (descarga de imagen a galería) |
 | (siguiente) | 66 | | | después de 4.2.5 sigue 4.2.6 |
+
+---
+
+## 5. Perfiles de EAS y de dónde sale el AAB de Play
+
+Los nombres de los perfiles en `apps/mobile/eas.json` **no describen su entorno**, y esa es la trampa. Estado tras el 2026-08-26:
+
+| Perfil | Tipo | `credentialsSource` | Entorno embebido |
+|--------|------|---------------------|------------------|
+| `staging-aab` | `app-bundle` | `remote` | **producción** (fijado en `eas.json`) |
+| `production` | `app-bundle` | `local` | **producción** (fijado en `eas.json`) |
+| `internal-staging-aab` | hereda de `staging-aab` | heredado | **staging** (fija sus propias variables, que ganan sobre las del padre) |
+| `preview` | `apk` | por defecto | **el del dashboard de EAS**: NO usar para smoke |
+
+### Por qué ambos perfiles de bundle llevan producción fijada
+
+Hasta el 2026-08-26 ninguno de los dos fijaba variable alguna, así que la URL embebida salía del **dashboard de EAS**: estado no versionado, invisible en revisión de código y sin trazabilidad en git. La auditoría externa lo marcó como la misma clase de fragilidad del incidente de julio, donde un APK de `preview` salió con la URL de producción embebida sin que nadie lo viera.
+
+Se fijaron `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_SUPABASE_URL` y `EXPO_PUBLIC_SUPABASE_ANON_KEY` de producción **en los dos perfiles de bundle**, no en uno solo. Motivo: el nombre del perfil no permite deducir cuál sube a Play (`staging-aab` suena a staging pero apunta a producción), y fijar solo uno dejaría el otro dependiendo del dashboard con la falsa sensación de estar cubierto. Con ambos fijados, el AAB sale correcto sea cual sea el que se use.
+
+La anon key es **pública por diseño** (JWT con `role: anon`, protegida por RLS) y ya existía el precedente de tenerla versionada en `internal-staging-aab`. **Nunca versionar la `service_role`.**
+
+### Verificación antes de un release
+
+```bash
+node -e 'const j=require("./apps/mobile/eas.json");
+for (const n of ["staging-aab","production"]) console.log(n, j.build[n].env.EXPO_PUBLIC_API_URL);'
+```
+Debe imprimir `https://theoriginaliching.com` en ambos, **leído de `eas.json`**, sin consultar el dashboard de EAS.
+
+### Pendiente conocido
+
+`EXPO_PUBLIC_APP_ENV` y `EXPO_PUBLIC_MOBILE_API_MODE` **siguen sin fijarse** en los perfiles de bundle y aún dependen del dashboard. Quedan fuera del alcance autorizado en su momento; conviene fijarlas también en el próximo cambio de este archivo.
