@@ -3,7 +3,7 @@
 **Código:** `00000000-PLAN-BACKLOG-01 pending-non-critical`
 **Estado:** open (documento vivo)
 **Creado:** 2026-08-23
-**Última revisión:** 2026-08-26 (P-08 resuelto por T-03; alta de P-11)
+**Última revisión:** 2026-08-26 (P-11 y P-12 resueltos)
 
 ---
 
@@ -28,12 +28,10 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 | [P-01](#p-01) | Arreglo de integridad móvil esperando build | P1 | 2026-08-21 |
 | [P-02](#p-02) | Runware sin probar: no se puede cablear como fallback 2 | P2 | 2026-08-14 |
 | [P-03](#p-03) | fal.ai desplegado pero dormido (sin `FAL_AI_KEY`) | P2 | 2026-08-14 |
-| [P-04](#p-04) | `apps/mobile` no tiene runner de tests | P2 | 2026-08-23 |
 | [P-05](#p-05) | traceId de integridad repetido a 38 minutos, sin explicar | P3 | 2026-08-23 |
 | [P-07](#p-07) | Endurecimiento opcional: exigir integridad a clientes que se declaran Android | P3 | 2026-06-13 |
 | [P-09](#p-09) | Sentry no puede desminificar los errores web (sourcemaps sin subir) | P2 | 2026-08-24 |
 | [P-10](#p-10) | `turbo run test` muere en Windows, la suite completa no corre en local | P3 | 2026-08-25 |
-| [P-11](#p-11) | `ichingCastMode` escribe en un efecto de montaje y compite con su lectura | P3 | 2026-08-26 |
 
 ---
 
@@ -43,7 +41,7 @@ Prioridades: **P1** hacer en el próximo ciclo natural, **P2** cuando toque el �
 
 - **Detectado:** 2026-08-21 (evento Sentry `integrity_client_event`, dispositivo SM-S918U1)
 - **Código:** hecho y mergeado a main el 2026-08-23, commits `24e7e905` y `5a505f64`
-- **Falta:** solo el build. El código vive en el APK, no en Vercel.
+- **Falta:** solo el build, y ya sin bloqueantes. El código vive en el APK, no en Vercel.
 
 Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurrencia, y timeouts dimensionados contra el presupuesto de 15s del puente WebView.
 
@@ -55,10 +53,10 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 
 **Cómo cerrarlo:** viaja en el próximo release normal. Bump correlativo de versión y `versionCode` +1 sobre el último **subido** (actual en repo: 4.2.5 / 65), changelog, y AAB con el perfil que va a Play. Ver [`00000000-OPS-PLAY-02`](./00000000-OPS-PLAY-02-play-store-versioning.md) y [`00000000-OPS-PLAY-01`](./00000000-OPS-PLAY-01-play-store-changelog.md).
 
-**Dos bloqueantes duros antes de generar el AAB** (auditoría externa del 2026-08-24, ver [`20260824-PLAN-OPS-01`](./auditorias/20260824-PLAN-OPS-01-backlog-remediation.md) T-05.0 y T-05.1):
+**Los dos bloqueantes duros que fijó la auditoría del 2026-08-24 están AMBOS CERRADOS** (ver [`20260824-PLAN-OPS-01`](./auditorias/20260824-PLAN-OPS-01-backlog-remediation.md) T-05.0 y T-05.1). Quedan aquí como registro de qué hubo que resolver antes de poder construir el AAB:
 
-1. **Pinnear `EXPO_PUBLIC_API_URL` de producción en `eas.json`.** Verificado: el perfil `staging-aab`, que es el que va a Play, **no fija ninguna variable de entorno**, así que la URL embebida depende del dashboard de EAS, estado no versionado e invisible en revisión de código. `internal-staging-aab` ya demuestra el patrón correcto para staging. Falta el equivalente de producción, y documentar por qué el AAB sale de `staging-aab` (`credentialsSource: remote`) y no de `production` (`credentialsSource: local`).
-2. **Cobertura de tests de `useIntegrityCheck`** (ver P-04): backoff acotado, guarda de concurrencia y limpieza de timers. La auditoría lo elevó de recomendación a requisito, porque el código toca concurrencia y timers, salió sin cobertura, y revertir un release de Play es caro.
+1. ~~Pinnear `EXPO_PUBLIC_API_URL` de producción en `eas.json`~~ **HECHO** (`2e194880`, fijado en ambos perfiles de bundle). Era: el perfil `staging-aab` **no fijaba ninguna variable de entorno**, así que la URL embebida depende del dashboard de EAS, estado no versionado e invisible en revisión de código. `internal-staging-aab` ya demuestra el patrón correcto para staging. Falta el equivalente de producción, y documentar por qué el AAB sale de `staging-aab` (`credentialsSource: remote`) y no de `production` (`credentialsSource: local`).
+2. ~~Cobertura de tests de `useIntegrityCheck`~~ **HECHO** (`2fbfea78`, ver P-04 en Resueltos): backoff acotado, guarda de concurrencia y limpieza de timers. La auditoría lo elevó de recomendación a requisito, porque el código toca concurrencia y timers, salió sin cobertura, y revertir un release de Play es caro.
 
 **Nota:** la mitad servidor de ese arreglo **ya está viva** en producción. Desde el 2026-08-23 las denegaciones aparecen en Axiom como `integrity_client_event_denied`; antes eran invisibles fuera de Sentry.
 
@@ -93,23 +91,6 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 **Cómo activarlo:** basta definir `FAL_AI_KEY` en Vercel. No requiere cambio de código.
 
 **Detalle completo:** [`20260814-PLAN-IMG-PROV-01`](./20260814-PLAN-IMG-PROV-01-image-fallback-providers-deferred.md)
-
----
-
-### P-04
-
-**`apps/mobile` no tiene runner de tests**
-
-- **Detectado:** 2026-08-23, al arreglar el hook de integridad.
-- **Estado verificado:** en `apps/mobile/package.json` el script `lint` es un no-op (`node -e "process.exit(0)"`) y no existe script `typecheck`. No hay ni un solo archivo de test bajo `apps/mobile`.
-
-**Consecuencia concreta:** cambios de lógica delicada en el shell nativo (timers, refs, concurrencia, el puente con el WebView) se validan solo con `npx tsc --noEmit` y revisión manual. El arreglo de P-01 toca justamente ese tipo de lógica y salió sin cobertura automatizada.
-
-**Por qué no es crítico hoy:** `tsc` en modo strict sí corre y atrapa errores de tipo; el área cambia poco; y montar el runner era ampliar el alcance de un arreglo puntual.
-
-**Qué lo vuelve urgente:** la próxima vez que haya que tocar concurrencia o timers en `apps/mobile`. Ahí el costo de no tener red de seguridad se paga completo.
-
-**Cómo cerrarlo:** tanda propia. Vitest más `@testing-library/react-native`, empezando por los hooks puros (`useIntegrityCheck`, sync) antes que por componentes.
 
 ---
 
@@ -195,25 +176,6 @@ Qué arregla: reintento acotado tras un fallo de atestación, guarda de concurre
 
 ---
 
-### P-11
-
-**`ichingCastMode` escribe en un efecto de montaje y compite con su lectura**
-
-- **Detectado:** 2026-08-26, al ejecutar T-03. Es un hallazgo **adyacente**, no parte de ese ticket, y se registra en vez de ampliar el alcance en silencio.
-- **Dónde:** `apps/web/src/app/chat/page.tsx`, estado `ichingCastMode`.
-
-**Qué tiene y qué no.** **No** tiene mismatch de hidratación: se inicializa con `"auto"` fijo, así que servidor y cliente coinciden. Ese era el defecto de P-08 y aquí no aplica.
-
-Lo que sí conserva es la otra mitad del patrón viejo: un `useEffect` con `[valor]` de dependencia que escribe en `localStorage` al montar, mientras la lectura vive en un layout effect aparte. El efecto pasivo del primer commit conserva `"auto"` en su clausura, así que puede escribir `"auto"` encima de un `"manual"` guardado antes de que la lectura se aplique.
-
-**Por qué no es urgente:** en el camino normal se autocorrige. Tras la lectura el estado pasa a `"manual"`, cambia la dependencia del efecto y este vuelve a escribir `"manual"`. El resultado final es correcto; lo que hay es una escritura transitoria equivocada.
-
-**Qué lo vuelve urgente:** que la pestaña se cierre entre ambas escrituras, dejando la preferencia en `"auto"`. Probabilidad baja, consecuencia real: el usuario pierde su modo manual.
-
-**Cómo cerrarlo:** ya existe la herramienta. Aplicar el mismo patrón de T-03 con `@/lib/persisted-preference`: leer en el layout effect y mover la escritura al setter, eliminando el efecto. Son pocas líneas y el gate de `TS-WEB-019` ya cubre las primitivas.
-
----
-
 ## Requiere revisión (no verificado, no asumir)
 
 _(vacío)_
@@ -241,6 +203,73 @@ También se corrigió la tabla de servicios de `CLAUDE.md`, que decía "cuenta c
 ---
 
 ## Resueltos
+
+### P-04
+
+**`apps/mobile` no tiene runner de tests**
+
+- **Detectado:** 2026-08-23, al arreglar el hook de integridad.
+- **Estado verificado:** en `apps/mobile/package.json` el script `lint` es un no-op (`node -e "process.exit(0)"`) y no existe script `typecheck`. No hay ni un solo archivo de test bajo `apps/mobile`.
+
+**Consecuencia concreta:** cambios de lógica delicada en el shell nativo (timers, refs, concurrencia, el puente con el WebView) se validan solo con `npx tsc --noEmit` y revisión manual. El arreglo de P-01 toca justamente ese tipo de lógica y salió sin cobertura automatizada.
+
+**Por qué no es crítico hoy:** `tsc` en modo strict sí corre y atrapa errores de tipo; el área cambia poco; y montar el runner era ampliar el alcance de un arreglo puntual.
+
+**Qué lo vuelve urgente:** la próxima vez que haya que tocar concurrencia o timers en `apps/mobile`. Ahí el costo de no tener red de seguridad se paga completo.
+
+**RESUELTO** el 2026-08-26 (T-04 del plan, commit `2fbfea78`).
+
+Cerrado por refactor humble-object, no montando el hook. El primer intento sí montó el hook con `react-dom` y **rompió el install de Vercel**: el override global fija `react-dom` en 18.2.0 y choca con react 19 de mobile. Se revirtió (`48901ccf`) y se rehízo extrayendo la lógica a `IntegrityController`, una clase plana probada sin React. Única dependencia nueva: vitest.
+
+Cobertura en `TS-MOB-001` v2.0.0, 16 tests sobre backoff acotado, guarda de concurrencia y limpieza de timers. Validado además contra la versión pre-arreglo: fallan exactamente los 5 correctos.
+
+Los scripts `test`, `typecheck` y `lint` de `apps/mobile` son reales; `lint` dejó de ser un no-op.
+
+---
+
+
+### P-11
+
+**`ichingCastMode` escribe en un efecto de montaje y compite con su lectura**
+
+- **Detectado:** 2026-08-26, al ejecutar T-03. Es un hallazgo **adyacente**, no parte de ese ticket, y se registra en vez de ampliar el alcance en silencio.
+- **Dónde:** `apps/web/src/app/chat/page.tsx`, estado `ichingCastMode`.
+
+**Qué tiene y qué no.** **No** tiene mismatch de hidratación: se inicializa con `"auto"` fijo, así que servidor y cliente coinciden. Ese era el defecto de P-08 y aquí no aplica.
+
+Lo que sí conserva es la otra mitad del patrón viejo: un `useEffect` con `[valor]` de dependencia que escribe en `localStorage` al montar, mientras la lectura vive en un layout effect aparte. El efecto pasivo del primer commit conserva `"auto"` en su clausura, así que puede escribir `"auto"` encima de un `"manual"` guardado antes de que la lectura se aplique.
+
+**Por qué no es urgente:** en el camino normal se autocorrige. Tras la lectura el estado pasa a `"manual"`, cambia la dependencia del efecto y este vuelve a escribir `"manual"`. El resultado final es correcto; lo que hay es una escritura transitoria equivocada.
+
+**Qué lo vuelve urgente:** que la pestaña se cierre entre ambas escrituras, dejando la preferencia en `"auto"`. Probabilidad baja, consecuencia real: el usuario pierde su modo manual.
+
+**Cómo cerrarlo:** ya existe la herramienta. Aplicar el mismo patrón de T-03 con `@/lib/persisted-preference`: leer en el layout effect y mover la escritura al setter, eliminando el efecto. Son pocas líneas y el gate de `TS-WEB-019` ya cubre las primitivas.
+
+**RESUELTO** el 2026-08-26, junto con P-12.
+
+Se aplicó el mismo patrón de T-03 con `@/lib/persisted-preference`: la lectura se movió al layout effect de preferencias, junto a las otras dos, y la escritura pasó al setter. El efecto que escribía al montar desapareció. Las tres preferencias de `/chat` siguen ahora la misma forma y **ninguna escribe desde un camino de render**.
+
+Cubierto por `TS-WEB-019` v1.1.0. Markup del servidor verificado idéntico: 33152 bytes antes y después.
+
+---
+
+### P-12 · `TypeError: Load failed` al aceptar los términos
+
+- **Detectado:** 2026-08-28, Sentry, Mobile Safari en iPhone, ruta `/auth/complete-legal`.
+- **RESUELTO** el 2026-08-26, junto con P-11.
+
+**El diagnóstico.** `TypeError: Load failed` es como Safari reporta un `fetch()` que muere en la capa de red, no un error HTTP. Los breadcrumbs mostraban dos clics: el primer POST devolvió 200 y disparó `window.location.replace("/chat")`; el segundo, 111 ms después, salió durante esa navegación y Safari lo canceló.
+
+**La causa.** El handler levantaba `busy` **después** de `getSession()` y lo bajaba en un `finally` que corría justo tras iniciar la navegación. Como `window.location.replace()` empieza pero no termina de inmediato, el botón volvía a habilitarse mientras la página seguía visible.
+
+**El arreglo.** `busy` sube antes del primer `await` y solo baja en los caminos que dejan al usuario en pantalla. En los que navegan se queda arriba a propósito. Se añadió además un `catch`: `onAccept` descarta la promesa con `void`, así que sin él un fallo real de red se volvía un rechazo no manejado en vez de un mensaje para el usuario.
+
+**Impacto para el usuario: ninguno.** Su aceptación quedó registrada y la navegación siguió. Era ruido en Sentry.
+
+**Nota sobre el release.** El evento decía `release: 7f7c3a76`, que era un merge de documentación de una sola línea, y esa página no se tocó en toda la tanda. Tercera vez que P-09 (sourcemaps sin subir) hace que "release" se lea como causa cuando solo significa "el que estaba vivo".
+
+---
+
 
 ### P-08 · Mismatches de hidratación de preferencias en `/chat`
 

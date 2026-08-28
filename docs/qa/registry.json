@@ -2728,12 +2728,17 @@
       "shortName": "persisted-preference",
       "type": "TS",
       "family": "CHAT",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "versionHistory": [
         {
           "version": "1.0.0",
           "date": "2026-08-26",
           "change": "Gate obligatorio de T-03: montaje con valor no-default lo lee sin escribir, asi que sobrevive"
+        },
+        {
+          "version": "1.1.0",
+          "date": "2026-08-26",
+          "change": "Cubre tambien ichingCastMode (P-11), la tercera preferencia que escribia en un efecto de montaje"
         }
       ],
       "path": "apps/web/src/lib/__tests__/persisted-preference.test.ts",
