@@ -153,6 +153,8 @@ const ICHING_LINE_READING_SYSTEM_STORAGE_KEY = "iching_line_reading_system_v1";
 /** Valores aceptados al leer de storage: cualquier otra cosa cae al default. */
 const ICHING_CASTING_METHODS = ["three-coins", "yarrow-stalks"] as const;
 const ICHING_LINE_READING_SYSTEMS = ["huang", "zhuxi"] as const;
+const ICHING_CAST_MODES = ["auto", "manual"] as const;
+type IchingCastMode = (typeof ICHING_CAST_MODES)[number];
 
 // Action 4: stage floor timers (ms). Override via NEXT_PUBLIC_* env vars.
 const ICHING_FINALE_MIN_MS = Math.max(
@@ -627,15 +629,18 @@ export default function HomePage() {
     useState<RitualDebugSnapshot | null>(null);
   // streamingText removed (Action 3): deltas are no longer rendered during animation.
   const [oracleMode, setOracleMode] = useState<OracleMode>("iching");
-  type IchingCastMode = "auto" | "manual";
-  const [ichingCastMode, setIchingCastMode] = useState<IchingCastMode>("auto");
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(ICHING_CAST_MODE_STORAGE_KEY, ichingCastMode);
-    } catch {
-      /* ignore */
-    }
-  }, [ichingCastMode]);
+  // Persistencia por el setter, nunca por un efecto: ver el bloque de
+  // preferencias más abajo y `@/lib/persisted-preference`.
+  const [ichingCastMode, setIchingCastModeState] =
+    useState<IchingCastMode>("auto");
+  const setIchingCastMode = useCallback((next: IchingCastMode) => {
+    setIchingCastModeState(next);
+    writeStoredPreference(
+      browserPreferenceStorage(),
+      ICHING_CAST_MODE_STORAGE_KEY,
+      next,
+    );
+  }, []);
   const [translatorId, setTranslatorId] = useState<
       "wilhelm" | "legge" | "zhouyi" | "master_combined"
     >("wilhelm");
@@ -719,6 +724,14 @@ export default function HomePage() {
         ICHING_LINE_READING_SYSTEM_STORAGE_KEY,
         ICHING_LINE_READING_SYSTEMS,
         "huang",
+      ),
+    );
+    setIchingCastModeState(
+      readStoredPreference(
+        storage,
+        ICHING_CAST_MODE_STORAGE_KEY,
+        ICHING_CAST_MODES,
+        "auto",
       ),
     );
   }, []);
@@ -945,13 +958,8 @@ export default function HomePage() {
         /* private mode / cookies blocked */
       }
     }
-    try {
-      if (window.localStorage.getItem(ICHING_CAST_MODE_STORAGE_KEY) === "manual") {
-        setIchingCastMode("manual");
-      }
-    } catch {
-      /* ignore */
-    }
+    // La hidratación de `ichingCastMode` vive ahora en el layout effect de
+    // preferencias, junto a las demás, y ya no compite con un efecto de escritura.
   }, []);
 
   /* RN `__rnSetLocale` + storage sync from other tabs — keep React state aligned */

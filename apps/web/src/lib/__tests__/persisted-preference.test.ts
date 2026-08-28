@@ -1,5 +1,5 @@
 /**
- * QA code: TS-WEB-019 persisted-preference · v1.0.0
+ * QA code: TS-WEB-019 persisted-preference · v1.1.0
  * Area: apps/web/src/lib/persisted-preference
  * Family: CHAT
  */
@@ -35,6 +35,10 @@ const LINE_KEY = "iching_line_reading_system_v1";
 const LINE_ALLOWED = ["huang", "zhuxi"] as const;
 const LINE_DEFAULT = "huang";
 
+const CAST_MODE_KEY = "iching_cast_mode_v1";
+const CAST_MODE_ALLOWED = ["auto", "manual"] as const;
+const CAST_MODE_DEFAULT = "auto";
+
 /** Almacenamiento espiado sobre un Map, para poder afirmar que NO se escribió. */
 function fakeStorage(initial: Record<string, string> = {}) {
   const data = new Map(Object.entries(initial));
@@ -67,6 +71,19 @@ describe("montaje con una preferencia no-default guardada", () => {
     expect(valor).toBe("zhuxi");
     expect(s.setItem).not.toHaveBeenCalled();
     expect(s.data.get(LINE_KEY)).toBe("zhuxi");
+  });
+
+  it("la lee y NO la destruye (modo de tirada manual)", () => {
+    // P-11: este es el caso que en el patron viejo se autocorregia, pero pasaba
+    // por un estado transitorio en el que "auto" pisaba el "manual" guardado.
+    // Si la pestana se cerraba en ese hueco, el usuario perdia su modo manual.
+    const s = fakeStorage({ [CAST_MODE_KEY]: "manual" });
+
+    const valor = readStoredPreference(s.storage, CAST_MODE_KEY, CAST_MODE_ALLOWED, CAST_MODE_DEFAULT);
+
+    expect(valor).toBe("manual");
+    expect(s.setItem).not.toHaveBeenCalled();
+    expect(s.data.get(CAST_MODE_KEY)).toBe("manual");
   });
 
   it("montar varias veces seguidas tampoco la toca", () => {

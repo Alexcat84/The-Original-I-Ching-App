@@ -58,20 +58,39 @@ export default function CompleteLegalPage() {
     })();
   }, [router]);
 
+  /**
+   * `busy` se levanta ANTES del primer await y solo se baja en los caminos que
+   * dejan al usuario en esta pantalla.
+   *
+   * El patrón anterior lo levantaba después de `getSession()` y lo bajaba en un
+   * `finally` que corría justo después de `window.location.replace()`. Como esa
+   * navegación se inicia pero no termina de inmediato, el botón volvía a quedar
+   * habilitado mientras la página seguía visible, y un segundo toque lanzaba un
+   * POST que la navegación mataba a medio vuelo. Safari reporta eso como
+   * `TypeError: Load failed`, que es el error que llegó a Sentry el 2026-08-28.
+   *
+   * En los caminos que navegan, `busy` se queda arriba a propósito: la pantalla
+   * está por desaparecer y rehabilitar el botón solo abre esa ventana de doble
+   * envío.
+   *
+   * El `catch` no es decorativo: `onAccept` descarta la promesa con `void`, así
+   * que sin él un fallo real de red se convierte en un rechazo no manejado en vez
+   * de en un mensaje para el usuario.
+   */
   const handleAccept = useCallback(async () => {
     setErr(null);
     if (!isSupabaseBrowserConfigured()) return;
-    const sb = getSupabaseBrowser();
-    const {
-      data: { session },
-    } = await sb.auth.getSession();
-    if (!session?.access_token) {
-      router.replace("/login");
-      return;
-    }
-    const consent = createLegalConsentPayload("post_login");
     setBusy(true);
     try {
+      const sb = getSupabaseBrowser();
+      const {
+        data: { session },
+      } = await sb.auth.getSession();
+      if (!session?.access_token) {
+        router.replace("/login");
+        return; // navegando: `busy` sigue arriba
+      }
+      const consent = createLegalConsentPayload("post_login");
       const res = await fetch("/api/auth/legal-consent", {
         method: "POST",
         headers: {
@@ -82,6 +101,7 @@ export default function CompleteLegalPage() {
       });
       if (!res.ok) {
         setErr(L.errNetwork);
+        setBusy(false); // el usuario se queda aquí y puede reintentar
         return;
       }
       try {
@@ -90,7 +110,9 @@ export default function CompleteLegalPage() {
         // ignore
       }
       window.location.replace("/chat");
-    } finally {
+      // `busy` se queda arriba: la página se va.
+    } catch {
+      setErr(L.errNetwork);
       setBusy(false);
     }
   }, [L.errNetwork, router]);
